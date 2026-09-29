@@ -55,6 +55,8 @@ while read -r f; do
   printf 'AGENTCONF\t%s\t%s\t%s\n' "$f" "$rc" "$(printf '%s' "$out" | base64 -w0)"
 done < /tmp/agentconf.txt
 '''
+# mensagens do ambiente (limites do container), não da pasta
+ENV_NOISE = re.compile(r'Could not set resource limit|Unable to connect to socket .queue/db/wdb|Wazuh-DB for Mitre')
 AGENT_CONF_RE = re.compile(r'^\s*(<!--.*?-->\s*)*<agent_config\b', re.S)
 
 with tempfile.TemporaryDirectory() as tmp:
@@ -68,7 +70,7 @@ with tempfile.TemporaryDirectory() as tmp:
                    and AGENT_CONF_RE.match(open(os.path.join(dp, f), errors='ignore').read()))
     open(os.path.join(tmp, 'agentconf.txt'), 'w').write(''.join(c + '\n' for c in confs))
     subprocess.run(['docker', 'rm', '-f', NAME], capture_output=True)
-    subprocess.run(['docker', 'run', '-d', '--name', NAME, '--entrypoint', 'sleep', a.image, 'infinity'], check=True, capture_output=True)
+    subprocess.run(['docker', 'run', '-d', '--name', NAME, '--ulimit', 'nofile=458752:458752', '--entrypoint', 'sleep', a.image, 'infinity'], check=True, capture_output=True)
     try:
         for src, dst in ((os.path.join(ROOT, 'areas'), '/tmp/areas'), (os.path.join(ROOT, 'groups'), '/tmp/groups'),
                          (os.path.join(tmp, 'manifest.tsv'), '/tmp/manifest.tsv'), (os.path.join(tmp, 'agentconf.txt'), '/tmp/agentconf.txt'),
@@ -88,7 +90,7 @@ for line in res.splitlines():
         continue
     fo, mode, rc, b64 = line.split('\t')
     log = [re.sub(r'^\S+ \S+ wazuh-analysisd: ', '', l) for l in base64.b64decode(b64).decode(errors='replace').splitlines()]
-    errs = [l for l in log if l.startswith(('ERROR', 'CRITICAL'))]
+    errs = [l for l in log if l.startswith(('ERROR', 'CRITICAL')) and not ENV_NOISE.search(l)]
     warns = [l for l in log if l.startswith('WARNING')]
     runs[('areas/' + fo, mode)] = {'folder': 'areas/' + fo, 'loads_ok': rc == '0' and not errs, 'rc': rc, 'errors': len(errs),
                                   'warnings': len(warns), 'first_error': errs[0][:300] if errs else '', 'first_warning': warns[0][:300] if warns else ''}

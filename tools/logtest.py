@@ -140,7 +140,7 @@ with tempfile.TemporaryDirectory() as tmp:
             if p['ok']: fh.write(json.dumps({k: p[k] for k in ('folder', 'excludes', 'samples')}) + '\n')
     open(os.path.join(tmp, 'runner.py'), 'w').write(RUNNER)
     subprocess.run(['docker', 'rm', '-f', NAME], capture_output=True)
-    subprocess.run(['docker', 'run', '-d', '--name', NAME, '--entrypoint', 'sleep', a.image, 'infinity'], check=True, capture_output=True)
+    subprocess.run(['docker', 'run', '-d', '--name', NAME, '--ulimit', 'nofile=458752:458752', '--entrypoint', 'sleep', a.image, 'infinity'], check=True, capture_output=True)
     try:
         for src, dst in ((os.path.join(ROOT, 'areas'), '/tmp/areas'), (os.path.join(tmp, 'plan.jsonl'), '/tmp/plan.jsonl'),
                          (os.path.join(tmp, 'runner.py'), '/tmp/runner.py')):

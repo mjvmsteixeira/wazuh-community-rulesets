@@ -1,5 +1,6 @@
 # Ruleset as code: reconstrói o registo a partir das fontes fixadas no sources.lock, valida cada pasta num
-# wazuh-manager real e corre as amostras de log no wazuh-logtest. Falha se alguma ferramenta falhar;
+# wazuh-manager real e corre as amostras de log no wazuh-logtest. Falha se alguma ferramenta falhar ou se
+# carregarem menos pastas / passarem menos amostras do que no commit anterior (tools/check_regression.py);
 # as diferenças face ao que está no repositório ficam como aviso (o runner Linux distingue maiúsculas).
 name: registo
 on:
@@ -30,6 +31,8 @@ jobs:
         run: python3 tools/validate.py
       - name: Amostras de log no wazuh-logtest
         run: python3 tools/logtest.py
+      - name: Sem regressões face ao commit anterior
+        run: python3 tools/check_regression.py --ref HEAD
       - name: Documentação e página
         run: |
           python3 tools/make_docs.py .
