@@ -1,0 +1,23 @@
+<!--
+  Rule: Suspicious Base64 encoded command execution (Obfuscation)
+  NIST CSF: DE.AE-02, DE.CM-03
+  MITRE ATT&CK: T1027
+  Severity: High
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-23
+-->
+
+<group name="nist_csf, de.ae-02, mitre_attack,">
+
+  <rule id="100043" level="9">
+      <if_sid>80700, 61603</if_sid>
+      <!-- Simple heuristic for common base64 CLI flags + long base64 strings -->
+      <regex type="pcre2">(?i)(\-e\s|\-enc\s|base64\s-d).*?[A-Za-z0-9+/]{30,}={0,2}</regex>
+      <description>Suspicious Base64 encoded command execution (Obfuscation)</description>
+      <mitre>
+        <id>T1027</id>
+      </mitre>
+      <group>DE.AE-02, DE.CM-03</group>
+    </rule>
+
+</group>

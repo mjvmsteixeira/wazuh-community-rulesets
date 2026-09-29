@@ -1,0 +1,41 @@
+<group name="windows, ad_security_hardening,">
+
+  <rule id="110010" level="12">
+    <if_sid>60103</if_sid>
+    <field name="win.eventdata.ticketEncryptionType">^0x17$</field>
+    <field name="win.eventdata.serviceName" type="pcre2">^(?!krbtgt).*$</field>
+    <field name="win.eventdata.serviceName" type="pcre2">^(?!\$).*$</field>
+    <description>AD Threat: Potential Kerberoasting (RC4 Ticket Request) for service: $(win.eventdata.serviceName)</description>
+    <mitre>
+      <id>T1558.003</id>
+    </mitre>
+  </rule>
+
+  <rule id="110011" level="14">
+    <if_sid>60103</if_sid>
+    <field name="win.system.eventID">^4662$</field>
+    <field name="win.eventdata.properties" type="pcre2">(1131f6aa-9c07-11d1-f79f-00c04fc2dcd2|1131f6ad-9c07-11d1-f79f-00c04fc2dcd2|89e95b76-444d-4c62-991a-0facbeda640c)</fie>
+    <field name="win.eventdata.subjectUserName" type="pcre2">^(?!.*\$).*</field>
+    <description>AD Threat: DCSync Attack Detected (Replication Rights usage by non-DC account: $(win.eventdata.subjectUserName))</description>
+    <mitre>
+      <id>T1003.006</id>
+    </mitre>
+  </rule>
+
+  <rule id="110013" level="5">
+    <if_sid>60104</if_sid>
+    <field name="win.system.eventID">^4771$</field>
+    <description>Kerberos Pre-Auth Failed (Wrong Password)</description>
+    <group>authentication_failed,win_authentication_failed,</group>
+  </rule>
+
+  <rule id="110012" level="10" frequency="10" timeframe="60">
+    <if_matched_sid>110013</if_matched_sid>
+    <same_field>win.eventdata.ipAddress</same_field>
+    <description>AD Threat: Kerberos Password Spraying (10 failures in 60s from $(win.eventdata.ipAddress))</description>
+    <mitre>
+      <id>T1110.003</id>
+    </mitre>
+  </rule>
+
+</group>

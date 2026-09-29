@@ -1,0 +1,1 @@
+type=SYSCALL msg=audit(1779953404.123:463): exe="rm" name="/var/log/auth.log"

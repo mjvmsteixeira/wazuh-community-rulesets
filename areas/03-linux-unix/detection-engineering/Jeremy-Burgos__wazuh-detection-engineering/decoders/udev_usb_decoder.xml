@@ -1,0 +1,9 @@
+<decoder name="linux_usb_udev">
+  <prematch>USB_EVENT action=</prematch>
+</decoder>
+
+<decoder name="linux_usb_udev_fields">
+  <parent>linux_usb_udev</parent>
+  <regex>USB_EVENT action=(\S+)\s+serial=(\S+)\s+vendor="([^"]*)"\s+product="([^"]*)"\s+devname=(\S+)</regex>
+  <order>usb_action,serial,vendor,product,devname</order>
+</decoder>

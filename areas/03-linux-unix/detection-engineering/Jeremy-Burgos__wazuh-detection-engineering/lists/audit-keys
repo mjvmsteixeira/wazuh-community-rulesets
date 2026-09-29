@@ -1,0 +1,4 @@
+passwd:passwd
+shadow:shadow
+ssh:ssh
+history:history

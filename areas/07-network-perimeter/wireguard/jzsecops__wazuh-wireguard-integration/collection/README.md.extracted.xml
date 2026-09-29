@@ -1,0 +1,9 @@
+<!-- Blocos de configuração extraídos, sem alterações, de jzsecops/wazuh-wireguard-integration:README.md @ 2fc0b498712c -->
+<localfile>` block within the `<ossec_config>` section.
+
+```xml
+<localfile>
+  <location>/var/log/wireguard.log</location>
+  <log_format>syslog</log_format>
+  <out_format>wireguard-log: $(log)</out_format>
+</localfile>

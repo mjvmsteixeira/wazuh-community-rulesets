@@ -1,0 +1,128 @@
+<!--
+ModSecurity: Warning. Matched "Operator Rx' with parameter (?i)<script[^>]>[\s\S]?' against variable REQUEST_HEADERS:Referer' (Value: <script>alert('xss')</script>' ) [file "/etc/nginx/modsec/rules/REQUEST-941-APPLICATION-ATTACK-XSS.conf"] [line "110"] [id "941110"] [rev ""] [msg "XSS Filter - Category 1: Script Tag Vector"] [data "Matched Data: <script> found within REQUEST_HEADERS:Referer: <script>alert('xss')</script>"] [severity "2"] [ver "OWASP_CRS/4.15.0-dev"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-multi"] [tag "platform-multi"] [tag "attack-xss"] [tag "xss-perf-disable"] [tag "paranoia-level/1"] [tag "OWASP_CRS"] [tag "OWASP_CRS/ATTACK-XSS"] [tag "capec/1000/152/242"] [hostname "localhost"] [uri "/"] [unique_id "174858784413.214104"] [ref "o0,8v75,29t:utf8toUnicode,t:urlDecodeUni,t:htmlEntityDecode,t:jsDecode,t:cssDecode,t:removeNulls"]
+-->
+
+<decoder name="modsecurity-custom">
+  <prematch>ModSecurity</prematch>
+</decoder>
+
+<decoder name="modsecurity-custom-1">
+  <parent>modsecurity-custom</parent>
+  <regex>ModSecurity: (\S+)</regex>
+  <order>modsec.action</order>
+</decoder>
+
+<decoder name="modsecurity-custom-1">
+  <parent>modsecurity-custom</parent>
+  <regex>Operator\s(\S+)</regex>
+  <order>modsec.operator</order>
+</decoder>
+
+
+<decoder name="modsecurity-custom-1">
+  <parent>modsecurity-custom</parent>
+  <regex>parameter\s(\.+)\sagainst</regex>
+  <order>modsec.parameter</order>
+</decoder>
+
+<decoder name="modsecurity-custom-1">
+  <parent>modsecurity-custom</parent>
+  <regex>variable\s(\.+)\s</regex>
+  <order>modsec.variable</order>
+</decoder>
+
+<decoder name="modsecurity-custom-1">
+  <parent>modsecurity-custom</parent>
+  <regex>Value:\s(\.+)\s\)</regex>
+  <order>modsec.value</order>
+</decoder>
+
+<decoder name="modsecurity-custom-1">
+  <parent>modsecurity-custom</parent>
+  <regex>file\s"(\.+)"\p\s</regex>
+  <order>modsec.file</order>
+</decoder>
+
+<decoder name="modsecurity-custom-1">
+  <parent>modsecurity-custom</parent>
+  <regex>line\s"(\d+)"</regex>
+  <order>modsec.line</order>
+</decoder>
+
+<decoder name="modsecurity-custom-1">
+  <parent>modsecurity-custom</parent>
+  <regex>id\s"(\d+)"</regex>
+  <order>modsec.id</order>
+</decoder>
+
+<decoder name="modsecurity-custom-1">
+  <parent>modsecurity-custom</parent>
+  <regex>rev\s"(\.+)"</regex>
+  <order>modsec.rev</order>
+</decoder>
+
+<decoder name="modsecurity-custom-1">
+  <parent>modsecurity-custom</parent>
+  <regex>msg\s"(\.+)"</regex>
+  <order>modsec.msg</order>
+</decoder>
+
+<decoder name="modsecurity-custom-1">
+  <parent>modsecurity-custom</parent>
+  <regex>data\s"(\.+)"</regex>
+  <order>modsec.data</order>
+</decoder>
+
+<decoder name="modsecurity-custom-1">
+  <parent>modsecurity-custom</parent>
+  <regex>severity\s"(\d+)"</regex>
+  <order>modsec.severity</order>
+</decoder>
+
+<decoder name="modsecurity-custom-1">
+  <parent>modsecurity-custom</parent>
+  <regex>ver\s"(\.+)"</regex>
+  <order>modsec.ver</order>
+</decoder>
+
+<decoder name="modsecurity-custom-1">
+  <parent>modsecurity-custom</parent>
+  <regex>maturity\s"(\d+)"</regex>
+  <order>modsec.maturity</order>
+</decoder>
+
+<decoder name="modsecurity-custom-1">
+  <parent>modsecurity-custom</parent>
+  <regex>accuracy\s"(\d+)"</regex>
+  <order>modsec.accuracy</order>
+</decoder>
+
+<decoder name="modsecurity-custom-1">
+  <parent>modsecurity-custom</parent>
+  <regex>tag\s"(\S+)"</regex>
+  <order>modsec.tag</order>
+</decoder>
+
+<decoder name="modsecurity-custom-1">
+  <parent>modsecurity-custom</parent>
+  <regex>hostname\s"(\S+)"</regex>
+  <order>modsec.hostname</order>
+</decoder>
+
+<decoder name="modsecurity-custom-1">
+  <parent>modsecurity-custom</parent>
+  <regex>uri\s"(\.+)"</regex>
+  <order>modsec.uri</order>
+</decoder>
+
+<decoder name="modsecurity-custom-1">
+  <parent>modsecurity-custom</parent>
+  <regex>unique_id\s"(\.+)"</regex>
+  <order>modsec.unique_id</order>
+</decoder>
+
+<decoder name="modsecurity-custom-1">
+  <parent>modsecurity-custom</parent>
+  <regex>ref\s"(\.+)"</regex>
+  <order>modsec.ref</order>
+</decoder>

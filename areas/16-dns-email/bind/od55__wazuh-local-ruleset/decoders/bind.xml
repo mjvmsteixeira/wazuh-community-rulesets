@@ -1,0 +1,102 @@
+<!-- 
+decoder for BIND Named.not all event types are decoded
+:::::::: event example ::::::::
+2026-01-24T02:22:07+03:00 ns-server named[561081]: client @0x718220e4dc98 172.217.34.23#48343 (domain.Ru): query (cache) 'domain.Ru/A/IN' denied (allow-query-cache did not match)
+2026-01-22T17:10:53+03:00 ns-server named[561081]: zone domain.ru/IN: refresh: unexpected rcode (REFUSED) from primary 194.177.23.220#53 (source 0.0.0.0#0)
+-->
+<decoder name="named">
+    <program_name>named</program_name>
+</decoder>
+
+<decoder name="named-query">
+  <parent>named</parent>
+  <regex type="pcre2" offset="after_parent">client (?'clid'\S+)\s(?'srcip'[\d\.]+)\#(?'srcport'\d+)\s\(.*?\): query.*?\'(?'hostname'\S*?)(?'recordType'\/\w+\/\w+)\'</regex>
+  <order>clid,srcip,srcport,hostname,recorrdType</order>
+</decoder>
+
+<decoder name="named-query">
+    <parent>named</parent>
+    <regex type="pcre2" offset="after_parent">zone (?'hostname'.*?)\/(?'recordType'\w+): serial number \((?'serial_number'\d+)\) received from primary (?'srcip'[\d\.]+)\#(?'port'\d+) (?'symbol'.) ours</regex>
+    <order>hostname,recordType,serial_number,srcip,port,symbol</order>
+</decoder>
+
+<decoder name="named-query">
+    <parent>named</parent>
+    <regex type="pcre2" offset="after_parent">client (?'clid'\S+)\s(?'srcip'[\d\.]+)\#(?'srcport'\d+): update forwarding \'(?'hostname'\S*?)(?'recordType'\/[\/\w]+)\' denied</regex>
+    <order>clid,srcip,srcport,hostname,recordType</order>
+</decoder>
+
+<decoder name="named-query">
+    <parent>named</parent>
+    <regex type="pcre2" offset="after_parent">client (?'clid'\S+)\s(?'srcip'[\d\.]+)\#(?'srcport'\d+) \((?'site'.*?)\): transfer of \'(?'hostname'.*?)(?'recordType'\/[\/\w]*)\':? </regex>
+    <order>clid,srcip,srcport,site,hostname,recordType</order>
+</decoder>
+<decoder name="named-query">
+    <parent>named</parent>		<!-- AXFR started (serial 2018072301)-->
+    <regex offset="after_parent" type="pcre2">(?'axfr_status'AXFR started) \(serial (?'serial_number'\d*?)\)</regex>
+    <order>axfr_status,serial_number</order>
+</decoder>
+
+<decoder name="named-query">
+    <parent>named</parent>		<!-- AXFR ended: 1 messages, 21 records, 1260 bytes, 0.001 secs (1260000 bytes/sec) (serial 2018072301) -->
+    <regex offset="after_parent" type="pcre2">(?'axfr_status'AXFR ended): (?'messages'\d+) messages, (?'records'\d+) records, (?'bytes'\d+) bytes, (?'seconds'[\d\.]+) secs \(\d+\s[\w\/]+\) \(serial (?'serial_number'\d*?)\)</regex>
+    <order>axfr_status,messages,records,bytes,seconds,serial_number</order>
+</decoder>
+
+<decoder name="named-query">
+    <parent>named</parent>		<!--  from 171.112.198.164#53: Transfer completed: 0 messages, 0 records, 0 bytes, 0.004 secs (0 bytes/sec) (serial 0)-->
+    <regex offset="after_parent" type="pcre2">from (?'ip'[\d\.]+)\#(?'port'\d+): (?'transfer_status'Transfer completed): (?'messages'\d+) messages, (?'records'\d+) records, (?'bytes'\d+) bytes, (?'seconds'[\d\.]+) secs</regex>
+    <order>ip,port,transfer_status,messages,records,bytes,seconds</order>
+</decoder>
+
+
+<decoder name="named-query">
+    <parent>named</parent>
+				    <!--      client @0x7fc05c7830a8 171.112.198.164#56377: received notify for zone 'domain.ru' -->
+    <regex type="pcre2" offset="after_parent">client (?'clid'\S+)\s(?'srcip'[\d\.]+)\#(?'srcport'\d+): received notify for zone \'(?'hostname'.*?)\'</regex>
+    <order>clid,srcip,srcport,hostname</order>
+</decoder>
+
+
+
+<decoder name="named-query">
+    <parent>named</parent>
+				    <!--    named[561081]: zone domain.ru/IN: refresh: unexpected rcode (REFUSED) from primary 194.177.23.220#53 (source 0.0.0.0#0) -->
+    <regex type="pcre2" offset="after_parent">zone (?'hostname'.*?)(?'recordType'\/[\/\w]*): refresh: unexpected rcode \((?'code'\w*)\) from primary (?'srcip'[\d\.]+)\#(?'srcport'\d+)</regex>
+    <order>hostname,recordTypecode,srcip,srcport</order>
+</decoder>
+
+<decoder name="named-query">
+    <parent>named</parent>
+    <regex type="pcre2" offset="after_parent">zone (?'hostname'.*?)(?'recordType'\/[\/\w]*): refresh: unexpected rcode \((?'code'\w*)\) from primary (?'srcip'[\d\.]+)\#(?'srcport'\d+)</regex>
+    <order>hostname,recordTypecode,srcip,srcport</order>
+</decoder>
+
+<!--
+<decoder name="named-query">
+    <parent>named</parent>
+    <regex type='after_parent"> client @0x7fd1700671e8 173.252.70.132#15172 (domain.ru): query (cache) 'domain.ru/AAAA/IN' denied \((?'cause'[^\)])\)</regex>
+
+</decoder>
+
+<!--
+<decoder name="named_client">
+  <parent>named</parent>
+  <prematch>^client </prematch>
+  <regex offset="after_prematch">^(\S+)#</regex>
+  <order>srcip</order>
+</decoder>
+
+<decoder name="named-master">
+  <parent>named</parent>
+  <prematch> for master</prematch>
+  <regex>for master (\S+):(\d+) \S+ \(source (\S+)#d+\)$</regex>
+  <order>dstip,dstport,srcip</order>
+</decoder>
+
+<decoder name="named_from">
+  <parent>named</parent>
+  <regex offset="after_parent"> from [(\S+)]</regex>
+  <order>srcip</order>
+</decoder>
+-->

@@ -1,0 +1,41 @@
+<decoder name="postgresql-audit">
+  <program_name>postgresql</program_name>
+  <prematch>LOG:  AUDIT: </prematch>
+  <regex offset="after_prematch">(\w+),(\d+),(\d+),(\w+),</regex>
+  <order>audit_type,statement_id,sub_id,class</order>
+</decoder>
+
+<decoder name="postgresql-connection">
+  <program_name>postgresql</program_name>
+  <prematch>LOG:  connection authorized: </prematch>
+  <regex offset="after_prematch">user=(\S+) database=(\S+)</regex>
+  <order>db_user,db_name</order>
+</decoder>
+
+<decoder name="postgresql-auth-failure">
+  <program_name>postgresql</program_name>
+  <prematch>FATAL:  password authentication failed for user </prematch>
+  <regex offset="after_prematch">"([^"]+)"</regex>
+  <order>db_user</order>
+</decoder>
+
+<decoder name="postgresql-pghba-failure">
+  <program_name>postgresql</program_name>
+  <prematch>FATAL:  no pg_hba.conf entry</prematch>
+  <regex>user "([^"]+)", database "([^"]+)"</regex>
+  <order>db_user,db_name</order>
+</decoder>
+
+<decoder name="postgresql-disconnection">
+  <program_name>postgresql</program_name>
+  <prematch>LOG:  disconnection: </prematch>
+  <regex>user=(\S+) database=(\S+) host=(\S+)</regex>
+  <order>db_user,db_name,client_host</order>
+</decoder>
+
+<decoder name="postgresql-sql-error">
+  <program_name>postgresql</program_name>
+  <prematch>ERROR:  permission denied</prematch>
+  <regex>permission denied for (\S+)</regex>
+  <order>error_message</order>
+</decoder>

@@ -1,0 +1,33 @@
+<decoder name="barracuda-web">
+        <prematch>web: </prematch>
+</decoder>
+
+<decoder name="barracuda-syslog">
+        <parent>barracuda-web</parent>
+        <regex offset="after_parent">[(\S+)] | [(\d+.\d+.\d+.\d+)] </regex>
+        <order>host</order>
+</decoder>
+
+<decoder name="barracuda-syslog">
+        <parent>barracuda-web</parent>
+        <regex offset="after_regex">(\S+)[] </regex>
+        <order>location</order>
+</decoder>
+
+<decoder name="barracuda-syslog">
+        <parent>barracuda-web</parent>
+        <regex offset="after_regex">(\S+) </regex>
+        <order>category</order>
+</decoder>
+
+<decoder name="barracuda-syslog">
+        <parent>barracuda-web</parent>
+        <regex offset="after_regex">(\S+) </regex>
+        <order>stat_name</order>
+</decoder>
+
+<decoder name="barracuda-syslog">
+        <parent>barracuda-web</parent>
+        <regex offset="after_regex">\((\d+)\)</regex>
+        <order>size</order>
+</decoder>

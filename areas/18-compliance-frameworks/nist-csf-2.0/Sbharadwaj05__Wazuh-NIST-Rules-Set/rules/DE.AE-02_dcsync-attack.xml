@@ -1,0 +1,25 @@
+<!--
+  Rule: DCSync Active Directory replication requested (Credential Access)
+  NIST CSF: ID.RA-03, PR.AC-04
+  MITRE ATT&CK: T1003.006
+  Severity: Critical
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-23
+-->
+
+<group name="nist_csf, de.ae-02, mitre_attack,">
+
+  <rule id="100038" level="14">
+      <decoded_as>json</decoded_as>
+      <field name="win.system.providerName">Microsoft-Windows-Security-Auditing</field>
+      <field name="win.system.eventID">^4662$</field>
+      <field name="win.eventdata.properties" type="pcre2">(?i)(1131f6aa-9c07-11d1-f79f-00c04fc2dcd2|1131f6ad-9c07-11d1-f79f-00c04fc2dcd2|89e95b76-ceed-11d0-929a-00c04fd92fcb)</field>
+      <field name="win.eventdata.accessMask">0x100</field>
+      <description>DCSync Active Directory replication requested (Credential Access)</description>
+      <mitre>
+        <id>T1003.006</id>
+      </mitre>
+      <group>ID.RA-03, PR.AC-04</group>
+    </rule>
+
+</group>

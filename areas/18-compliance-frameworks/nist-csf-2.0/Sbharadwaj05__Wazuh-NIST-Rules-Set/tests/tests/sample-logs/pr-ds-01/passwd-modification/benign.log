@@ -1,0 +1,1 @@
+type=SYSCALL msg=audit(1779953400.123:459): path=/etc/passwd perm=r

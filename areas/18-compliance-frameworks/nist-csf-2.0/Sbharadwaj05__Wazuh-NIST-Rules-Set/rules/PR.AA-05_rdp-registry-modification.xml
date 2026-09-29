@@ -1,0 +1,24 @@
+<!--
+  Rule: RDP registry configuration modification (Defense Evasion/Lateral Movement)
+  NIST CSF: PR.AA-05
+  MITRE ATT&CK: T1112
+  Severity: High
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-23
+-->
+
+<group name="nist_csf, pr.aa-05, mitre_attack,">
+
+  <rule id="100033" level="9">
+      <decoded_as>json</decoded_as>
+      <field name="win.system.providerName">Microsoft-Windows-Sysmon</field>
+      <field name="win.system.eventID">^12$|^13$|^14$</field>
+      <field name="win.eventdata.targetObject" type="pcre2">(?i)(System\\CurrentControlSet\\Control\\Terminal\sServer\\fDenyTSConnections|System\\CurrentControlSet\\Control\\Terminal\sServer\\WinStations\\RDP-Tcp\\PortNumber)</field>
+      <description>RDP registry configuration modification (Defense Evasion/Lateral Movement)</description>
+      <mitre>
+        <id>T1112</id>
+      </mitre>
+      <group>PR.AA-05</group>
+    </rule>
+
+</group>

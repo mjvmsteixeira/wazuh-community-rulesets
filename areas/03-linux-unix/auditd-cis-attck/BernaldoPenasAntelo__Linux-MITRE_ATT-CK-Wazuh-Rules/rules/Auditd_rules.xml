@@ -1,0 +1,78 @@
+<group name="Generic auditd MITRE ATT&CK">
+
+
+
+<!-- IMPACT -->
+<!--
+type=SERVICE_STOP msg=audit(1605613645.868:349): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:init_t:s0 msg='unit=NetworkManager-dispatcher comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+-->
+
+	<rule id="201001" level="7">
+        <if_sid>80700</if_sid>
+        <field name="audit.exe">/usr/lib/systemd/systemd</field>
+		<field name="audit.type">SERVICE_STOP</field>
+		<field name="audit.res">success</field>
+        <description>Mitre ATT&CK T1489, Impact, Service Stop, follow audit.id to trace stopped service in rule.id 200508</description>
+		<group>27001_A12.4.1, 27001_A16.1.7, </group>
+		<!--
+		 <mitre>
+            <id>T1489</id>
+        </mitre>
+		-->
+    </rule>
+
+
+<!-- PERSISTENCE -->
+<!--
+type=SERVICE_START msg=audit(1605613635.229:348): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:init_t:s0 msg='unit=network comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+-->
+	<rule id="201051" level="7">
+        <if_sid>80700</if_sid>
+        <field name="audit.exe">/usr/lib/systemd/systemd</field>
+		<field name="audit.type">SERVICE_START</field>
+		<field name="audit.res">success</field>
+        <description>Mitre ATT&CK T1543.002, Persistence, Create or Modify System Process: Systemd Service, follow audit.id to trace started service in rule.id 200508</description>
+		<group>27001_A12.4.1, 27001_A16.1.7, </group>
+		<!--
+		 <mitre>
+            <id>T1543.002</id>
+        </mitre>
+		-->
+    </rule>
+
+<!--  EXECUTION  -->
+<!--
+T1053.003,  Execution, Scheduled Task/Job: Cron 
+type=USER_START msg=audit(1605801661.544:355): pid=2451 uid=0 auid=0 ses=6 subj=system_u:system_r:crond_t:s0-s0:c0.c1023 msg='op=PAM:session_open grantors=pam_loginuid,pam_keyinit,pam_limits,pam_systemd acct="root" exe="/usr/sbin/crond" hostname=? addr=? terminal=cron res=success'
+-->
+
+	<rule id="201101" level="7">
+        <if_sid>80700</if_sid>
+        <field name="audit.exe">/usr/sbin/crond</field>
+		<field name="audit.type">USER_START</field>
+		<field name="audit.res">success</field>
+        <description>Mitre ATT&CK T1053.003, Execution, Scheduled Task/Job: Cron, follow audit.id to trace started service in rule.id 200508</description>
+		<group>27001_A12.4.1, 27001_A16.1.7, </group>
+		<!--
+		 <mitre>
+            <id>T1053.003</id>
+        </mitre>
+		-->
+    </rule>
+	
+	
+<!-- ---------------------------------------
+Auditd: device enables promiscuous mode
+"rule.id": "80710
+----------------------------------------
+Interface entered in promiscuous(sniffing) mode.
+location": "/var/log/messages", "rule.id": "5104"
+--------------------------------------- -->
+
+
+
+
+
+
+
+</group>

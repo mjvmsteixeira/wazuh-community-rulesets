@@ -1,0 +1,17 @@
+<!-- Blocos de configuração extraídos, sem alterações, de wazuh/integrations:integrations/google_threat_intelligence/install.sh @ 38efcaaa3272 -->
+<wodle name=\"command\">\\
+    <disabled>no</disabled>\\
+    <tag>gti-sync</tag>\\
+    <command>${WAZUH_HOME}/framework/python/bin/python3.10 ${WAZUH_HOME}/wodles/gti/gti-sync.py</command>\\
+    <interval>${INTERVAL}m</interval>\\
+    <ignore_output>no</ignore_output>\\
+    <run_on_start>yes</run_on_start>\\
+    <timeout>300</timeout>\\
+  </wodle>
+
+<integration>\\
+    <name>custom-gti</name>\\
+    <api_key>${API_KEY}</api_key>\\
+    <alert_format>json</alert_format>\\
+    <options>{\"mitre_attack\": true, \"realtime\": false, \"log_level\": \"INFO\", \"ip_fields\": \"\", \"domain_fields\": \"\", \"url_fields\": \"\", \"filehash_fields\": \"\", \"vuln_fields\": \"\"}</options>\\
+  </integration>

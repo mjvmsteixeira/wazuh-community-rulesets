@@ -1,0 +1,24 @@
+<!--
+  Rule: Suspiciously long DNS query indicating potential DNS Tunneling (C2)
+  NIST CSF: DE.AE-03, RS.AN-01
+  MITRE ATT&CK: T1071.004
+  Severity: High
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-23
+-->
+
+<group name="nist_csf, de.cm-01, mitre_attack,">
+
+  <rule id="100044" level="10">
+      <decoded_as>json</decoded_as>
+      <field name="win.system.providerName">Microsoft-Windows-Sysmon</field>
+      <field name="win.system.eventID">^22$</field>
+      <field name="win.eventdata.queryName" type="pcre2">(?i)[A-Za-z0-9\-\.]{40,}\.(com|net|org|io|xyz)</field>
+      <description>Suspiciously long DNS query indicating potential DNS Tunneling (C2)</description>
+      <mitre>
+        <id>T1071.004</id>
+      </mitre>
+      <group>DE.AE-03, RS.AN-01</group>
+    </rule>
+
+</group>

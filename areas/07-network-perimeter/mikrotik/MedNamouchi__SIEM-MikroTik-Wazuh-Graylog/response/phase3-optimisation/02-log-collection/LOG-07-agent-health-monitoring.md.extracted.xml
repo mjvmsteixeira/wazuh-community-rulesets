@@ -1,0 +1,12 @@
+<!-- Blocos de resposta extraídos, sem alterações, de MedNamouchi/SIEM-MikroTik-Wazuh-Graylog:phase3-optimisation/02-log-collection/LOG-07-agent-health-monitoring.md @ e8dfa75059c7 -->
+<command>
+  <name>mattermost-agent-down</name>
+  <executable>mattermost-agent-down.sh</executable>
+  <timeout_allowed>no</timeout_allowed>
+</command>
+
+<active-response>
+  <command>mattermost-agent-down</command>
+  <location>server</location>
+  <rules_id>100600,100601</rules_id>
+</active-response>

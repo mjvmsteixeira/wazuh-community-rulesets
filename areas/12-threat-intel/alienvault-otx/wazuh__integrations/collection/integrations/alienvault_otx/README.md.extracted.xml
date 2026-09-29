@@ -1,0 +1,8 @@
+<!-- Blocos de configuração extraídos, sem alterações, de wazuh/integrations:integrations/alienvault_otx/README.md @ 38efcaaa3272 -->
+<integration>
+  <name>custom-alienvault</name>
+  <hook_url>https://otx.alienvault.com</hook_url>
+  <api_key>YOUR_OTX_API_KEY</api_key>
+  <alert_format>json</alert_format>
+  <level>5</level>
+</integration>

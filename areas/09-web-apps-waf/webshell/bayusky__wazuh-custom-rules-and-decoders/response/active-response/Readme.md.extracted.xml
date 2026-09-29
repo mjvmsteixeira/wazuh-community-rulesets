@@ -1,0 +1,39 @@
+<!-- Blocos de resposta extraídos, sem alterações, de bayusky/wazuh-custom-rules-and-decoders:active-response/Readme.md @ a53de6161c8f -->
+<command>
+      <name>quarantine-malware</name>
+      <executable>quarantine-malware.sh</executable>
+      <timeout_allowed>no</timeout_allowed>
+    </command>
+
+<command>
+      <name>remove-malware</name>
+      <executable>remove-malware.exe</executable>
+      <timeout_allowed>no</timeout_allowed>
+    </command>
+
+<active-response>
+      <disabled>no</disabled>
+      <command>quarantine-malware</command>
+      <location>local</location>
+      <rules_id>100623</rules_id>
+    </active-response>
+
+<active-response>
+      <disabled>no</disabled>
+      <command>remove-malware</command>
+      <location>local</location>
+      <rules_id>100623</rules_id>
+    </active-response>
+
+<command>
+      <name>quarantine-webshell</name>
+      <executable>quarantine-webshell.sh</executable>
+      <timeout_allowed>no</timeout_allowed>
+    </command>
+
+<active-response>
+      <disabled>no</disabled>
+      <command>quarantine-webshell</command>
+      <location>local</location>
+      <rules_id>500500,500501</rules_id>
+    </active-response>

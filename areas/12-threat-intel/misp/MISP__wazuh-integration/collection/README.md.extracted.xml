@@ -1,0 +1,39 @@
+<!-- Blocos de configuração extraídos, sem alterações, de MISP/wazuh-integration:README.md @ 96e457c4f4a0 -->
+<integration>` block to the `/var/ossec/etc/ossec.conf` file.
+
+
+```xml
+<ossec_config>
+    <integration>
+        <name>custom-misp_file_hashes.py</name>
+        <hook_url>https://YOUR_MISP_INSTANCE</hook_url>
+        <api_key>YOUR_API_KEY</api_key>
+        <group>syscheck</group>
+        <rule_id>554</rule_id>
+        <alert_format>json</alert_format>
+        <options>{
+              "timeout": 10,
+              "retries": 3,
+              "debug": false,
+              "tags": ["tlp:white", "tlp:clear", "malware"],
+              "push_sightings": true,
+              "sightings_source": "wazuh"
+          }
+        </options>
+    </integration>
+
+<integration>` block:
+`{ "debug": true}`
+
+Example:
+```xml
+<ossec_config>
+    <integration>
+        <name>custom-misp_file_hashes.py</name>
+        <hook_url>https://YOUR_MISP_INSTANCE</hook_url>
+        <api_key>YOUR_API_KEY</api_key>
+        <group>syscheck</group>
+        <rule_id>554</rule_id>
+        <alert_format>json</alert_format>
+        <options>{ "debug": true}</options>
+    </integration>

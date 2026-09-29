@@ -1,0 +1,5 @@
+<decoder name="falco-json">
+  <prematch>"uuid":"</prematch>
+  <regex>"priority":"([^"]+)","rule":"([^"]+)".*"source":"([^"]+)"</regex>
+  <order>priority, rule, source</order>
+</decoder>

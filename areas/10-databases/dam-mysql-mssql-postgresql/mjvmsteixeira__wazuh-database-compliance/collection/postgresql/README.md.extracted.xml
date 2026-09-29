@@ -1,0 +1,5 @@
+<!-- Blocos de configuração extraídos, sem alterações, de mjvmsteixeira/wazuh-database-compliance:postgresql/README.md @ 21031af7fa3f -->
+<localfile>
+    <log_format>syslog</log_format>
+    <location>/var/log/postgresql/audit.log</location>
+  </localfile>

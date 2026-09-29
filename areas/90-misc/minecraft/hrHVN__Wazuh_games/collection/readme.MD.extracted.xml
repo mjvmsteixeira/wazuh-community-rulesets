@@ -1,0 +1,20 @@
+<!-- Blocos de configuração extraídos, sem alterações, de hrHVN/Wazuh_games:readme.MD @ 2fbaa65812a0 -->
+<localfile>
+    <log_format>journald</log_format>
+    <location>journald</location>
+  </localfile>
+
+<localfile>
+    <log_format>syslog</log_format>
+    <location>/var/ossec/logs/active-responses.log</location>
+  </localfile>
+
+<localfile>
+    <log_format>syslog</log_format>
+    <location>/var/log/dpkg.log</location>
+  </localfile>
+
+<localfile>
+    <log_format>syslog</log_format>
+    <location>/tmp/minecraft_log</location>
+  </localfile>

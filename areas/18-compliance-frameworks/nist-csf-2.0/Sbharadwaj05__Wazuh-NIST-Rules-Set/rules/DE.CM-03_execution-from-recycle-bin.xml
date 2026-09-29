@@ -1,0 +1,24 @@
+<!--
+  Rule: Execution from the Recycle Bin detected (Defense Evasion/Persistence)
+  NIST CSF: DE.CM-03, DE.AE-02
+  MITRE ATT&CK: T1036
+  Severity: High
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-23
+-->
+
+<group name="nist_csf, de.cm-03, mitre_attack,">
+
+  <rule id="100053" level="9">
+      <decoded_as>json</decoded_as>
+      <field name="win.system.providerName">Microsoft-Windows-Sysmon</field>
+      <field name="win.system.eventID">^1$</field>
+      <field name="win.eventdata.commandLine" type="pcre2">(?i)\\(\$Recycle\.bin|RECYCLER)\\</field>
+      <description>Execution from the Recycle Bin detected (Defense Evasion/Persistence)</description>
+      <mitre>
+        <id>T1036</id>
+      </mitre>
+      <group>DE.CM-03, DE.AE-02</group>
+    </rule>
+
+</group>

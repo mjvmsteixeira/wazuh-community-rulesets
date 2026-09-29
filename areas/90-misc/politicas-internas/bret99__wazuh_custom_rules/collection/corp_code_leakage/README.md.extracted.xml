@@ -1,0 +1,35 @@
+<!-- Blocos de configuração extraídos, sem alterações, de bret99/wazuh_custom_rules:corp_code_leakage/README.md @ 8783ac892999 -->
+<agent_config>
+  <localfile>
+      <log_format>json</log_format>
+      <location>/var/log/corp_code/dockerhub_search_results.json</location>
+    </localfile>
+    <localfile>
+      <log_format>json</log_format>
+      <location>/var/log/corp_code/yesterday_updated_docker_repositories.json</location>
+    </localfile>
+    <localfile>
+      <log_format>json</log_format>
+      <location>/var/log/corp_code/github_search_results.json</location>
+    </localfile>
+    <localfile>
+      <log_format>json</log_format>
+      <location>/var/log/corp_code/github_secret_repos.json</location>
+    </localfile>
+    <localfile>
+      <log_format>json</log_format>
+      <location>/var/log/corp_code/yesterday_updated_github_repositories.json</location>
+    </localfile>
+    <localfile>
+      <log_format>json</log_format>
+      <location>/var/log/corp_code/gitlab_search_results.json</location>
+    </localfile>
+    <localfile>
+      <log_format>json</log_format>
+      <location>/var/log/corp_code/gitlab_secret_repos.json</location>
+    </localfile>
+    <localfile>
+      <log_format>json</log_format>
+      <location>/var/log/corp_code/yesterday_updated_gitlab_repositories.json</location>
+    </localfile>
+</agent_config>

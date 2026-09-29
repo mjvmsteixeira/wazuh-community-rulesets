@@ -1,0 +1,13 @@
+<!-- 
+  Custom Wazuh decoders for HP devices.
+  This file contains a generic decoder for HP device login attempts.
+-->
+<decoder name="hp_test">
+  <!-- 
+    Decodes login attempts.
+    Example log: 192.168.1.1 Jan 1 00:00:00 ... User 'admin' is trying to login from 192.168.1.10
+  -->
+  <prematch>^\d+\.\d+\.\d+\.\d+  \w{3} {1,2} \d{1,2} \d{2}:\d{2}:\d{2}</prematch>
+  <regex offset="after_prematch">.*User '(\S+)' is trying to login from (\d+\.\d+\.\d+\.\d+)</regex>
+  <order>user,srcip</order>
+</decoder>

@@ -1,0 +1,12 @@
+<!--2024-05-06T07:09:58.480192+00:00 thehivecortex usermod[95600]: add 'hasitha' to group 'sudo'-->
+<decoder name="linux-custom-decoder">
+  <program_name>^usermod</program_name>
+</decoder>
+
+
+<decoder name="linux-custom-decoder1">
+  <parent>linux-custom-decoder</parent>
+   <regex>(\S+)\s'(\S+)'</regex>
+  <order>action,dstuser</order>
+</decoder>
+

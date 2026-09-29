@@ -1,0 +1,340 @@
+<group name="regular_rules_linux_MITRE">
+<!--
+This rules try to map regular logs from default monit. locations included in Wazuh configuration
+
+/var/log/messages
+/var/log/auth.log <-- must include
+/var/log/syslog
+/var/log/secure
+-->
+
+<!--   Exfiltration  -->
+<!--
+Nov 23 10:44:21 centos-1 kernel: usb usb1: New USB device found, idVendor=1d6b, idProduct=0002, bcdDevice= 3.10
+-->
+  <rule id="202001" level="4">
+    <if_sid>81101</if_sid>
+    <description>Mitre ATT&CK T1052.001,  Exfiltration , Exfiltration Over Physical Medium: Exfiltration over USB, Attached USB Storage</description>
+    <group>27001_A12.4.1, 27001_A8.3.1, </group>
+	<!--
+	<mitre>
+      <id>T1052.001</id>
+    </mitre>
+	-->
+  </rule>
+
+<!-- Initial Access -->
+<!--
+Feb 16 17:09:54 IDSTest sshd[9417]: fatal: Access denied for user testuser2 by PAM account configuration [preauth]
+-->
+  <rule id="202051" level="4">
+    <decoded_as>sshd</decoded_as>
+	<field name="event.action">Access denied</field>
+    <description>Mitre ATT&CK T1078.003, Valid Accounts: Local Accounts, Initial Access, Access denied for user $(user.name)</description>
+    <group>27001_A12.4.1, 27001_A9.4.2, </group>
+	<!--
+	<mitre>
+      <id>T1078.003</id>
+    </mitre>
+	-->
+  </rule>
+  
+  <rule id="202052" level="10" timeframe="60" frequency="3">
+    <if_matched_sid>202051</if_matched_sid>
+	<same_field>user.name</same_field>
+    <description>Mitre ATT&CK T1110.001, Brute Force: Password Guessing, Credential Access, Brute force from user $(user.name)</description>
+	<group>27001_A12.4.1, 27001_A9.4.2, </group>
+	<!--
+	 <mitre>
+       <id>T1110.001</id>
+     </mitre>
+	-->
+  </rule>
+ 
+  <rule id="202053" level="10" timeframe="60" frequency="3">
+    <if_matched_sid>5557</if_matched_sid>
+	<same_field>srcuser</same_field>
+    <description>Mitre ATT&CK T1110.001, Brute Force: Password Guessing, Credential Access, Brute force from user $(srcuser)</description>
+	<group>27001_A12.4.1, 27001_A9.4.2, </group>
+	<!--
+	 <mitre>
+       <id>T1110.001</id>
+     </mitre>
+	-->
+  </rule>
+
+
+<!-- Privilege Escalation -->
+<!--
+Nov 30 11:45:45 centos-1 su: (to root) enoc on pts/0
+-->
+  <rule id="202101" level="5">
+    <regex>\(to \.+\) \.+ on \.+$</regex>
+    <description>Mitre ATT&CK T1548.003, Privilege Escalation, Abuse Elevation Control Mechanism: Sudo and Sudo Caching</description>
+	<group>27001_A9.2.3, 27001_A12.4.1, 27001_A12.1.2, 27001_A16.1.7, CIS_4.8, audit_configuration,gpg13_10.1,gdpr_IV_30.1.g,</group>
+	<!--
+	<mitre>
+     <id>T1548.003</id>
+    </mitre>
+	-->
+  </rule>
+<!-- Impact -->
+<!--
+Nov 10 12:17:23 centos7 systemd-shutdownd: Shutting down at Tue 2020-11-10 12:18:23 CET (poweroff)...
+Nov 10 11:38:26 centos7 kernel: Linux version 3.10.0-1062.18.1.el7.x86_64 (mockbuild@kbuilder.bsys.centos.org) (gcc version 4.8.5 20150623 (Red Hat 4.8.5-39) (GCC) ) #1 SMP Tue Mar 17 23:49:17 UTC 2020
+-->
+<!--
+  <rule id="202150" level="7">
+    <regex>\(poweroff\)...$</regex>
+    <description>Mitre ATT&CK T1529, Impact, System Shutdown/Reboot</description>
+	<group>27001_A12.4.1,</group<
+	<mitre>
+     <id>T1529</id>
+    </mitre>
+  </rule>
+-->
+<!--
+Dec  1 09:20:31 debian kernel: [    0.000000] Linux version 4.19.0-12-amd64 (debian-kernel@lists.debian.org) (gcc version 8.3.0 (Debian 8.3.0-6)) #1 SMP Debian 4.19.152-1 (2020-10-18)
+-->
+  <rule id="202151" level="7">
+	<decoded_as>kernel</decoded_as>
+    <regex>Linux version\.*\(gcc version</regex>
+    <description>Mitre ATT&CK T1529, Impact, System Shutdown/Reboot</description>
+	<group>27001_A12.4.1,</group>
+	<!--
+	<mitre>
+     <id>T1529</id>
+    </mitre>
+	-->
+  </rule>
+  
+
+<!--
+Nov 26 15:27:19 centos-1 systemd: Stopped Authorization Manager.
+-->
+  <rule id="202152" level="7">
+    <if_sid>40700</if_sid>
+    <field name="event.action">Stopped</field>
+    <description>Mitre ATT&CK T1489, Impact, Service $(fields.service) Stopped</description>
+	<group>27001_A12.4.1, 27001_A13.1.2</group>
+	<!--
+	<mitre>
+     <id>T1489</id>
+    </mitre>
+	-->
+  </rule>
+  
+<!--
+Jan  6 00:00:21 tseenfoo kernel: [104970.689167] atl1c 0000:05:00.0: atl1c: eth0 NIC Link is Down
+-->
+
+  <rule id="202153" level="7">
+    <decoded_as>kernel</decoded_as>
+    <regex>NIC Link is Down</regex>
+    <description>Mitre ATT&CK T1499.001, Impact, Endpoint Denial of Service: OS Exhaustion Flood, NIC Link Down</description>
+	<group>27001_A12.4.1, 27001_A13.1.2, </group>
+	<!--
+	<mitre>
+     <id>T1499.001</id>
+    </mitre>
+	-->
+  </rule>
+ <!--
+Jan  6 00:00:21 tseenfoo kernel: [104970.689167] atl1c 0000:05:00.0: atl1c: eth0 NIC Link is Up
+ -->
+    <rule id="202154" level="3">
+    <decoded_as>kernel</decoded_as>
+    <regex>NIC Link is Up</regex>
+    <description>Mitre ATT&CK T1499.001, Impact, Endpoint Denial of Service: OS Exhaustion Flood, NIC Link Up</description>
+	<group>27001_A12.4.1, 27001_A13.1.2, </group>
+	<!--
+	<mitre>
+     <id>T1499.001</id>
+    </mitre>
+	-->
+  </rule>
+
+
+<!--
+Feb 16 17:02:43 IDSTest usermod[7556]: lock user 'testuser' password
+-->
+
+  <rule id="202155" level="7">
+    <decoded_as>usermod</decoded_as>
+	<field name="event.action">lock</field>
+	<description>Mitre ATT&CK T1531, Impact, Account Access Removal, Locked user $(user.name)</description>
+	<group>CIS_16.8,CIS_16.9,27001_A9.2.1,nist_800_53_AC-2.4 </group>
+	<!--
+	<mitre>
+     <id>T1531</id>
+    </mitre>
+	-->
+  </rule>
+<!--
+Feb 16 17:03:30 Test chage[7750]: changed password expiry for testuser2
+-->
+  <rule id="202156" level="7">
+    <decoded_as>chage</decoded_as>
+	<field name="event.action">changed</field>
+	<description>Mitre ATT&CK T1531, Impact, Account Access Removal, Expired password for user $(user.name)</description>
+	<group>CIS_16.8,CIS_16.9,27001_A9.2.1 </group>
+	<!--
+	<mitre>
+     <id>T1531</id>
+    </mitre>
+	-->
+  </rule>
+<!--
+Feb 16 17:04:40 IDSTest usermod[8078]: change user 'testuser3' shell from '/bin/bash' to '/sbin/nologin'
+-->
+  <rule id="202157" level="7">
+    <decoded_as>usermod</decoded_as>
+	<field name="event.action">change</field>
+	<description>Mitre ATT&CK T1531, Impact, Account Access Removal, change shell for user $(user.name)</description>
+	<group>CIS_16.8,CIS_16.9,27001_A9.2.1 </group>
+	<!--
+	<mitre>
+     <id>T1531</id>
+    </mitre>
+	-->
+  </rule>
+  
+<!--
+Feb 22 13:10:38 wazuh01 su[27595]: Successful su for root by root
+-->
+  <rule id="202158" level="10" timeframe="60" frequency="3">
+    <if_matched_sid>5302</if_matched_sid>
+	<same_field>user.name</same_field>
+    <description>T1548.003, Abuse Elevation Control Mechanism: Sudo and Sudo Caching, Privilege Escalation, Multiple su failures from $(user.name)</description>
+	<group>CIS_4.9, 27001_A.9.2.3, nist_800_53_AC-2.7</group>
+	<!--
+	 <mitre>
+       <id>T1548.003</id>
+     </mitre>
+	-->
+  </rule>
+
+<!--
+Feb 22 13:34:19 centos-1 sudo: pam_unix(sudo:auth): authentication failure; logname=enoc uid=1000 euid=0 tty=/dev/pts/1 ruser=enoc rhost=  user=enoc
+-->
+  <rule id="202159" level="10" timeframe="60" frequency="3">
+    <if_matched_sid>5503</if_matched_sid>
+	<same_field>srcuser</same_field>
+    <description>T1548.003, Abuse Elevation Control Mechanism: Sudo and Sudo Caching, Privilege Escalation, Multiple su failures from $(srcuser)</description>
+	<group>CIS_4.9, 27001_A.9.2.3, nist_800_53_AC-2.7</group>
+	<!--
+	 <mitre>
+       <id>T1548.003</id>
+     </mitre>
+	-->
+  </rule>
+
+<!-- Persistence -->
+<!--
+------------------------------------------------------------------------------
+Nov 26 16:49:54 centos-1 systemd: Started ClaraSSLService.
+-->
+  <rule id="202201" level="7">
+    <if_sid>40700</if_sid>
+    <field name="event.action">Started</field>
+    <description>Mitre ATT&CK T1543.002, Persistence, Create or Modify System Process: Systemd Service, service started</description>
+	<group>27001_A12.4.1, 27001_A13.1.2</group>
+	<!--
+	<mitre>
+     <id>T1543.002</id>
+    </mitre>
+	-->
+  </rule>
+  
+  <rule id="202202" level="3">
+    <decoded_as>usermod</decoded_as>
+	<field name="event.action">add</field>
+	<description>Mitre ATT&CK T1098, Account Manipulation , Persistence,  User $(user.name) was added to the group $(user.group)</description>
+	<group>CIS_4.8, 27001_A9.2.3, </group>
+	<!--
+	<mitre>
+     <id>T1098</id>
+    </mitre>
+	-->
+  </rule>
+  <!--
+2020-12-01 09:30:08 install prelude-utils:amd64 <ninguna> 4.1.0-4.2
+
+Nov 26 13:56:56 centos-1 yum[2549]: Installed: libicu-50.2-4.el7_7.x86_64
+
+**Phase 1: Completed pre-decoding.
+       full event: 'Nov 26 13:56:56 centos-1 yum[2549]: Installed: libicu-50.2-4.el7_7.x86_64'
+       timestamp: 'Nov 26 13:56:56'
+       hostname: 'centos-1'
+       program_name: 'yum'
+       log: 'Installed: libicu-50.2-4.el7_7.x86_64'
+
+**Phase 2: Completed decoding.
+       No decoder matched.
+
+**Phase 3: Completed filtering (rules).
+       Rule id: '2932'
+       Level: '7'
+       Description: 'New Yum package installed.'
+**Alert to be generated.
+-->
+  <rule id="202203" level="7">
+    <if_sid>2932</if_sid>
+    <regex>is marked executable. Please remove executable permission bits. Proceeding anyway.$</regex>
+    <description>Mitre ATT&CK T1554, Persistence, Compromise Client Software Binary, installed new packege in the sistem</description>
+	<group>27001_A12.4.1, </group>
+	<!--
+	<mitre>
+     <id>T1554</id>
+    </mitre>
+	-->
+  </rule>
+<!--Defense Evasion -->
+<!-- 
+---------------------------------------------------------------------------
+Nov 26 16:50:40 centos-1 systemd: Configuration file /etc/systemd/system/dotnet-clara-ssl-service.service is marked executable. Please remove executable permission bits. Proceeding anyway.
+-->
+  <rule id="202251" level="7">
+    <if_sid>40700</if_sid>
+    <regex>is marked executable. Please remove executable permission bits. Proceeding anyway.$</regex>
+    <description>Mitre ATT&CK T1222.002, Defense Evasion, File and Directory Permissions Modification: Linux and Mac File and Directory Permissions Modification, file marked as executable</description>
+	<group>27001_A12.4.1, </group>
+	<!--
+	<mitre>
+     <id>T1222.002</id>
+    </mitre>
+	-->
+  </rule>
+
+<!-- Collection -->
+<!--
+-----------------------------------------------------------------------------
+Feb 26 09:41:30 IDSTest systemd[1]: Reloaded NFS server and services.
+-->
+
+  <rule id="202301" level="5">
+    <decoded_as>systemd</decoded_as>
+    <field name="event.action">Reloaded</field>
+	<field name="fields.service">NFS</field>
+    <description>T1039, Collection, Data from Network Shared Drive, Reloaded NFS posible network share reconfiguration</description>
+	<group>27001_A12.4.1, 27001_A13.1.1, 27001_A13.1.2, nist_800_53_SC-4.18, </group>
+	<!--
+	<mitre>
+     <id>T1039</id>
+    </mitre>
+	-->
+  </rule>
+
+  <rule id="202302" level="5">
+    <decoded_as>systemd</decoded_as>
+    <regex>.mount: Succeeded.$</regex>
+    <description>T1039, Collection, Data from Network Shared Drive, Desmontado de path $(fields.mount) NFS filesystem</description>
+	<group>27001_A12.4.1, 27001_A13.1.1, 27001_A13.1.2, nist_800_53_SC-4.18, </group>
+	<!--
+	<mitre>
+     <id>T1039</id>
+    </mitre>
+	-->
+  </rule>
+
+</group>

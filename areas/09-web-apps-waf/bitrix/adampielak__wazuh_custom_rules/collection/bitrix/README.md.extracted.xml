@@ -1,0 +1,7 @@
+<!-- Blocos de configuração extraídos, sem alterações, de adampielak/wazuh_custom_rules:bitrix/README.md @ de502789e220 -->
+<agent_config>
+  <localfile>
+    <location>/var/log/nginx/bitrix_access.log</location> <!-- Substitute log file path to actual one --> 
+    <log_format>syslog</log_format>
+  </localfile>
+</agent_config>

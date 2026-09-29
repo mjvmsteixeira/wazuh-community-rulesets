@@ -1,0 +1,38 @@
+<!--
+  Custom decoders for NIST CSF rule pack.
+  These supplement or replace missing/incomplete standard Wazuh decoders.
+-->
+
+<!-- Sudo base decoder (so decoded_as matches 'sudo' instead of inheriting 'syslog') -->
+<decoder name="sudo">
+  <prematch>^\w+\s+\d+ \d+:\d+:\d+ \S+ sudo: </prematch>
+</decoder>
+
+<!-- Auditd base decoder (for audit log lines) -->
+<decoder name="auditd">
+  <prematch>^type=</prematch>
+</decoder>
+
+<!-- Custom iptables/netfilter decoder -->
+<!-- Parses Linux kernel iptables log messages and extracts network fields -->
+<decoder name="iptables">
+  <program_name>^kernel</program_name>
+  <prematch>IN=</prematch>
+</decoder>
+
+<decoder name="iptables-fields">
+  <parent>iptables</parent>
+  <regex>SRC=(\S+) DST=(\S+)</regex>
+  <order>srcip,dstip</order>
+</decoder>
+
+<decoder name="iptables-ports">
+  <parent>iptables</parent>
+  <regex>PROTO=(\S+) SPT=(\d+) DPT=(\d+)</regex>
+  <order>protocol,srcport,dstport</order>
+</decoder>
+
+<!-- Proxy base decoder for large file exfiltration -->
+<decoder name="proxy">
+  <program_name>^proxy</program_name>
+</decoder>

@@ -1,0 +1,41 @@
+<decoder name="TrendMicro_custom">
+<program_name type="osregex">\.+</program_name>
+<prematch>Trend Micro</prematch>
+</decoder>
+
+<decoder name="TrendMicro_child">
+  <parent>TrendMicro_custom</parent>
+  <regex>src=(\d+.\d+.\d+.\d+)</regex>
+  <order>Source_IP</order>
+</decoder>
+
+<decoder name="TrendMicro_child">
+  <parent>TrendMicro_custom</parent>
+  <regex>suser=(\S+)</regex>
+  <order>suser</order>
+</decoder>
+
+<decoder name="TrendMicro_child">
+  <parent>TrendMicro_custom</parent>
+  <regex>target=(\d+.\d+.\d+.\d+)</regex>
+  <order>targetIP</order>
+</decoder>
+
+<decoder name="TrendMicro_child">
+  <parent>TrendMicro_custom</parent>
+  <regex>msg=(\.+.)</regex>
+  <order>Message</order>
+</decoder>
+
+<decoder name="TrendMicro_child">
+  <parent>TrendMicro_custom</parent>
+  <regex>TrendMicroDsTenant=(\S+)</regex>
+  <order>TrendMicroDsTenant</order>
+</decoder>
+
+
+<decoder name="TrendMicro_child">
+  <parent>TrendMicro_custom</parent>
+  <regex>TrendMicroDsTenantId=(\d+)</regex>
+  <order>TrendMicroDsTenantId</order>
+</decoder>

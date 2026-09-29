@@ -1,0 +1,14 @@
+<!-- Blocos de configuração extraídos, sem alterações, de wazuh/integrations:integrations/abuseipdb/README.md @ 38efcaaa3272 -->
+<integration>
+  <name>custom-abuseipdb</name>
+  <api_key>YOUR_ABUSEIPDB_API_KEY</api_key>
+  <rule_id>100561</rule_id> <!-- adjust to your triggering rule(s) -->
+  <alert_format>json</alert_format>
+</integration>
+
+<integration>
+  <name>custom-abuseipdb</name>
+  <api_key>YOUR_ABUSEIPDB_API_KEY</api_key>
+  <group>sshd,authentication_failed</group>
+  <alert_format>json</alert_format>
+</integration>

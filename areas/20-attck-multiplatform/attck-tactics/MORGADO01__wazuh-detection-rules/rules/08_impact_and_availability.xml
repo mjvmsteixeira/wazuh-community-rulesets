@@ -1,0 +1,67 @@
+<!--
+  Categoria: Impact & Availability
+  Táticas MITRE ATT&CK cobertas: Service Stop / Failure (T1489), Endpoint DoS (T1499),
+  Disable/Modify Tools (T1562.001)
+-->
+<group name="local,impact_availability,">
+
+  <rule id="100601" level="12">
+    <decoded_as>systemd</decoded_as>
+    <match>failed</match>
+    <regex>Unit \S+ entered failed state|Main process exited, code=exited, status=[1-9]|status=FAILURE</regex>
+    <description>ALERTA: Systemd reportou falha crítica em um serviço</description>
+    <mitre>
+      <id>T1489</id>
+    </mitre>
+    <group>pci_dss_10.6.1,gdpr_IV_35.7.d,nist_800_53_SI.4,</group>
+  </rule>
+
+  <rule id="100602" level="14">
+    <if_sid>100601</if_sid>
+    <regex type="pcre2">(?i)(httpd|apache2|nginx|mysqld|mariadb|postgresql|mongod|docker)</regex>
+    <description>CRÍTICO: Serviço Web ou Banco de Dados (Linux) falhou ou encerrou com erro.</description>
+    <mitre>
+      <id>T1489</id>
+    </mitre>
+  </rule>
+
+  <!-- Regra auxiliar de agrupamento (nível 0, não gera alerta próprio) -->
+  <rule id="100699" level="0">
+    <if_sid>100601, 100602</if_sid>
+    <description>Agrupa falhas de Systemd</description>
+    <options>no_log</options>
+  </rule>
+
+  <rule id="100603" level="15" frequency="4" timeframe="120">
+    <if_matched_sid>100699</if_matched_sid>
+    <same_srcip />
+    <description>CRÍTICO: Serviço Crítico em estado de Flapping (Múltiplas falhas detectadas em curto período)</description>
+    <mitre>
+      <id>T1499</id>
+    </mitre>
+    <group>service_stability,pci_dss_10.6.1,</group>
+  </rule>
+
+  <rule id="100604" level="12">
+    <if_sid>60602</if_sid>
+    <field name="win.system.eventID">^7034$|^7031$</field>
+    <options>no_full_log</options>
+    <description>ALERTA: Serviço Crítico Windows encerrou inesperadamente (Crash)</description>
+    <mitre>
+      <id>T1489</id>
+      <id>T1562.001</id>
+    </mitre>
+    <group>pci_dss_10.6.1,gdpr_IV_35.7.d,nist_800_53_SI.4,gpg13_4.14,</group>
+  </rule>
+
+  <rule id="100605" level="14">
+    <if_sid>100604</if_sid>
+    <field name="win.system.message" type="pcre2">(?i)(W3SVC|IISAdmin|MSSQL|SQL Server|Apache|Tomcat|Oracle|PostgreSQL)</field>
+    <description>CRÍTICO: Serviço de Infraestrutura Web ou Banco de Dados (Windows) caiu inesperadamente.</description>
+    <mitre>
+      <id>T1489</id>
+    </mitre>
+    <info type="text">Verifique logs de aplicação imediatamente. Possível Indisponibilidade.</info>
+  </rule>
+
+</group>

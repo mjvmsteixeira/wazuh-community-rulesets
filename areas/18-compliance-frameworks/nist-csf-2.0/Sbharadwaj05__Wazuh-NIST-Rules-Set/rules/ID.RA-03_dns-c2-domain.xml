@@ -1,0 +1,42 @@
+<!--
+  Rule: DNS Query to Known C2 Domain
+  NIST CSF: ID.RA-03 (Threats, vulnerabilities, likelihoods, and impacts are understood)
+            DE.CM-01 (The network is monitored to detect potential cybersecurity events)
+  MITRE ATT&CK: T1071.004 - Application Layer Protocol: DNS
+  Severity: High
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-21
+
+  Description:
+    Detects DNS queries to domains listed in etc/lists/c2-domains.
+
+  False Positives:
+    - False positives in threat intel feeds
+
+  Tuning Guidance:
+    Use high-confidence feeds and keep the list updated.
+
+  Assumptions:
+    - Sysmon DNS query events (Event ID 22) are collected.
+
+  Limitations:
+    - Non-Windows DNS logs require a different decoder or field mapping.
+
+  Test: tests/sample-logs/id-ra-03/dns-c2-domain/
+-->
+
+<group name="nist_csf,id.ra-03,threat_intel,dns">
+
+  <rule id="100013" level="10">
+    <decoded_as>json</decoded_as>
+    <field name="win.system.providerName">Microsoft-Windows-Sysmon</field>
+    <field name="win.system.eventID">22</field>
+    <list field="win.eventdata.queryName" lookup="match_key">etc/lists/c2-domains</list>
+    <description>DNS query to known C2 domain</description>
+    <mitre>
+      <id>T1071.004</id>
+    </mitre>
+    <group>dns,threat_intel,nist_de.cm-01,nist_id.ra-03</group>
+  </rule>
+
+</group>

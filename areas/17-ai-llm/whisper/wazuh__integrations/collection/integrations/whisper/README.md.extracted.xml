@@ -1,0 +1,6 @@
+<!-- Blocos de configuração extraídos, sem alterações, de wazuh/integrations:integrations/whisper/README.md @ 38efcaaa3272 -->
+<integration>
+  <name>custom-whisper</name>
+  <group>sshd</group>          <!-- the rule groups whose alerts get enriched -->
+  <alert_format>json</alert_format>
+</integration>

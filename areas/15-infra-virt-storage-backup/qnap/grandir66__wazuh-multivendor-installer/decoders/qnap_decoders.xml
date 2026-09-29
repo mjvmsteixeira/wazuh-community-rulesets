@@ -1,0 +1,76 @@
+<!-- QNAP NAS Decoders for Wazuh -->
+<!-- https://github.com/grandir66/wazuh-multivendor-installer -->
+<!-- Rule IDs: 100300-100399 -->
+
+<decoder name="qnap-qulogd">
+  <program_name>^qulogd$</program_name>
+</decoder>
+
+<!-- Connection log with Domain\User format -->
+<decoder name="qnap-conn-domain">
+  <parent>qnap-qulogd</parent>
+  <prematch>conn log</prematch>
+  <regex>Users: (\w+)\\(\w+), Source IP: (\d+.\d+.\d+.\d+), Computer name: (\S+), Connection type: (\S+), Accessed resources: (\S+), Action: (\w+)</regex>
+  <order>domain, user, srcip, computer, protocol, resource, action</order>
+</decoder>
+
+<!-- Connection log without domain -->
+<decoder name="qnap-conn-nodom">
+  <parent>qnap-qulogd</parent>
+  <prematch>conn log</prematch>
+  <regex>Users: (\S+), Source IP: (\d+.\d+.\d+.\d+), Computer name: (\S+), Connection type: (\S+), Accessed resources: (\S+), Action: (\w+)</regex>
+  <order>user, srcip, computer, protocol, resource, action</order>
+</decoder>
+
+<!-- Samba specific -->
+<decoder name="qnap-samba">
+  <parent>qnap-qulogd</parent>
+  <prematch>Samba</prematch>
+</decoder>
+
+<!-- HTTP/HTTPS -->
+<decoder name="qnap-http">
+  <parent>qnap-qulogd</parent>
+  <prematch>HTTP</prematch>
+</decoder>
+
+<!-- SSH -->
+<decoder name="qnap-ssh">
+  <parent>qnap-qulogd</parent>
+  <prematch>SSH</prematch>
+</decoder>
+
+<!-- System events -->
+<decoder name="qnap-system">
+  <parent>qnap-qulogd</parent>
+  <prematch>System</prematch>
+</decoder>
+
+<!-- Login OK events -->
+<decoder name="qnap-login-ok">
+  <parent>qnap-qulogd</parent>
+  <prematch>Login OK</prematch>
+  <regex offset="after_prematch"> from (\S+)</regex>
+  <order>srcip</order>
+</decoder>
+
+<!-- Login Fail events -->
+<decoder name="qnap-login-fail">
+  <parent>qnap-qulogd</parent>
+  <prematch>Login Fail</prematch>
+  <regex offset="after_prematch"> from (\S+)</regex>
+  <order>srcip</order>
+</decoder>
+
+<!-- Logout events -->
+<decoder name="qnap-logout">
+  <parent>qnap-qulogd</parent>
+  <prematch>Logout</prematch>
+  <regex offset="after_prematch"> from (\S+)</regex>
+  <order>srcip</order>
+</decoder>
+
+<!-- Legacy qlogd -->
+<decoder name="qnap-qlogd-old">
+  <program_name>^qlogd$</program_name>
+</decoder>

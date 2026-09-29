@@ -1,0 +1,127 @@
+<!--
+Oct 27 15:05:11 DSXXXX WinFileService Event: read, Path: /path/to/anything, File/Folder: File, Size: 1.00 KB, User: UserName, IP: XXX.XXX.XXX.XXX
+-->
+
+<decoder name="synology-winfileservice">
+  <prematch>WinFileService Event:</prematch>
+</decoder>
+
+<decoder name="synology-winfileservice">
+  <parent>synology-winfileservice</parent>
+  <regex type="pcre2">WinFileService Event: ([^,]+), Path: (.+), File\/Folder: (\w+), Size: (\S+) (\w+), User: ([^,]+), IP: (\d+\.\d+\.\d+\.\d+)</regex>
+  <order>action, data, type, size_num, size_unit, srcuser, srcip</order>
+</decoder>
+
+<!--
+Connection Example:
+Jan 2 15:04:05 DSXXXX Connection: User [admin] from [HostName(XXX.XXX.XXX.XXX)] via [CIFS(SMB3)] accessed shared folder [FolderName].
+Jan 2 15:04:05 DSXXXX Connection: User [admin] from [XXX.XXX.XXX.XXX] signed in to [DSM] successfully via [password].
+Jan 2 15:04:05 DSXXXX Connection: User [admin] from [XXX.XXX.XXX.XXX] logged in successfully via [SSH].
+Jan 2 15:04:05 DSXXXX Connection: User [admin] from [XXX.XXX.XXX.XXX] failed to sign in to [DSM] via [password] due to authorization failure.
+-->
+
+<decoder name="synology-connection">
+  <program_name>Connection</program_name>
+</decoder>
+
+<decoder name="synology-connection">
+  <parent>synology-connection</parent>
+  <regex type="pcre2">User \[([^\]]+)\] from \[[^\(]*?\(?(\d+\.\d+\.\d+\.\d+)\)?\]</regex>
+  <order>srcuser, srcip</order>
+</decoder>
+
+<decoder name="synology-connection">
+  <parent>synology-connection</parent>
+  <regex type="pcre2">via \[([^\]]+)\]</regex>
+  <order>protocol</order>
+</decoder>
+
+<decoder name="synology-connection">
+  <parent>synology-connection</parent>
+  <regex type="pcre2">to \[([^\]]+)\]</regex>
+  <order>system_name</order>
+</decoder>
+
+<decoder name="synology-connection">
+  <parent>synology-connection</parent>
+  <regex type="pcre2">(success)</regex>
+  <order>status</order>
+</decoder>
+
+<decoder name="synology-connection">
+  <parent>synology-connection</parent>
+  <regex type="pcre2">(failed)</regex>
+  <order>status</order>
+</decoder>
+
+<decoder name="synology-connection">
+  <parent>synology-connection</parent>
+  <regex type="pcre2">(access)</regex>
+  <order>status</order>
+</decoder>
+
+<!--
+Backup Example:
+Oct 20 19:51:11 DSXXXX Hyper_Backup: UserName:      [Network][TaskName] Backup task started.
+Oct 20 20:02:39 DSXXXX Hyper_Backup: UserName:      [Network][TaskName] Backup task finished successfully. [812355 files scanned] [812355 files unchanged]
+Oct 27 15:12:39 DSXXXX Hyper_Backup: UserName:     Backup task [TaskName] was removed.
+-->
+
+<decoder name="synology-backup">
+  <program_name>Hyper_Backup</program_name>
+</decoder>
+
+<decoder name="synology-backup">
+  <parent>synology-backup</parent>
+  <regex type="pcre2">Hyper_backup: ([^:]+): </regex>
+  <order>user</order>
+</decoder>
+
+<decoder name="synology-backup">
+  <parent>synology-backup</parent>
+  <regex type="pcre2">\[([^\]]*)\]\[([^\]]*)\] Backup</regex>
+  <order>backup_location, backup_task</order>
+</decoder>
+
+<decoder name="synology-backup">
+  <parent>synology-backup</parent>
+  <regex type="pcre2">task \[([^\]]*)\] was ([^\. \[\]]+)\.</regex>
+  <order>backup_task, action</order>
+</decoder>
+
+<decoder name="synology-backup">
+  <parent>synology-backup</parent>
+  <regex type="pcre2">task ([^\. \[\]]+)\.</regex>
+  <order>action</order>
+</decoder>
+
+<decoder name="synology-backup">
+  <parent>synology-backup</parent>
+  <regex type="pcre2">(fail)</regex>
+  <order>status</order>
+</decoder>
+
+<decoder name="synology-backup">
+  <parent>synology-backup</parent>
+  <regex type="pcre2">(success)</regex>
+  <order>status</order>
+</decoder>
+
+<decoder name="synology-backup">
+  <parent>synology-backup</parent>
+  <regex type="pcre2">(cancel)</regex>
+  <order>status</order>
+</decoder>
+
+<decoder name="synology-backup">
+  <parent>synology-backup</parent>
+  <regex type="pcre2">(partial)</regex>
+  <order>status</order>
+</decoder>
+
+<decoder name="synology-backup">
+  <parent>synology-backup</parent>
+  <regex type="pcre2">(skip)</regex>
+  <order>status</order>
+</decoder>
+

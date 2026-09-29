@@ -1,0 +1,5 @@
+<!-- Blocos de configuração extraídos, sem alterações, de sametsazak/sysmon:README.md @ 3bb5beeb49cd -->
+<localfile>
+<location>Microsoft-Windows-Sysmon/Operational</location>
+<log_format>eventchannel</log_format>
+</localfile>

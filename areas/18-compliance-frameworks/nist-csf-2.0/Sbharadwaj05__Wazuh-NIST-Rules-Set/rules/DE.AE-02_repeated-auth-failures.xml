@@ -1,0 +1,49 @@
+<!--
+  Rule: Repeated Authentication Failures (Multiple Accounts)
+  NIST CSF: DE.AE-02 (Detected events are analyzed to understand attack targets and methods)
+            DE.CM-03 (Personnel activity is monitored to detect potential events)
+  MITRE ATT&CK: T1110.003 - Brute Force: Password Spraying
+  Severity: Medium
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-22
+
+  Description:
+    Detects repeated Windows logon failures from the same source IP.
+
+  False Positives:
+    - Misconfigured services retrying with stale credentials
+
+  Tuning Guidance:
+    Adjust frequency/timeframe to match your environment.
+
+  Assumptions:
+    - Event ID 4625 is collected with source IP.
+
+  Limitations:
+    - Correlation rule depends on base rule 100016 being loaded.
+    - Does not enforce distinct usernames; add different_user if supported.
+
+  Test: tests/sample-logs/de-ae-02/repeated-auth-failures/
+-->
+
+<group name="nist_csf,de.ae-02,authentication,windows">
+
+  <rule id="100016" level="1">
+    <decoded_as>json</decoded_as>
+    <field name="win.system.eventID">4625</field>
+    <field name="win.eventdata.logonType">3</field>
+    <options>no_log</options>
+    <description>Windows logon failure (network)</description>
+  </rule>
+
+  <rule id="100011" level="7" frequency="5" timeframe="300">
+    <if_matched_sid>100016</if_matched_sid>
+    <same_field>win.eventdata.ipAddress</same_field>
+    <description>Repeated authentication failures from a single source IP</description>
+    <mitre>
+      <id>T1110.003</id>
+    </mitre>
+    <group>authentication_failures,brute_force,nist_de.ae-02,nist_de.cm-03</group>
+  </rule>
+
+</group>

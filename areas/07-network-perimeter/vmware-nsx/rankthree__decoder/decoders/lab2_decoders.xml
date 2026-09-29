@@ -1,0 +1,233 @@
+
+<decoder name="vcenter-crond">
+  <program_name>CROND</program_name>
+  <regex type="pcre2">^\(([^)]+)\)\s+CMD\s+\((.*)\)</regex>
+  <order>srcuser, command</order>
+</decoder>
+
+<decoder name="vcenter-anacron">
+  <program_name>^anacron</program_name>
+  <regex type="pcre2">^(Anacron\s+.*)</regex>
+  <order>anacron.message</order>
+</decoder>
+
+<decoder name="vcenter-vmcad">
+  <prematch type="pcre2">vmcad\s+t@\d+:</prematch>
+  <regex type="pcre2">vmcad\s+t@(\d+):\s+(.*?):\s+Authenticated user\s+(\S+)</regex>
+  <order>vmcad.thread, action, srcuser</order>
+</decoder>
+
+<decoder name="vcenter-logrotate">
+  <prematch>logrotate </prematch>
+  <regex type="pcre2">^logrotate\s+(error:\s+.*|.*)</regex>
+  <order>logrotate.message</order>
+</decoder>
+
+<decoder name="vcenter-run-parts">
+  <program_name>run-parts</program_name>
+  <regex type="pcre2">^\(([^)]+)\)\s+(.*)</regex>
+  <order>run_parts.directory, run_parts.action</order>
+</decoder>
+
+<decoder name="vcenter-applmgmt-audit">
+  <prematch>applmgmt-audit </prematch>
+  <regex type="pcre2">^applmgmt-audit\s+\S+:\s+([A-Z]+)\s+(.*)</regex>
+  <order>log_level, applmgmt.message</order>
+</decoder>
+
+<decoder name="vcenter-cli-api">
+  <program_name>^cli</program_name>
+  <prematch>^twisted</prematch>
+  <regex type="pcre2">^twisted\s+"([^"]+)"\s+-\s+-\s+\[([^\]]+)\]\s+"([^"]+)"\s+(\d+)\s+(\S+)\s+"([^"]*)"\s+"([^"]*)"</regex>
+  <order>srcip, http.date, http.request, http.status, http.size, http.referer, http.user_agent</order>
+</decoder>
+
+<decoder name="vcenter-vmon">
+  <program_name>vmon</program_name>
+</decoder>
+
+<decoder name="vcenter-vmon-cmd">
+  <parent>vcenter-vmon</parent>
+  <prematch>^Constructed command:</prematch>
+  <regex type="pcre2">^Constructed command:\s+(.*)</regex>
+  <order>command</order>
+</decoder>
+
+<decoder name="vcenter-vmon-exec-service">
+  <parent>vcenter-vmon</parent>
+  <prematch>^Executing op </prematch>
+  <regex type="pcre2">^Executing op\s+(\S+)\s+on service\s+([^.]+)</regex>
+  <order>vmon.operation, vmon.service</order>
+</decoder>
+
+<decoder name="vcenter-vmon-exec-batch">
+  <parent>vcenter-vmon</parent>
+  <prematch>^Executing service batch op </prematch>
+  <regex type="pcre2">^Executing service batch op\s+([^.\s]+)</regex>
+  <order>vmon.operation</order>
+</decoder>
+
+<decoder name="vcenter-vmon-skip-service">
+  <parent>vcenter-vmon</parent>
+  <prematch>^Skip service </prematch>
+  <regex type="pcre2">^Skip service\s+([^ ]+)\s+(.*)</regex>
+  <order>vmon.service, vmon.message</order>
+</decoder>
+
+<decoder name="vcenter-vpxd">
+  <program_name>^vpxd</program_name>
+  <prematch type="pcre2">^Event\s+\[\d+\]\s+\[[\d-]+\]\s+\[</prematch>
+</decoder>
+
+<decoder name="vcenter-vpxd-user-action">
+  <parent>vcenter-vpxd</parent>
+  <prematch type="pcre2">\]\s+\[User\s+[^\s]+@[0-9a-zA-Z\.\-]+\s+logged\s+(?:in|out)</prematch>
+  <regex type="pcre2">^Event\s+\[(\d+)\]\s+\[[^\]]*\]\s+\[[^\]]*\]\s+\[([^\]]*)\]\s+\[([^\]]*)\]\s+\[([^\]]*)\].*?\[User\s+([^\s]+)@([0-9a-zA-Z\.\-]+)\s+logged\s+(in|out)</regex>
+  <order>event_id, vpxd.event_type, log_level, vpxd.module, srcuser, srcip, action</order>
+</decoder>
+
+<decoder name="vcenter-vpxd-system-logout">
+  <parent>vcenter-vpxd</parent>
+  <prematch type="pcre2">\]\s+\[User\s+\S+\s+logged out of</prematch>
+  <regex type="pcre2">^Event\s+\[(\d+)\]\s+\[[^\]]*\]\s+\[[^\]]*\]\s+\[([^\]]*)\]\s+\[([^\]]*)\]\s+\[([^\]]*)\].*?\[User\s+(\S+)\s+logged out of\s+([^\]]+)\]</regex>
+  <order>event_id, vpxd.event_type, log_level, vpxd.module, srcuser, vpxd.logout_target</order>
+</decoder>
+
+<decoder name="vcenter-vpxd-success-login">
+  <parent>vcenter-vpxd</parent>
+  <prematch type="pcre2">\]\s+\[Successful login by\s+</prematch>
+  <regex type="pcre2">^Event\s+\[(\d+)\]\s+\[[^\]]*\]\s+\[[^\]]*\]\s+\[([^\]]*)\]\s+\[([^\]]*)\]\s+\[([^\]]*)\].*?\[Successful login by\s+(\S+)\s+into</regex>
+  <order>event_id, vpxd.event_type, log_level, vpxd.module, srcuser</order>
+</decoder>
+
+<decoder name="vcenter-vpxd-base">
+  <parent>vcenter-vpxd</parent>
+  <regex type="pcre2">^Event\s+\[(\d+)\]\s+\[[^\]]*\]\s+\[[^\]]*\]\s+\[([^\]]*)\]\s+\[([^\]]*)\]\s+\[([^\]]*)\]</regex>
+  <order>event_id, vpxd.event_type, log_level, vpxd.module</order>
+</decoder>
+
+<decoder name="vcenter-vpxd-multiline">
+  <program_name>^vpxd</program_name>
+  <prematch type="pcre2">^Event\s+\[\d+\]\s+\[[\d-]+\]\s+[^\[]</prematch>
+  <regex type="pcre2">^Event\s+\[(\d+)\]\s+\[([^\]]+)\]\s+(.*)</regex>
+  <order>event_id, vpxd.event_part, vpxd.message</order>
+</decoder>
+
+<decoder name="vcenter-config-general">
+  <program_name type="pcre2">^config\.</program_name>
+</decoder>
+
+<decoder name="vcenter-config-change">
+  <parent>vcenter-config-general</parent>
+  <prematch>-&gt;</prematch>
+  <regex type="pcre2">^:?\s*(.*)\s*->\s*(.*);</regex>
+  <order>hw.old_state, hw.new_state</order>
+</decoder>
+
+<decoder name="vcenter-config-details">
+  <parent>vcenter-config-general</parent>
+  <prematch type="pcre2">^\s*\(key\s*=</prematch>
+  <regex type="pcre2">^\s*(.*)</regex>
+  <order>hw.details</order>
+</decoder>
+
+<decoder name="vcenter-config-extraconfig">
+  <prematch type="pcre2">^config\.extraConfig</prematch>
+  <regex type="pcre2">^config\.extraConfig\("([^"]+)"\):\s+\(key\s*=\s*"([^"]+)",\s*value\s*=\s*"([^"]+)"\);</regex>
+  <order>config.name, config.key, config.value</order>
+</decoder>
+
+<decoder name="vcenter-job-status">
+  <program_name>^Action|^Operation|^Status|^ID|^Description|^Added|^Deleted|^Modified|^\]</program_name>
+</decoder>
+
+<decoder name="vcenter-job-status-config">
+  <parent>vcenter-job-status</parent>
+  <prematch type="pcre2">\bconfig\.</prematch>
+  <regex type="pcre2">config\.([^\:]+):\s+(.*)</regex>
+  <order>config.key, hw.details</order>
+</decoder>
+
+<decoder name="vcenter-job-status-general">
+  <parent>vcenter-job-status</parent>
+  <regex type="pcre2">^\s*(.*)</regex>
+  <order>job.info</order>
+</decoder>
+
+<decoder name="vcenter-job-status-raw">
+  <program_name type="pcre2">^[0-9]{4}-[0-9]{2}-[0-9]{2}T</program_name>
+  <regex type="pcre2">([0-9\.]+)\s+(?:Action|Operation|Status|ID|Description|Added|Deleted|Modified):\s*(.*)</regex>
+  <order>srcip, job.info</order>
+</decoder>
+
+<decoder name="vcenter-vmdird">
+  <prematch type="pcre2">^vmdird\s+t@\d+:\s+</prematch>
+</decoder>
+
+<decoder name="vcenter-vmdird-action">
+  <parent>vcenter-vmdird</parent>
+  <regex type="pcre2">^vmdird\s+t@(\d+):\s+([^:]+):\s+(.*)</regex>
+  <order>vmdird.thread, action, vmdird.details</order>
+</decoder>
+
+<decoder name="vcenter-vmdird-modify">
+  <parent>vcenter-vmdird</parent>
+  <prematch type="pcre2">\s+\(from\s+</prematch>
+  <regex type="pcre2">^vmdird\s+t@(\d+):\s+(.*?)\s*\(from\s+([^\)]+)\)\(by\s+([^\)]+)\)</regex>
+  <order>vmdird.thread, action, srcip, srcuser</order>
+</decoder>
+
+<decoder name="vcenter-vmafdd">
+  <prematch type="pcre2">^vmafdd\s+t@\d+:\s+</prematch>
+</decoder>
+
+<decoder name="vcenter-vmafdd-error">
+  <parent>vcenter-vmafdd</parent>
+  <prematch type="pcre2">\[Error</prematch>
+  <regex type="pcre2">\[Error\s+-\s+(\d+),\s+([^\]]+)\]</regex>
+  <order>vmafdd.error_code, vmafdd.error_file</order>
+</decoder>
+
+<decoder name="vcenter-vmafdd-action">
+  <parent>vcenter-vmafdd</parent>
+  <regex type="pcre2">^vmafdd\s+t@(\d+):\s+([^:]+):\s+(.*)</regex>
+  <order>vmafdd.thread, action, vmafdd.details</order>
+</decoder>
+
+
+<decoder name="panos-custom-system">
+  <prematch type="pcre2">1,\d{4}/\d{2}/\d{2}\s\d{2}:\d{2}:\d{2},\d+,SYSTEM,</prematch>
+  <regex type="pcre2">1,\d{4}/\d{2}/\d{2}\s\d{2}:\d{2}:\d{2},([^,]+),SYSTEM,([^,]*),[^,]*,[^,]*,([^,]*),([^,]*),([^,]*),[^,]*,[^,]*,([^,]*),([^,]*),"?([^"]*)"?</regex>
+  <order>pan.serial, pan.subtype, pan.vsys, pan.event_id, pan.object, pan.module, pan.severity, pan.description</order>
+</decoder>
+
+<decoder name="panos-system-override">
+  <prematch type="pcre2">\d+,SYSTEM,[^,]+,\d+,\d{4}/\d{2}/\d{2}\s\d{2}:\d{2}:\d{2},</prematch>
+  <regex type="pcre2">SYSTEM,([^,]*),[^,]*,[^,]*,([^,]*),([^,]*),([^,]*),[^,]*,[^,]*,([^,]*),([^,]*),(?|"([^"]*)"|([^,]*))</regex>
+  <order>pan.subtype, pan.vsys, pan.event_id, pan.object, pan.module, pan.severity, pan.description</order>
+</decoder>
+
+
+<decoder name="nsx-edge-main">
+  <prematch type="pcre2">\[[a-f0-9\-]{36}\]:\s+[A-Z]+\s+::\s+</prematch>
+  <regex type="pcre2">\[([a-f0-9\-]{36})\]:\s+([A-Z]+)\s+::\s+(.*?)\s+::\s+(.*)</regex>
+  <order>nsx.trace_id, log_level, nsx.module, nsx.message</order>
+</decoder>
+
+<decoder name="nsx-edge-charon">
+  <program_name>^charon</program_name>
+  <regex type="pcre2">^(\d+)\[([A-Z]+)\]\s+(?:&lt;([^&gt;]+)&gt;\s+)?(.*)</regex>
+  <order>charon.thread, charon.component, charon.connection, charon.message</order>
+</decoder>
+
+<decoder name="nsx-edge-charon-ips">
+  <parent>nsx-edge-charon</parent>
+  <regex type="pcre2">&lt;([0-9\.]+)_.*?-([0-9\.]+)_</regex>
+  <order>srcip, dstip</order>
+</decoder>
+
+<decoder name="nsx-edge-firewall">
+  <program_name>^firewall</program_name>
+  <regex type="pcre2">([A-Z]+)\s+(\S+)\s+(IN|OUT)\s+\d+\s+([A-Z]+)\s+([0-9\.]+)/(\d+)->([0-9\.]+)/(\d+)</regex>
+  <order>action, firewall.rule, firewall.direction, protocol, srcip, srcport, dstip, dstport</order>
+</decoder>

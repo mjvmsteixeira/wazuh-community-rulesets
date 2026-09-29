@@ -1,0 +1,5 @@
+# Domains associated with C2 activity. One domain per line.
+# Replace with your threat intel feed.
+example-c2.bad:
+control.bad:
+update-check.bad:

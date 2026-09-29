@@ -1,0 +1,5 @@
+<!-- Blocos de configuração extraídos, sem alterações, de NucleiAv/caddy-detection-rules:wazuh v4.14.6/README.md @ d2afb3a56211 -->
+<localfile>
+    <log_format>json</log_format>
+    <location>/var/log/caddy/access.log</location>
+</localfile>

@@ -1,0 +1,11 @@
+<!-- Blocos de configuração extraídos, sem alterações, de wazuh/integrations:integrations/Technitium_DNS/README.md @ 38efcaaa3272 -->
+<localfile>` block in the agent’s `/var/ossec/etc/ossec.conf` file:
+
+```xml
+<localfile>
+    <log_format>json</log_format>
+    <only-future-events>no</only-future-events>
+    <location>/var/log/dns/dns_logs.json</location>
+    <out_format>{"dns": $(log) }</out_format> <!-- Wrapping the original log with a "dns" field so that the flattened log becomes `data.dns.fieldName`. -->
+    <label key="type">dns</label> <!-- This is just to ensure we are collecting the correct logs. -->
+</localfile>

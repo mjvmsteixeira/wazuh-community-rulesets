@@ -1,0 +1,234 @@
+<!--
+    ____________________________________________________________________________________________________________
+    
+    Zyxel switch rules - Tested on Zyxel XS3800
+    
+    Related decoders: 0600-zyxel-switch_decoders.xml
+    
+    Rule ID range: 100300 - 100399
+    
+    ____________________________________________________________________________________________________________
+    
+    Made by:
+        dominiktr
+-->
+<group name="zyxel,">
+
+  <!-- AUTH - detailed -->
+  <rule id="100300" level="3">
+    <decoded_as>zyxel-auth</decoded_as>
+    <field name="zyxel_action">^login$</field>
+    <description>Zyxel [$(zyxel_hostname)]: $(dstuser) logged in via $(protocol) from $(srcip)</description>
+    <group>authentication_success,zyxel,zyxel_auth,pci_dss_10.2.5,gpg13_7.1,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.8,tsc_CC7.2</group>
+  </rule>
+
+  <rule id="100301" level="3">
+    <decoded_as>zyxel-auth</decoded_as>
+    <field name="zyxel_action">^logout$</field>
+    <description>Zyxel [$(zyxel_hostname)]: $(dstuser) logged out via $(protocol) from $(srcip)</description>
+    <group>authentication_success,zyxel,zyxel_auth,pci_dss_10.2.5,gdpr_IV_32.2</group>
+  </rule>
+
+  <rule id="100302" level="3">
+    <decoded_as>zyxel-auth</decoded_as>
+    <field name="zyxel_action">^connected$</field>
+    <description>Zyxel [$(zyxel_hostname)]: $(dstuser) connected via $(protocol) from $(srcip)</description>
+    <group>authentication_success,zyxel,zyxel_auth,pci_dss_10.2.5,gdpr_IV_32.2</group>
+  </rule>
+
+  <rule id="100310" level="5">
+    <if_sid>2501</if_sid>
+    <decoded_as>zyxel-auth</decoded_as>
+    <description>Zyxel [$(zyxel_hostname)]: $(protocol) authentication failure for user $(dstuser) from $(srcip)</description>
+    <group>authentication_failed,zyxel,zyxel_auth,pci_dss_10.2.4,pci_dss_10.2.5,gpg13_7.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3</group>
+  </rule>
+
+  <rule id="100311" level="10" frequency="5" timeframe="120">
+    <if_matched_sid>100310</if_matched_sid>
+    <same_field>srcip</same_field>
+    <description>Zyxel [$(zyxel_hostname)]: Brute force attack - multiple authentication failures from $(srcip)</description>
+    <group>authentication_failures,zyxel,zyxel_auth,pci_dss_10.2.4,pci_dss_10.2.5,pci_dss_11.4,gpg13_7.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SI.2,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3</group>
+  </rule>
+
+  <rule id="100312" level="11" frequency="10" timeframe="120">
+    <if_matched_sid>100310</if_matched_sid>
+    <description>Zyxel [$(zyxel_hostname)]: Brute force attack - multiple authentication failures across multiple users/protocols</description>
+    <group>authentication_failures,zyxel,zyxel_auth,pci_dss_10.2.4,pci_dss_10.2.5,pci_dss_11.4,gdpr_IV_35.7.d,nist_800_53_SI.2,tsc_CC6.1,tsc_CC6.8</group>
+  </rule>
+
+  <!-- SYSTEM - detailed -->
+  <rule id="100320" level="3">
+    <decoded_as>zyxel-system</decoded_as>
+    <match>time server successfully</match>
+    <description>Zyxel [$(zyxel_hostname)]: NTP time synchronization successful</description>
+    <group>zyxel,zyxel_system,zyxel_ntp</group>
+  </rule>
+
+  <rule id="100321" level="4">
+    <decoded_as>zyxel-system</decoded_as>
+    <match>time server failed</match>
+    <description>Zyxel [$(zyxel_hostname)]: NTP time synchronization failed</description>
+    <group>zyxel,zyxel_system,zyxel_ntp</group>
+  </rule>
+
+  <rule id="100322" level="5">
+    <decoded_as>zyxel-system</decoded_as>
+    <field name="zyxel_psu">\S+</field>
+    <description>Zyxel [$(zyxel_hostname)]: Power supply $(zyxel_psu) changed state from '$(zyxel_psu_state_from)' to '$(zyxel_psu_state_to)'</description>
+    <group>zyxel,zyxel_system,zyxel_psu</group>
+  </rule>
+
+  <rule id="100323" level="12">
+    <if_sid>100322</if_sid>
+    <field name="zyxel_psu_state_to" type="pcre2">^(N/A|Failure|fail)$</field>
+    <description>Zyxel [$(zyxel_hostname)]: Power supply $(zyxel_psu) entered degraded state '$(zyxel_psu_state_to)'</description>
+    <group>zyxel,zyxel_system,zyxel_psu</group>
+  </rule>
+
+  <rule id="100330" level="5">
+    <decoded_as>zyxel-system</decoded_as>
+    <match>System cold start</match>
+    <description>Zyxel [$(zyxel_hostname)]: System cold start</description>
+    <group>zyxel,zyxel_system,zyxel_reboot,pci_dss_10.6.1</group>
+  </rule>
+
+  <rule id="100331" level="5">
+    <decoded_as>zyxel-system</decoded_as>
+    <match>System warm start</match>
+    <description>Zyxel [$(zyxel_hostname)]: System warm start</description>
+    <group>zyxel,zyxel_system,zyxel_reboot,pci_dss_10.6.1</group>
+  </rule>
+
+  <rule id="100332" level="5">
+    <decoded_as>zyxel-system</decoded_as>
+    <match>System reboot</match>
+    <description>Zyxel [$(zyxel_hostname)]: System reboot</description>
+    <group>zyxel,zyxel_system,zyxel_reboot,pci_dss_10.6.1</group>
+  </rule>
+
+  <rule id="100333" level="12">
+    <decoded_as>zyxel-system</decoded_as>
+    <match>reset without management command</match>
+    <description>Zyxel [$(zyxel_hostname)]: System reset without management command - unexpected restart</description>
+    <group>zyxel,zyxel_system,zyxel_reboot,pci_dss_10.6.1,nist_800_53_SI.2</group>
+  </rule>
+
+  <rule id="100334" level="3">
+    <decoded_as>zyxel-system</decoded_as>
+    <match>reset due to a management command</match>
+    <description>Zyxel [$(zyxel_hostname)]: System reset due to management command</description>
+    <group>zyxel,zyxel_system,zyxel_reboot,pci_dss_10.6.1</group>
+  </rule>
+
+  <rule id="100335" level="3">
+    <decoded_as>zyxel-system</decoded_as>
+    <field name="zyxel_fw_version">\S+</field>
+    <description>Zyxel [$(zyxel_hostname)]: Booted image $(zyxel_image_id) with firmware $(zyxel_fw_version) dated $(zyxel_fw_date)</description>
+    <group>zyxel,zyxel_system,zyxel_firmware</group>
+  </rule>
+
+  <rule id="100336" level="8">
+    <decoded_as>zyxel-system</decoded_as>
+    <match>Save system configuration</match>
+    <description>Zyxel [$(zyxel_hostname)]: System configuration saved</description>
+    <group>zyxel,zyxel_system,zyxel_config,pci_dss_10.2.5,gdpr_IV_32.2</group>
+  </rule>
+
+  <!-- INTERFACE - detailed -->
+  <rule id="100340" level="3">
+    <decoded_as>zyxel-interface</decoded_as>
+    <field name="zyxel_link_speed">\S+</field>
+    <description>Zyxel [$(zyxel_hostname)]: Port $(zyxel_port) link up at $(zyxel_link_speed)</description>
+    <group>zyxel,zyxel_interface,zyxel_link</group>
+  </rule>
+
+  <rule id="100341" level="5">
+    <decoded_as>zyxel-interface</decoded_as>
+    <match>link down</match>
+    <description>Zyxel [$(zyxel_hostname)]: Port $(zyxel_port) link down</description>
+    <group>zyxel,zyxel_interface,zyxel_link</group>
+  </rule>
+
+  <rule id="100342" level="7" frequency="5" timeframe="60">
+    <if_matched_sid>100341</if_matched_sid>
+    <same_field>zyxel_port</same_field>
+    <description>Zyxel [$(zyxel_hostname)]: Port $(zyxel_port) flapping - multiple link down events</description>
+    <group>zyxel,zyxel_interface,zyxel_link</group>
+  </rule>
+
+  <rule id="100343" level="6">
+    <decoded_as>zyxel-interface</decoded_as>
+    <match>autonegotiation has failed</match>
+    <description>Zyxel [$(zyxel_hostname)]: Port $(zyxel_port) autonegotiation failed</description>
+    <group>zyxel,zyxel_interface,zyxel_autoneg</group>
+  </rule>
+
+  <rule id="100344" level="3">
+    <decoded_as>zyxel-interface</decoded_as>
+    <match>autonegotiation has recovered</match>
+    <description>Zyxel [$(zyxel_hostname)]: Port $(zyxel_port) autonegotiation recovered to normal state</description>
+    <group>zyxel,zyxel_interface,zyxel_autoneg</group>
+  </rule>
+
+  <!-- DDMI - detailed -->
+  <rule id="100350" level="3">
+    <decoded_as>zyxel-ddmi</decoded_as>
+    <match>has been cleared</match>
+    <description>Zyxel [$(zyxel_hostname)]: DDMI abnormal $(zyxel_ddmi_type) state at port $(zyxel_port) has been cleared</description>
+    <group>zyxel,zyxel_ddmi</group>
+  </rule>
+
+  <rule id="100351" level="7">
+    <decoded_as>zyxel-ddmi</decoded_as>
+    <field name="zyxel_ddmi_alarm">\S+</field>
+    <description>Zyxel [$(zyxel_hostname)]: DDMI warning on port $(zyxel_port) - $(zyxel_ddmi_type) $(zyxel_ddmi_alarm) threshold $(zyxel_ddmi_threshold), current value: $(zyxel_ddmi_current)</description>
+    <group>zyxel,zyxel_ddmi</group>
+  </rule>
+
+  <rule id="100352" level="12">
+    <if_sid>100351</if_sid>
+    <field name="zyxel_ddmi_alarm" type="pcre2">(?i)alarm</field>
+    <description>Zyxel [$(zyxel_hostname)]: DDMI critical alarm on port $(zyxel_port) - $(zyxel_ddmi_type) exceeded alarm threshold $(zyxel_ddmi_threshold), current value: $(zyxel_ddmi_current)</description>
+    <group>zyxel,zyxel_ddmi</group>
+  </rule>
+
+  <!-- DHCP - detailed -->
+  <rule id="100360" level="8">
+    <decoded_as>zyxel-dhcp</decoded_as>
+    <field name="zyxel_dhcp_server">\S+</field>
+    <description>Zyxel [$(zyxel_hostname)]: Duplicated DHCP subnet detected on interface $(zyxel_interface) - IP $(srcip), DHCP server $(zyxel_dhcp_server)</description>
+    <group>zyxel,zyxel_dhcp,pci_dss_10.6.1,nist_800_53_SI.2</group>
+  </rule>
+
+  <!-- FALLBACK rules - general decoders -->
+  <rule id="100370" level="3">
+    <decoded_as>zyxel-auth</decoded_as>
+    <description>Zyxel [$(zyxel_hostname)]: Unrecognized authentication log: $(message)</description>
+    <group>zyxel,zyxel_auth</group>
+  </rule>
+
+  <rule id="100371" level="3">
+    <decoded_as>zyxel-interface</decoded_as>
+    <description>Zyxel [$(zyxel_hostname)]: Unrecognized interface log: $(message)</description>
+    <group>zyxel,zyxel_interface</group>
+  </rule>
+
+  <rule id="100372" level="3">
+    <decoded_as>zyxel-system</decoded_as>
+    <description>Zyxel [$(zyxel_hostname)]: Unrecognized system log: $(message)</description>
+    <group>zyxel,zyxel_system</group>
+  </rule>
+
+  <rule id="100373" level="3">
+    <decoded_as>zyxel-ddmi</decoded_as>
+    <description>Zyxel [$(zyxel_hostname)]: Unrecognized DDMI log: $(message)</description>
+    <group>zyxel,zyxel_ddmi</group>
+  </rule>
+
+  <rule id="100374" level="3">
+    <decoded_as>zyxel-dhcp</decoded_as>
+    <description>Zyxel [$(zyxel_hostname)]: Unrecognized DHCP log: $(message)</description>
+    <group>zyxel,zyxel_dhcp</group>
+  </rule>
+
+</group>

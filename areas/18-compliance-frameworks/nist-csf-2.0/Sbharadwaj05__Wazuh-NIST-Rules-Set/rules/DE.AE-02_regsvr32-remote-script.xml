@@ -1,0 +1,24 @@
+<!--
+  Rule: Regsvr32/Rundll32 remote script execution (Defense Evasion)
+  NIST CSF: DE.AE-02, DE.CM-01
+  MITRE ATT&CK: T1218.010
+  Severity: High
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-23
+-->
+
+<group name="nist_csf, de.ae-02, mitre_attack,">
+
+  <rule id="100048" level="10">
+      <decoded_as>json</decoded_as>
+      <field name="win.system.providerName">Microsoft-Windows-Sysmon</field>
+      <field name="win.system.eventID">^1$</field>
+      <field name="win.eventdata.commandLine" type="pcre2">(?i)(regsvr32\.exe|rundll32\.exe).*(http(s)?:\/\/|scrobj\.dll|\/i:)</field>
+      <description>Regsvr32/Rundll32 remote script execution (Defense Evasion)</description>
+      <mitre>
+        <id>T1218.010</id>
+      </mitre>
+      <group>DE.AE-02, DE.CM-01</group>
+    </rule>
+
+</group>

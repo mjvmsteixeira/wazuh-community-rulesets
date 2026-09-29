@@ -1,0 +1,40 @@
+<!--
+  Rule: /etc/shadow Modified
+  NIST CSF: PR.DS-01 (Data-at-rest is protected)
+            DE.CM-09 (System configuration changes are monitored)
+  MITRE ATT&CK: T1003.008 - OS Credential Dumping: /etc/shadow
+  Severity: Critical
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-23
+
+  Description:
+    Detects write modifications to /etc/shadow, indicating potential credential tampering or password reset attacks.
+
+  False Positives:
+    - Administrator resetting a password via passwd command.
+
+  Tuning Guidance:
+    Filter out legitimate passwd command executions.
+
+  Assumptions:
+    - auditd is configured with: -w /etc/shadow -p wa
+
+  Limitations:
+    - High privileges are required to modify shadow; if the attacker has root, they may also disable auditd.
+
+  Test: tests/sample-logs/pr-ds-01/shadow-modification/
+-->
+
+<group name="nist_csf,pr.ds-01,de.cm-09,credential_access,auditd">
+
+  <rule id="100020" level="12">
+    <if_sid>80700</if_sid>
+    <regex type="pcre2">path=/etc/shadow.*perm=(w|a|wa|aw)</regex>
+    <description>Critical: Modification to /etc/shadow detected</description>
+    <mitre>
+      <id>T1003.008</id>
+    </mitre>
+    <group>credential_tampering,nist_pr.ds-01,nist_de.cm-09</group>
+  </rule>
+
+</group>

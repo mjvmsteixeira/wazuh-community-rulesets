@@ -1,0 +1,138 @@
+<!-- Wazuh Decoders for Unifi Network Devices -->
+<!-- Wazuh Decoders for UniFi Network Devices (OS_Regex compatible) -->
+
+<decoder name="unifi">
+  <program_name>^unifi</program_name>
+</decoder>
+
+<decoder name="unifi-gateway">
+  <parent>unifi</parent>
+  <prematch>^(gateway|UCG-Max|cloudgateway)</prematch>
+</decoder>
+
+<decoder name="unifi-switch">
+  <parent>unifi</parent>
+  <prematch>^(switch|USW)</prematch>
+</decoder>
+
+<decoder name="unifi-ap">
+  <parent>unifi</parent>
+  <prematch>^(ap|U7|accesspoint)</prematch>
+</decoder>
+
+<!-- Gateway Authentication Events -->
+<decoder name="unifi-gateway-auth">
+  <parent>unifi-gateway</parent>
+  <regex offset="after_parent">([^[:space:]]+)[[:space:]]+([^[:space:]]+)[[:space:]]+user[[:space:]]+([^[:space:]]+)[[:space:]]+(login|logout|authentication)</regex>
+  <order>srcip,dstip,user,action</order>
+</decoder>
+
+<!-- Gateway Firewall Events -->
+<decoder name="unifi-gateway-firewall">
+  <parent>unifi-gateway</parent>
+  <regex offset="after_parent">firewall[[:space:]]+([[:alnum:]_]+)[[:space:]]+SRC=([^[:space:]]+)[[:space:]]+DST=([^[:space:]]+)[[:space:]].*PROTO=([[:alnum:]_]+)</regex>
+  <order>action,srcip,dstip,protocol</order>
+</decoder>
+
+<decoder name="unifi-gateway-firewall-port">
+  <parent>unifi-gateway-firewall</parent>
+  <regex>SPT=([0-9]+)[[:space:]]+DPT=([0-9]+)</regex>
+  <order>srcport,dstport</order>
+</decoder>
+
+<!-- Gateway IDS/IPS Events -->
+<decoder name="unifi-gateway-ids">
+  <parent>unifi-gateway</parent>
+  <regex offset="after_parent">IDS:[[:space:]]+([[:alnum:]_]+)[[:space:]]+\[([0-9]+):([0-9]+):([0-9]+)\][[:space:]]+(.+)[[:space:]]+SRC=([^[:space:]]+)[[:space:]]+DST=([^[:space:]]+)</regex>
+  <order>action,id1,id2,id3,signature,srcip,dstip</order>
+</decoder>
+
+<!-- Gateway VPN Events -->
+<decoder name="unifi-gateway-vpn">
+  <parent>unifi-gateway</parent>
+  <regex offset="after_parent">VPN:[[:space:]]+([[:alnum:]_]+)[[:space:]]+user[[:space:]]+([^[:space:]]+)[[:space:]]+from[[:space:]]+([^[:space:]]+)</regex>
+  <order>action,user,srcip</order>
+</decoder>
+
+<!-- Gateway DHCP Events -->
+<decoder name="unifi-gateway-dhcp">
+  <parent>unifi-gateway</parent>
+  <regex offset="after_parent">DHCP([[:alnum:]_]+)[[:space:]]+.*on[[:space:]]+([^[:space:]]+)[[:space:]]+to[[:space:]]+([^[:space:]]+)</regex>
+  <order>action,mac,srcip</order>
+</decoder>
+
+<!-- Switch Port Events -->
+<decoder name="unifi-switch-port">
+  <parent>unifi-switch</parent>
+  <regex offset="after_parent">port[[:space:]]+([0-9]+)[[:space:]]+(up|down|enabled|disabled)</regex>
+  <order>port,status</order>
+</decoder>
+
+<!-- Switch PoE Events -->
+<decoder name="unifi-switch-poe">
+  <parent>unifi-switch</parent>
+  <regex offset="after_parent">PoE[[:space:]]+port[[:space:]]+([0-9]+)[[:space:]]+(enabled|disabled|overload|fault|delivering|searching)</regex>
+  <order>port,status</order>
+</decoder>
+
+<!-- Switch MAC Learning -->
+<decoder name="unifi-switch-mac">
+  <parent>unifi-switch</parent>
+  <regex offset="after_parent">MAC[[:space:]]+([^[:space:]]+)[[:space:]]+(learned|aged|moved)[[:space:]]+.*port[[:space:]]+([0-9]+)</regex>
+  <order>mac,action,port</order>
+</decoder>
+
+<!-- Switch STP Events -->
+<decoder name="unifi-switch-stp">
+  <parent>unifi-switch</parent>
+  <regex offset="after_parent">STP:[[:space:]]+port[[:space:]]+([0-9]+)[[:space:]]+([[:alnum:]_]+)</regex>
+  <order>port,status</order>
+</decoder>
+
+<!-- Access Point Client Events -->
+<decoder name="unifi-ap-client">
+  <parent>unifi-ap</parent>
+  <regex offset="after_parent">STA[[:space:]]+([^[:space:]]+)[[:space:]]+(connected|disconnected|associated|disassociated)[[:space:]]+.*SSID:[[:space:]]+([^[:space:]]+)</regex>
+  <order>mac,action,ssid</order>
+</decoder>
+
+<decoder name="unifi-ap-client-auth">
+  <parent>unifi-ap</parent>
+  <regex offset="after_parent">STA[[:space:]]+([^[:space:]]+)[[:space:]]+authentication[[:space:]]+(success|failed|timeout)[[:space:]]+.*SSID:[[:space:]]+([^[:space:]]+)</regex>
+  <order>mac,status,ssid</order>
+</decoder>
+
+<!-- Access Point Radio Events -->
+<decoder name="unifi-ap-radio">
+  <parent>unifi-ap</parent>
+  <regex offset="after_parent">radio[[:space:]]+(2G|5G|6G)[[:space:]]+(up|down|channel[[:space:]]+changed[[:space:]]+to[[:space:]]+([0-9]+))</regex>
+  <order>band,status,channel</order>
+</decoder>
+
+<!-- Access Point Rogue AP Detection -->
+<decoder name="unifi-ap-rogue">
+  <parent>unifi-ap</parent>
+  <regex offset="after_parent">Rogue[[:space:]]+AP[[:space:]]+detected:[[:space:]]+BSSID[[:space:]]+([^[:space:]]+)[[:space:]]+SSID:[[:space:]]+([^[:space:]]+)[[:space:]]+Channel:[[:space:]]+([0-9]+)</regex>
+  <order>mac,ssid,channel</order>
+</decoder>
+
+<!-- Generic UniFi System Events -->
+<decoder name="unifi-system">
+  <parent>unifi</parent>
+  <regex>system:[[:space:]]+(startup|shutdown|reboot|upgrade|config[[:space:]]+changed)</regex>
+  <order>action</order>
+</decoder>
+
+<!-- UniFi Threat Detection -->
+<decoder name="unifi-threat">
+  <parent>unifi</parent>
+  <regex>threat[[:space:]]+detected:[[:space:]]+([[:alnum:]_]+)[[:space:]]+from[[:space:]]+([^[:space:]]+)[[:space:]]+to[[:space:]]+([^[:space:]]+)</regex>
+  <order>threat_type,srcip,dstip</order>
+</decoder>
+
+<!-- UniFi DPI Events -->
+<decoder name="unifi-dpi">
+  <parent>unifi</parent>
+  <regex>DPI:[[:space:]]+([^[:space:]]+)[[:space:]]+SRC=([^[:space:]]+)[[:space:]]+DST=([^[:space:]]+)[[:space:]]+APP=([^[:space:]]+)</regex>
+  <order>action,srcip,dstip,application</order>
+</decoder>

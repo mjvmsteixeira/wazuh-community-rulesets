@@ -1,0 +1,1 @@
+{"win":{"system":{"providerName":"Microsoft-Windows-Sysmon","eventID":"22"},"eventdata":{"queryName":"google.com"}}}

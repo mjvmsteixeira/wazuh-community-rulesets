@@ -1,0 +1,5 @@
+<!-- Blocos de configuração extraídos, sem alterações, de fredycibersec/wazuh-stuff:defender/README.md @ 043f106e4a7c -->
+<localfile>
+    <location>Microsoft-Windows-Windows Defender/Operational</location>
+    <log_format>eventchannel</log_format>
+  </localfile>

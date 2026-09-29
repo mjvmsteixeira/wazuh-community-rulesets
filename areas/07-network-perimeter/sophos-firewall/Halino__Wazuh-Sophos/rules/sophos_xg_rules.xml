@@ -1,0 +1,734 @@
+<!--
+  Sophos XG / SFOS Firewall - Wazuh Alert Rules
+  Compatible with SFOS v18, v19, v20, v21+
+  
+  Custom Rule IDs: 100300 - 100399
+  (Range chosen to avoid conflict with Wazuh-Unifi 100100-100213)
+  
+  Severity Levels Used:
+    0   = No alert (grouping / informational - not stored in alerts index)
+    3   = Low (noteworthy events: auth success, VPN connect, system events)
+    5   = Medium (security-relevant: deny, block, auth failure, VPN failure)
+    7-8 = High (IPS detect, AV detect, admin failure, repeated blocks)
+    10  = Very High (IPS drop, brute force, ATP, heartbeat RED, DoS)
+    12  = Critical (ATP block, admin brute force, repeated IPS/WAF)
+    14  = Emergency (repeated ATP from same source - active compromise)
+  
+  Place this file in: /var/ossec/etc/rules/sophos_xg_rules.xml
+  Then restart Wazuh Manager: systemctl restart wazuh-manager
+-->
+
+<group name="sophos,sophos-xg,firewall,">
+
+  <!-- ============================================================
+       BASE GROUPING RULE (Level 0 - no alert)
+       All Sophos XG logs match this rule first.
+       ============================================================ -->
+  <rule id="100300" level="0">
+    <decoded_as>sophos-xg</decoded_as>
+    <description>Sophos XG: Log message.</description>
+  </rule>
+
+
+  <!-- ============================================================
+       FIREWALL RULES
+       ============================================================ -->
+
+  <!-- Level 0: Allowed traffic is high-volume routine data.
+       Raise to level 3 if you need allow events in the alerts index. -->
+  <rule id="100301" level="0">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type">^Firewall$</field>
+    <field name="action">^Allow$</field>
+    <description>Sophos XG Firewall: Traffic allowed by rule $(sophos_fw_rule_name).</description>
+    <group>sophos-xg-firewall,firewall_allow,</group>
+  </rule>
+
+  <rule id="100302" level="5">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type">^Firewall$</field>
+    <field name="action">^Deny$</field>
+    <description>Sophos XG Firewall: Traffic denied — $(srcip):$(srcport) -> $(dstip):$(dstport) ($(protocol)).</description>
+    <group>sophos-xg-firewall,firewall_deny,threat_detection,</group>
+  </rule>
+
+  <rule id="100303" level="5">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type">^Firewall$</field>
+    <field name="action">^Drop$</field>
+    <description>Sophos XG Firewall: Traffic dropped — $(srcip):$(srcport) -> $(dstip):$(dstport) ($(protocol)).</description>
+    <group>sophos-xg-firewall,firewall_drop,threat_detection,</group>
+  </rule>
+
+  <rule id="100304" level="5">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type">^Firewall$</field>
+    <field name="sophos_log_subtype" type="pcre2">^Invalid Traffic$</field>
+    <description>Sophos XG Firewall: Invalid traffic detected from $(srcip) to $(dstip).</description>
+    <group>sophos-xg-firewall,firewall_invalid,threat_detection,</group>
+  </rule>
+
+  <!-- Repeated drops from the same source (possible scan/attack) -->
+  <rule id="100305" level="8" frequency="10" timeframe="60">
+    <if_matched_sid>100303</if_matched_sid>
+    <same_srcip />
+    <description>Sophos XG Firewall: Multiple drops from same source $(srcip) — possible port scan or attack.</description>
+    <group>sophos-xg-firewall,firewall_drop,attack,threat_detection,</group>
+    <mitre>
+      <id>T1046</id>
+    </mitre>
+  </rule>
+
+  <!-- Repeated denials from the same source -->
+  <rule id="100306" level="8" frequency="10" timeframe="60">
+    <if_matched_sid>100302</if_matched_sid>
+    <same_srcip />
+    <description>Sophos XG Firewall: Multiple denied connections from $(srcip) — possible reconnaissance.</description>
+    <group>sophos-xg-firewall,firewall_deny,attack,threat_detection,</group>
+    <mitre>
+      <id>T1046</id>
+    </mitre>
+  </rule>
+
+
+  <!-- ============================================================
+       IPS (INTRUSION PREVENTION SYSTEM) RULES
+       ============================================================ -->
+
+  <rule id="100310" level="7">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type">^IPS$</field>
+    <field name="sophos_log_subtype">^Detect$</field>
+    <description>Sophos XG IPS: Intrusion detected — $(sophos_ips_activity) from $(srcip) to $(dstip).</description>
+    <group>sophos-xg-ips,ids,threat_detection,</group>
+    <mitre>
+      <id>T1190</id>
+    </mitre>
+  </rule>
+
+  <rule id="100311" level="10">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type">^IPS$</field>
+    <field name="sophos_log_subtype">^Drop$</field>
+    <description>Sophos XG IPS: Intrusion dropped — $(sophos_ips_activity) from $(srcip) to $(dstip).</description>
+    <group>sophos-xg-ips,ids,threat_detection,</group>
+    <mitre>
+      <id>T1190</id>
+    </mitre>
+  </rule>
+
+  <!-- Multiple IPS events from same source -->
+  <rule id="100312" level="12" frequency="5" timeframe="120">
+    <if_matched_sid>100311</if_matched_sid>
+    <same_srcip />
+    <description>Sophos XG IPS: Repeated intrusion attempts from $(srcip) — active exploitation.</description>
+    <group>sophos-xg-ips,ids,attack,threat_detection,</group>
+    <mitre>
+      <id>T1190</id>
+    </mitre>
+  </rule>
+
+
+  <!-- ============================================================
+       WEB FILTER RULES
+       Handles log_type variants across SFOS versions:
+         "Content Filtering", "Web Filtering", "Web Filter", "Web"
+       ============================================================ -->
+
+  <!-- Level 0: Allowed web traffic is high-volume routine data. -->
+  <rule id="100315" level="0">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type" type="pcre2">^(?:Content Filtering|Web Filtering|Web Filter|Web)$</field>
+    <field name="action">^Allow$</field>
+    <description>Sophos XG Web Filter: Access allowed to $(url) [$(sophos_http_category)].</description>
+    <group>sophos-xg-webfilter,web,</group>
+  </rule>
+
+  <rule id="100316" level="5">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type" type="pcre2">^(?:Content Filtering|Web Filtering|Web Filter|Web)$</field>
+    <field name="action" type="pcre2">^(?:Deny|Block|Drop)$</field>
+    <description>Sophos XG Web Filter: Access blocked to $(url) [$(sophos_http_category)].</description>
+    <group>sophos-xg-webfilter,web,web_block,threat_detection,</group>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+  </rule>
+
+  <rule id="100317" level="3">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type" type="pcre2">^(?:Content Filtering|Web Filtering|Web Filter|Web)$</field>
+    <field name="action">^Warn$</field>
+    <description>Sophos XG Web Filter: Warning issued for access to $(url) [$(sophos_http_category)].</description>
+    <group>sophos-xg-webfilter,web,</group>
+  </rule>
+
+
+  <!-- ============================================================
+       APPLICATION FILTER RULES
+       Handles: "Application Filter", "Application Filtering"
+       ============================================================ -->
+
+  <!-- Level 0: Allowed app traffic is high-volume routine data. -->
+  <rule id="100320" level="0">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type" type="pcre2">^Application Filter(?:ing)?$</field>
+    <field name="action">^Allow$</field>
+    <description>Sophos XG App Filter: Application $(sophos_application) allowed [$(sophos_app_category)].</description>
+    <group>sophos-xg-appfilter,</group>
+  </rule>
+
+  <rule id="100321" level="5">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type" type="pcre2">^Application Filter(?:ing)?$</field>
+    <field name="action" type="pcre2">^(?:Deny|Block|Drop)$</field>
+    <description>Sophos XG App Filter: Application $(sophos_application) blocked [$(sophos_app_category)].</description>
+    <group>sophos-xg-appfilter,threat_detection,</group>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+  </rule>
+
+
+  <!-- ============================================================
+       AUTHENTICATION RULES
+       ============================================================ -->
+
+  <rule id="100325" level="3">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type">^Authentication$</field>
+    <field name="action" type="pcre2">^(?:Accept|Success)$</field>
+    <description>Sophos XG Auth: Successful authentication for user $(srcuser).</description>
+    <group>sophos-xg-auth,authentication_success,</group>
+  </rule>
+
+  <rule id="100326" level="5">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type">^Authentication$</field>
+    <field name="action" type="pcre2">^(?:Fail|Failed)$</field>
+    <description>Sophos XG Auth: Failed authentication for user $(srcuser) from $(srcip).</description>
+    <group>sophos-xg-auth,authentication_failed,threat_detection,</group>
+    <mitre>
+      <id>T1110</id>
+    </mitre>
+  </rule>
+
+  <!-- Brute force: multiple auth failures -->
+  <rule id="100327" level="10" frequency="6" timeframe="120">
+    <if_matched_sid>100326</if_matched_sid>
+    <same_srcip />
+    <description>Sophos XG Auth: Brute force attempt — multiple failures from $(srcip).</description>
+    <group>sophos-xg-auth,authentication_failures,brute_force,threat_detection,</group>
+    <mitre>
+      <id>T1110</id>
+    </mitre>
+  </rule>
+
+  <!-- Admin authentication success -->
+  <rule id="100328" level="3">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type">^Authentication$</field>
+    <field name="sophos_log_component">^Admin$</field>
+    <field name="action" type="pcre2">^(?:Accept|Success)$</field>
+    <description>Sophos XG Auth: Administrator $(srcuser) logged in successfully.</description>
+    <group>sophos-xg-auth,admin_login,authentication_success,</group>
+  </rule>
+
+  <!-- Admin authentication failure -->
+  <rule id="100329" level="7">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type">^Authentication$</field>
+    <field name="sophos_log_component">^Admin$</field>
+    <field name="action" type="pcre2">^(?:Fail|Failed)$</field>
+    <description>Sophos XG Auth: Administrator login failed for user $(srcuser) from $(srcip).</description>
+    <group>sophos-xg-auth,admin_login,authentication_failed,threat_detection,</group>
+    <mitre>
+      <id>T1110</id>
+    </mitre>
+  </rule>
+
+  <!-- Admin brute force -->
+  <rule id="100330" level="12" frequency="5" timeframe="120">
+    <if_matched_sid>100329</if_matched_sid>
+    <same_srcip />
+    <description>Sophos XG Auth: Admin brute force attack from $(srcip).</description>
+    <group>sophos-xg-auth,admin_login,brute_force,threat_detection,</group>
+    <mitre>
+      <id>T1110</id>
+    </mitre>
+  </rule>
+
+
+  <!-- ============================================================
+       SSL VPN RULES
+       ============================================================ -->
+
+  <rule id="100335" level="3">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_component" type="pcre2">^SSL VPN$</field>
+    <field name="sophos_log_subtype">^Login$</field>
+    <field name="action" type="pcre2">^(?:Accept|Success)$</field>
+    <description>Sophos XG SSL VPN: User $(srcuser) connected from $(srcip).</description>
+    <group>sophos-xg-vpn,vpn,authentication_success,</group>
+  </rule>
+
+  <rule id="100336" level="5">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_component" type="pcre2">^SSL VPN$</field>
+    <field name="sophos_log_subtype">^Login$</field>
+    <field name="action" type="pcre2">^(?:Fail|Failed)$</field>
+    <description>Sophos XG SSL VPN: Login failed for user $(srcuser) from $(srcip).</description>
+    <group>sophos-xg-vpn,vpn,authentication_failed,threat_detection,</group>
+    <mitre>
+      <id>T1133</id>
+    </mitre>
+  </rule>
+
+  <!-- SSL VPN brute force -->
+  <rule id="100337" level="10" frequency="6" timeframe="120">
+    <if_matched_sid>100336</if_matched_sid>
+    <same_srcip />
+    <description>Sophos XG SSL VPN: Brute force — multiple login failures from $(srcip).</description>
+    <group>sophos-xg-vpn,vpn,brute_force,threat_detection,</group>
+    <mitre>
+      <id>T1110</id>
+      <id>T1133</id>
+    </mitre>
+  </rule>
+
+  <rule id="100338" level="3">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_component" type="pcre2">^SSL VPN$</field>
+    <field name="sophos_log_subtype">^Logout$</field>
+    <description>Sophos XG SSL VPN: User $(srcuser) disconnected.</description>
+    <group>sophos-xg-vpn,vpn,</group>
+  </rule>
+
+  <!-- General VPN rules (IPsec, L2TP, etc.) -->
+  <rule id="100339" level="3">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type">^VPN$</field>
+    <field name="action" type="pcre2">^(?:Accept|Success|Connected)$</field>
+    <description>Sophos XG VPN: Tunnel established — $(sophos_vpn_policy).</description>
+    <group>sophos-xg-vpn,vpn,</group>
+  </rule>
+
+  <rule id="100340" level="5">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type">^VPN$</field>
+    <field name="action" type="pcre2">^(?:Fail|Failed|Disconnect)$</field>
+    <description>Sophos XG VPN: Tunnel failed or disconnected — $(sophos_vpn_policy).</description>
+    <group>sophos-xg-vpn,vpn,</group>
+  </rule>
+
+
+  <!-- ============================================================
+       ATP (ADVANCED THREAT PROTECTION) RULES
+       ============================================================ -->
+
+  <rule id="100345" level="10">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type">^ATP$</field>
+    <field name="sophos_log_subtype">^Detect$</field>
+    <description>Sophos XG ATP: Advanced threat detected — $(sophos_threat) from $(srcip) to $(dstip).</description>
+    <group>sophos-xg-atp,threat,threat_detection,</group>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+  </rule>
+
+  <rule id="100346" level="12">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type">^ATP$</field>
+    <field name="sophos_log_subtype">^Drop$</field>
+    <description>Sophos XG ATP: Advanced threat blocked — $(sophos_threat) from $(srcip) to $(dstip).</description>
+    <group>sophos-xg-atp,threat,threat_detection,</group>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+  </rule>
+
+  <!-- Multiple ATP detections from same source -->
+  <rule id="100347" level="14" frequency="3" timeframe="300">
+    <if_matched_sid>100345</if_matched_sid>
+    <same_srcip />
+    <description>Sophos XG ATP: Repeated threat activity from $(srcip) — possible compromise.</description>
+    <group>sophos-xg-atp,threat,attack,threat_detection,</group>
+    <mitre>
+      <id>T1071</id>
+      <id>T1041</id>
+    </mitre>
+  </rule>
+
+
+  <!-- ============================================================
+       ANTIVIRUS RULES
+       ============================================================ -->
+
+  <rule id="100350" level="7">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type" type="pcre2">^Anti-Virus$</field>
+    <field name="action" type="pcre2">^(?:Deny|Block|Drop|Quarantine)$</field>
+    <description>Sophos XG Antivirus: Malware blocked — $(sophos_filename) from $(srcip).</description>
+    <group>sophos-xg-antivirus,virus,threat_detection,</group>
+    <mitre>
+      <id>T1204</id>
+    </mitre>
+  </rule>
+
+  <!-- Level 0: Clean scan results are high-volume routine data. -->
+  <rule id="100351" level="0">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type" type="pcre2">^Anti-Virus$</field>
+    <field name="action" type="pcre2">^(?:Allow|Clean)$</field>
+    <description>Sophos XG Antivirus: File scanned clean — $(sophos_filename).</description>
+    <group>sophos-xg-antivirus,</group>
+  </rule>
+
+  <!-- Multiple AV detections -->
+  <rule id="100352" level="10" frequency="3" timeframe="300">
+    <if_matched_sid>100350</if_matched_sid>
+    <same_srcip />
+    <description>Sophos XG Antivirus: Multiple malware detections from $(srcip).</description>
+    <group>sophos-xg-antivirus,virus,attack,threat_detection,</group>
+    <mitre>
+      <id>T1204</id>
+    </mitre>
+  </rule>
+
+
+  <!-- ============================================================
+       WAF (WEB APPLICATION FIREWALL) RULES
+       ============================================================ -->
+
+  <rule id="100355" level="7">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type">^WAF$</field>
+    <field name="sophos_log_subtype">^Detect$</field>
+    <description>Sophos XG WAF: Web application attack detected from $(srcip) — $(sophos_reason).</description>
+    <group>sophos-xg-waf,web,attack,threat_detection,</group>
+    <mitre>
+      <id>T1190</id>
+    </mitre>
+  </rule>
+
+  <rule id="100356" level="10">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type">^WAF$</field>
+    <field name="sophos_log_subtype">^Drop$</field>
+    <description>Sophos XG WAF: Web application attack blocked from $(srcip) — $(sophos_reason).</description>
+    <group>sophos-xg-waf,web,attack,threat_detection,</group>
+    <mitre>
+      <id>T1190</id>
+    </mitre>
+  </rule>
+
+  <!-- Multiple WAF events -->
+  <rule id="100357" level="12" frequency="5" timeframe="120">
+    <if_matched_sid>100356</if_matched_sid>
+    <same_srcip />
+    <description>Sophos XG WAF: Repeated web application attacks from $(srcip).</description>
+    <group>sophos-xg-waf,web,attack,threat_detection,</group>
+    <mitre>
+      <id>T1190</id>
+    </mitre>
+  </rule>
+
+
+  <!-- ============================================================
+       SANDBOX RULES
+       ============================================================ -->
+
+  <rule id="100360" level="10">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type">^Sandbox$</field>
+    <field name="action" type="pcre2">^(?:Deny|Block|Drop)$</field>
+    <description>Sophos XG Sandbox: Malicious file blocked — $(sophos_filename) from $(srcip).</description>
+    <group>sophos-xg-sandbox,threat,threat_detection,</group>
+    <mitre>
+      <id>T1204</id>
+    </mitre>
+  </rule>
+
+  <rule id="100361" level="7">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type">^Sandbox$</field>
+    <field name="sophos_log_subtype">^Detect$</field>
+    <description>Sophos XG Sandbox: Suspicious file detected — $(sophos_filename) from $(srcip).</description>
+    <group>sophos-xg-sandbox,threat,threat_detection,</group>
+    <mitre>
+      <id>T1204</id>
+    </mitre>
+  </rule>
+
+
+  <!-- ============================================================
+       EMAIL RULES
+       ============================================================ -->
+
+  <rule id="100365" level="5">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type">^Email$</field>
+    <field name="action" type="pcre2">^(?:Deny|Block|Drop|Quarantine)$</field>
+    <description>Sophos XG Email: Message blocked — from $(sophos_from_email) to $(sophos_to_email).</description>
+    <group>sophos-xg-email,spam,threat_detection,</group>
+  </rule>
+
+  <!-- Level 0: Allowed email is high-volume routine data. -->
+  <rule id="100366" level="0">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type">^Email$</field>
+    <field name="action" type="pcre2">^(?:Allow|Accept)$</field>
+    <description>Sophos XG Email: Message allowed — from $(sophos_from_email) to $(sophos_to_email).</description>
+    <group>sophos-xg-email,</group>
+  </rule>
+
+
+  <!-- ============================================================
+       SYSTEM / EVENT RULES
+       ============================================================ -->
+
+  <rule id="100370" level="3">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type">^Event$</field>
+    <description>Sophos XG System: Event — $(sophos_message).</description>
+    <group>sophos-xg-system,</group>
+  </rule>
+
+  <rule id="100371" level="3">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type" type="pcre2">^System Health$</field>
+    <description>Sophos XG System: Health event — $(sophos_message).</description>
+    <group>sophos-xg-system,system_health,</group>
+  </rule>
+
+  <rule id="100372" level="7">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type">^Event$</field>
+    <field name="sophos_log_subtype">^Admin$</field>
+    <description>Sophos XG System: Admin configuration change by $(srcuser) — $(sophos_message).</description>
+    <group>sophos-xg-system,config_changed,</group>
+    <mitre>
+      <id>T1562</id>
+    </mitre>
+  </rule>
+
+
+  <!-- ============================================================
+       HEARTBEAT / ENDPOINT RULES
+       ============================================================ -->
+
+  <rule id="100375" level="10">
+    <if_sid>100300</if_sid>
+    <field name="sophos_hb_health">^Red$</field>
+    <description>Sophos XG Heartbeat: Endpoint health RED — possible compromise on $(srcip).</description>
+    <group>sophos-xg-heartbeat,endpoint,threat_detection,</group>
+    <mitre>
+      <id>T1562.001</id>
+    </mitre>
+  </rule>
+
+  <rule id="100376" level="5">
+    <if_sid>100300</if_sid>
+    <field name="sophos_hb_health">^Yellow$</field>
+    <description>Sophos XG Heartbeat: Endpoint health YELLOW — warning on $(srcip).</description>
+    <group>sophos-xg-heartbeat,endpoint,</group>
+  </rule>
+
+  <rule id="100377" level="0">
+    <if_sid>100300</if_sid>
+    <field name="sophos_hb_health">^Green$</field>
+    <description>Sophos XG Heartbeat: Endpoint health GREEN — $(srcip) is healthy.</description>
+    <group>sophos-xg-heartbeat,endpoint,</group>
+  </rule>
+
+  <rule id="100378" level="7">
+    <if_sid>100300</if_sid>
+    <field name="sophos_hb_status">^Missing$</field>
+    <description>Sophos XG Heartbeat: Endpoint heartbeat missing for $(srcip).</description>
+    <group>sophos-xg-heartbeat,endpoint,threat_detection,</group>
+    <mitre>
+      <id>T1562.001</id>
+    </mitre>
+  </rule>
+
+
+  <!-- ============================================================
+       DoS ATTACK RULES
+       ============================================================ -->
+
+  <rule id="100380" level="10">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type">^Firewall$</field>
+    <field name="sophos_log_component" type="pcre2">^DoS Attack$</field>
+    <description>Sophos XG: DoS attack detected from $(srcip) to $(dstip).</description>
+    <group>sophos-xg-firewall,dos,attack,threat_detection,</group>
+    <mitre>
+      <id>T1498</id>
+    </mitre>
+  </rule>
+
+  <rule id="100381" level="5">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type">^Firewall$</field>
+    <field name="sophos_log_component" type="pcre2">^MAC Filtering$</field>
+    <field name="action" type="pcre2">^(?:Deny|Drop)$</field>
+    <description>Sophos XG: MAC filtering violation — $(sophos_src_mac) denied.</description>
+    <group>sophos-xg-firewall,threat_detection,</group>
+  </rule>
+
+
+  <!-- ============================================================
+       WIRELESS RULES
+       ============================================================ -->
+
+  <rule id="100385" level="3">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type">^Wireless$</field>
+    <description>Sophos XG Wireless: Event — $(sophos_message).</description>
+    <group>sophos-xg-wireless,</group>
+  </rule>
+
+  <!-- ============================================================
+       ADVANCED THREAT DETECTION RULES
+       Opinionated, higher-signal correlation and policy-misconfig
+       detections. Tune or disable as needed for your environment.
+       ============================================================ -->
+
+  <!-- Inbound scans / brute-force to critical ports (SSH/RDP/SMB/WinRM) -->
+  <rule id="100392" level="10" frequency="5" timeframe="60">
+    <if_matched_sid>100302</if_matched_sid> <!-- Firewall deny -->
+    <same_srcip />
+    <dstport type="pcre2">^(?:22|3389|445|5985|5986)$</dstport>
+    <field name="sophos_srczone" type="pcre2">^WAN$</field>
+    <field name="sophos_dstzone" type="pcre2">^(?:LAN|DMZ)$</field>
+    <description>Sophos XG Threat Detection: Repeated denied access from $(srcip) to critical port $(dstport) — possible brute-force or targeted scan.</description>
+    <group>sophos-xg-firewall,brute_force,threat_detection,</group>
+    <mitre>
+      <id>T1110</id>
+      <id>T1046</id>
+    </mitre>
+  </rule>
+
+  <!-- Large outbound transfer from internal to internet on non-standard ports -->
+  <rule id="100393" level="8">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type">^Firewall$</field>
+    <field name="action">^Allow$</field>
+    <field name="sophos_srczone" type="pcre2">^(?:LAN|DMZ)$</field>
+    <field name="sophos_dstzone" type="pcre2">^WAN$</field>
+    <!-- sent_bytes >= ~5MB (tune this threshold for your environment) -->
+    <field name="sophos_sent_bytes" type="pcre2">^[5-9]\d{6,}|\d{7,}$</field>
+    <!-- Non-standard high port (exclude 80/443/53) -->
+    <dstport type="pcre2">^(?!80$|443$|53$)\d+$</dstport>
+    <!-- Optional: ignore exfil alerts to private ranges (10.x, 172.16-31.x, 192.168.x).
+         Uncomment the next line if you only care about internet destinations. -->
+    <!-- <field name="dstip" type="pcre2">^(?!10\.|192\.168\.|172\.(1[6-9]|2[0-9]|3[0-1])\.).+</field> -->
+    <description>Sophos XG Threat Detection: Large outbound transfer from $(srcip) to $(dstip):$(dstport) — possible data exfiltration over uncommon service.</description>
+    <group>sophos-xg-firewall,exfiltration,threat_detection,</group>
+    <mitre>
+      <id>T1041</id>
+    </mitre>
+  </rule>
+
+  <!-- High-risk web category allowed (policy misconfiguration) -->
+  <rule id="100394" level="8">
+    <if_sid>100300</if_sid>
+    <field name="sophos_log_type" type="pcre2">^(?:Content Filtering|Web Filtering|Web Filter|Web)$</field>
+    <field name="action">^Allow$</field>
+    <field name="sophos_http_category" type="pcre2">(?:Malware|Phishing|Spam|High Risk|Botnets?)</field>
+    <description>Sophos XG Threat Detection: High-risk web category $(sophos_http_category) allowed to $(url) for user $(srcuser) — possible policy weakness.</description>
+    <group>sophos-xg-webfilter,policy,threat_detection,</group>
+    <mitre>
+      <id>T1204</id>
+    </mitre>
+  </rule>
+
+  <!-- Suspicious destination country combined with deny/drop -->
+  <rule id="100395" level="7">
+    <if_sid>100300</if_sid>
+    <field name="action" type="pcre2">^(?:Deny|Drop)$</field>
+    <!-- Adjust country codes to your threat model -->
+    <field name="sophos_dst_country" type="pcre2">^(?:RU|CN|KP|IR|SY|CU)$</field>
+    <description>Sophos XG Threat Detection: Denied or dropped connection from $(srcip) to high-risk country $(sophos_dst_country) at $(dstip).</description>
+    <group>sophos-xg-firewall,geolocation,threat_detection,</group>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+  </rule>
+
+  <!-- Correlated endpoint compromise: ATP + AV / Sandbox from same source -->
+  <rule id="100396" level="14" frequency="2" timeframe="600">
+    <if_matched_group>sophos-xg-atp</if_matched_group>
+    <if_matched_group>sophos-xg-antivirus</if_matched_group>
+    <same_srcip />
+    <description>Sophos XG Threat Detection: ATP and Antivirus detections from $(srcip) within 10 minutes — high-confidence compromise.</description>
+    <group>sophos-xg-advanced,compromise,threat_detection,</group>
+    <mitre>
+      <id>T1071</id>
+      <id>T1204</id>
+      <id>T1041</id>
+    </mitre>
+  </rule>
+
+  <!-- Correlated exploitation: IPS + WAF from same source -->
+  <rule id="100397" level="12" frequency="2" timeframe="600">
+    <if_matched_group>sophos-xg-ips</if_matched_group>
+    <if_matched_group>sophos-xg-waf</if_matched_group>
+    <same_srcip />
+    <description>Sophos XG Threat Detection: IPS and WAF detections from $(srcip) within 10 minutes — active web exploitation attempt.</description>
+    <group>sophos-xg-advanced,web_attack,threat_detection,</group>
+    <mitre>
+      <id>T1190</id>
+    </mitre>
+  </rule>
+
+  <!-- Correlated endpoint health + network threat -->
+  <rule id="100398" level="12" frequency="2" timeframe="900">
+    <if_matched_group>sophos-xg-heartbeat</if_matched_group>
+    <if_matched_group>sophos-xg-atp</if_matched_group>
+    <same_srcip />
+    <description>Sophos XG Threat Detection: Endpoint heartbeat degradation and ATP detections for $(srcip) — likely compromised endpoint.</description>
+    <group>sophos-xg-advanced,endpoint,threat_detection,</group>
+    <mitre>
+      <id>T1562.001</id>
+      <id>T1071</id>
+    </mitre>
+  </rule>
+
+  <!-- Correlated auth brute-force + network threat from same source -->
+  <rule id="100399" level="12" frequency="2" timeframe="900">
+    <if_matched_group>sophos-xg-auth</if_matched_group>
+    <if_matched_group>sophos-xg-firewall</if_matched_group>
+    <same_srcip />
+    <description>Sophos XG Threat Detection: Authentication attacks and firewall blocks from $(srcip) — persistent attacker activity.</description>
+    <group>sophos-xg-advanced,brute_force,threat_detection,</group>
+    <mitre>
+      <id>T1110</id>
+      <id>T1046</id>
+    </mitre>
+  </rule>
+
+
+  <!-- ============================================================
+       CATCH-ALL RULES (lower priority - evaluated last)
+       These match events not handled by any specific rule above.
+       ============================================================ -->
+
+  <!-- Any Sophos XG log with a deny/block/drop action not caught above -->
+  <rule id="100390" level="5">
+    <if_sid>100300</if_sid>
+    <field name="action" type="pcre2">^(?:Deny|Block|Drop)$</field>
+    <description>Sophos XG: Action $(action) — $(sophos_log_type)/$(sophos_log_component) from $(srcip).</description>
+    <group>sophos-xg-generic,threat_detection,</group>
+  </rule>
+
+  <!-- Any Sophos XG log with a fail status not caught above -->
+  <rule id="100391" level="5">
+    <if_sid>100300</if_sid>
+    <field name="action" type="pcre2">^(?:Fail|Failed)$</field>
+    <description>Sophos XG: Failure — $(sophos_log_type)/$(sophos_log_component) for $(srcuser).</description>
+    <group>sophos-xg-generic,threat_detection,</group>
+  </rule>
+
+</group>

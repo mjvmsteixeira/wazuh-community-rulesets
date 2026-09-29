@@ -1,0 +1,133 @@
+<!--
+  local_rules.xml - Threat Intel matches (updated for Suricata)
+
+  Lists expected in /var/ossec/etc/lists/:
+    - opencti_ips
+    - opencti_domains
+    - opencti_file_hashes
+
+  Notes:
+    - In <list> we reference the list name WITHOUT ".list".
+    - These rules match Suricata EVE JSON fields as decoded by Wazuh.
+    - Suricata start SID: https://github.com/wazuh/wazuh-ruleset/blob/master/rules/0475-suricata_rules.xml
+-->
+
+<group name="local,threat_intel,linux,suricata,">
+
+  <!-- Noisy reduction -->
+  <rule id="1400" level="0">
+    <if_sid>86600</if_sid>
+    <match>ET INFO Session Traversal Utilities for NAT</match>
+    <description>Tuning: ignore noisy STUN (ET INFO) from Suricata</description>
+  </rule>
+
+  <rule id="1401" level="0">
+    <if_sid>86600</if_sid>
+    <match>ET INFO Session Traversal Utilities for NAT (STUN Binding Request)</match>
+    <description>Tuning: ignore noisy STUN (ET INFO) from Suricata</description>
+  </rule>
+
+  <rule id="1402" level="0">
+    <if_sid>86600</if_sid>
+    <match>ET DOS Possible SSDP Amplification Scan in Progress</match>
+    <description>Tuning: ignore noisy SSDP Amplification (ET DOS) from Suricata</description>
+  </rule>
+
+  <rule id="1403" level="0">
+    <if_sid>86600</if_sid>
+    <match>SURICATA IPv4 wrong IP version</match>
+    <description>Tuning: ignore noisy IPv4 wrong IP from Suricata</description>
+  </rule>
+
+  <rule id="1404" level="0">
+    <if_sid>86600</if_sid>
+    <match>SURICATA AF-PACKET truncated packet</match>
+    <description>Tuning: ignore noisy AF-PACKET truncated packet from Suricata</description>
+  </rule>
+
+  <rule id="1405" level="0">
+    <if_sid>86600</if_sid>
+    <match>SURICATA IPv4 truncated packet</match>
+    <description>Tuning: ignore noisy IPv4 truncated packet from Suricata</description>
+  </rule>
+
+  <!-- Syncthing relays on 22067/tcp share IPs with Tor relays, so ET TOR fires as noise there.
+       Suppress only on that port (both directions); real Tor traffic on other ports still alerts. -->
+  <rule id="1406" level="0">
+    <if_sid>86600</if_sid>
+    <match>ET TOR Known Tor Relay/Router (Not Exit) Node Traffic</match>
+    <field name="dest_port">22067</field>
+    <description>Tuning: ignore ET TOR relay/router over Syncthing relay port</description>
+  </rule>
+
+  <rule id="1407" level="0">
+    <if_sid>86600</if_sid>
+    <match>ET TOR Known Tor Relay/Router (Not Exit) Node Traffic</match>
+    <field name="src_port">22067</field>
+    <description>Tuning: ignore ET TOR relay/router over Syncthing relay port</description>
+  </rule>
+
+  <!-- ========= Outbound (dest_ip) ========= -->
+  <!-- We treat "outbound" as connections from this host to external destinations.
+      Suricata events generally provide src/dest IPs. -->
+  <rule id="1450" level="16">
+    <if_sid>86600</if_sid>
+    <list field="dest_ip" lookup="match_key">etc/lists/opencti_ips</list>
+    <description>TI hit: outbound destination IP $(dest_ip) matches OpenCTI IOC ($(proto))</description>
+  </rule>
+
+  <!-- Relay servers on 22067/tcp may also host flagged services (e.g. Tor).
+       Overrides 1450 with level 0 -> no alert. -->
+  <rule id="1455" level="0">
+    <if_sid>1450</if_sid>
+    <field name="dest_port">22067</field>
+    <description>TI hit: outbound destination IP matches OpenCTI IOC (no syncthing)</description>
+  </rule>
+
+  <!-- ========= Inbound (src_ip) ========= -->
+  <!-- Useful for scans/bruteforce/web probing etc.
+      In Suricata, src_ip is the remote source in inbound scenarios. -->
+
+  <rule id="1451" level="16">
+    <if_sid>86600</if_sid>
+    <list field="src_ip" lookup="match_key">etc/lists/opencti_ips</list>
+    <description>TI hit: source IP $(src_ip) matches OpenCTI IOC ($(proto))</description>
+  </rule>
+
+  <!-- Relay servers on 22067/tcp may also host flagged services (e.g. Tor).
+       Overrides 1451 with level 0 -> no alert. -->
+  <rule id="1456" level="0">
+    <if_sid>1451</if_sid>
+    <field name="src_port">22067</field>
+    <description>TI hit: source IP matches OpenCTI IOC (no syncthing)</description>
+  </rule>
+
+  <!-- ========= Domains / URLs ========= -->
+  <!-- In Suricata EVE JSON, domains can appear in different places:
+      - DNS: dns.rrname
+      - TLS: tls.sni
+      - HTTP: http.hostname
+      We keep multiple rules so at least one matches your traffic. -->
+
+  <!-- DNS query -->
+  <rule id="1452" level="16">
+    <if_sid>86600</if_sid>
+    <list field="dns.rrname" lookup="match_key">etc/lists/opencti_domains</list>
+    <description>TI hit: DNS query $(dns.rrname) matches OpenCTI IOC</description>
+  </rule>
+
+  <!-- TLS SNI -->
+  <rule id="1453" level="16">
+    <if_sid>86600</if_sid>
+    <list field="tls.sni" lookup="match_key">etc/lists/opencti_domains</list>
+    <description>TI hit: TLS SNI $(tls.sni) matches OpenCTI IOC</description>
+  </rule>
+
+  <!-- HTTP Host header -->
+  <rule id="1454" level="16">
+    <if_sid>86600</if_sid>
+    <list field="http.hostname" lookup="match_key">etc/lists/opencti_domains</list>
+    <description>TI hit: HTTP hostname $(http.hostname) matches OpenCTI IOC</description>
+  </rule>
+
+</group>

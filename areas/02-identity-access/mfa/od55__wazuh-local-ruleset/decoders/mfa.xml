@@ -1,0 +1,149 @@
+<!--
+decoder for МУЛЬТИФАКТОР / MULTIFACTOR
+prematch shall be added in <out_format> on agent side!
+::::::: shared agent config :::::::::::
+  <agent_config>
+    <localfile>
+      <location>C:\Program Files\MFA\logs\log-%Y%m%d.txt</location>
+      <log_format>syslog</log_format>
+      <out_format>mfa :: $(log)</out_format>
+    </localfile>
+  </agent_config>
+::::::: example events ::::::::::::
+mfa :: 2025-09-26 04:36:41.773 +03:00 [INF] Received AccessRequest from 192.168.1.1:23361 id=204 user='ivanov' client 'fortigate with ad'
+mfa :: 2025-09-26 05:03:23.928 +03:00 [INF] Second factor accepted for user 'ivanov' from 192.168.1.1:15412 
+mfa :: 2025-09-26 05:03:23.928 +03:00 [INF] Second factor verification for user 'ivanov' with identity attribyte 'ivanov' from 192.168.1.1:24468 failed with reason='Timeout expired'. User phone null 
+-->
+<decoder name="mfa">
+    <prematch>mfa :: </prematch>
+</decoder>
+
+<decoder name="mfa-fields">
+    <parent>mfa</parent>
+    <regex type="pcre2" offset="after_parent">(?'date'[\d\-]*?)\s(?'time'[\d\.\:]*?)\s\+[\d\:]{5}\s\[(?'severity'\w*)\]\s</regex>  -->
+    <order>date,time,severity</order>
+</decoder>
+
+<decoder name="mfa-fields">
+    <parent>mfa</parent>
+    <regex offset="after_parent" type="pcre2">Access(?'action'\w+) sent to [\d\:\.]+ id=(?:\d+) user=\'(?'username'.*?)\'</regex>
+    <order>action,username</order>
+</decoder>
+
+<decoder name="mfa-fields">
+    <parent>mfa</parent>
+    <regex type="pcre2" offset="after_parent">Received AccessRequest from [\d\.\:]*?\sid=(?:\d*?)\suser=\'(?'username'.*?)\'\s</regex>
+    <order>username</order>
+</decoder>
+
+<decoder name="mfa-fields">
+    <parent>mfa</parent>
+    <regex offset="after_parent" type="pcre2">User \'(?'username'.*?)\' credential and status verified successfully in</regex>
+    <order>username</order>
+</decoder>
+
+<decoder name="mfa-fields">
+    <parent>mfa</parent>
+    <regex offset="after_parent" type="pcre2">Second factor for user \'(?'username'.*?)\' (?'status'\w+) successfully. Authenticator: \'(?'authenticator'.*?)\', account: \'(?'account'.*?)\', country: \'(?'country'.*?)\', region: \'(?'region'.*?)\', city: \'(?'city'.*?)\', calling-station-id: (?'dstip'[\d\.]*?), authenticatorId: (?'authID'.*?)$</regex>
+    <order>username,status,authenticator,account,country,region,city,dstip,authID</order>
+</decoder>
+
+<decoder name="mfa-fields">
+    <parent>mfa</parent>
+    <regex offset="after_parent" type="pcre2">Second factor rejected for user \'(?'username'.*?)\' from [\d\:\.]*?$</regex>
+    <order>username</order>
+</decoder>
+
+<decoder name="mfa-fields">
+    <parent>mfa</parent>
+    <regex offset="after_parent" type="pcre2">Verification user \'(?'username'.*?)\' at (?'domain'.*?) failed: (?'failedCause'.*?)$</regex>
+    <order>username,domain,failedCause</order>
+</decoder>
+
+<decoder name="mfa-fields">
+    <parent>mfa</parent>
+    <regex offset="after_parent" type="pcre2">Second factor verification for user \'(?'username'.*?)\' with identity attribyte \'(.*?)\' from [\d\:\.]*? (?'status'\w*?) with reason=\'(?'failedCause'.*)\'. (?'failedCause2'.*)</regex>
+    <order>username,attrib,status,failedCause,failedCause2</order>
+</decoder>
+
+<decoder name="mfa-fields">
+    <parent>mfa</parent>
+    <regex offset="after_parent" type="pcre2">Second factor (?'status'rejected|accepted) for user \'(?'username'.*)\' from [\d\:\.]*?</regex>
+    <order>status,username</order>
+</decoder>
+
+<decoder name="mfa-fields">
+    <parent>mfa</parent>
+    <regex type="pcre2" offset="after_parent">Trying to resolve domain by (?'protocol'\w*?) (?'domainname'\w*?), user: (?'domain'\w*)\\(?'username'\w*?).</regex>
+    <order>protocol,domainname,domain,username</order>
+</decoder>
+
+
+<decoder name="mfa-fields">
+    <parent>mfa</parent>
+    <regex type="pcre2" offset="after_parent">Success find (?'domainname'\w*?) by (?'domain'\w*)\\(?'username'\w*?).</regex>
+    <order>domainname,domain,username</order>
+</decoder>
+
+<decoder name="mfa-fields">
+    <parent>mfa</parent>
+    <regex type="pcre2" offset="after_parent">Changing password for user \'(?'username'\w*?)\' failed: A constraint violation occurred. (Exception from HRESULT: (?'errcode'\w*?))</regex>
+    <order>username,errcode</order>
+</decoder>
+
+<decoder name="mfa-fields">
+    <parent>mfa</parent>
+    <regex type="pcre2" offset="after_parent">Password changed for user \'(?'username'\w*?)\'</regex>
+    <order>username</order>
+</decoder>
+
+<decoder name="mfa-fields">
+    <parent>mfa</parent>
+    <regex type="pcre2" offset="after_parent">for user \'(?'username'\w*?)\' from [\d\.\:]*?, Multifactor API host unreachable</regex>
+    <order>username</order>
+</decoder>
+
+<decoder name="mfa-fields">
+    <parent>mfa</parent>
+    <regex type="pcre2" offset="after_parent">CreatePasswordChallengeState: (?'passwdchstate'[\w\d\-]*)</regex>
+    <order>passwordchstate</order>
+</decoder>
+
+<decoder name="mfa-fields">
+    <parent>mfa</parent>
+    <regex type="pcre2" offset="after_parent">id=(?'id'\d*)</regex>
+    <order>id</order>
+</decoder>
+
+<decoder name="mfa-fields">
+    <parent>mfa</parent>
+    <regex type="pcre2" offset="after_parent">from unknown client (?'dstip'[^:]):(?'dstport'\d*?), ignoring</regex>
+    <order>dstip,dstport</order>
+</decoder>
+
+
+<decoder name="mfa-fields">
+    <parent>mfa</parent>
+    <regex type="pcre2" offset="after_parent">Processing challenge (?'challengeID'\S+) for message id=(?:\d+) from (?'dstip'[^:]*?):(?'dstport'\d*)</regex>
+    <order>challengeID,dstip,dstport</order>
+</decoder>
+
+
+<decoder name="mfa-fields">
+    <parent>mfa</parent>
+    <regex type="pcre2" offset="after_parent">Challenge (?'challengeID'\S+) was added for message id=(?:\d+)</regex>
+    <order>challengeID</order>
+</decoder>
+
+<decoder name="mfa-fields">
+    <parent>mfa</parent>
+    <regex type="pcre2" offset="after_parent">Starting Radius server on (?'radiusserver'[\d\.\:]*)</regex>
+    <order>radiusserver</order>
+</decoder>
+
+<decoder name="mfa-fields">
+    <parent>mfa</parent>
+    <regex type="pcre2" offset="after_parent">Using syslog server (?'syslogserver'[\d\.\:]*)</regex>
+    <order>syslogserver</order>
+</decoder>
+

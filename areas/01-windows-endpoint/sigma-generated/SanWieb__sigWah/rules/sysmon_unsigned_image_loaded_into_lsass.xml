@@ -1,0 +1,12 @@
+<rule id="250870" level="10">
+	<if_group>sysmon_event7</if_group>
+	<field name="win.eventdata.Image">\\\\lsass.exe$</field>
+	<field name="win.eventdata.Signed">false</field>
+	<description>ATT&CK T1003: Unsigned Image Loaded Into LSASS Process</description>
+	<info type="text">Loading unsigned image (DLL, EXE) into LSASS process </info>
+	<info type="text">Falsepositives: Valid user connecting using RDP. </info>
+	<info type="text">Sigma UUID: 857c8db3-c89b-42fb-882b-f681c7cf4da2 </info>
+	<info type="link">https://www.slideshare.net/heirhabarov/hunting-for-credentials-dumping-in-windows-environment </info>
+	<group>attack.credential_access,attack.t1003,MITRE</group>
+</rule>
+

@@ -1,0 +1,8 @@
+<!-- Blocos de configuração extraídos, sem alterações, de wazuh/integrations:integrations/rapid7/README.md @ 38efcaaa3272 -->
+<wodle name="command">
+      <tag>Rapid7 integration</tag>
+      <command>/var/ossec/framework/python/bin/python3 /var/ossec/integrations/custom-rapid7.py</command>
+      <interval>5m</interval>
+      <run_on_start>no</run_on_start>
+      <ignore_output>yes</ignore_output>
+  </wodle>

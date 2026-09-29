@@ -1,0 +1,40 @@
+<!--
+  Rule: Large File Exfiltration (>=100MB)
+  NIST CSF: DE.AE-03 (Event data are aggregated and correlated)
+            PR.DS-02 (Protections against data leaks are implemented)
+  MITRE ATT&CK: T1030 - Data Transfer Size Limits
+  Severity: Medium
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-22
+
+  Description:
+    Detects large uploads based on byte counters in web or proxy logs.
+
+  False Positives:
+    - Legitimate large file uploads (backups, media, updates)
+
+  Tuning Guidance:
+    Increase threshold or restrict to specific egress destinations.
+
+  Assumptions:
+    - Logs include a bytes, bytes_out, or sent field in key=value format.
+
+  Limitations:
+    - Standard combined logs without key=value fields may not trigger.
+
+  Test: tests/sample-logs/de-ae-03/large-file-exfiltration/
+-->
+
+<group name="nist_csf,de.ae-03,data_exfiltration,web">
+
+  <rule id="100008" level="7">
+    <decoded_as>proxy</decoded_as>
+    <regex type="pcre2">\b(POST|PUT)\b.*\b(bytes|bytes_out|sent)=[0-9]{9,}</regex>
+    <description>Possible large data upload detected (>=100MB)</description>
+    <mitre>
+      <id>T1030</id>
+    </mitre>
+    <group>data_exfiltration,nist_pr.ds-02,nist_de.ae-03</group>
+  </rule>
+
+</group>

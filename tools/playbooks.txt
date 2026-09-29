@@ -1,0 +1,5 @@
+# Bibliotecas de playbooks de resposta (clonadas para .cache/playbooks; ver tools/playbooks.py)
+ADORSYS-GIS/wazuh-playbook
+guardsight/gsvsoc_cirt-playbook-battle-cards
+austinsonger/Incident-Playbook
+cisagov/playbook-ng

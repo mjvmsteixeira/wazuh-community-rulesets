@@ -1,0 +1,1 @@
+type=SYSCALL msg=audit(1779953402.123:461): path=/root/.ssh/known_hosts perm=r

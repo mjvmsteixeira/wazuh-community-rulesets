@@ -1,0 +1,24 @@
+<!--
+  Categoria: File Access Auditing (Compliance)
+  Objetivo: auditoria de acesso a pastas sensíveis via Windows Security Event 4663,
+  útil para requisitos de compliance (LGPD, PCI-DSS) que exigem trilha de auditoria
+  de acesso a diretórios específicos.
+
+  Nota: o exemplo abaixo audita a pasta "C:\...\Teste" — substitua pelo caminho real
+  da pasta sensível do seu ambiente (ex: repositórios de dados pessoais, financeiros).
+-->
+<group name="local,file_access_audit,">
+
+  <rule id="110200" level="7">
+    <!-- Herda automaticamente os eventos pré-processados pelo Wazuh para o Windows -->
+    <if_group>windows</if_group>
+
+    <field name="win.system.eventID">^4663$</field>
+
+    <!-- Expressão regular curinga à prova de falhas de barras invertidas -->
+    <field name="win.eventdata.objectName" type="pcre2">(?i)C:.*Teste</field>
+
+    <description>Auditoria: O usuário $(win.eventdata.subjectUserName) acessou a pasta auditada: $(win.eventdata.objectName).</description>
+  </rule>
+
+</group>

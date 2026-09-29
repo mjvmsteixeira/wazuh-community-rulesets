@@ -1,0 +1,22 @@
+name: Removal request / Pedido de remoção
+description: You are the author of a source and want it removed from the registry. / É autor de uma fonte e quer que seja retirada.
+labels: [removal]
+body:
+  - type: input
+    id: repo
+    attributes:
+      label: Your repository / O seu repositório
+      placeholder: https://github.com/owner/repo
+    validations: {required: true}
+  - type: checkboxes
+    id: owner
+    attributes:
+      label: Ownership / Autoria
+      options:
+        - label: I am the author or a maintainer of this repository. / Sou autor ou mantenedor deste repositório.
+          required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else / Mais alguma coisa
+      description: The source is removed from the registry and the page in the next release. / A fonte é retirada do registo e da página na versão seguinte.

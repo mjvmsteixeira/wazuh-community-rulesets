@@ -1,0 +1,119 @@
+<group name="stalwart,mail,">
+  <!-- Base rule for all Stalwart mail server messages -->
+  <rule id="130000" level="0">
+    <decoded_as>stalwart-mail</decoded_as>
+    <description>Stalwart mail server messages.</description>
+  </rule>
+  
+  <!-- Authentication successful -->
+  <rule id="130001" level="3">
+    <if_sid>130000</if_sid>
+    <match>Authentication successful</match>
+    <description>Stalwart: Authentication successful from $(remoteIp) for user $(accountName)</description>
+    <group>stalwart,mail,authentication_success,pci_dss_10.2.5,gdpr_IV_32.2,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.14,tsc_CC6.3,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3</group>
+  </rule>
+  
+  <!-- SMTP EHLO command -->
+  <rule id="130002" level="0">
+    <if_sid>130000</if_sid>
+    <match>SMTP EHLO command</match>
+    <description>Stalwart: SMTP EHLO command from $(remoteIp)</description>
+    <group>mail_protocols,tsc_CC7.2,</group>
+  </rule>
+  
+  <!-- SPF checks failed -->
+  <rule id="130003" level="0">
+    <if_sid>130000</if_sid>
+    <match>SPF EHLO check failed</match>
+    <description>Stalwart: SPF EHLO check failed from $(remoteIp)</description>
+    <group>mail_protocols,email_security,pci_dss_10.6.1,gdpr_IV_35.7.d,</group>
+  </rule>
+  
+  <!-- TLS handshake -->
+  <rule id="130004" level="0">
+    <if_sid>130000</if_sid>
+    <match>TLS handshake</match>
+    <description>Stalwart: TLS handshake from $(remoteIp)</description>
+    <group>tls_encryption,gdpr_IV_32.1.a,pci_dss_4.1,hipaa_164.312.e.1,</group>
+  </rule>
+  
+  <!-- Authentication error -->
+  <rule id="130005" level="5">
+    <if_sid>130000</if_sid>
+    <match>Authentication error</match>
+    <description>Stalwart: Authentication error from $(remoteIp)</description>
+    <group>authentication_failed,pci_dss_10.2.4,pci_dss_10.2.5,gdpr_IV_32.2,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.14,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+  
+  <!-- Security scan ban -->
+  <rule id="130006" level="8">
+    <if_sid>130000</if_sid>
+    <match>Banned due to scan</match>
+    <description>Stalwart: IP $(remoteIp) banned due to scanning activity</description>
+    <group>scan_ban,security_violation,pci_dss_11.4,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+  
+  <!-- IP address blocked -->
+  <rule id="130007" level="6">
+    <if_sid>130000</if_sid>
+    <match>Blocked IP address</match>
+    <description>Stalwart: IP $(remoteIp) blocked</description>
+    <group>ip_blocked,security_violation,pci_dss_11.4,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SI.4,</group>
+  </rule>
+  
+  <!-- TLS certificates not available warning -->
+  <rule id="130008" level="15">
+    <if_sid>130000</if_sid>
+    <match>No TLS certificates available</match>
+    <description>Stalwart: No TLS certificates available - service may be degraded</description>
+    <group>tls_error,service_degradation,pci_dss_4.1,gdpr_IV_32.1.a,hipaa_164.312.e.1,</group>
+  </rule>
+  
+  <!-- ACME certificate management -->
+  <rule id="130009" level="0">
+    <if_sid>130000</if_sid>
+    <match>ACME</match>
+    <description>Stalwart: ACME certificate management activity</description>
+    <group>acme,certificate_management,</group>
+  </rule>
+  
+  <!-- ACME order completed (successful) -->
+  <rule id="130010" level="3">
+    <if_sid>130000</if_sid>
+    <match>ACME order completed</match>
+    <description>Stalwart: ACME certificate order completed successfully</description>
+    <group>acme,certificate_success,</group>
+  </rule>
+  
+  <!-- Multiple blocked IP attempts from same source -->
+  <rule id="130011" level="10" frequency="5" timeframe="120">
+    <if_matched_sid>130007</if_matched_sid>
+    <same_srcip />
+    <description>Stalwart: Multiple blocked connection attempts from same IP</description>
+    <group>multiple_blocks,security_violation,pci_dss_11.4,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+  
+  <!-- Multiple authentication errors -->
+  <rule id="130012" level="10" frequency="3" timeframe="300">
+    <if_matched_sid>130005</if_matched_sid>
+    <same_srcip />
+    <description>Stalwart: Multiple authentication errors from same IP - possible brute force</description>
+    <group>authentication_bruteforce,pci_dss_10.2.4,pci_dss_10.2.5,pci_dss_11.4,gdpr_IV_32.2,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <!-- DANE authentication successful -->
+  <rule id="130014" level="0">
+    <if_sid>130000</if_sid>
+    <match>DANE authentication successful</match>
+    <description>Stalwart: DANE authentication successful for email delivery</description>
+    <group>dane,email_security,tls_encryption,</group>
+  </rule>
+
+  <!-- Multiple certificate warnings -->
+  <rule id="130013" level="10" frequency="10" timeframe="300">
+    <if_matched_sid>130008</if_matched_sid>
+    <description>Stalwart: Persistent TLS certificate issues - service may be compromised</description>
+    <group>tls_error,service_degradation,pci_dss_4.1,gdpr_IV_32.1.a,hipaa_164.312.e.1,</group>
+  </rule>
+
+</group>

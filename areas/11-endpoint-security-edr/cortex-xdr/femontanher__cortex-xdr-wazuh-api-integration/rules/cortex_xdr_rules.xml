@@ -1,0 +1,29 @@
+<group name="cortex_xdr,">
+  <rule id="171100" level="0">
+    <decoded_as>json</decoded_as>
+    <field name="log_source" type="pcre2">^cortex_xdr$</field>
+    <description>Grouping for Cortex XDR JSON logs.</description>
+    <options>no_full_log</options>
+  </rule>
+
+  <rule id="171101" level="0">
+    <if_sid>171100</if_sid>
+    <field name="log_type" type="pcre2">^alert$</field>
+    <description>Cortex XDR alert received. Severity: $(severity). Name: $(name). Host: $(host_name).</description>
+    <options>no_full_log</options>
+  </rule>
+
+  <rule id="171102" level="0">
+    <if_sid>171100</if_sid>
+    <field name="log_type" type="pcre2">^audit_management$</field>
+    <description>Cortex XDR audit management event. Severity: $(AUDIT_SEVERITY). Entity: $(AUDIT_ENTITY). Subtype: $(AUDIT_ENTITY_SUBTYPE).</description>
+    <options>no_full_log</options>
+  </rule>
+
+  <rule id="171103" level="0">
+    <if_sid>171100</if_sid>
+    <field name="log_type" type="pcre2">^audit_agent$</field>
+    <description>Cortex XDR audit agent event. Severity: $(SEVERITY). Endpoint: $(ENDPOINTNAME). Type: $(TYPE). Subtype: $(SUBTYPE).</description>
+    <options>no_full_log</options>
+  </rule>
+</group>

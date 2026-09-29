@@ -1,0 +1,40 @@
+<!--
+  Rule: Sensitive File Permission Change
+  NIST CSF: PR.DS-01 (Data-at-rest is protected)
+            PR.AA-05 (Access permissions and authorizations are managed)
+  MITRE ATT&CK: T1222.002 - File and Directory Permissions Modification: Linux and Mac File and Directory Permissions Modification
+  Severity: Medium
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-21
+
+  Description:
+    Detects chmod/chown/setfacl on sensitive paths via auditd logs.
+
+  False Positives:
+    - Patch cycles or approved configuration changes
+
+  Tuning Guidance:
+    Narrow the path regex or add allowlists for approved change windows.
+
+  Assumptions:
+    - auditd logs include comm= and path= fields.
+
+  Limitations:
+    - Non-standard tools that change permissions may not match comm= patterns.
+
+  Test: tests/sample-logs/pr-ds-01/sensitive-permission-change/
+-->
+
+<group name="nist_csf,pr.ds-01,permissions,auditd">
+
+  <rule id="100014" level="7">
+    <if_sid>80700</if_sid>
+    <regex type="pcre2">(path=/(etc|root|var/www|opt)/.*comm="(chmod|chown|setfacl)")|(comm="(chmod|chown|setfacl)".*path=/(etc|root|var/www|opt)/)</regex>
+    <description>Permission change on sensitive path</description>
+    <mitre>
+      <id>T1222.002</id>
+    </mitre>
+    <group>permissions_change,nist_pr.ds-01,nist_pr.aa-05</group>
+  </rule>
+
+</group>

@@ -1,0 +1,26 @@
+<group name="syscheck,yara,linux,">
+
+  <rule id="100200" level="7">
+    <if_sid>550</if_sid>
+    <field name="file" type="pcre2">^/root/</field>
+    <description>File modified in monitored Linux YARA path.</description>
+  </rule>
+
+  <rule id="100201" level="7">
+    <if_sid>554</if_sid>
+    <field name="file" type="pcre2">^/root/</field>
+    <description>File added to monitored Linux YARA path.</description>
+  </rule>
+
+  <rule id="100202" level="0">
+    <decoded_as>yara_decoder</decoded_as>
+    <description>YARA grouping rule.</description>
+  </rule>
+
+  <rule id="100203" level="12">
+    <if_sid>100202</if_sid>
+    <match>wazuh-yara: INFO - Scan result: </match>
+    <description>File "$(yara_scanned_file)" is a positive YARA match. Rule: $(yara_rule)</description>
+  </rule>
+
+</group>

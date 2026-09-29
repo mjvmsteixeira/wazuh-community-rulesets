@@ -1,0 +1,47 @@
+<decoder name="user_login">
+  <prematch>user (\S+) logged (\S+) from (\S+) via (\S+)</prematch>
+  <regex type="pcre2">user (\S+) logged (\S+) from (\S+) via (\S+)</regex>
+  <order>username, action, srcip, access_method</order>
+</decoder>
+
+<decoder name="user_login_failure">
+  <prematch>login failure for user (\S+) from (\S+) via (\S+)</prematch>
+  <regex type="pcre2">login failure for user (\S+) from (\S+) via (\S+)</regex>
+  <order>username, srcip, access_method</order>
+</decoder>
+
+<decoder name="wireguard">
+  <prematch>wireguard user (\S+) logged (\S+) from (\S+)</prematch>
+  <regex type="pcre2">wireguard user (\S+) logged (\S+) from (\S+)</regex>
+  <order>username, action, srcip</order>
+</decoder>
+
+<decoder name="ovpn">
+  <prematch>(\S+) logged (\S+), (\S+) from (\S+)</prematch>
+  <regex type="pcre2">(\S+) logged (\S+), (\S+) from (\S+)</regex>
+  <order>username, action, localip, srcip</order>
+</decoder>
+
+<decoder name="filter_rule_change">
+  <prematch type="pcre2">filter rule (changed|removed|added) by</prematch>
+  <regex type="pcre2">filter rule (changed|removed|added) by tcp-msg\(winbox\):(\S+)@(\S+) \((.*)\)</regex>
+  <order>action, username, srcip, rule_details</order>
+</decoder>
+
+<decoder name="raw_rule_change">
+  <prematch type="pcre2">raw rule (changed|removed|added) by</prematch>
+  <regex type="pcre2">raw rule (changed|removed|added) by tcp-msg\(winbox\):(\S+)@(\S+) \((.*)\)</regex>
+  <order>action, username, srcip, rule_details</order>
+</decoder>
+
+<decoder name="user_change">
+  <prematch type="pcre2">user (\S+) (added|password changed|removed) by</prematch>
+  <regex type="pcre2">user (\S+) (added|password changed|removed) by tcp-msg\(winbox\):(\S+)@(\S+) \((.*)\)</regex>
+  <order>action, newuser, username, srcip, rule_details</order>
+</decoder>
+
+<decoder name="mikrotik_log">
+  <prematch type="pcre2">(\S+) (\S+) (\S+) by</prematch>
+  <regex type="pcre2">(\S+) (\S+) (\S+) by tcp-msg\(winbox\):(\S+)@(\S+) \((.*)\)</regex>
+  <order>type, target, action, username, srcip, rule_details</order>
+</decoder>

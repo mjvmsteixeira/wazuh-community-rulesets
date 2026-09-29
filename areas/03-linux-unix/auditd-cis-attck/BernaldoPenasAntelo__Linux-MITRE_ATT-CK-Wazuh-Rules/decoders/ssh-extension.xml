@@ -1,0 +1,13 @@
+<!--
+sshd decoder extension
+
+Feb 16 17:09:54 IDSTest sshd[9417]: fatal: Access denied for user testuser2 by PAM account configuration [preauth]
+-->
+
+
+<decoder name="ssh-fatal">
+  <parent>sshd</parent>
+  <prematch>^fatal: </prematch>
+  <regex offset="after_prematch">(Access denied) for user (\.*) by PAM account configuration [preauth]</regex>
+  <order>event.action, user.name</order>
+</decoder>

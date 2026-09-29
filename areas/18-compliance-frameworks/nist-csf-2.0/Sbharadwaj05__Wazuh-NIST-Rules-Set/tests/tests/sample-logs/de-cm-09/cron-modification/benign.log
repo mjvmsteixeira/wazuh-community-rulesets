@@ -1,0 +1,1 @@
+type=SYSCALL msg=audit(1779953100.123:456): path=/var/log/nginx/access.log perm=r

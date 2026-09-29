@@ -1,0 +1,8 @@
+<!-- Blocos de configuração extraídos, sem alterações, de bayusky/wazuh-custom-rules-and-decoders:ESET-integration/Readme.md @ a53de6161c8f -->
+<localfile>` block **inside** the `<localfile>` section:
+
+```xml
+<localfile>
+  <log_format>json</log_format>
+  <location>/var/log/eset-integration.log</location>
+</localfile>

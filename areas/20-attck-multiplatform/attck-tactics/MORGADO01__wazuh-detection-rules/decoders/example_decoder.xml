@@ -1,0 +1,26 @@
+<!--
+  Decoder genérico de exemplo — Autenticação SSH
+  Objetivo: extrair usuário, IP de origem e resultado (falha/sucesso)
+  de logs padrão de autenticação Linux (auth.log / secure).
+
+  ATENÇÃO: Exemplo educacional/portfólio. Ajuste conforme o formato
+  real de log do seu ambiente antes de usar em produção.
+-->
+
+<decoder name="example-sshd">
+  <program_name>^sshd</program_name>
+</decoder>
+
+<decoder name="example-sshd-auth-fail">
+  <parent>example-sshd</parent>
+  <prematch>^Failed password</prematch>
+  <regex offset="after_prematch">^ for (\S+) from (\S+) port (\d+)</regex>
+  <order>user, srcip, srcport</order>
+</decoder>
+
+<decoder name="example-sshd-auth-success">
+  <parent>example-sshd</parent>
+  <prematch>^Accepted password|^Accepted publickey</prematch>
+  <regex offset="after_prematch">^ for (\S+) from (\S+) port (\d+)</regex>
+  <order>user, srcip, srcport</order>
+</decoder>

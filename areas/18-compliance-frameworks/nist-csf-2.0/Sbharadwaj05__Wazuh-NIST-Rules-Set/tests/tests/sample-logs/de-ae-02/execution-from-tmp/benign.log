@@ -1,0 +1,1 @@
+type=SYSCALL msg=audit(1779953405.123:464): exe="/usr/bin/python3"

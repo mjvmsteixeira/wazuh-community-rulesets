@@ -1,0 +1,214 @@
+<!--
+    ____________________________________________________________________________________________________________
+
+    Zyxel Switch decoders - Tested on Zyxel XS3800
+    
+    Related rules: 0600-zyxel-switch_rules.xml
+
+    Original syslog message format:
+      YYYY-MM-DDTHH:MM:SS+HH:MM HOST subsystem: message
+    
+    Logs format as found in archives.log:    
+      YYYY Mon DD HH:MM:SS wazuh->SW-IP  YYYY-MM-DDTHH:MM:SS+HH:MM HOST subsystem: message
+
+    Example from archives.log:
+      2026 Feb 19 05:59:37 wazuh->192.168.0.20  2026-02-19T08:02:20+02:00 ZYXEL-SW-01 authentication: SSH user admin login [IP address = 192.168.0.15]        
+
+    Supported facilities:
+      authentication, interface, system, ddmi, dhcp
+    ____________________________________________________________________________________________________________
+
+    Made by:
+        dominiktr
+-->
+
+<!-- GENERAL DECODERS -->
+<decoder name="zyxel-auth">
+  <prematch type="pcre2">\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\+\d{2}:\d{2}|Z) \S+ authentication:</prematch>
+</decoder>
+
+<decoder name="zyxel-interface">
+  <prematch type="pcre2">\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\+\d{2}:\d{2}|Z) \S+ interface:</prematch>
+</decoder>
+
+<decoder name="zyxel-system">
+  <prematch type="pcre2">\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\+\d{2}:\d{2}|Z) \S+ system:</prematch>
+</decoder>
+
+<decoder name="zyxel-ddmi">
+  <prematch type="pcre2">\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\+\d{2}:\d{2}|Z) \S+ ddmi:</prematch>
+</decoder>
+
+<decoder name="zyxel-dhcp">
+  <prematch type="pcre2">\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\+\d{2}:\d{2}|Z) \S+ dhcp:</prematch>
+</decoder>
+
+<!-- DETAILED DECODERS -->
+<!-- AUTH - detailed -->
+<decoder name="zyxel-auth-success">
+  <parent>zyxel-auth</parent>
+  <prematch type="pcre2">login|logout|connected</prematch>
+  <regex type="pcre2">\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\+\d{2}:\d{2}|Z) (\S+) authentication: (\S+) user (.*?) (login|logout|connected) \[IP address = (\S+)\]</regex>
+  <order>zyxel_hostname, protocol, dstuser, zyxel_action, srcip</order>
+</decoder>
+
+<decoder name="zyxel-auth-fail">
+  <parent>zyxel-auth</parent>
+  <prematch type="pcre2">authentication failure</prematch>
+  <regex type="pcre2">\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\+\d{2}:\d{2}|Z) (\S+) authentication: (\S+) authentication failure \[username: (.*), IP address = ([0-9.]+)\]</regex>
+  <order>zyxel_hostname, protocol, dstuser, srcip</order>
+</decoder>
+
+<!-- SYSTEM - detailed -->
+<decoder name="zyxel-system-ntp-success">
+  <parent>zyxel-system</parent>
+  <prematch type="pcre2">Gets the time and date from a time server successfully</prematch>
+  <regex type="pcre2">\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\+\d{2}:\d{2}|Z) (\S+) system:</regex>
+  <order>zyxel_hostname</order>
+</decoder>
+
+<decoder name="zyxel-system-ntp-fail">
+  <parent>zyxel-system</parent>
+  <prematch type="pcre2">Gets the time and date from a time server failed</prematch>
+  <regex type="pcre2">\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\+\d{2}:\d{2}|Z) (\S+) system:</regex>
+  <order>zyxel_hostname</order>
+</decoder>
+
+<decoder name="zyxel-system-psu-change">
+  <parent>zyxel-system</parent>
+  <prematch type="pcre2">status of the power source</prematch>
+  <regex type="pcre2">\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\+\d{2}:\d{2}|Z) (\S+) system: The status of the power source (\S+) has changed from '(.+?)' to '(.+?)' state</regex>
+  <order>zyxel_hostname, zyxel_psu, zyxel_psu_state_from, zyxel_psu_state_to</order>
+</decoder>
+
+<decoder name="zyxel-system-cold-start">
+  <parent>zyxel-system</parent>
+  <prematch type="pcre2">System cold start</prematch>
+  <regex type="pcre2">\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\+\d{2}:\d{2}|Z) (\S+) system:</regex>
+  <order>zyxel_hostname</order>
+</decoder>
+
+<decoder name="zyxel-system-warm-start">
+  <parent>zyxel-system</parent>
+  <prematch type="pcre2">System warm start</prematch>
+  <regex type="pcre2">\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\+\d{2}:\d{2}|Z) (\S+) system:</regex>
+  <order>zyxel_hostname</order>
+</decoder>
+
+<decoder name="zyxel-system-reboot">
+  <parent>zyxel-system</parent>
+  <prematch type="pcre2">System reboot</prematch>
+  <regex type="pcre2">\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\+\d{2}:\d{2}|Z) (\S+) system:</regex>
+  <order>zyxel_hostname</order>
+</decoder>
+
+<decoder name="zyxel-system-reset-unmanaged">
+  <parent>zyxel-system</parent>
+  <prematch type="pcre2">System has reset without management command</prematch>
+  <regex type="pcre2">\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\+\d{2}:\d{2}|Z) (\S+) system:</regex>
+  <order>zyxel_hostname</order>
+</decoder>
+
+<decoder name="zyxel-system-reset-managed">
+  <parent>zyxel-system</parent>
+  <prematch type="pcre2">System has reset due to a management command</prematch>
+  <regex type="pcre2">\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\+\d{2}:\d{2}|Z) (\S+) system:</regex>
+  <order>zyxel_hostname</order>
+</decoder>
+
+<decoder name="zyxel-system-firmware-boot">
+  <parent>zyxel-system</parent>
+  <prematch type="pcre2">F/W version.*boot up</prematch>
+  <regex type="pcre2">\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\+\d{2}:\d{2}|Z) (\S+) system: Image (\d+) F/W version (\S+) \| (\S+) boot up</regex>
+  <order>zyxel_hostname, zyxel_image_id, zyxel_fw_version, zyxel_fw_date</order>
+</decoder>
+
+<decoder name="zyxel-system-config-save">
+  <parent>zyxel-system</parent>
+  <prematch type="pcre2">Save system configuration</prematch>
+  <regex type="pcre2">\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\+\d{2}:\d{2}|Z) (\S+) system: Save system configuration(?: (\d+))?(?: (to custom default))?(?: (successfully))?</regex>
+  <order>zyxel_hostname, zyxel_config_slot, zyxel_config_target, zyxel_config_result</order>
+</decoder>
+
+<!-- INTERFACE - detailed -->
+<decoder name="zyxel-interface-link-up">
+  <parent>zyxel-interface</parent>
+  <prematch type="pcre2">[Pp]ort \d+ link up</prematch>
+  <regex type="pcre2">\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\+\d{2}:\d{2}|Z) (\S+) interface: [Pp]ort (\d+) link up (\S+)</regex>
+  <order>zyxel_hostname, zyxel_port, zyxel_link_speed</order>
+</decoder>
+
+<decoder name="zyxel-interface-link-down">
+  <parent>zyxel-interface</parent>
+  <prematch type="pcre2">[Pp]ort \d+ link down</prematch>
+  <regex type="pcre2">\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\+\d{2}:\d{2}|Z) (\S+) interface: [Pp]ort (\d+) link down</regex>
+  <order>zyxel_hostname, zyxel_port</order>
+</decoder>
+
+<decoder name="zyxel-interface-autoneg-fail">
+  <parent>zyxel-interface</parent>
+  <prematch type="pcre2">autonegotiation has failed</prematch>
+  <regex type="pcre2">\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\+\d{2}:\d{2}|Z) (\S+) interface: port (\d+) link speed and duplex mode autonegotiation has failed</regex>
+  <order>zyxel_hostname, zyxel_port</order>
+</decoder>
+
+<decoder name="zyxel-interface-autoneg-recover">
+  <parent>zyxel-interface</parent>
+  <prematch type="pcre2">autonegotiation has recovered</prematch>
+  <regex type="pcre2">\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\+\d{2}:\d{2}|Z) (\S+) interface: port (\d+) link speed and duplex mode autonegotiation has recovered to normal state</regex>
+  <order>zyxel_hostname, zyxel_port</order>
+</decoder>
+
+<!-- DDMI - detailed -->
+<decoder name="zyxel-ddmi-cleared">
+  <parent>zyxel-ddmi</parent>
+  <prematch type="pcre2">has been cleared</prematch>
+  <regex type="pcre2">\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\+\d{2}:\d{2}|Z) (\S+) ddmi: Abnormal (.+?) state at port (\d+) has been cleared</regex>
+  <order>zyxel_hostname, zyxel_ddmi_type, zyxel_port</order>
+</decoder>
+
+<decoder name="zyxel-ddmi-alarm">
+  <parent>zyxel-ddmi</parent>
+  <prematch type="pcre2">Threshold\(</prematch>
+  <regex type="pcre2">\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\+\d{2}:\d{2}|Z) (\S+) ddmi: (\w+) (.+?) Threshold\(([^)]+)\),Port (\d+), CurValue:([^\s,]+)</regex>
+  <order>zyxel_hostname, zyxel_ddmi_type, zyxel_ddmi_alarm, zyxel_ddmi_threshold, zyxel_port, zyxel_ddmi_current</order>
+</decoder>
+
+<!-- DHCP - detailed -->
+<decoder name="zyxel-dhcp-duplicated-subnet">
+  <parent>zyxel-dhcp</parent>
+  <prematch type="pcre2">Duplicated subnet</prematch>
+  <regex type="pcre2">\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\+\d{2}:\d{2}|Z) (\S+) dhcp: Duplicated subnet configuration on interface ([\w ]+\d+), IP (\S+), DHCP server (\S+)</regex>
+  <order>zyxel_hostname, zyxel_interface, srcip, zyxel_dhcp_server</order>
+</decoder>
+
+<!-- FALLBACK child decoders -->
+<decoder name="zyxel-auth">
+  <parent>zyxel-auth</parent>
+  <regex type="pcre2">\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[^\s]+ (\S+) authentication: (.*)</regex>
+  <order>zyxel_hostname, message</order>
+</decoder>
+
+<decoder name="zyxel-system">
+  <parent>zyxel-system</parent>
+  <regex type="pcre2">\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[^\s]+ (\S+) system: (.*)</regex>
+  <order>zyxel_hostname, message</order>
+</decoder>
+
+<decoder name="zyxel-interface">
+  <parent>zyxel-interface</parent>
+  <regex type="pcre2">\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[^\s]+ (\S+) interface: (.*)</regex>
+  <order>zyxel_hostname, message</order>
+</decoder>
+
+<decoder name="zyxel-ddmi">
+  <parent>zyxel-ddmi</parent>
+  <regex type="pcre2">\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[^\s]+ (\S+) ddmi: (.*)</regex>
+  <order>zyxel_hostname, message</order>
+</decoder>
+
+<decoder name="zyxel-dhcp">
+  <parent>zyxel-dhcp</parent>
+  <regex type="pcre2">\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[^\s]+ (\S+) dhcp: (.*)</regex>
+  <order>zyxel_hostname, message</order>
+</decoder>

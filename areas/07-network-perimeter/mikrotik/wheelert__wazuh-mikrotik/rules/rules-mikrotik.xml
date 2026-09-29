@@ -1,0 +1,233 @@
+<!--
+  Wazuh Rules for MikroTik RouterOS
+  
+  Copy to: /var/ossec/etc/rules/
+  Include in ossec.conf: <rule_dir>rules_merged.xml</rule_dir>
+  or add: <rule_include>rules-mikrotik.xml</rule_include>
+-->
+
+<group name="mikrotik,">
+
+  <!-- ==================== AUTHENTICATION RULES ==================== -->
+  
+  <!-- Login success -->
+  <rule id="110001" level="3">
+    <decoded_as>mikrotik</decoded_as>
+    <match> logged in from </match>
+    <description>MikroTik: Successful user login</description>
+    <group>authentication_success,</group>
+  </rule>
+
+  <!-- Login failure -->
+  <rule id="110002" level="5">
+    <decoded_as>mikrotik</decoded_as>
+    <match> login failure for user </match>
+    <description>MikroTik: Failed login attempt</description>
+    <group>authentication_failed,</group>
+  </rule>
+
+  <!-- Multiple failed logins -->
+  <rule id="110003" level="10" frequency="5" timeframe="120">
+    <if_matched_sid>110002</if_matched_sid>
+    <same_source_ip />
+    <description>MikroTik: Multiple failed login attempts from same IP</description>
+    <group>authentication_failed,attack,</group>
+  </rule>
+
+  <!-- Logout -->
+  <rule id="110004" level="3">
+    <decoded_as>mikrotik</decoded_as>
+    <match> logged out from </match>
+    <description>MikroTik: User logged out</description>
+    <group>authentication_success,</group>
+  </rule>
+
+  <!-- ==================== FIREWALL RULES ==================== -->
+
+  <!-- Firewall drop events -->
+  <rule id="110101" level="4">
+    <decoded_as>mikrotik</decoded_as>
+    <match>drop: in:</match>
+    <description>MikroTik: Firewall dropped connection</description>
+    <group>firewall_drop,</group>
+  </rule>
+
+  <!-- Multiple drops from same source -->
+  <rule id="110102" level="7" frequency="10" timeframe="60">
+    <if_matched_sid>110101</if_matched_sid>
+    <same_source_ip />
+    <description>MikroTik: Multiple firewall drops from same source</description>
+    <group>firewall_drop,recon,</group>
+  </rule>
+
+  <!-- Invalid packets -->
+  <rule id="110103" level="4">
+    <decoded_as>mikrotik</decoded_as>
+    <match>invalid: in:</match>
+    <description>MikroTik: Invalid packet dropped</description>
+    <group>firewall_drop,</group>
+  </rule>
+
+  <!-- Port scan detection (SYN flood) -->
+  <rule id="110104" level="8" frequency="15" timeframe="60">
+    <if_matched_sid>110101</if_matched_sid>
+    <same_source_ip />
+    <match>(SYN)</match>
+    <description>MikroTik: Possible port scan detected (SYN flood)</description>
+    <group>recon,attack,</group>
+  </rule>
+
+  <!-- ==================== SYSTEM RULES ==================== -->
+
+  <!-- System startup -->
+  <rule id="110201" level="4">
+    <decoded_as>mikrotik</decoded_as>
+    <match>system started</match>
+    <description>MikroTik: Router has started</description>
+    <group>system_event,</group>
+  </rule>
+
+  <!-- System error -->
+  <rule id="110202" level="6">
+    <decoded_as>mikrotik</decoded_as>
+    <match>error</match>
+    <description>MikroTik: System error detected</description>
+    <group>system_error,</group>
+  </rule>
+
+  <!-- Critical error -->
+  <rule id="110203" level="9">
+    <decoded_as>mikrotik</decoded_as>
+    <match>critical</match>
+    <description>MikroTik: Critical system error</description>
+    <group>system_error,</group>
+  </rule>
+
+  <!-- ==================== CONFIGURATION RULES ==================== -->
+
+  <!-- Configuration change -->
+  <rule id="110301" level="5">
+    <decoded_as>mikrotik</decoded_as>
+    <match>changed configuration by</match>
+    <description>MikroTik: Configuration was changed</description>
+    <group>configuration_changed,</group>
+  </rule>
+
+  <!-- Script execution -->
+  <rule id="110302" level="4">
+    <decoded_as>mikrotik</decoded_as>
+    <match>script</match>
+    <description>MikroTik: Script executed</description>
+    <group>configuration_changed,</group>
+  </rule>
+
+  <!-- Backup created -->
+  <rule id="110303" level="4">
+    <decoded_as>mikrotik</decoded_as>
+    <match>backup created by</match>
+    <description>MikroTik: Backup created</description>
+    <group>system_event,</group>
+  </rule>
+
+  <!-- ==================== NETWORK RULES ==================== -->
+
+  <!-- Interface down -->
+  <rule id="110401" level="5">
+    <decoded_as>mikrotik</decoded_as>
+    <match>interface </match>
+    <match> down </match>
+    <description>MikroTik: Interface went down</description>
+    <group>network_event,</group>
+  </rule>
+
+  <!-- Interface up -->
+  <rule id="110402" level="3">
+    <decoded_as>mikrotik</decoded_as>
+    <match>interface </match>
+    <match> up </match>
+    <description>MikroTik: Interface came up</description>
+    <group>network_event,</group>
+  </rule>
+
+  <!-- ==================== VPN RULES ==================== -->
+
+  <!-- PPP connection established -->
+  <rule id="110501" level="3">
+    <decoded_as>mikrotik</decoded_as>
+    <match>PPP connected for user</match>
+    <description>MikroTik: PPP connection established</description>
+    <group>vpn,vpn_success,</group>
+  </rule>
+
+  <!-- PPP connection terminated -->
+  <rule id="110502" level="3">
+    <decoded_as>mikrotik</decoded_as>
+    <match>PPP disconnected for user</match>
+    <description>MikroTik: PPP connection terminated</description>
+    <group>vpn,</group>
+  </rule>
+
+  <!-- L2TP/IPsec connection -->
+  <rule id="110503" level="3">
+    <decoded_as>mikrotik</decoded_as>
+    <match>IPsec SA established</match>
+    <description>MikroTik: IPsec SA established</description>
+    <group>vpn,vpn_success,</group>
+  </rule>
+
+  <!-- OpenVPN connection -->
+  <rule id="110504" level="3">
+    <decoded_as>mikrotik</decoded_as>
+    <match>OVPN client connected</match>
+    <description>MikroTik: OpenVPN client connected</description>
+    <group>vpn,vpn_success,</group>
+  </rule>
+
+  <!-- WireGuard connection -->
+  <rule id="110505" level="3">
+    <decoded_as>mikrotik</decoded_as>
+    <match>WireGuard peer </match>
+    <match>connected</match>
+    <description>MikroTik: WireGuard peer connected</description>
+    <group>vpn,vpn_success,</group>
+  </rule>
+
+  <!-- ==================== HOTSPOT RULES ==================== -->
+
+  <!-- Hotspot login -->
+  <rule id="110601" level="3">
+    <decoded_as>mikrotik</decoded_as>
+    <match> logged in </match>
+    <match>hotspot</match>
+    <description>MikroTik: Hotspot user logged in</description>
+    <group>authentication_success,hotspot,</group>
+  </rule>
+
+  <!-- Hotspot logout -->
+  <rule id="110602" level="3">
+    <decoded_as>mikrotik</decoded_as>
+    <match> logged out </match>
+    <match>hotspot</match>
+    <description>MikroTik: Hotspot user logged out</description>
+    <group>authentication_success,hotspot,</group>
+  </rule>
+
+  <!-- ==================== DHCP RULES ==================== -->
+
+  <!-- DHCP assignment -->
+  <rule id="110701" level="1">
+    <decoded_as>mikrotik</decoded_as>
+    <match>assigned</match>
+    <description>MikroTik: DHCP IP assigned</description>
+    <group>network_event,dhcp,</group>
+  </rule>
+
+  <!-- DHCP deassigned -->
+  <rule id="110702" level="1">
+    <decoded_as>mikrotik</decoded_as>
+    <match>deassigned</match>
+    <description>MikroTik: DHCP IP deassigned</description>
+    <group>network_event,dhcp,</group>
+  </rule>
+
+</group>

@@ -1,0 +1,40 @@
+<!--
+  Rule: Sudo Privilege Escalation
+  NIST CSF: PR.AA-05 (Access permissions and authorizations are managed)
+            DE.CM-03 (Personnel activity is monitored to detect potential events)
+  MITRE ATT&CK: T1548.003 - Abuse Elevation Control Mechanism: Sudo and Sudo Caching
+  Severity: Medium
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-21
+
+  Description:
+    Detects sudo executions that elevate to root via USER=root and a command.
+
+  False Positives:
+    - Legitimate admin activity
+
+  Tuning Guidance:
+    Add allowlists for known admin groups or automation accounts.
+
+  Assumptions:
+    - Wazuh sudo decoder is enabled.
+
+  Limitations:
+    - Does not distinguish between approved and suspicious sudo commands.
+
+  Test: tests/sample-logs/pr-aa-05/sudo-privilege-escalation/
+-->
+
+<group name="nist_csf,pr.aa-05,authorization,sudo">
+
+  <rule id="100002" level="7">
+    <if_sid>5402, 5403</if_sid>
+    <regex type="pcre2">USER=root.*COMMAND=.*(/bin/bash|/bin/sh|/bin/su|\bsu\b)</regex>
+    <description>Privilege escalation via sudo to interactive root shell</description>
+    <mitre>
+      <id>T1548.003</id>
+    </mitre>
+    <group>privilege_escalation,sudo,nist_pr.aa-05,nist_de.cm-03</group>
+  </rule>
+
+</group>

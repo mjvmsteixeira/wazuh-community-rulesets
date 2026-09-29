@@ -1,0 +1,453 @@
+<!--
+    ____________________________________________________________________________________________________________
+    
+    Cisco Catalyst 1200 Series Switch Rules
+    
+    Related decoders: 0605-Cisco-Catalyst-1200_decoders.xml
+    
+    Rule ID range: 1600 - 1699
+    
+    ____________________________________________________________________________________________________________
+    Made by:
+        dominiktr
+-->
+
+<group name="cisco,cisco-switch,">
+
+  <!-- ########################## AAA ########################## -->
+  
+  <!-- New HTTPS connection (authenticated) -->
+  <rule id="1600" level="3">
+    <decoded_as>cisco-switch-aaa-connect-https</decoded_as>
+    <description>Cisco Switch: New HTTPS session opened by $(srcuser) from $(srcip)</description>
+    <group>authentication_success,web,</group>
+  </rule>
+  
+  <!-- New HTTPS connection (pre-auth / no user yet) -->
+  <rule id="1601" level="3">
+    <decoded_as>cisco-switch-aaa-connect-https-nouser</decoded_as>
+    <description>Cisco Switch: New HTTPS connection from $(srcip) before authentication</description>
+    <group>web,</group>
+  </rule>
+  
+  <!-- New SSH/CLI session opened -->
+  <rule id="1602" level="3">
+    <decoded_as>cisco-switch-aaa-connect-ssh</decoded_as>
+    <description>Cisco Switch: New SSH CLI session opened by $(srcuser) from $(srcip)</description>
+    <group>authentication_success,remote_access,</group>
+  </rule>
+  
+  <!-- HTTPS session closed -->
+  <rule id="1603" level="3">
+    <decoded_as>cisco-switch-aaa-disconnect-https</decoded_as>
+    <description>Cisco Switch: HTTPS session terminated for $(srcuser) from $(srcip)</description>
+    <group>web,</group>
+  </rule>
+  
+  <!-- SSH/CLI session closed -->
+  <rule id="1604" level="3">
+    <decoded_as>cisco-switch-aaa-disconnect-ssh</decoded_as>
+    <description>Cisco Switch: SSH CLI session terminated for $(srcuser) from $(srcip)</description>
+    <group>remote_access,</group>
+  </rule>
+
+    <!-- SSH connection rejected -->
+    <rule id="1605" level="6">
+      <decoded_as>cisco-switch-aaa-reject-ssh</decoded_as>
+      <description>Cisco Switch: SSH connection rejected for user $(srcuser) from $(srcip) to $(dstip)</description>
+      <group>authentication_failed,ssh,</group>
+    </rule>
+    
+    <!-- HTTPS connection rejected -->
+    <rule id="1606" level="6">
+      <decoded_as>cisco-switch-aaa-reject-https</decoded_as>
+      <description>Cisco Switch: HTTPS connection rejected for user $(srcuser) from $(srcip) to $(dstip)</description>
+      <group>authentication_failed,web,</group>
+    </rule>
+      
+  <!-- Connection rejected -->
+  <rule id="1607" level="6">
+    <decoded_as>cisco-switch-aaa-reject</decoded_as>
+    <description>Cisco Switch: AAA connection rejected from $(srcip) to $(dstip)</description>
+    <group>authentication_failed,</group>
+  </rule>
+
+  <!-- Brute-force: multiple AAA rejections from same source -->
+  <rule id="1608" level="10" frequency="5" timeframe="120">
+    <if_matched_sid>1605</if_matched_sid>
+    <same_srcip/>
+    <description>Cisco Switch: Multiple AAA rejections from $(srcip) - possible brute-force</description>
+    <group>authentication_failures,brute_force,</group>
+  </rule>
+  
+  <!-- AAA generic fallback -->
+  <rule id="1609" level="2">
+    <decoded_as>cisco-switch-aaa-generic</decoded_as>
+    <description>Cisco Switch: AAA event ($(event_id)) - $(extra_data)</description>
+    <group>authentication,</group>
+  </rule>
+
+
+  <!-- ########################## COPY ########################## -->
+  
+  <!-- File copy operation -->
+  <rule id="1610" level="5">
+    <decoded_as>cisco-switch-copy-filecpy</decoded_as>
+    <description>Cisco Switch: File copy operation - source $(url) destination $(extra_data)</description>
+    <group>config_changed,</group>
+  </rule>
+  
+  <!-- Copy TRAP notification -->
+  <rule id="1611" level="5">
+    <decoded_as>cisco-switch-copy-trap</decoded_as>
+    <description>Cisco Switch: Copy TRAP notification - $(extra_data)</description>
+    <group>config_changed,</group>
+  </rule>
+  
+  <!-- COPY generic fallback -->
+  <rule id="1612" level="2">
+    <decoded_as>cisco-switch-copy-generic</decoded_as>
+    <description>Cisco Switch: COPY event ($(event_id)) - $(extra_data)</description>
+  </rule>
+
+  
+  <!-- ########################## CBD ########################## -->
+  
+  <!-- CBD connection status -->
+  <rule id="1615" level="3">
+    <decoded_as>cisco-switch-cbd-connstat</decoded_as>
+    <description>Cisco Switch: CBD status change - $(extra_data)</description>
+    <group>network,</group>
+  </rule>
+  
+  <!-- CBD generic fallback -->
+  <rule id="1616" level="2">
+    <decoded_as>cisco-switch-cbd-generic</decoded_as>
+    <description>Cisco Switch: CBD event ($(event_id)) - $(extra_data)</description>
+  </rule>
+
+  
+  <!-- ########################## INIT ########################## -->
+  
+  <!-- Initialization completed -->
+  <rule id="1620" level="3">
+    <decoded_as>cisco-switch-init-completed</decoded_as>
+    <description>Cisco Switch: Initialization completed</description>
+    <group>system_startup,</group>
+  </rule>
+  
+  <!-- Cold startup -->
+  <rule id="1621" level="7">
+    <decoded_as>cisco-switch-init-startup</decoded_as>
+    <description>Cisco Switch: Cold startup detected</description>
+    <group>system_startup,</group>
+  </rule>
+  
+  <!-- INIT generic (warm reload, other) -->
+  <rule id="1622" level="3">
+    <decoded_as>cisco-switch-init-generic</decoded_as>
+    <description>Cisco Switch: INIT event ($(event_id)) - $(extra_data)</description>
+    <group>system_startup,</group>
+  </rule>
+
+  
+  <!-- ########################## LINK ########################## -->
+  
+  <!-- Interface up -->
+  <rule id="1625" level="3">
+    <decoded_as>cisco-switch-link-up</decoded_as>
+    <description>Cisco Switch: Interface came up - $(extra_data)</description>
+    <group>network,</group>
+  </rule>
+  
+  <!-- Interface down -->
+  <rule id="1626" level="5">
+    <decoded_as>cisco-switch-link-down</decoded_as>
+    <description>Cisco Switch: Interface went down - $(extra_data)</description>
+    <group>network,</group>
+  </rule>
+  
+  <!-- LINK generic (Err-Disabled, flap, etc.) -->
+  <rule id="1627" level="4">
+    <decoded_as>cisco-switch-link-generic</decoded_as>
+    <description>Cisco Switch: LINK event ($(event_id)) - $(extra_data)</description>
+    <group>network,</group>
+  </rule>
+  
+  <!-- Err-Disabled specifically -->
+  <rule id="1628" level="8">
+    <if_sid>1627</if_sid>
+    <field name="event_id">Err-Disabled</field>
+    <description>Cisco Switch: Interface moved to Err-Disabled state - $(extra_data)</description>
+    <group>network,</group>
+  </rule>
+
+  <!-- ########################## STP ########################## -->
+  
+  <!-- STP port status change -->
+  <rule id="1630" level="4">
+    <decoded_as>cisco-switch-stp-portstatus</decoded_as>
+    <description>Cisco Switch: STP port status changed to $(event_status) on $(extra_data)</description>
+    <group>network,stp,</group>
+  </rule>
+  
+  <!-- STP port Blocking (potential loop protection) -->
+  <rule id="1631" level="4">
+    <if_sid>1630</if_sid>
+    <field name="event_status">Blocking</field>
+    <description>Cisco Switch: STP port $(extra_data) moved to Blocking state</description>
+    <group>network,stp,</group>
+  </rule>
+  
+  <!-- STP generic (topology change, root change, etc.) -->
+  <rule id="1632" level="4">
+    <decoded_as>cisco-switch-stp-generic</decoded_as>
+    <description>Cisco Switch: STP event ($(event_id)) - $(extra_data)</description>
+    <group>network,stp,</group>
+  </rule>
+
+  
+  <!-- ########################## SNMP ########################## -->
+  
+  <!-- SNMP unauthorized NMS access -->
+  <rule id="1635" level="8">
+    <decoded_as>cisco-switch-snmp-authfail</decoded_as>
+    <description>Cisco Switch: SNMP access attempted by unauthorized NMS $(srcip)</description>
+    <group>authentication_failed,network,</group>
+  </rule>
+  
+  <!-- Multiple SNMP auth failures - possible NMS misconfiguration or scan -->
+  <rule id="1636" level="10" frequency="5" timeframe="60">
+    <if_matched_sid>1635</if_matched_sid>
+    <same_srcip/>
+    <description>Cisco Switch: Multiple SNMP auth failures from $(srcip)</description>
+    <group>authentication_failures,network,</group>
+  </rule>
+  
+  <!-- SNMP CDB items loaded -->
+  <rule id="1637" level="2">
+    <decoded_as>cisco-switch-snmp-cdb</decoded_as>
+    <description>Cisco Switch: SNMP CDB configuration items loaded</description>
+  </rule>
+  
+  <!-- SNMP generic fallback -->
+  <rule id="1638" level="2">
+    <decoded_as>cisco-switch-snmp-generic</decoded_as>
+    <description>Cisco Switch: SNMP event ($(event_id)) - $(extra_data)</description>
+    <group>network,</group>
+  </rule>
+
+  
+  <!-- ########################## SSHD ########################## -->
+  
+  <!-- SSH disconnect with reason -->
+  <rule id="1640" level="3">
+    <decoded_as>cisco-switch-sshd-disconnect</decoded_as>
+    <description>Cisco Switch: SSH disconnect from $(srcip):$(srcport) - $(event_status)</description>
+    <group>remote_access,</group>
+  </rule>
+  
+  <!-- SSH disconnect: auth failure reason -->
+  <rule id="1641" level="6">
+    <if_sid>1640</if_sid>
+    <field name="event_status">Authentication failed</field>
+    <description>Cisco Switch: SSH authentication failure from $(srcip):$(srcport)</description>
+    <group>authentication_failed,remote_access,</group>
+  </rule>
+  
+  <!-- SSH disconnect: no supported auth methods -->
+  <rule id="1642" level="6">
+    <if_sid>1640</if_sid>
+    <field name="event_status">No supported authentication methods available</field>
+    <description>Cisco Switch: SSH no supported auth methods from $(srcip):$(srcport)</description>
+    <group>authentication_failed,remote_access,</group>
+  </rule>
+  
+  <!-- SSHD generic fallback -->
+  <rule id="1643" level="2">
+    <decoded_as>cisco-switch-sshd-generic</decoded_as>
+    <description>Cisco Switch: SSHD event ($(event_id)) - $(extra_data)</description>
+    <group>remote_access,</group>
+  </rule>
+
+  
+  <!-- ########################## SSL ########################## -->
+  
+  <!-- CA certificate installed -->
+  <rule id="1645" level="8">
+    <decoded_as>cisco-switch-ssl-cacert</decoded_as>
+    <description>Cisco Switch: Root CA certificate '$(event_id)' installed (type: $(extra_data), owner: $(srcuser))</description>
+    <group>config_changed,</group>
+  </rule>
+  
+  <!-- SSL generic fallback -->
+  <rule id="1646" level="3">
+    <decoded_as>cisco-switch-ssl-generic</decoded_as>
+    <description>Cisco Switch: SSL event ($(event_id)) - $(extra_data)</description>
+  </rule>
+  
+  <!-- SSL handshake / cert errors -->
+  <rule id="1647" level="5">
+    <if_sid>1646</if_sid>
+    <field name="event_id">HANDSHAKEERR</field>
+    <description>Cisco Switch: SSL handshake error - $(extra_data)</description>
+  </rule>
+  
+  <rule id="1648" level="7">
+    <if_sid>1646</if_sid>
+    <field name="event_id">CERTEXPIRED</field>
+    <description>Cisco Switch: SSL certificate expired - $(extra_data)</description>
+  
+  </rule>
+  <rule id="1649" level="8">
+    <if_sid>1646</if_sid>
+    <field name="event_id">CERTINVALID</field>
+    <description>Cisco Switch: SSL certificate invalid - $(extra_data)</description>
+  </rule>
+
+  
+  <!-- ########################## SYSLOG ########################## -->
+  
+  <!-- New syslog server added -->
+  <rule id="1650" level="8">
+    <decoded_as>cisco-switch-syslog-newsrv</decoded_as>
+    <description>Cisco Switch: New syslog server configured - $(extra_data)</description>
+    <group>config_changed,</group>
+  </rule>
+  
+  <!-- Syslog server removed -->
+  <rule id="1651" level="11">
+    <decoded_as>cisco-switch-syslog-nosrv</decoded_as>
+    <description>Cisco Switch: Syslog server removed - $(extra_data)</description>
+    <group>config_changed,</group>
+  </rule>
+  
+  <!-- SYSLOG generic fallback -->
+  <rule id="1652" level="2">
+    <decoded_as>cisco-switch-syslog-generic</decoded_as>
+    <description>Cisco Switch: SYSLOG event ($(event_id)) - $(extra_data)</description>
+  </rule>
+
+  
+  <!-- ########################## TIMEMANAGE ########################## -->
+  
+  <!-- Clock updated -->
+  <rule id="1655" level="5">
+    <decoded_as>cisco-switch-time-clockupdate</decoded_as>
+    <description>Cisco Switch: System clock updated (reason: $(event_status))</description>
+    <group>system,</group>
+  </rule>
+  
+  <!-- Time zone updated -->
+  <rule id="1656" level="5">
+    <decoded_as>cisco-switch-time-tzoneupdate</decoded_as>
+    <description>Cisco Switch: Time zone updated - $(extra_data)</description>
+    <group>config_changed,</group>
+  </rule>
+  
+  <!-- Summer-time / DST updated -->
+  <rule id="1657" level="3">
+    <decoded_as>cisco-switch-time-smtime</decoded_as>
+    <description>Cisco Switch: Summer-time/DST setting updated</description>
+    <group>config_changed,</group>
+  </rule>
+  
+  <!-- Clock source changed -->
+  <rule id="1658" level="5">
+    <decoded_as>cisco-switch-time-clocksrcupdate</decoded_as>
+    <description>Cisco Switch: Clock source changed from $(extra_data) to $(event_status)</description>
+    <group>system,</group>
+  </rule>
+  
+  <!-- Clock source list updated -->
+  <rule id="1659" level="3">
+    <decoded_as>cisco-switch-time-clocksrclst</decoded_as>
+    <description>Cisco Switch: Clock source list updated</description>
+    <group>system,</group>
+  </rule>
+  
+  <!-- RTC updated -->
+  <rule id="1660" level="3">
+    <decoded_as>cisco-switch-time-rtc</decoded_as>
+    <description>Cisco Switch: RTC clock update applied</description>
+    <group>system,</group>
+  </rule>
+  
+  <!-- TIMEMANAGE generic fallback -->
+  <rule id="1661" level="2">
+    <decoded_as>cisco-switch-time-generic</decoded_as>
+    <description>Cisco Switch: TIMEMANAGE event ($(event_id)) - $(extra_data)</description>
+    <group>system,</group>
+  </rule>
+
+  
+  <!-- ########################## QOS_CLI ########################## -->
+  
+  <!-- IP ACL modified -->
+  <rule id="1665" level="8">
+    <decoded_as>cisco-switch-qos-acl</decoded_as>
+    <description>Cisco Switch: IP ACL '$(event_id)' has been $(event_action)</description>
+    <group>config_changed,firewall,</group>
+  </rule>
+  
+  <!-- IP ACL deleted specifically -->
+  <rule id="1666" level="9">
+    <if_sid>1665</if_sid>
+    <field name="event_action">deleted</field>
+    <description>Cisco Switch: IP ACL '$(event_id)' has been deleted</description>
+    <group>config_changed,firewall,</group>
+  </rule>
+  
+  <!-- QOS_CLI generic fallback -->
+  <rule id="1667" level="2">
+    <decoded_as>cisco-switch-qos-generic</decoded_as>
+    <description>Cisco Switch: QoS event ($(event_id)) - $(extra_data)</description>
+    <group>config_changed,</group>
+  </rule>
+
+  
+  <!-- ########################## SecureBoot ########################## -->
+  
+  <!-- SecureBoot event -->
+  <rule id="1670" level="5">
+    <decoded_as>cisco-switch-secureboot</decoded_as>
+    <description>Cisco Switch: SecureBoot event ($(event_id)) - $(extra_data)</description>
+    <group>system,</group>
+  </rule>
+  
+  <!-- SecureBoot failure -->
+  <rule id="1671" level="12">
+    <if_sid>1670</if_sid>
+    <field name="event_status">E</field>
+    <description>Cisco Switch: SecureBoot ERROR - $(extra_data)</description>
+    <group>system,integrity_checking,</group>
+  </rule>
+
+  
+  <!-- ########################## MLDP ########################## -->
+  
+  <!-- MLDP event -->
+  <rule id="1675" level="3">
+    <decoded_as>cisco-switch-mldp</decoded_as>
+    <description>Cisco Switch: MLDP event ($(event_id)) - $(extra_data)</description>
+    <group>network,</group>
+  </rule>
+
+  
+  <!-- ########################## Entity ########################## -->
+  
+  <!-- Entity event -->
+  <rule id="1680" level="3">
+    <decoded_as>cisco-switch-entity</decoded_as>
+    <description>Cisco Switch: Entity event ($(event_id)) - $(extra_data)</description>
+    <group>system,</group>
+  </rule>
+  
+  <!-- Entity error (hardware fault, sensor, etc.) -->
+  <rule id="1681" level="7">
+    <if_sid>1680</if_sid>
+    <field name="event_status">E</field>
+    <description>Cisco Switch: Entity ERROR ($(event_id)) - $(extra_data)</description>
+    <group>system,hardware,</group>
+  </rule>
+</group>

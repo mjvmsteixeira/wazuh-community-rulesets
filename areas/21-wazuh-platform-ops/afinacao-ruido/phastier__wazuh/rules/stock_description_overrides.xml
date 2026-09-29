@@ -1,0 +1,251 @@
+<!--
+  Overrides of stock rules — two purposes:
+   1. Description: surface the decoded user (and source IP where available)
+      in the alert description, so the alert list is readable without opening
+      each event. Conditions, MITRE ids and groups copied VERBATIM from the
+      stock ruleset (0085-pam_rules.xml, 0095-sshd_rules.xml,
+      0495-proxmox-ve_rules.xml).
+   2. Noise level: a few high-volume routine stock rules are lowered out of
+      the Threat Hunting default view (still fully traced/searchable) —
+      PAM session open/close L3->L1, and a scoped child silencing the SNMP
+      poller's sudo-to-root. The real auth signal keeps its level.
+  The <group name> sections mirror each stock file's group header. Review
+  after Wazuh upgrades in case upstream conditions move.
+  PVE note: user extraction for non-@pam/@pve realms (authentik OIDC)
+  requires decoders/pve_extra.xml.
+  Astier Consulting - Jul 2026
+-->
+
+<group name="pam,syslog,">
+
+  <!-- L3 -> L1: session open/close is routine (cron/systemd sessions for
+       root, thousands/day) — kept fully traced/searchable but out of the
+       Threat Hunting default view. The real auth signal (failures, first
+       sudo, ssh from new source) lives in other rules. -->
+  <rule id="5501" level="1" overwrite="yes">
+    <if_sid>5500</if_sid>
+    <match>session opened for user </match>
+    <description>PAM: Login session opened for user $(dstuser).</description>
+    <mitre>
+      <id>T1078</id>
+    </mitre>
+    <group>authentication_success,pci_dss_10.2.5,gpg13_7.8,gpg13_7.9,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="5502" level="1" overwrite="yes">
+    <if_sid>5500</if_sid>
+    <match>session closed for user </match>
+    <description>PAM: Login session closed for user $(dstuser).</description>
+    <group>pci_dss_10.2.5,gpg13_7.8,gpg13_7.9,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+</group>
+
+<group name="syslog,sshd,">
+
+  <!-- Stock 5715 matches ^Accepted, which also catches the LogLevel VERBOSE
+       key-lookup trace emitted BEFORE authentication completes:
+
+         sshd-session[123]: Accepted key ED25519 SHA256:... found at /home/u/.ssh/authorized_keys
+
+       That line carries neither user nor source, and OpenSSH emits it TWICE per
+       connection — so a single login produced three authentication_success
+       alerts, two of them empty. Measured on a reference deployment: 870 traces
+       against 434 real logins in one day, i.e. two thirds of the
+       authentication audit trail was false. The defect is in the stock rule;
+       interpolating $(srcip) in the description is only what made it visible.
+
+       The discriminator is " for ": every real success reads
+       "Accepted <method> for <user> from <ip>", while the trace reads
+       "Accepted key <type> SHA256:...". That is stable across OpenSSH auth
+       methods, unlike enumerating publickey|password|keyboard-interactive.
+
+       NOTE: srcip cannot be used here. Wazuh treats it as a *static* field and
+       rejects <field name="srcip"> with "Field 'srcip' is static" — the rule
+       file then fails to load entirely.
+
+       LogLevel VERBOSE is deliberate here (CIS/Lynis recommend it: it records
+       the key fingerprint used). The fix belongs in the rule, not in sshd. -->
+  <rule id="5715" level="3" overwrite="yes">
+    <if_sid>5700</if_sid>
+    <regex type="pcre2">^Accepted \S+ for |authenticated\.$</regex>
+    <description>sshd: authentication success — user $(dstuser) from $(srcip).</description>
+    <mitre>
+      <id>T1078</id>
+      <id>T1021</id>
+    </mitre>
+    <group>authentication_success,gdpr_IV_32.2,gpg13_7.1,gpg13_7.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,pci_dss_10.2.5,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <!-- The key-lookup trace itself: claimed and silenced, so it neither inflates
+       the authentication trail nor falls through to a generic rule. -->
+  <rule id="101330" level="0">
+    <if_sid>5700</if_sid>
+    <match>^Accepted key </match>
+    <description>[noise] sshd: public key found in authorized_keys (pre-authentication trace)</description>
+    <group>authentication_success,</group>
+  </rule>
+
+</group>
+
+<group name="syslog,sudo,">
+
+  <rule id="5402" level="3" overwrite="yes">
+    <if_sid>5400</if_sid>
+    <regex> ; USER=root ; COMMAND=| ; USER=root ; TSID=\S+ ; COMMAND=</regex>
+    <description>Successful sudo to ROOT executed by $(srcuser).</description>
+    <mitre>
+      <id>T1548.003</id>
+    </mitre>
+    <group>pci_dss_10.2.5,pci_dss_10.2.2,gpg13_7.6,gpg13_7.8,gpg13_7.13,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,nist_800_53_AC.6,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="5403" level="4" overwrite="yes">
+    <if_sid>5400</if_sid>
+    <if_fts />
+    <description>First time user $(srcuser) executed sudo.</description>
+    <mitre>
+      <id>T1548.003</id>
+    </mitre>
+    <group>pci_dss_10.2.5,pci_dss_10.2.2,gpg13_7.6,gpg13_7.8,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.6,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <!-- Scoped noise: the SNMP poller (Debian-snmp) does sudo-to-root in a loop
+       (1000+/day). Archive-only for THIS user; every other sudo-to-root keeps
+       L3 via the parent 5402. -->
+  <rule id="101185" level="0">
+    <if_sid>5402</if_sid>
+    <match>Debian-snmp : </match>
+    <description>Successful sudo to ROOT by Debian-snmp (SNMP poller — routine).</description>
+    <group>sudo,</group>
+  </rule>
+
+</group>
+
+<group name="syslog,proxmox-ve,">
+
+  <rule id="87201" level="6" overwrite="yes">
+    <if_sid>87200</if_sid>
+    <match>authentication failure; </match>
+    <description>Proxmox VE: authentication FAILED for user $(dstuser) from $(srcip).</description>
+    <group>authentication_failed,pci_dss_10.2.4,pci_dss_10.2.5,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="87203" level="3" overwrite="yes">
+    <if_sid>87200</if_sid>
+    <match> successful auth for user </match>
+    <description>Proxmox VE: successful auth for user $(dstuser).</description>
+    <mitre>
+      <id>T1078</id>
+    </mitre>
+    <group>authentication_success,pci_dss_10.2.5,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+</group>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+  Web 4xx / 5xx — the stock wording carries no context at all.
+
+  "Web server 400 error code." tells an analyst nothing: not the status, not
+  the method, not the path, not the source. On a public endpoint that rule
+  fires thousands of times a day, so the description is the only thing most
+  people ever read — the fields are there, they were simply never used.
+
+  The web-accesslog decoder provides id (status), protocol (which actually
+  holds the HTTP *method*), url and srcip. Matching logic, correlation
+  parameters, MITRE ids and compliance groups are reproduced verbatim from
+  0245-web_rules.xml — only <description> changes.
+═══════════════════════════════════════════════════════════════════ -->
+<group name="web,accesslog,">
+
+  <rule id="31101" level="5" overwrite="yes">
+    <if_sid>31100</if_sid>
+    <id>^4</id>
+    <description>Web: HTTP $(id) — $(protocol) $(url) from $(srcip).</description>
+    <group>attack,pci_dss_6.5,pci_dss_11.4,gdpr_IV_35.7.d,nist_800_53_SA.11,nist_800_53_SI.4,tsc_CC6.6,tsc_CC7.1,tsc_CC8.1,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="31120" level="5" overwrite="yes">
+    <if_sid>31100</if_sid>
+    <id>^50</id>
+    <description>Web: HTTP $(id) server error — $(protocol) $(url) from $(srcip).</description>
+  </rule>
+
+  <rule id="31121" level="4" overwrite="yes">
+    <if_sid>31120</if_sid>
+    <id>^501</id>
+    <description>Web: HTTP 501 not implemented — $(protocol) $(url) from $(srcip).</description>
+  </rule>
+
+  <rule id="31122" level="5" overwrite="yes">
+    <if_sid>31120</if_sid>
+    <id>^500</id>
+    <description>Web: HTTP 500 internal error — $(protocol) $(url) from $(srcip).</description>
+    <group>system_error,</group>
+  </rule>
+
+  <rule id="31123" level="4" overwrite="yes">
+    <if_sid>31120</if_sid>
+    <id>^503</id>
+    <description>Web: HTTP 503 service unavailable — $(protocol) $(url) from $(srcip).</description>
+  </rule>
+
+  <!-- Correlation rules: srcip is the grouping key, so it is always sound.
+       The method and path come from the event that closed the window — hence
+       "last:" rather than implying they describe the whole burst. -->
+  <rule id="31151" level="10" frequency="14" timeframe="90" overwrite="yes">
+    <if_matched_sid>31101</if_matched_sid>
+    <same_source_ip />
+    <description>Web: repeated HTTP 4xx from $(srcip) — last $(protocol) $(url).</description>
+    <mitre>
+      <id>T1595.002</id>
+    </mitre>
+    <group>web_scan,recon,pci_dss_6.5,pci_dss_11.4,gdpr_IV_35.7.d,nist_800_53_SA.11,nist_800_53_SI.4,tsc_CC6.6,tsc_CC7.1,tsc_CC8.1,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="31161" level="10" frequency="14" timeframe="120" overwrite="yes">
+    <if_matched_sid>31121</if_matched_sid>
+    <same_source_ip />
+    <description>Web: repeated HTTP 501 from $(srcip) — last $(protocol) $(url).</description>
+    <mitre>
+      <id>T1595.002</id>
+    </mitre>
+    <group>web_scan,recon,pci_dss_6.5,pci_dss_11.4,gdpr_IV_35.7.d,nist_800_53_SA.11,nist_800_53_SI.4,tsc_CC6.6,tsc_CC7.1,tsc_CC8.1,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="31162" level="10" frequency="14" timeframe="120" overwrite="yes">
+    <if_matched_sid>31122</if_matched_sid>
+    <same_source_ip />
+    <description>Web: repeated HTTP 500 from $(srcip) — last $(protocol) $(url).</description>
+    <group>system_error,pci_dss_6.5,pci_dss_10.6.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC8.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="31163" level="10" frequency="14" timeframe="120" overwrite="yes">
+    <if_matched_sid>31123</if_matched_sid>
+    <same_source_ip />
+    <description>Web: repeated HTTP 503 from $(srcip) — last $(protocol) $(url).</description>
+    <mitre>
+      <id>T1498</id>
+    </mitre>
+    <group>web_scan,recon,pci_dss_6.5,pci_dss_11.4,pci_dss_10.6.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_SI.4,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC8.1,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- dpkg routine package states, L7 -> L3 (2026-09-02, INT-AC-2026-60):
+       install/half-configured are the normal apt lifecycle; the audit value
+       lives in the trace (kept: alerts L3 + archives), not in the triage
+       feed (>= 6). Conditions and groups VERBATIM from 0020-syslog_rules.xml. -->
+  <rule id="2902" level="3" overwrite="yes">
+    <if_sid>2900</if_sid>
+    <field name="dpkg_status">^status installed$</field>
+    <description>New dpkg (Debian Package) installed.</description>
+    <group>config_changed,pci_dss_10.6.1,pci_dss_10.2.7,gpg13_4.10,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,nist_800_53_AU.14,tsc_CC7.2,tsc_CC7.3,tsc_CC6.8,tsc_CC8.1,</group>
+  </rule>
+  <rule id="2904" level="3" overwrite="yes">
+    <if_sid>2900</if_sid>
+    <field name="dpkg_status">^status half-configured$</field>
+    <description>Dpkg (Debian Package) half configured.</description>
+    <group>config_changed,pci_dss_10.6.1,pci_dss_10.2.7,gpg13_4.10,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,nist_800_53_AU.14,tsc_CC7.2,tsc_CC7.3,tsc_CC6.8,tsc_CC8.1,</group>
+  </rule>
+
+</group>

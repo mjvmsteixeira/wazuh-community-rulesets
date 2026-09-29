@@ -1,0 +1,40 @@
+<!--
+  Rule: Execution from /tmp or /dev/shm
+  NIST CSF: DE.AE-02 (Detected events are analyzed to understand attack targets and methods)
+            DE.CM-03 (Personnel activity is monitored to detect potential events)
+  MITRE ATT&CK: T1059 - Command and Scripting Interpreter
+  Severity: Medium
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-23
+
+  Description:
+    Detects the execution of binaries from world-writable temporary directories (/tmp, /dev/shm, /var/tmp). Attackers frequently drop and execute payloads from these locations.
+
+  False Positives:
+    - Legitimate software installers, package managers (apt/yum/dpkg), or monitoring agents running temporary scripts.
+
+  Tuning Guidance:
+    Allowlist specific trusted applications or scripts executing from temporary directories based on parent process or exact file path.
+
+  Assumptions:
+    - auditd is configured to monitor execve syscalls for temporary directories.
+
+  Limitations:
+    - Highly noisy in development environments.
+
+  Test: tests/sample-logs/de-ae-02/execution-from-tmp/
+-->
+
+<group name="nist_csf,de.ae-02,de.cm-03,execution,auditd">
+
+  <rule id="100025" level="7">
+    <if_sid>80700</if_sid>
+    <regex type="pcre2">exe="(/tmp|/dev/shm|/var/tmp)/.*"</regex>
+    <description>Execution from temporary world-writable directory (/tmp, /dev/shm)</description>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <group>execution,malware_dropper,nist_de.ae-02,nist_de.cm-03</group>
+  </rule>
+
+</group>

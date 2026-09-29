@@ -1,0 +1,67 @@
+<group name="macos,malware,frigidstealer,">
+
+  <rule id="100300" level="12">
+    <decoded_as>macos_launchservicesd_death</decoded_as>
+    <description>Potential FrigidStealer-related LaunchServices removal activity detected</description>
+    <mitre>
+      <id>T1543.001</id>
+    </mitre>
+  </rule>
+
+  <rule id="100301" level="12">
+    <decoded_as>macos_launchservicesd_add</decoded_as>
+    <description>Potential FrigidStealer-related LaunchServices application registration detected</description>
+    <mitre>
+      <id>T1543.001</id>
+    </mitre>
+  </rule>
+
+  <rule id="100302" level="12">
+    <decoded_as>macos_ddaolimaki_registration</decoded_as>
+    <description>Potential FrigidStealer-related application registration activity detected</description>
+    <mitre>
+      <id>T1204.002</id>
+    </mitre>
+  </rule>
+
+  <rule id="100303" level="12">
+    <decoded_as>macos_ddaolimaki_appleevents</decoded_as>
+    <description>Potential FrigidStealer-related AppleEvents entitlement activity detected</description>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+  </rule>
+
+  <rule id="100304" level="12">
+    <decoded_as>macos_ddaolimaki_cached_info</decoded_as>
+    <description>Potential FrigidStealer-related cached LaunchServices metadata detected</description>
+    <mitre>
+      <id>T1204.002</id>
+    </mitre>
+  </rule>
+
+  <rule id="100305" level="12">
+    <decoded_as>macos_ddaolimaki_runningboard</decoded_as>
+    <description>Potential FrigidStealer-related RunningBoardServices identity resolution detected</description>
+    <mitre>
+      <id>T1204.002</id>
+    </mitre>
+  </rule>
+
+  <rule id="100306" level="11">
+    <decoded_as>macos_loginwindow_persistence</decoded_as>
+    <description>Potential FrigidStealer-related loginwindow persistence state detected</description>
+    <mitre>
+      <id>T1547</id>
+    </mitre>
+  </rule>
+
+  <rule id="100307" level="11">
+    <decoded_as>macos_mdnsresponder_dns_query</decoded_as>
+    <description>Potential FrigidStealer-related DNS query activity detected</description>
+    <mitre>
+      <id>T1071.004</id>
+    </mitre>
+  </rule>
+
+</group>

@@ -1,0 +1,275 @@
+<!--
+=================================================================
+WAZUH ZEEK DECODERS - PRODUCTION WORKING VERSION v5.0
+=================================================================
+File: /var/ossec/etc/decoders/zeek_decoders.xml
+
+ROOT CAUSE FIXED:
+- plugin_decoder adalah TERMINAL OPERATION
+- Tidak boleh ada <regex> setelah <plugin_decoder>
+- JSON_Decoder sudah otomatis parse semua field
+- Field JSON bisa langsung diakses di rules dengan syntax: data.field_name
+
+CRITICAL UNDERSTANDING:
+plugin_decoder JSON_Decoder melakukan:
+1. Parse JSON otomatis
+2. Semua field masuk ke "data" object
+3. Rules bisa akses: data.id.orig_h, data.query, data.uid, dst
+
+NO MORE REGEX EXTRACTION NEEDED!
+
+TESTED WITH: Wazuh 4.11.2, Zeek 6.x JSON logs
+=================================================================
+-->
+
+<!-- ============================================================ -->
+<!-- 1. DNS.LOG DECODER -->
+<!-- Field yang di-parse otomatis oleh JSON_Decoder:
+     - data.id.orig_h, data.id.resp_h, data.id.orig_p, data.id.resp_p
+     - data.uid, data.proto, data.query, data.qtype_name
+     - data.rcode_name, data.trans_id, data.AA, data.TC, data.RD, data.RA
+     - data.rejected
+-->
+<!-- ============================================================ -->
+<decoder name="zeek-dns">
+  <prematch>"qtype_name":</prematch>
+  <plugin_decoder>JSON_Decoder</plugin_decoder>
+</decoder>
+
+<!-- ============================================================ -->
+<!-- 2. HTTP.LOG DECODER -->
+<!-- Field yang di-parse otomatis oleh JSON_Decoder:
+     - data.id.orig_h, data.id.resp_h, data.id.orig_p, data.id.resp_p
+     - data.uid, data.method, data.host, data.uri
+     - data.status_code, data.user_agent, data.request_body_len
+     - data.response_body_len, data.referrer, data.version, data.trans_depth
+-->
+<!-- ============================================================ -->
+<decoder name="zeek-http">
+  <prematch>"trans_depth":</prematch>
+  <plugin_decoder>JSON_Decoder</plugin_decoder>
+</decoder>
+
+<!-- ============================================================ -->
+<!-- 3. FILES.LOG DECODER -->
+<!-- Field yang di-parse otomatis oleh JSON_Decoder:
+     - data.fuid, data.tx_hosts, data.rx_hosts, data.conn_uids
+     - data.source, data.mime_type, data.filename
+     - data.total_bytes, data.seen_bytes, data.missing_bytes
+     - data.overflow_bytes, data.depth
+     - data.md5, data.sha1, data.sha256
+-->
+<!-- ============================================================ -->
+<decoder name="zeek-files">
+  <prematch>"fuid":"F</prematch>
+  <plugin_decoder>JSON_Decoder</plugin_decoder>
+</decoder>
+
+<!-- ============================================================ -->
+<!-- 4. CONN.LOG DECODER -->
+<!-- Field yang di-parse otomatis oleh JSON_Decoder:
+     - data.id.orig_h, data.id.resp_h, data.id.orig_p, data.id.resp_p
+     - data.uid, data.proto, data.conn_state, data.service
+     - data.duration, data.orig_bytes, data.resp_bytes
+     - data.orig_pkts, data.resp_pkts, data.history
+-->
+<!-- ============================================================ -->
+<decoder name="zeek-conn">
+  <prematch>"orig_pkts":</prematch>
+  <plugin_decoder>JSON_Decoder</plugin_decoder>
+</decoder>
+
+<!-- ============================================================ -->
+<!-- 5. SSL.LOG DECODER -->
+<!-- Field yang di-parse otomatis oleh JSON_Decoder:
+     - data.id.orig_h, data.id.resp_h, data.id.orig_p, data.id.resp_p
+     - data.uid, data.version, data.cipher, data.curve
+     - data.server_name, data.subject, data.issuer
+     - data.established, data.validation_status, data.ssl_history
+-->
+<!-- ============================================================ -->
+<decoder name="zeek-ssl">
+  <prematch>"ssl_history":</prematch>
+  <plugin_decoder>JSON_Decoder</plugin_decoder>
+</decoder>
+
+<!-- ============================================================ -->
+<!-- 6. SSH.LOG DECODER -->
+<!-- Field yang di-parse otomatis oleh JSON_Decoder:
+     - data.id.orig_h, data.id.resp_h, data.id.orig_p, data.id.resp_p
+     - data.uid, data.client, data.server, data.version
+     - data.auth_success, data.auth_attempts
+     - data.cipher_alg, data.mac_alg, data.host_key
+-->
+<!-- ============================================================ -->
+<decoder name="zeek-ssh">
+  <prematch>"auth_success":</prematch>
+  <plugin_decoder>JSON_Decoder</plugin_decoder>
+</decoder>
+
+<!-- ============================================================ -->
+<!-- 7. SMB_MAPPING.LOG DECODER -->
+<!-- Field yang di-parse otomatis oleh JSON_Decoder:
+     - data.id.orig_h, data.id.resp_h, data.id.orig_p, data.id.resp_p
+     - data.uid, data.path, data.share_type, data.service
+-->
+<!-- ============================================================ -->
+<decoder name="zeek-smb">
+  <prematch>"share_type":"</prematch>
+  <plugin_decoder>JSON_Decoder</plugin_decoder>
+</decoder>
+
+<!-- ============================================================ -->
+<!-- 8. DCE_RPC.LOG DECODER -->
+<!-- Field yang di-parse otomatis oleh JSON_Decoder:
+     - data.id.orig_h, data.id.resp_h, data.id.orig_p, data.id.resp_p
+     - data.uid, data.endpoint, data.operation
+     - data.named_pipe, data.rtt
+-->
+<!-- ============================================================ -->
+<decoder name="zeek-dce-rpc">
+  <prematch>"named_pipe":"</prematch>
+  <plugin_decoder>JSON_Decoder</plugin_decoder>
+</decoder>
+
+<!-- ============================================================ -->
+<!-- 9. KERBEROS.LOG DECODER -->
+<!-- Field yang di-parse otomatis oleh JSON_Decoder:
+     - data.id.orig_h, data.id.resp_h, data.id.orig_p, data.id.resp_p
+     - data.uid, data.request_type, data.client, data.service
+     - data.success, data.cipher, data.forwardable
+     - data.renewable, data.till
+-->
+<!-- ============================================================ -->
+<decoder name="zeek-kerberos">
+  <prematch>"request_type":"</prematch>
+  <plugin_decoder>JSON_Decoder</plugin_decoder>
+</decoder>
+
+<!-- ============================================================ -->
+<!-- 10. RDP.LOG DECODER -->
+<!-- Field yang di-parse otomatis oleh JSON_Decoder:
+     - data.id.orig_h, data.id.resp_h, data.id.orig_p, data.id.resp_p
+     - data.uid, data.cookie, data.result
+     - data.security_protocol, data.cert_type, data.cert_count
+-->
+<!-- ============================================================ -->
+<decoder name="zeek-rdp">
+  <prematch>"security_protocol":"</prematch>
+  <plugin_decoder>JSON_Decoder</plugin_decoder>
+</decoder>
+
+<!-- ============================================================ -->
+<!-- 11. NOTICE.LOG DECODER -->
+<!-- Field yang di-parse otomatis oleh JSON_Decoder:
+     - data.id.orig_h, data.id.resp_h, data.id.orig_p, data.id.resp_p
+     - data.uid, data.proto, data.note, data.msg, data.sub
+     - data.src, data.dst, data.fuid, data.actions
+     - data.suppress_for
+-->
+<!-- ============================================================ -->
+<decoder name="zeek-notice">
+  <prematch>"note":"</prematch>
+  <plugin_decoder>JSON_Decoder</plugin_decoder>
+</decoder>
+
+<!-- ============================================================ -->
+<!-- 12. SOFTWARE.LOG DECODER -->
+<!-- Field yang di-parse otomatis oleh JSON_Decoder:
+     - data.host, data.software_type, data.name
+     - data.version.major, data.version.minor, data.version.addl
+     - data.unparsed_version
+-->
+<!-- ============================================================ -->
+<decoder name="zeek-software">
+  <prematch>"software_type":"</prematch>
+  <plugin_decoder>JSON_Decoder</plugin_decoder>
+</decoder>
+
+<!-- ============================================================ -->
+<!-- 13. KNOWN_SERVICES.LOG DECODER -->
+<!-- Field yang di-parse otomatis oleh JSON_Decoder:
+     - data.host, data.port_num, data.port_proto
+     - data.service (array)
+-->
+<!-- ============================================================ -->
+<decoder name="zeek-known-services">
+  <prematch>"port_num":</prematch>
+  <plugin_decoder>JSON_Decoder</plugin_decoder>
+</decoder>
+
+<!-- ============================================================ -->
+<!-- 14. X509.LOG DECODER -->
+<!-- Field yang di-parse otomatis oleh JSON_Decoder:
+     - data.certificate.subject, data.certificate.issuer
+     - data.certificate.serial, data.certificate.key_type
+     - data.certificate.key_length
+     - data.certificate.not_valid_before, data.certificate.not_valid_after
+     - data.basic_constraints.ca, data.fingerprint
+     - data.certificate.sig_alg
+-->
+<!-- ============================================================ -->
+<decoder name="zeek-x509">
+  <prematch>"certificate.subject":"</prematch>
+  <plugin_decoder>JSON_Decoder</plugin_decoder>
+</decoder>
+
+<!-- ============================================================ -->
+<!-- 15. CAPTURE_LOSS.LOG DECODER -->
+<!-- Field yang di-parse otomatis oleh JSON_Decoder:
+     - data.peer, data.percent_lost, data.gaps
+     - data.acks, data.ts_delta
+-->
+<!-- ============================================================ -->
+<decoder name="zeek-capture-loss">
+  <prematch>"percent_lost":</prematch>
+  <plugin_decoder>JSON_Decoder</plugin_decoder>
+</decoder>
+
+<!--
+=================================================================
+CARA MENGGUNAKAN DECODER INI DI RULES
+=================================================================
+
+Contoh rule untuk DNS:
+<rule id="100410" level="3">
+  <decoded_as>zeek-dns</decoded_as>
+  <description>Zeek DNS Query</description>
+  <group>zeek,dns</group>
+</rule>
+
+Contoh rule dengan field matching:
+<rule id="100411" level="5">
+  <decoded_as>zeek-dns</decoded_as>
+  <field name="data.qtype_name">^A$</field>
+  <description>Zeek DNS A Record Query</description>
+  <group>zeek,dns</group>
+</rule>
+
+Contoh rule untuk HTTP status code:
+<rule id="100420" level="5">
+  <decoded_as>zeek-http</decoded_as>
+  <field name="data.status_code">^40\d$</field>
+  <description>Zeek HTTP 4xx Client Error</description>
+  <group>zeek,http,web_error</group>
+</rule>
+
+Contoh rule untuk Kerberos failed auth:
+<rule id="100461" level="7">
+  <decoded_as>zeek-kerberos</decoded_as>
+  <field name="data.success">false</field>
+  <description>Zeek Kerberos Authentication Failed</description>
+  <group>zeek,kerberos,authentication_failed</group>
+</rule>
+
+FIELD REFERENCE:
+- Source IP: data.id.orig_h
+- Dest IP: data.id.resp_h
+- Source Port: data.id.orig_p
+- Dest Port: data.id.resp_p
+- UID: data.uid
+- Protocol: data.proto
+
+Semua field JSON otomatis accessible dengan prefix "data."
+=================================================================
+-->

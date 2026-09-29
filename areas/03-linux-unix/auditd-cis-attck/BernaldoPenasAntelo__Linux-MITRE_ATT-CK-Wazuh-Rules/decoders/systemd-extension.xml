@@ -1,0 +1,37 @@
+<!--
+systemd decoder extension
+
+Nov 26 15:27:19 centos-1 systemd: Stopped Authorization Manager.
+
+Feb 26 09:41:30 IDSTest systemd[1]: Reloaded NFS server and services.
+Feb 26 10:13:42 IDSTest systemd[7966]: tmp-exportfs.mount: Succeeded.
+-->
+
+
+<decoder name="systemd-stop-service">
+  <parent>systemd</parent>
+  <prematch>^Stopped </prematch>
+  <regex>(Stopped) (\.*)</regex>
+  <order>event.action, fields.service</order>
+</decoder>
+
+<decoder name="systemd-start-service">
+  <parent>systemd</parent>
+  <prematch>^Started </prematch>
+  <regex>(Started) (\.*)</regex>
+  <order>event.action, fields.service</order>
+</decoder>
+
+<decoder name="systemd-reload-service">
+  <parent>systemd</parent>
+  <prematch>^Reloaded </prematch>
+  <regex>(Reloaded) (\.*)</regex>
+  <order>event.action, fields.service</order>
+</decoder>
+
+<decoder name="systemd-mount">
+  <parent>systemd</parent>
+  <prematch>.mount: Succeeded.$</prematch>
+  <regex>(\.*).mount: Succeeded.</regex>
+  <order>fields.mount</order>
+</decoder>

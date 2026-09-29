@@ -1,0 +1,19 @@
+<group name="vipnet,">
+  <!-- Outbound traffic with shost/dhost details -->
+  <rule id="100101" level="3">
+    <decoded_as>vipnet_cef_outbound_full</decoded_as>
+    <description>Vipnet [$vipnet.rule.name]: outbound connection from $(srcip):$(srcport) to $(dstip):$(dstport) via $(vipnet.deviceOutboundInterface).</description>
+  </rule>
+
+  <!-- Outbound traffic without shost/dhost details -->
+  <rule id="100102" level="3">
+    <decoded_as>vipnet_cef_outbound_minimal</decoded_as>
+    <description>Vipnet [$vipnet.rule.name]: outbound connection from $(srcip):$(srcport) to $(dstip):$(dstport) via $(vipnet.deviceOutboundInterface).</description>
+  </rule>
+
+  <!-- Inbound traffic -->
+  <rule id="100103" level="3">
+    <decoded_as>vipnet_cef_inbound</decoded_as>
+    <description>Vipnet [$vipnet.rule.name]: inbound connection from $(srcip):$(srcport) to $(dstip):$(dstport) via $(vipnet.deviceInboundInterface).</description>
+  </rule>
+</group>

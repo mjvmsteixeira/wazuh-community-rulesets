@@ -1,0 +1,91 @@
+<!--
+  Categoria: Defense Evasion
+  Táticas MITRE ATT&CK cobertas: Indicator Removal / Log Clearing (T1070.001),
+  Rootkit / System Binary Modification (T1014, T1036.005)
+-->
+<group name="local,defense_evasion,">
+
+  <rule id="100109" level="14">
+    <if_sid>550, 554</if_sid>
+    <field name="file" type="pcre2">(^/bin/|^/usr/bin/|^/sbin/|^/usr/sbin/)(ls|ps|netstat|top|ss|lsof)$</field>
+    <description>CRÍTICO: Binário crítico do sistema ($(file)) foi modificado. Possível atividade de Rootkit.</description>
+    <mitre>
+      <id>T1014</id>
+      <id>T1036.005</id>
+    </mitre>
+    <info type="text">Verifique imediatamente a assinatura do binário e o usuário que realizou a ação.</info>
+  </rule>
+
+  <rule id="100110" level="15" frequency="3" timeframe="60">
+    <if_matched_sid>100109</if_matched_sid>
+    <same_field>agent.id</same_field>
+    <description>CRÍTICO: Múltiplos binários críticos do sistema modificados em menos de 60 segundos.</description>
+    <mitre>
+      <id>T1014</id>
+    </mitre>
+    <group>rootkit_deployment</group>
+  </rule>
+
+  <rule id="100111" level="3">
+    <if_sid>100109</if_sid>
+    <field name="process_name" type="pcre2">^(dpkg|rpm|yum|dnf|apt|apt-get)$</field>
+    <description>INFO: Binário do sistema modificado pelo gerenciador de pacotes ($(process_name)). Provável atualização legítima.</description>
+    <group>system_update</group>
+  </rule>
+
+  <rule id="100304" level="12">
+    <if_sid>60103</if_sid>
+    <field name="win.system.eventID">^1102$</field>
+    <description>ALERTA: O Log de Auditoria de Segurança foi limpo.</description>
+    <mitre>
+      <id>T1070.001</id>
+    </mitre>
+    <group>pci_dss_10.2.2,gdpr_IV_30,hipaa_164.312.b,nist_800_53_AU.2,</group>
+    <info type="text">Este evento indica que um administrador ou atacante limpou os logs manualmente. Verifique o usuário no campo win.eventdata.subjectUserName.</info>
+  </rule>
+
+  <rule id="100305" level="10">
+    <if_sid>60103</if_sid>
+    <field name="win.system.eventID">^104$</field>
+    <description>ALERTA: O Log de Sistema (System) foi limpo.</description>
+    <mitre>
+      <id>T1070.001</id>
+    </mitre>
+    <group>pci_dss_10.2.2,gdpr_IV_30,</group>
+  </rule>
+
+  <rule id="100307" level="12">
+    <if_sid>61603</if_sid>
+    <field name="win.eventdata.originalFileName" type="pcre2">wevtutil\.exe</field>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)\s+(cl|clear-log)\s+</field>
+    <description>ALERTA: Comando 'wevtutil' usado para limpar logs.</description>
+    <mitre>
+      <id>T1070.001</id>
+    </mitre>
+  </rule>
+
+  <rule id="100310" level="12">
+    <if_sid>60117, 63104</if_sid>
+    <description>ALERTA: Logs de eventos do Windows foram limpos! Possível atividade de encobrimento de rastros.</description>
+    <mitre>
+      <id>T1070.001</id>
+    </mitre>
+    <group>logs_cleared,gdpr_IV_30,</group>
+  </rule>
+
+  <rule id="100306" level="14" frequency="2" timeframe="60">
+    <if_matched_sid>100903</if_matched_sid>
+    <same_srcip />
+    <description>CRÍTICO: Múltiplos logs de eventos do Windows foram limpos em sequência.</description>
+    <mitre>
+      <id>T1070</id>
+    </mitre>
+  </rule>
+
+  <!-- Regra auxiliar de agrupamento (nível 0, não gera alerta próprio) -->
+  <rule id="100903" level="0">
+    <if_sid>100304, 100305</if_sid>
+    <description>Helper: Windows Log Clear Grouping</description>
+  </rule>
+
+</group>

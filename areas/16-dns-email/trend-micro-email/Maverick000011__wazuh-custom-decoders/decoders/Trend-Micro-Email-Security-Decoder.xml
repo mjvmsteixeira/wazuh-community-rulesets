@@ -1,0 +1,66 @@
+<decoder name="Trend_Micro_tmes">
+  <program_name>tmes</program_name>
+</decoder>
+
+
+<decoder name="Trend_Micro">
+  <parent>Trend_Micro_tmes</parent>
+  <regex>(CEF):(\d+)\|(\.+)\|(\w+)\|(\.+)\|(\d+)\|(\.+)\|(\d+)\|</regex>
+  <order>log_formate,logVer,vendor,product_name,product_ver,eventid,eventName,severity</order>
+</decoder>
+
+<decoder name="Trend_Micro">
+  <parent>Trend_Micro_tmes</parent>
+  <regex>rt=(\S+)</regex>
+  <order>Log_Generation_Time</order>
+</decoder>
+
+
+<decoder name="Trend_Micro">
+  <parent>Trend_Micro_tmes</parent>
+  <regex>cs1=(\S+)</regex>
+  <order>eventType</order>
+</decoder>
+
+<decoder name="Trend_Micro">
+  <parent>Trend_Micro_tmes</parent>
+  <regex>cs2=(\S+)</regex>
+  <order>domainName</order>
+</decoder>
+
+<decoder name="Trend_Micro">
+  <parent>Trend_Micro_tmes</parent>
+  <regex>suser=(\S+)</regex>
+  <order>Email_Sender</order>
+</decoder>
+
+<decoder name="Trend_Micro">
+  <parent>Trend_Micro_tmes</parent>
+  <regex>duser=(\S+)</regex>
+  <order>Email_Receiver</order>
+</decoder>
+
+<decoder name="Trend_Micro">
+  <parent>Trend_Micro_tmes</parent>
+  <regex>cs3=(\S+)</regex>
+  <order>Direction</order>
+</decoder>
+
+<decoder name="Trend_Micro">
+  <parent>Trend_Micro_tmes</parent>
+  <regex>cs4=(\S+)</regex>
+  <order>messageId</order>
+</decoder>
+
+<decoder name="Trend_Micro">
+  <parent>Trend_Micro_tmes</parent>
+  <regex>msg=(\.+)cn1Label|msg=(\S+):</regex>
+  <order>message</order>
+</decoder>
+
+<decoder name="Trend_Micro">
+  <parent>Trend_Micro_tmes</parent>
+  <regex>cn1=(\S+)</regex>
+  <order>messageSize </order>
+</decoder>
+

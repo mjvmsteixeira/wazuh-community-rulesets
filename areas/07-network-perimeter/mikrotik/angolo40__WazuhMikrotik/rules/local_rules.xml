@@ -1,0 +1,41 @@
+<group name="mikrotik">
+  <rule id="100001" level="10">
+    <decoded_as>mikrotik_log</decoded_as>
+    <description>Mikrotik log: $(type) $(target) $(action) by $(username) from $(srcip): $(rule_details)</description>
+  </rule>
+  
+  <rule id="100002" level="12">
+    <decoded_as>user_login</decoded_as>
+    <description>Mikrotik log: User $(username) logged $(action) from $(srcip) via $(access_method)</description>
+  </rule>
+  
+  <rule id="100003" level="11">
+    <decoded_as>user_login_failure</decoded_as>
+    <description>Mikrotik log: Login failure for user $(username) from $(srcip) via $(access_method)</description>
+  </rule>
+
+  <rule id="100004" level="10">
+    <decoded_as>wireguard</decoded_as>
+    <description>Mikrotik log: Wireguard user $(username) logged $(action) from $(srcip)</description>
+  </rule>
+
+  <rule id="100005" level="10">
+    <decoded_as>ovpn</decoded_as>
+    <description>Mikrotik log: $(action) logged, $(localip) from $(srcip)</description>
+  </rule>
+
+  <rule id="100006" level="12">
+    <decoded_as>filter_rule_change</decoded_as>
+    <description>Mikrotik log: Filter rule $(action) by $(username) from $(srcip): $(rule_details)</description>
+  </rule>
+
+  <rule id="100007" level="12">
+    <decoded_as>raw_rule_change</decoded_as>
+    <description>Mikrotik log: Raw rule $(action) by $(username) from $(srcip): $(rule_details)</description>
+  </rule>
+
+  <rule id="100008" level="12">
+    <decoded_as>user_change</decoded_as>
+    <description>Mikrotik log: User $(newuser) $(action) by $(username) from $(srcip): $(rule_details)</description>
+  </rule>
+</group>

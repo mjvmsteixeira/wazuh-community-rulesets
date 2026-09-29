@@ -1,0 +1,7 @@
+<!-- Blocos de configuração extraídos, sem alterações, de bret99/wazuh_custom_rules:vmware/README.md @ 8783ac892999 -->
+<agent_config>
+  <localfile>
+    <log_format>json</log_format>
+    <location>/var/log/vdc/previous_vms.json</location>
+  </localfile>
+</agent_config>

@@ -1,0 +1,41 @@
+<!--
+  Rule: Sensitive File Read (/etc/passwd or /etc/shadow)
+  NIST CSF: PR.DS-01 (Data-at-rest is protected)
+            DE.CM-03 (Personnel activity is monitored to detect potential events)
+  MITRE ATT&CK: T1003.008 - OS Credential Dumping: /etc/passwd and /etc/shadow
+  Severity: High
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-21
+
+  Description:
+    Detects read access to /etc/passwd or /etc/shadow from auditd logs.
+
+  False Positives:
+    - Legitimate system processes reading /etc/passwd
+
+  Tuning Guidance:
+    Add allowlists for known system accounts or maintenance jobs.
+
+  Assumptions:
+    - auditd logs contain path= entries for file access.
+
+  Limitations:
+    - Some services read /etc/passwd frequently; tune to reduce noise.
+
+  Test: tests/sample-logs/pr-ds-01/passwd-shadow-read/
+-->
+
+<group name="nist_csf,pr.ds-01,credential_access,auditd">
+
+  <rule id="100006" level="9">
+    <if_sid>80700</if_sid>
+    <regex type="pcre2">path=/etc/(passwd|shadow)</regex>
+    <match>perm=r</match>
+    <description>Read access to /etc/passwd or /etc/shadow</description>
+    <mitre>
+      <id>T1003.008</id>
+    </mitre>
+    <group>credential_access,shadow_read,nist_pr.ds-01,nist_de.cm-03</group>
+  </rule>
+
+</group>

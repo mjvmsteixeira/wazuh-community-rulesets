@@ -1,0 +1,29 @@
+<!--
+	- Author: hrHVN
+	- Description: Decodes vanilla minecraft logs for wazuh interpertation
+--> 
+
+<decoder name="minecraft">
+    <prematch>^\p(\S+)\p \p(\.*/INFO)|(\.*/WARN)|(\.*/ERROR)\p</prematch>
+</decoder>
+
+<decoder name="minecraft-time-event">
+    <parent>minecraft</parent>
+    <regex>^\p(\S+)\p \p(\.*/INFO)|(\.*/WARN)|(\.*/ERROR)\p</regex>
+    <order>time,event</order>
+</decoder>
+
+<decoder name="minecraft-auth">
+    <parent>minecraft</parent>
+    <prematch>^\p(\S+)\p \p(User Authenticator) #\d+/INFO</prematch>
+    <regex offset="after_prematch">^:\.*player (\S+) is (\.*)</regex>
+    <order>user_name,user_uuid</order>
+</decoder>
+
+<decoder name="minecraft-disconnect">
+    <parent>minecraft</parent>
+    <prematch>^\p(\S+)\p \p(Server thread/INFO)\p</prematch>
+    <regex offset="after_prematch">^: \S+ \(/(\S+):(\S+)\) lost connection: (\.*)</regex>
+    <order>srcip,port,data</order>
+</decoder>
+

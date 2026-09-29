@@ -1,0 +1,27 @@
+<group name="macos,usb-detect,">
+
+  <rule id="100930" level="5">
+    <decoded_as>json</decoded_as>
+    <field name="eventType">^USBConnected$</field>
+    <description>macOS: USB drive $(deviceInfo.productName) was connected.</description>
+  </rule>
+
+  <rule id="100931" level="8">
+    <if_sid>100930</if_sid>
+    <list field="deviceInfo.kUSBSerialNumberString" lookup="not_match_key">etc/lists/usb-drives</list>
+    <description>macOS: Unauthorized USB drive $(deviceInfo.productName) was connected.</description>
+  </rule>
+
+  <rule id="100932" level="5">
+    <decoded_as>json</decoded_as>
+    <field name="eventType">^USBDisconnected$</field>
+    <description>macOS: USB drive $(deviceInfo.productName) was disconnected.</description>
+  </rule>
+
+  <rule id="100933" level="8">
+    <if_sid>100932</if_sid>
+    <list field="deviceInfo.kUSBSerialNumberString" lookup="not_match_key">etc/lists/usb-drives</list>
+    <description>macOS: Unauthorized USB drive $(deviceInfo.productName) was disconnected.</description>
+  </rule>
+
+</group>

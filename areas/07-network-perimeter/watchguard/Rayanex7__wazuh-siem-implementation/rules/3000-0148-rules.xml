@@ -1,0 +1,251 @@
+<group name="watchguard,firewall,">
+
+  <!-- PING RULES -->
+  <rule id="100001" level="3">
+    <decoded_as>watchguard-allow-Ping-id-seq-geo_src</decoded_as>
+    <description>WatchGuard: ICMP ping allowed with geographic source information</description>
+    <group>watchguard,firewall,ping,allow,</group>
+  </rule>
+
+  <rule id="100002" level="3">
+    <decoded_as>watchguard-allow-Ping-id-seq</decoded_as>
+    <description>WatchGuard: ICMP ping allowed</description>
+    <group>watchguard,firewall,ping,allow,</group>
+  </rule>
+
+  <!-- ALLOW RULES -->
+  <rule id="100010" level="3">
+    <decoded_as>watchguard-allow-VOIP_Firebox-DATA_Firebox-VOIP_VOIP-ByGEO-Allow_External_Firebox</decoded_as>
+    <description>WatchGuard: Traffic allowed from external source with geographic information</description>
+    <group>watchguard,firewall,allow,external,</group>
+  </rule>
+
+  <rule id="100011" level="3">
+    <decoded_as>watchguard-allow-Bygeo_src</decoded_as>
+    <description>WatchGuard: Outgoing traffic allowed with geographic source</description>
+    <group>watchguard,firewall,allow,outgoing,</group>
+  </rule>
+
+  <rule id="100012" level="3">
+    <decoded_as>watchguard-allow-Bygeo_src-Tcp_flags</decoded_as>
+    <description>WatchGuard: Outgoing traffic allowed with TCP flags and geographic source</description>
+    <group>watchguard,firewall,allow,outgoing,tcp,</group>
+  </rule>
+
+  <rule id="100013" level="3">
+    <decoded_as>watchguard-allow-VOIP_Firebox-DATA_Firebox-VOIP_VOIP</decoded_as>
+    <description>WatchGuard: General traffic allowed</description>
+    <group>watchguard,firewall,allow,</group>
+  </rule>
+
+  <!-- DENY RULES - DDOS -->
+  <rule id="100020" level="8">
+    <decoded_as>watchguard-deny-ddos-tcp_flags</decoded_as>
+    <field name="message">ddos client quota</field>
+    <description>WatchGuard: DDoS protection triggered - client quota exceeded</description>
+    <group>watchguard,firewall,deny,ddos,attack,</group>
+  </rule>
+
+  <rule id="100021" level="8">
+    <decoded_as>watchguard-deny-ddos-geo_dst</decoded_as>
+    <description>WatchGuard: DDoS protection triggered with geographic destination</description>
+    <group>watchguard,firewall,deny,ddos,attack,</group>
+  </rule>
+
+  <rule id="100022" level="8">
+    <decoded_as>watchguard-deny-ddos</decoded_as>
+    <description>WatchGuard: DDoS protection triggered</description>
+    <group>watchguard,firewall,deny,ddos,attack,</group>
+  </rule>
+
+  <rule id="100023" level="9">
+    <decoded_as>watchguard-deny-tcp_flags-geo_dst</decoded_as>
+    <description>WatchGuard: Traffic denied with TCP flags and geographic destination</description>
+    <group>watchguard,firewall,deny,tcp,</group>
+  </rule>
+
+  <!-- DENY RULES - TCP SYN FAILED -->
+  <rule id="100030" level="6">
+    <decoded_as>watchguard-deny-synfail-geo_dst-byUser</decoded_as>
+    <description>WatchGuard: TCP SYN checking failed for authenticated user with geographic destination</description>
+    <group>watchguard,firewall,deny,tcp,syn,user,</group>
+  </rule>
+
+  <rule id="100031" level="6">
+    <decoded_as>watchguard-deny-synfail-ByUser</decoded_as>
+    <description>WatchGuard: TCP SYN checking failed for authenticated user</description>
+    <group>watchguard,firewall,deny,tcp,syn,user,</group>
+  </rule>
+
+  <rule id="100032" level="6">
+    <decoded_as>watchguard-deny-synfail-geo_dst</decoded_as>
+    <description>WatchGuard: TCP SYN checking failed with geographic destination</description>
+    <group>watchguard,firewall,deny,tcp,syn,</group>
+  </rule>
+
+  <rule id="100033" level="6">
+    <decoded_as>watchguard-deny-synfail-geo_src</decoded_as>
+    <description>WatchGuard: TCP SYN checking failed with geographic source</description>
+    <group>watchguard,firewall,deny,tcp,syn,</group>
+  </rule>
+
+  <rule id="100034" level="6">
+    <decoded_as>watchguard-deny-synfail</decoded_as>
+    <field name="message">tcp syn checking failed</field>
+    <description>WatchGuard: TCP SYN checking failed</description>
+    <group>watchguard,firewall,deny,tcp,syn,</group>
+  </rule>
+
+  <!-- DENY RULES - BLOCKED PORTS -->
+  <rule id="100040" level="5">
+    <decoded_as>watchguard-deny-blocked_ports-tcp_flags-geo_src</decoded_as>
+    <description>WatchGuard: Blocked ports access denied with TCP flags and geographic source</description>
+    <group>watchguard,firewall,deny,blocked_ports,tcp,</group>
+  </rule>
+
+  <rule id="100041" level="5">
+    <decoded_as>watchguard-deny-blocked_ports-geo_src</decoded_as>
+    <description>WatchGuard: Blocked ports access denied with geographic source</description>
+    <group>watchguard,firewall,deny,blocked_ports,</group>
+  </rule>
+
+  <rule id="100042" level="5">
+    <decoded_as>watchguard-deny-blocked_ports</decoded_as>
+    <field name="message">blocked ports</field>
+    <description>WatchGuard: Blocked ports access denied</description>
+    <group>watchguard,firewall,deny,blocked_ports,</group>
+  </rule>
+
+  <!-- DENY RULES - IP SPOOFING -->
+  <rule id="100050" level="10">
+    <decoded_as>watchguard-deny-ipspofing-tcp_flags</decoded_as>
+    <field name="message">ip spoofing sites</field>
+    <description>WatchGuard: IP spoofing attack detected with TCP flags</description>
+    <group>watchguard,firewall,deny,spoofing,attack,tcp,</group>
+  </rule>
+
+  <rule id="100051" level="10">
+    <decoded_as>watchguard-deny-ipspofing-no_tcp_flags</decoded_as>
+    <field name="message">ip spoofing sites</field>
+    <description>WatchGuard: IP spoofing attack detected</description>
+    <group>watchguard,firewall,deny,spoofing,attack,</group>
+  </rule>
+
+  <!-- DENY RULES - UNHANDLED PACKETS -->
+  <rule id="100060" level="4">
+    <decoded_as>watchguard-deny-By_geo_src</decoded_as>
+    <description>WatchGuard: Unhandled external packet denied with geographic source</description>
+    <group>watchguard,firewall,deny,unhandled,external,</group>
+  </rule>
+
+  <rule id="100061" level="4">
+    <decoded_as>watchguard-deny-Unhandled_external_packets-igmp-ByUser</decoded_as>
+    <description>WatchGuard: Unhandled IGMP packet denied for authenticated user</description>
+    <group>watchguard,firewall,deny,unhandled,igmp,user,</group>
+  </rule>
+
+  <rule id="100062" level="4">
+    <decoded_as>watchguard-deny-Unhandled_external_packets-igmp</decoded_as>
+    <description>WatchGuard: Unhandled packet denied (Internal or External)</description>
+    <group>watchguard,firewall,deny,unhandled,</group>
+  </rule>
+
+  <!-- COMPOSITE RULES - MULTIPLE ATTACKS -->
+  <rule id="100070" level="12" frequency="5" timeframe="60">
+    <if_matched_sid>100020</if_matched_sid>
+    <same_source_ip />
+    <description>WatchGuard: Multiple DDoS attacks from same source IP</description>
+    <group>watchguard,firewall,ddos,multiple_attacks,</group>
+  </rule>
+
+  <!-- Separate rules for different IP spoofing types -->
+  <rule id="100071" level="12" frequency="10" timeframe="300">
+    <if_matched_sid>100050</if_matched_sid>
+    <same_source_ip />
+    <description>WatchGuard: Multiple IP spoofing attempts from same source (with TCP flags)</description>
+    <group>watchguard,firewall,spoofing,multiple_attacks,</group>
+  </rule>
+
+  <rule id="100074" level="12" frequency="10" timeframe="300">
+    <if_matched_sid>100051</if_matched_sid>
+    <same_source_ip />
+    <description>WatchGuard: Multiple IP spoofing attempts from same source</description>
+    <group>watchguard,firewall,spoofing,multiple_attacks,</group>
+  </rule>
+
+  <rule id="100072" level="8" frequency="20" timeframe="600">
+    <if_matched_sid>100034</if_matched_sid>
+    <same_source_ip />
+    <description>WatchGuard: Multiple TCP SYN failures from same source - possible SYN flood</description>
+    <group>watchguard,firewall,syn_flood,multiple_attacks,</group>
+  </rule>
+
+  <!-- Separate rules for different blocked port scenarios -->
+  <rule id="100073" level="7" frequency="15" timeframe="300">
+    <if_matched_sid>100040</if_matched_sid>
+    <same_source_ip />
+    <description>WatchGuard: Multiple blocked port access attempts from same source (with TCP flags)</description>
+    <group>watchguard,firewall,port_scan,multiple_attacks,</group>
+  </rule>
+
+  <rule id="100075" level="7" frequency="15" timeframe="300">
+    <if_matched_sid>100041</if_matched_sid>
+    <same_source_ip />
+    <description>WatchGuard: Multiple blocked port access attempts from same source (with geo)</description>
+    <group>watchguard,firewall,port_scan,multiple_attacks,</group>
+  </rule>
+
+  <rule id="100076" level="7" frequency="15" timeframe="300">
+    <if_matched_sid>100042</if_matched_sid>
+    <same_source_ip />
+    <description>WatchGuard: Multiple blocked port access attempts from same source</description>
+    <group>watchguard,firewall,port_scan,multiple_attacks,</group>
+  </rule>
+
+  <!-- GEOGRAPHIC ANOMALY RULES -->
+  <!-- Separate rules for different attack types from high-risk locations -->
+  <rule id="100080" level="6">
+    <if_matched_sid>100020</if_matched_sid>
+    <field name="geo_src">CN|RU|KP|IR</field>
+    <description>WatchGuard: DDoS attack from high-risk geographic location</description>
+    <group>watchguard,firewall,geographic,high_risk,ddos,</group>
+  </rule>
+
+  <rule id="100082" level="6">
+    <if_matched_sid>100021</if_matched_sid>
+    <field name="geo_src">CN|RU|KP|IR</field>
+    <description>WatchGuard: DDoS attack from high-risk geographic location (with geo_dst)</description>
+    <group>watchguard,firewall,geographic,high_risk,ddos,</group>
+  </rule>
+
+  <rule id="100083" level="6">
+    <if_matched_sid>100050</if_matched_sid>
+    <field name="geo_src">CN|RU|KP|IR</field>
+    <description>WatchGuard: IP spoofing attack from high-risk geographic location</description>
+    <group>watchguard,firewall,geographic,high_risk,spoofing,</group>
+  </rule>
+
+  <rule id="100084" level="6">
+    <if_matched_sid>100051</if_matched_sid>
+    <field name="geo_src">CN|RU|KP|IR</field>
+    <description>WatchGuard: IP spoofing attack from high-risk geographic location</description>
+    <group>watchguard,firewall,geographic,high_risk,spoofing,</group>
+  </rule>
+
+  <!-- USER-BASED RULES -->
+  <rule id="100090" level="7" frequency="5" timeframe="300">
+    <if_matched_sid>100030</if_matched_sid>
+    <if_matched_sid>100031</if_matched_sid>
+    <same_user />
+    <description>WatchGuard: Multiple TCP SYN failures for authenticated user</description>
+    <group>watchguard,firewall,user,syn_failures,</group>
+  </rule>
+
+  <rule id="100091" level="6" frequency="10" timeframe="600">
+    <if_matched_sid>100061</if_matched_sid>
+    <same_user />
+    <description>WatchGuard: Multiple unhandled packets for authenticated user</description>
+    <group>watchguard,firewall,user,unhandled_packets,</group>
+  </rule>
+
+</group>

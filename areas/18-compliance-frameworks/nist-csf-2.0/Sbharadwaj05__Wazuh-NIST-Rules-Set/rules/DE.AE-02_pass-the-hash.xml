@@ -1,0 +1,26 @@
+<!--
+  Rule: Pass-the-Hash (PtH) logon indicators (Lateral Movement)
+  NIST CSF: DE.CM-01, PR.AC-04
+  MITRE ATT&CK: T1550.002
+  Severity: Critical
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-23
+-->
+
+<group name="nist_csf, de.ae-02, mitre_attack,">
+
+  <rule id="100037" level="12">
+      <decoded_as>json</decoded_as>
+      <field name="win.system.providerName">Microsoft-Windows-Security-Auditing</field>
+      <field name="win.system.eventID">^4624$</field>
+      <field name="win.eventdata.logonType">9</field>
+      <field name="win.eventdata.logonProcessName" type="pcre2">(?i)seclogo</field>
+      <field name="win.eventdata.authenticationPackageName" type="pcre2">(?i)Negotiate</field>
+      <description>Pass-the-Hash (PtH) logon indicators (Lateral Movement)</description>
+      <mitre>
+        <id>T1550.002</id>
+      </mitre>
+      <group>DE.CM-01, PR.AC-04</group>
+    </rule>
+
+</group>

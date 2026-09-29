@@ -1,0 +1,5 @@
+<!-- Blocos de configuração extraídos, sem alterações, de fredycibersec/wazuh-stuff:darktrace/README.md @ 043f106e4a7c -->
+<localfile>
+    <log_format>syslog</log_format>
+    <location>/var/log/darktrace.log</location>
+  </localfile>

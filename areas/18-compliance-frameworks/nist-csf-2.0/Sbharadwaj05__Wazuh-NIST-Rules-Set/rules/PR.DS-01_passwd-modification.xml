@@ -1,0 +1,40 @@
+<!--
+  Rule: /etc/passwd Modified
+  NIST CSF: PR.DS-01 (Data-at-rest is protected)
+            DE.CM-09 (System configuration changes are monitored)
+  MITRE ATT&CK: T1098 - Account Manipulation
+  Severity: High
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-23
+
+  Description:
+    Detects write or attribute modifications to /etc/passwd.
+
+  False Positives:
+    - User account creation/modification by administrators using useradd/usermod.
+
+  Tuning Guidance:
+    Exclude known automation scripts (e.g., Ansible, Chef) if they run from specific service accounts.
+
+  Assumptions:
+    - auditd is configured with: -w /etc/passwd -p wa
+
+  Limitations:
+    - Misses changes if auditd is bypassed or disabled.
+
+  Test: tests/sample-logs/pr-ds-01/passwd-modification/
+-->
+
+<group name="nist_csf,pr.ds-01,de.cm-09,credential_access,auditd">
+
+  <rule id="100019" level="8">
+    <if_sid>80700</if_sid>
+    <regex type="pcre2">path=/etc/passwd.*perm=(w|a|wa|aw)</regex>
+    <description>Modification to /etc/passwd detected</description>
+    <mitre>
+      <id>T1098</id>
+    </mitre>
+    <group>account_manipulation,nist_pr.ds-01,nist_de.cm-09</group>
+  </rule>
+
+</group>

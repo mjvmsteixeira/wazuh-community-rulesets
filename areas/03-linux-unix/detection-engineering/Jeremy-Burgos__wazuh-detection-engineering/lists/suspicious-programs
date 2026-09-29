@@ -1,0 +1,5 @@
+nc:red
+ncat:red
+socat:red
+curl:amber
+wget:amber

@@ -1,0 +1,890 @@
+<!doctype html>
+<html lang="__LANG__">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wazuh Community Rulesets</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&family=Press+Start+2P&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue: #3585F9; --blue-2: #499CFE; --yellow: #FEDD0B; --ok: #36D399; --bad: #FF6B6B; --warn: #FFB547;
+  --bg: #0A0F1E; --bg-2: #0F1629; --panel: #131C33; --panel-2: #18233F; --line: #2A3A63; --text: #E6EDF7; --muted: #8FA3BF;
+  --shadow: #000; --code-bg: #070B16; --glow: 0 0 8px rgba(53,133,249,.55);
+  --pixel: 'Press Start 2P', 'Fira Mono', monospace; --mono: 'Fira Mono', ui-monospace, Menlo, monospace; --sans: 'Manrope', system-ui, sans-serif;
+}
+:root[data-theme="light"] {
+  --bg: #F6F6F6; --bg-2: #FFFFFF; --panel: #FFFFFF; --panel-2: #F0F4FB; --line: #B7C6D7; --text: #292929; --muted: #5B6B80;
+  --shadow: #2B2D34; --code-bg: #F7F8FA; --glow: none;
+}
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) {
+  --bg: #F6F6F6; --bg-2: #FFFFFF; --panel: #FFFFFF; --panel-2: #F0F4FB; --line: #B7C6D7; --text: #292929; --muted: #5B6B80;
+  --shadow: #2B2D34; --code-bg: #F7F8FA; --glow: none;
+} }
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg); color: var(--text); font: 14px/1.5 var(--mono);
+  background-image: linear-gradient(var(--bg-2) 1px, transparent 1px), linear-gradient(90deg, var(--bg-2) 1px, transparent 1px);
+  background-size: 24px 24px; min-height: 100vh;
+}
+.crt { position: fixed; inset: 0; pointer-events: none; z-index: 100;
+  background: repeating-linear-gradient(to bottom, rgba(0,0,0,.10) 0 1px, transparent 1px 3px); mix-blend-mode: multiply; }
+:root[data-theme="light"] .crt { opacity: .35; }
+a { color: var(--blue-2); }
+a:hover { color: var(--yellow); }
+header { border-bottom: 3px solid var(--blue); background: var(--bg-2); position: sticky; top: 0; z-index: 20; }
+.bar { max-width: 1400px; margin: 0 auto; padding: 14px 16px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.logo { font: 16px/1.2 var(--pixel); color: var(--blue); text-shadow: var(--glow); letter-spacing: 1px; white-space: nowrap; }
+.logo b { color: var(--yellow); }
+.logo small { display: block; font: 9px var(--pixel); color: var(--muted); margin-top: 6px; letter-spacing: 0; }
+.search { flex: 1 1 320px; display: flex; align-items: center; gap: 8px; border: 2px solid var(--line); background: var(--panel); padding: 6px 10px; box-shadow: 4px 4px 0 var(--shadow); }
+.search:focus-within { border-color: var(--blue); }
+.search span { color: var(--yellow); font-weight: 700; }
+.search input { flex: 1; background: transparent; border: 0; color: var(--text); font: 15px var(--mono); outline: none; min-width: 0; }
+.search kbd { font: 11px var(--mono); color: var(--muted); border: 1px solid var(--line); padding: 1px 5px; }
+.btn { font: 10px var(--pixel); color: var(--text); background: var(--panel-2); border: 2px solid var(--line);
+  padding: 9px 12px; cursor: pointer; box-shadow: 3px 3px 0 var(--shadow); white-space: nowrap; }
+.btn:hover { border-color: var(--blue); color: var(--blue-2); }
+.btn:active { transform: translate(3px,3px); box-shadow: none; }
+.btn.primary { background: var(--blue); color: #fff; border-color: var(--blue); }
+.btn.primary:hover { background: var(--blue-2); color: #fff; }
+.btn.yellow { background: var(--yellow); color: #292929; border-color: var(--yellow); }
+.btn.small { font-size: 8px; padding: 6px 8px; box-shadow: 2px 2px 0 var(--shadow); }
+.btn[disabled] { opacity: .45; cursor: not-allowed; }
+nav { max-width: 1400px; margin: 0 auto; padding: 0 16px; display: flex; gap: 4px; overflow-x: auto; }
+nav button { font: 10px var(--pixel); color: var(--muted); background: none; border: 0; border-bottom: 4px solid transparent; padding: 12px 12px 10px; cursor: pointer; white-space: nowrap; }
+nav button:hover { color: var(--text); }
+nav button.on { color: var(--yellow); border-bottom-color: var(--yellow); }
+nav button .n { color: var(--blue-2); margin-left: 6px; }
+main { max-width: 1400px; margin: 0 auto; padding: 18px 16px 60px; }
+.filters { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
+select { font: 13px var(--mono); color: var(--text); background: var(--panel); border: 2px solid var(--line); padding: 6px 8px; max-width: 100%; }
+.count { color: var(--muted); margin-left: auto; font-size: 12px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+.card { background: var(--panel); border: 2px solid var(--line); box-shadow: 5px 5px 0 var(--shadow); padding: 14px; cursor: pointer; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.card:hover { border-color: var(--blue); transform: translate(-1px,-1px); box-shadow: 6px 6px 0 var(--blue); }
+.card h3 { margin: 0; font: 800 15px/1.3 var(--sans); overflow-wrap: anywhere; }
+.card .src { color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
+.area { font: 8px var(--pixel); color: var(--blue-2); text-transform: uppercase; }
+.nums { display: flex; gap: 14px; font-size: 12px; color: var(--muted); }
+.nums b { color: var(--text); font-size: 15px; }
+.badges { display: flex; gap: 6px; flex-wrap: wrap; }
+.b { font: 11px var(--mono); padding: 1px 6px; border: 1px solid currentColor; white-space: nowrap; }
+.b.ok { color: var(--ok); } .b.bad { color: var(--bad); } .b.warn { color: var(--warn); } .b.info { color: var(--blue-2); } .b.mut { color: var(--muted); }
+.b.fill-bad { background: var(--bad); color: #1a0000; border-color: var(--bad); }
+.more { text-align: center; margin: 20px 0; }
+table { width: 100%; border-collapse: collapse; background: var(--panel); border: 2px solid var(--line); box-shadow: 5px 5px 0 var(--shadow); }
+th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 13px; }
+th { font: 700 11px var(--mono); letter-spacing: .5px; text-transform: uppercase; color: var(--yellow); background: var(--panel-2); position: sticky; top: 0; }
+tr.click { cursor: pointer; } tr.click:hover td { background: var(--panel-2); }
+td.num, th.num { text-align: right; }
+.tablewrap { overflow-x: auto; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 14px; margin-bottom: 22px; }
+.kpi { background: var(--panel); border: 2px solid var(--line); box-shadow: 5px 5px 0 var(--shadow); padding: 14px; }
+.kpi .v { font: 22px var(--pixel); color: var(--yellow); text-shadow: var(--glow); margin: 6px 0; }
+.kpi .l { font-size: 12px; color: var(--muted); }
+.kpi.bad .v { color: var(--bad); } .kpi.ok .v { color: var(--ok); }
+h2 { font: 12px var(--pixel); color: var(--blue); text-shadow: var(--glow); margin: 28px 0 12px; }
+h2:first-child { margin-top: 0; }
+p.lead { color: var(--muted); max-width: 900px; margin: 0 0 16px; font-family: var(--sans); font-size: 15px; }
+.meter { display: flex; height: 12px; border: 1px solid var(--line); background: var(--bg); min-width: 90px; }
+.meter i { display: block; height: 100%; }
+.meter .g { background: var(--ok); } .meter .y { background: var(--warn); } .meter .r { background: var(--bad); }
+.pct { font-size: 12px; color: var(--muted); }
+/* painel lateral */
+.overlay { position: fixed; inset: 0; background: rgba(5,8,18,.7); z-index: 40; display: none; }
+.overlay.on { display: block; }
+.drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(980px, 100%); background: var(--bg-2); border-left: 3px solid var(--blue); z-index: 50;
+  transform: translateX(100%); transition: transform .15s steps(4); display: flex; flex-direction: column; }
+.drawer.on { transform: none; }
+.dhead { padding: 16px; border-bottom: 2px solid var(--line); display: flex; gap: 12px; align-items: flex-start; }
+.dhead h2 { margin: 0 0 6px; font: 800 20px/1.25 var(--sans); color: var(--text); text-shadow: none; text-transform: none; overflow-wrap: anywhere; }
+.dhead .x { margin-left: auto; }
+.dtabs { display: flex; gap: 2px; padding: 0 16px; border-bottom: 2px solid var(--line); overflow-x: auto; }
+.dbody { padding: 16px; overflow-y: auto; flex: 1; }
+.kv { display: grid; grid-template-columns: 170px 1fr; gap: 6px 14px; font-size: 13px; }
+.kv dt { color: var(--muted); } .kv dd { margin: 0; overflow-wrap: anywhere; }
+.alert { border: 2px solid var(--bad); background: rgba(255,107,107,.08); padding: 10px 12px; margin: 0 0 14px; font-size: 13px; }
+.alert.warn { border-color: var(--warn); background: rgba(255,181,71,.08); }
+.alert.info { border-color: var(--blue); background: rgba(53,133,249,.08); }
+.alert b { font: 700 12px var(--mono); display: block; margin-bottom: 4px; letter-spacing: .5px; text-transform: uppercase; }
+.files { display: grid; grid-template-columns: 260px 1fr; gap: 14px; min-height: 400px; }
+.flist { border: 2px solid var(--line); background: var(--panel); max-height: 70vh; overflow: auto; }
+.flist button { display: block; width: 100%; text-align: left; font: 12px var(--mono); color: var(--text); background: none; border: 0; border-bottom: 1px solid var(--line); padding: 7px 9px; cursor: pointer; overflow-wrap: anywhere; }
+.flist button:hover, .flist button.on { background: var(--panel-2); color: var(--yellow); }
+.flist .k { font: 700 10px var(--mono); color: var(--blue-2); text-transform: uppercase; display: block; margin-bottom: 3px; }
+.code { position: relative; min-width: 0; }
+pre { margin: 0; background: var(--code-bg); border: 2px solid var(--line); padding: 14px; overflow: auto; max-height: 70vh; font: 12.5px/1.5 var(--mono); white-space: pre; }
+.code .copy { position: absolute; top: 8px; right: 8px; }
+.tok-tag { color: var(--blue-2); } .tok-attr { color: var(--yellow); } .tok-str { color: var(--ok); } .tok-com { color: var(--muted); font-style: italic; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.toast { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); background: var(--yellow); color: #292929; font: 10px var(--pixel);
+  padding: 12px 16px; box-shadow: 4px 4px 0 var(--shadow); z-index: 90; display: none; }
+.toast.on { display: block; }
+.loading { text-align: center; padding: 120px 20px; font: 12px var(--pixel); color: var(--blue); }
+.blink { animation: blink 1s steps(2) infinite; } @keyframes blink { 50% { opacity: 0; } }
+.empty { color: var(--muted); padding: 30px; text-align: center; border: 2px dashed var(--line); }
+.cart-n { background: var(--yellow); color: #292929; padding: 0 5px; margin-left: 6px; }
+footer { max-width: 1400px; margin: 0 auto; padding: 20px 16px 40px; color: var(--muted); font-size: 12px; border-top: 2px solid var(--line); }
+.sig { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 12px; }
+.avatar { width: 44px; height: 44px; display: grid; place-items: center; font: 18px var(--pixel); color: #292929; background: var(--yellow);
+  box-shadow: 4px 4px 0 var(--blue); image-rendering: pixelated; }
+.who { font: 11px var(--pixel); color: var(--text); line-height: 1.6; }
+.who a { color: var(--yellow); text-decoration: none; } .who a:hover { text-decoration: underline; }
+.amb { font: 700 13px var(--mono); color: var(--blue-2); margin-top: 4px; }
+.amb .star { color: var(--yellow); }
+.press { margin-left: auto; font: 9px var(--pixel); color: var(--blue); text-shadow: var(--glow); background: none; border: 0; padding: 8px; cursor: pointer; }
+.press:hover, .press:focus-visible { color: var(--yellow); outline: 2px dashed var(--yellow); outline-offset: 2px; }
+a.btn { text-decoration: none; display: inline-block; }
+.cta { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; border: 2px dashed var(--yellow); padding: 12px 14px; margin: 0 0 20px; }
+.jump { font-size: 13px; margin: 0 0 16px; color: var(--muted); }
+.jump a { color: var(--blue-2); }
+a.kpi { display: block; color: inherit; text-decoration: none; cursor: pointer; } a.kpi:hover, a.kpi:focus-visible { border-color: var(--yellow); transform: translate(-1px,-1px); box-shadow: 6px 6px 0 var(--yellow); }
+.kpi.active { border-color: var(--yellow); box-shadow: 6px 6px 0 var(--yellow); }
+.kpi .go { font: 8px var(--pixel); color: var(--blue-2); margin-top: 6px; }
+.cta p { margin: 0; flex: 1 1 320px; font-family: var(--sans); font-size: 14px; }
+footer p { margin: 0; line-height: 1.8; }
+@media (max-width: 760px) {
+  .files { grid-template-columns: 1fr; } .flist { max-height: 30vh; } .kv { grid-template-columns: 1fr; } .kv dt { margin-top: 6px; }
+  .logo { font-size: 13px; } .grid { grid-template-columns: 1fr; } th, td { padding: 6px; }
+  .hide-sm { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .drawer { transition: none; } .blink { animation: none; } }
+</style>
+</head>
+<body>
+<div class="crt" aria-hidden="true"></div>
+<header>
+  <div class="bar">
+    <div class="logo">WAZUH<b>//</b>RULESETS<small id="sub"></small></div>
+    <label class="search"><span>&gt;</span><input id="q" type="search" autocomplete="off"><kbd>/</kbd></label>
+    <a class="btn" id="lang" href="__LANG_HREF__" hreflang="__LANG_OTHER__">__LANG_LABEL__</a>
+    <button class="btn" id="theme"></button>
+    <button class="btn yellow" id="cartBtn"><span id="cartL"></span><span class="cart-n" id="cartN">0</span></button>
+  </div>
+  <nav id="tabs"></nav>
+</header>
+<main id="main"><div class="loading" id="loading">LOADING DATA<span class="blink">_</span></div></main>
+<footer>
+  <div class="sig">
+    <div class="avatar" aria-hidden="true">M</div>
+    <div>
+      <div class="who"><span id="curated"></span> <a href="https://github.com/mjvmsteixeira" target="_blank" rel="noopener">@mjvmst</a></div>
+      <div class="amb"><span class="star" aria-hidden="true">&#9733;</span> <a href="https://wazuh.com/ambassadors/marco-teixeira/" target="_blank" rel="noopener">Wazuh Ambassador</a> · Portugal</div>
+    </div>
+    <button class="press" id="press" type="button">PRESS <span class="blink">&#9608;</span> TO CONTINUE</button>
+  </div>
+  <p id="foot"></p>
+</footer>
+<div class="overlay" id="ov"></div>
+<aside class="drawer" id="dr" aria-hidden="true"></aside>
+<div class="toast" id="toast"></div>
+<script id="meta" type="application/octet-stream">__META__</script>
+<script id="blob" type="application/octet-stream">__FILES__</script>
+<script>
+'use strict';
+const LANG = '__LANG__';
+const REPO = 'https://github.com/mjvmsteixeira/wazuh-community-rulesets';
+// ---------- i18n: English is the source; PT holds the Portuguese version of every visible string
+const PT = {
+  'COMMUNITY · 4.x': 'COMUNIDADE · 4.x', 'search packs, rules, decoders, techniques, playbooks…': 'pesquisar packs, regras, decoders, técnicas, playbooks…',
+  'Search': 'Pesquisar', 'Theme': 'Tema', 'Toggle theme': 'Alternar tema', 'Install': 'Instalar', 'LOADING DATA': 'A CARREGAR DADOS',
+  'Curated by': 'Curado por', 'Back to the top and search': 'Voltar ao topo e pesquisar',
+  'Independent community registry, maintained by a Wazuh Ambassador; not an official Wazuh, Inc. product.': 'Registo comunitário independente, mantido por um embaixador da Wazuh; não é um produto oficial da Wazuh, Inc.',
+  'Original source files, unchanged, each with its origin and pinned commit; respect each source\'s license (NONE = no license: internal use only).': 'Ficheiros originais das fontes, sem alterações, cada um com a origem e o commit fixado; respeitar a licença de cada fonte (NONE = sem licença: só uso interno).',
+  'Validated with <code>wazuh-analysisd -t</code>, <code>verify-agent-conf</code> and <code>wazuh-logtest</code> on the reference wazuh-manager.': 'Validado com <code>wazuh-analysisd -t</code>, <code>verify-agent-conf</code> e <code>wazuh-logtest</code> no wazuh-manager de referência.',
+  'Questions, errors or suggestions: <a href="{issues}" target="_blank" rel="noopener">open an issue</a>. Author of a source and want it removed? Open an issue and it will be taken down.': 'Dúvidas, erros ou sugestões: <a href="{issues}" target="_blank" rel="noopener">abrir uma issue</a>. É autor de uma fonte e quer que seja retirada? Abra uma issue e é removida.',
+  'Coverage': 'Cobertura', 'filter active · click to clear': 'filtro ativo · clicar para limpar', 'Clear this filter': 'Limpar este filtro', 'filter: decoders with unmapped fields': 'filtro: decoders com campos sem correspondência',
+  'Children only': 'Só filhos', 'Roots with an official name': 'Raízes com nome oficial', 'With fields not mapped to ECS': 'Com campos sem correspondência ECS',
+  'Any OS': 'Qualquer SO', 'Any type': 'Qualquer tipo', 'Shared (win-*, linux-*, osquery)': 'Partilhados (win-*, linux-*, osquery)', 'Pack-specific (pack-*)': 'Específicos de um pack (pack-*)',
+  'Any origin': 'Qualquer origem', 'Origin': 'Origem', 'Show the matching items': 'Mostrar os itens correspondentes', 'see list': 'ver lista',
+  'Loads': 'Carrega', 'Decoders tested on real samples': 'Decoders testados com amostras reais', 'With shadowed samples': 'Com amostras sombreadas',
+  'Filter': 'Filtro', 'All rules': 'Todas as regras', 'ID in conflict': 'ID em conflito', 'MITRE only after normalization': 'MITRE só depois de normalizar',
+  'MITRE invalid (discontinued technique)': 'MITRE inválido (técnica descontinuada)', 'Gap': 'Lacuna', 'All techniques': 'Todas as técnicas',
+  'With level ≥12 rules': 'Com regras de nível ≥12', 'Level ≥12 without playbook': 'Nível ≥12 sem playbook', 'Level ≥12 without containment': 'Nível ≥12 sem contenção', 'Jump to': 'Ir para', 'techniques detected only by SigmaHQ (with high/critical rules)': 'técnicas detetadas só pela SigmaHQ (com regras de nível alto/crítico)', 'Open an issue': 'Abrir uma issue',
+  'Where the registry stands and where it needs help: packs that do not load, dependencies between packs, techniques detected without playbook or containment, and unlicensed sources.': 'Onde está o registo e onde precisa de ajuda: packs que não carregam, dependências entre packs, técnicas detetadas sem playbook nem contenção, e fontes sem licença.',
+  'Want to help? Propose a source, fix a pack that does not load or write a rule for an uncovered technique — open an issue in the repository.': 'Quer ajudar? Proponha uma fonte, corrija um pack que não carrega ou escreva uma regra para uma técnica sem cobertura — abra uma issue no repositório.',
+  'Packs': 'Packs', 'Rules': 'Regras', 'Decoders': 'Decoders', 'Techniques & Playbooks': 'Técnicas & Playbooks', 'Responses': 'Respostas',
+  'Agent groups': 'Grupos de agente', 'Gaps': 'Lacunas', 'Install (cart)': 'Instalar',
+  'DOES NOT LOAD': 'NÃO CARREGA', 'LOADS': 'CARREGA', 'LOADS · {n} WARNING': 'CARREGA · {n} AVISO', 'LOADS · {n} WARNINGS': 'CARREGA · {n} AVISOS',
+  'STANDALONE': 'AUTÓNOMA', 'DEPENDENCIES': 'DEPENDÊNCIAS', 'NO LICENSE': 'SEM LICENÇA', 'IN CART': 'NO CESTO', 'MIT? (no file)': 'MIT? (sem ficheiro)',
+  'TESTS {ok}/{n}': 'TESTES {ok}/{n}', '{a} shadowed, {b} not decoded, {c} rule missing, {d} false positives': '{a} sombreados, {b} não descodificados, {c} sem regra, {d} falsos positivos',
+  'All areas': 'Todas as áreas', 'Area': 'Área', 'Show more ({n})': 'Mostrar mais ({n})',
+  'rules': 'regras', 'decoders': 'decoders', 'playbooks': 'playbooks',
+  'Each pack is a source folder: original community files, validated on their own on top of the official ruleset {v}. Open a pack to view and copy its files, or add several to the cart to generate an install script.': 'Cada pack é uma pasta de fonte: ficheiros originais da comunidade, validados isoladamente sobre o ruleset oficial {v}. Abre um pack para ver e copiar os ficheiros, ou junta vários no cesto para gerar um script de instalação.',
+  'Any status': 'Qualquer estado', 'Loads without warnings': 'Carrega sem avisos', 'Loads with warnings': 'Carrega com avisos', 'Does not load': 'Não carrega', 'Standalone': 'Autónoma',
+  'Any license': 'Qualquer licença', 'With license': 'Com licença', 'No license': 'Sem licença', '{n} of {m} packs': '{n} de {m} packs', 'No pack matches the search.': 'Nenhum pack corresponde à pesquisa.',
+  'Every rule in the registry. Search by ID, description, ATT&amp;CK technique (normalized) or group. "Conflict" means the same ID exists in another source: do not load both packs together without renumbering.': 'Todas as regras do registo. Pesquisa por ID, descrição, técnica ATT&amp;CK (normalizada) ou grupo. "Conflito" indica que o mesmo ID existe noutra fonte: não carregar os dois packs juntos sem renumerar.',
+  '{n} rules': '{n} regras', 'Level': 'Nível', 'Description': 'Descrição', 'Pack': 'Pack', 'Conflict': 'Conflito', 'No results.': 'Sem resultados.',
+  'source IP': 'IP de origem', 'destination IP': 'IP de destino', 'user': 'utilizador', 'source port': 'porto de origem', 'action': 'ação', 'process': 'processo', 'URL': 'URL',
+  'ROOT': 'RAIZ', 'child': 'filho', 'no ECS match': 'sem correspondência ECS', 'OFFICIAL NAME': 'NOME OFICIAL', 'COLLIDES ×{n}': 'COLIDE ×{n}',
+  'The sources\' decoders: how they identify the log, the regex engine and the fields they produce (hover a field to see the suggested ECS field). Root decoders with the same name in another source or in the official ruleset shadow each other: the first one loaded takes the log.': 'Os decoders das fontes: como identificam o log, o motor de regex e os campos que produzem (passar o rato sobre um campo mostra o campo ECS sugerido). Decoders raiz com o mesmo nome noutra fonte ou no oficial sombreiam-se: o primeiro carregado apanha o log.',
+  'decoders (root / children)': 'decoders (raiz / filhos)', 'root names colliding between sources': 'raízes que colidem entre fontes', 'root names of an official decoder': 'raízes com nome de um decoder oficial',
+  'distinct field names (with ECS)': 'nomes de campo distintos (com ECS)', '{n} mapped · {p}% of uses': '{n} com correspondência · {p}% dos usos',
+  'Same concept, different names': 'O mesmo conceito, nomes diferentes', 'Concept (ECS)': 'Conceito (ECS)', 'Names used by the decoders (uses)': 'Nomes usados nos decoders (usos)',
+  'All': 'Todos', 'Roots only': 'Só raiz', 'Colliding roots only': 'Só raízes em colisão', '{n} decoders': '{n} decoders',
+  'Decoder': 'Decoder', 'Type': 'Tipo', 'Regex': 'Regex', 'Fields': 'Campos', 'Collision': 'Colisão',
+  'NO PLAYBOOK': 'SEM PLAYBOOK',
+  'ATT&amp;CK techniques covered by the registry\'s rules, with the procedural playbooks (ADORSYS, GuardSight, austinsonger) and the CISA COUN7ER countermeasures that match them. A playbook for a parent technique covers its sub-techniques.': 'Técnicas ATT&amp;CK cobertas pelas regras do registo, com os playbooks procedimentais (ADORSYS, GuardSight, austinsonger) e as contramedidas CISA COUN7ER que lhes correspondem. Um playbook da técnica-mãe cobre as sub-técnicas.',
+  'All tactics': 'Todas as táticas', 'Tactic': 'Tática', 'Sort': 'Ordenar', 'Gaps first': 'Lacunas primeiro', 'Most rules': 'Mais regras', '{n} techniques': '{n} técnicas',
+  'Technique': 'Técnica', 'Tactics': 'Táticas', 'Level ≥12': 'Nível ≥12', 'Playbooks': 'Playbooks', 'CISA countermeasures': 'Contramedidas CISA', 'Containment': 'Contenção',
+  'Sigma high+critical / total rules in SigmaHQ': 'regras Sigma de nível alto/crítico / total na SigmaHQ',
+  'Active responses and integrations shipped by the sources. None is recommended as is: the destructive ones have no allowlist nor test mode. Use this list as a reference of what exists and what is broken.': 'Active responses e integrações que as fontes trazem. Nenhuma é recomendada tal como está: as destrutivas não têm allowlist nem modo de teste. Use esta lista como referência do que existe e do que está partido.',
+  'Warning': 'Atenção', 'Destructive responses (deleting files, disabling accounts, rebooting, sealing Vault) only with an allowlist, a timeout and lab testing.': 'Respostas destrutivas (apagar ficheiros, desativar contas, reiniciar, selar Vault) só com allowlist, timeout e teste em laboratório.',
+  '{n} responses': '{n} respostas', 'Response': 'Resposta', 'Action': 'Ação', 'Impact': 'Impacto', 'Trigger': 'Gatilho', 'Status': 'Estado', 'Problems / warnings': 'Problemas / avisos', 'Problems': 'Problemas',
+  'Model agent groups: the <i>extra</i> collection the packs depend on. Groups do not filter rules — they make sure the events arrive. An agent can be in several groups.': 'Grupos de agentes-modelo: a recolha <i>extra</i> de que os packs dependem. Os grupos não filtram regras — garantem que os eventos chegam. Um agente pode estar em vários grupos.',
+  '{n} groups': '{n} grupos', 'Group': 'Grupo', 'OS': 'SO', 'Entries': 'Entradas', 'Serves': 'Serve', 'VALID': 'VÁLIDO', 'INVALID': 'INVÁLIDO', 'View agent.conf': 'Ver agent.conf',
+  'agent group': 'grupo de agente', 'Close': 'Fechar', 'Copy': 'Copiar', 'Apply on the manager': 'Aplicar no manager', 'Packs served': 'Packs servidos',
+  '# on the Wazuh manager (root)': '# no manager Wazuh (root)', '# add agents to the group:': '# juntar agentes ao grupo:', '<AGENT_ID>': '<ID_AGENTE>',
+  'What is missing for this registry to be usable without effort: packs that do not load, dependencies between packs, techniques detected without playbook or containment, and unlicensed sources.': 'O que falta para este registo ser aplicável sem esforço: packs que não carregam, dependências entre packs, técnicas detetadas sem playbook nem contenção, e fontes sem licença.',
+  'packs that load on their own': 'packs que carregam isoladamente', 'packs that do not load': 'packs que não carregam', 'standalone packs (no dependencies)': 'packs autónomos (sem dependências)',
+  'rule IDs in conflict between sources': 'IDs de regra em conflito entre fontes', 'rules with MITRE only after normalization': 'regras com MITRE só depois de normalizar',
+  'level ≥12 techniques without playbook': 'técnicas nível ≥12 sem playbook', 'level ≥12 techniques without automated containment': 'técnicas nível ≥12 sem contenção automática',
+  'unlicensed sources (internal use)': 'fontes sem licença (uso interno)', 'packs with decoders tested on real samples': 'packs com decoders testados com amostras reais',
+  'samples shadowed by another decoder': 'amostras sombreadas por outro decoder',
+  'By area': 'Por área', 'Load': 'Carregam', 'Standalone ': 'Autónomas', 'Playbooks (level ≥12 techniques)': 'Playbooks (técnicas nível ≥12)', 'Without containment': 'Sem contenção', 'License': 'Licença',
+  '{p}% load': '{p}% carregam', '{p}% standalone': '{p}% autónomas', '{n} of {m} without playbook': '{n} de {m} sem playbook', 'no level ≥12 techniques': 'sem técnicas nível ≥12', '{n} unlicensed': '{n} sem licença',
+  'By ATT&amp;CK tactic': 'Por tática ATT&amp;CK', 'Techniques': 'Técnicas', '{n} without playbook': '{n} sem playbook', '{n} without containment': '{n} sem contenção',
+  'Priority techniques without playbook': 'Técnicas prioritárias sem playbook', 'Name': 'Nome', 'Level ≥12 rules': 'Regras nível ≥12',
+  'Detected by Sigma, not by the registry': 'Detetado pela Sigma, não pelo registo',
+  'Techniques with rules in SigmaHQ ({n} rules, commit {c}) and no rule in the registry, or where the registry only has rules below level 12. Candidates for new rules.': 'Técnicas com regras na SigmaHQ ({n} regras, commit {c}) sem nenhuma regra no registo, ou em que o registo só tem regras abaixo do nível 12. Candidatas a novas regras.',
+  'Sigma high/total': 'Sigma alto/total', 'Log sources': 'Fontes de log', 'Registry status': 'Estado no registo', 'Sigma examples': 'Exemplos Sigma', 'no rules': 'sem regras', '{n} rules, none ≥12': '{n} regras, nenhuma ≥12',
+  'Packs that do not load': 'Packs que não carregam', 'First wazuh-analysisd error': 'Primeiro erro do wazuh-analysisd', 'Content': 'Conteúdo',
+  '{r} rules · {d} decoders': '{r} regras · {d} decoders', 'Remove from cart': 'Tirar do cesto', 'Add to cart': 'Juntar ao cesto',
+  'Summary': 'Resumo', 'Files ({n})': 'Ficheiros ({n})', 'Collection': 'Recolha', 'Tests': 'Testes', 'Tests ({n})': 'Testes ({n})', 'Playbooks & responses': 'Playbooks & respostas',
+  'Does not load in wazuh-analysisd': 'Não carrega no wazuh-analysisd', 'Loads with warnings ': 'Carrega com avisos',
+  'The author published no license: internal use only; do not redistribute.': 'O autor não publicou licença: uso interno apenas; não redistribuir.',
+  'Do not exclude the matching official file: this pack\'s decoders add to the official ones and excluding it breaks loading.': 'Não excluir o ficheiro oficial correspondente: os decoders deste pack somam-se aos oficiais e a exclusão parte o carregamento.',
+  'decoder_exclude required': 'decoder_exclude necessário', 'Origin': 'Origem', 'Folder in the registry': 'Pasta no registo', 'ATT&amp;CK techniques': 'Técnicas ATT&amp;CK',
+  '{n} ({p}% with playbook)': '{n} ({p}% com playbook)', 'Source responses': 'Respostas da fonte', '{a} ok, {b} broken': '{a} ok, {b} partidas', 'To be defined': 'Por definir',
+  'Dependencies outside the pack': 'Dependências fora do pack', 'Rule {id}': 'Regra {id}', 'Showing this rule only.': 'A mostrar só esta regra.', 'View the whole file': 'Ver o ficheiro inteiro', 'No files.': 'Sem ficheiros.',
+  'What has to reach the manager for this pack to fire.': 'O que tem de chegar ao manager para este pack disparar.', 'Already collected by default': 'Já recolhido por omissão',
+  'Requirements on the manager': 'Requisitos no manager', 'This pack needs no extra collection on the agent.': 'Este pack não precisa de recolha extra no agente.',
+  'No log samples: neither tests in the source nor examples in the decoders\' comments.': 'Sem amostras de log: nem testes na fonte nem exemplos nos comentários dos decoders.',
+  'Log samples from the source (tests and examples in the decoders\' comments) run through <code>wazuh-logtest</code> with this pack loaded on its own.': 'Amostras de log da fonte (testes e exemplos nos comentários dos decoders) corridas no <code>wazuh-logtest</code> com este pack carregado sozinho.',
+  'shadowed by another decoder': 'sombreados por outro decoder', 'not decoded': 'não descodificados', 'rule did not fire / false positive': 'regra não disparou / falso positivo',
+  'Result': 'Resultado', 'Sample': 'Amostra', 'Decoder · rule': 'Decoder · regra', 'rule {r} · level {l}': 'regra {r} · nível {l}',
+  'The source ships no responses for this pack.': 'A fonte não traz respostas para este pack.', 'Playbooks by technique ({n})': 'Playbooks por técnica ({n})',
+  'This pack\'s rules have no ATT&amp;CK technique.': 'As regras deste pack não têm técnica ATT&amp;CK.',
+  'The cart is empty. Open a pack and use "Add to cart".': 'O cesto está vazio. Abre um pack e usa "Juntar ao cesto".', 'No pack selected.': 'Nenhum pack selecionado.',
+  'Packs chosen to install together. The script copies the files with the pack prefix (so they do not collide), adds the required CDB lists and <code>decoder_exclude</code> to <code>ossec.conf</code>, and only restarts the manager if <code>wazuh-analysisd -t</code> passes.': 'Packs escolhidos para instalar juntos. O script copia os ficheiros com o prefixo do pack (para não colidirem), acrescenta as listas CDB e os <code>decoder_exclude</code> necessários ao <code>ossec.conf</code>, e só reinicia o manager se o <code>wazuh-analysisd -t</code> passar.',
+  '{n} rule IDs repeated between the chosen packs': '{n} IDs de regra repetidos entre os packs escolhidos', 'Only the first definition of each ID stays active. Remove one of the packs or renumber before installing:': 'Só a primeira definição de cada ID fica ativa. Retirar um dos packs ou renumerar antes de instalar:',
+  'No rule IDs repeated between the chosen packs': 'Sem IDs repetidos entre os packs escolhidos', 'Validation on the manager still applies.': 'Continua a valer a validação no manager.',
+  'Collision with official IDs': 'Colisão com IDs oficiais', 'reuse official ruleset IDs without overwrite.': 'reutilizam IDs do ruleset oficial sem overwrite.',
+  'CDB lists with the same name': 'Listas CDB com o mesmo nome', '— the last one written wins.': '— a última escrita ganha.',
+  '{n} root decoders with the same name between the chosen packs': '{n} decoders raiz com o mesmo nome entre os packs escolhidos', 'The first one loaded takes the log and the other goes silent, with no error:': 'O primeiro carregado apanha o log e o outro fica mudo, sem erro:',
+  'Dependencies in other packs': 'Dependências noutros packs', 'The chosen packs use rules or decoders that live in other packs:': 'Os packs escolhidos usam regras ou decoders que vivem noutros packs:',
+  'Packs that do not load on their own': 'Packs que não carregam isoladamente', '— internal use only.': '— só uso interno.', 'Remove': 'Tirar',
+  'Generate install script': 'Gerar script de instalação', 'Generating…': 'A gerar…', 'Empty cart': 'Esvaziar cesto', 'Download .sh': 'Descarregar .sh', 'Script': 'Script',
+  '{what} copied': '{what} copiado', 'Text': 'Texto', 'Could not load the data': 'Não foi possível carregar os dados', 'a recent browser is required (DecompressionStream).': 'é preciso um browser recente (DecompressionStream).',
+  // script de instalação
+  '# Install generated by wazuh-community-rulesets ({d}) — REVIEW BEFORE RUNNING.': '# Instalação gerada por wazuh-community-rulesets ({d}) — REVER ANTES DE EXECUTAR.',
+  '# Backs up etc/, installs rules, decoders and lists with the pack prefix, adjusts the <ruleset> in ossec.conf,': '# Faz cópia de segurança de etc/, instala regras, decoders e listas com prefixo do pack, ajusta o <ruleset> do ossec.conf,',
+  '# and only restarts the manager if wazuh-analysisd -t passes.': '# e só reinicia o manager se o wazuh-analysisd -t passar.', 'run as root': 'correr como root', 'backup: $BACKUP': 'cópia de segurança: $BACKUP',
+  '(license: {l})': '(licença: {l})', '# WARNING: this pack does NOT load on its own:': '# ATENÇÃO: este pack NÃO carrega isoladamente:',
+  '# ===== ossec.conf: add to <ruleset> (only if not there yet)': '# ===== ossec.conf: acrescentar ao <ruleset> (só se ainda não existir)',
+  'installed; manager restarted': 'instalado; manager reiniciado', 'wazuh-analysisd -t failed: nothing was restarted. Restore with:': 'wazuh-analysisd -t falhou: nada foi reiniciado. Repor com:',
+  '# ===== Agent groups needed (see the Agent groups tab for each agent.conf):': '# ===== Grupos de agente necessários (ver separador Grupos para o agent.conf de cada um):',
+  '# ===== Manager requirements (configure separately in ossec.conf):': '# ===== Requisitos no manager (configurar à parte no ossec.conf):',
+};
+const _ = (s, v) => { let t = LANG === 'pt' ? (PT[s] ?? s) : s; if (v) for (const k in v) t = t.split('{' + k + '}').join(v[k]); return t; };
+// valores do catálogo (gerado em português) mostrados em inglês
+const VEN = {
+  'ok': 'ok', 'partido': 'broken', 'ignorado': 'ignored', 'destrutivo': 'destructive', 'contenção reversível': 'reversible containment', 'não destrutivo': 'non-destructive', 'desconhecido': 'unknown',
+  'bloquear IP': 'block IP', 'apagar ficheiro': 'delete file', 'desativar conta': 'disable account', 'quarentena': 'quarantine', 'reiniciar host': 'reboot host', 'selar Vault': 'seal Vault',
+  'isolar host': 'isolate host', 'matar processo': 'kill process', 'scan': 'scan', 'caso/SOAR': 'case/SOAR', 'enriquecimento': 'enrichment', 'notificação': 'notification', 'outra': 'other',
+  'sombreado': 'shadowed', 'não descodificado': 'not decoded', 'regra não disparou': 'rule did not fire', 'falso positivo': 'false positive', 'diferente do esperado': 'not as expected',
+  'não testado': 'not tested', 'erro': 'error', 'comentário': 'comment', 'descodifica': 'decodes', 'trigger': 'trigger', 'benign': 'benign', 'ini-pass': 'ini-pass', 'ini-fail': 'ini-fail',
+  'oficial: colisão sem overwrite': 'official: collision without overwrite', 'oficial: overwrite por várias fontes': 'official: overwritten by several sources', 'comunidade': 'community',
+  'declarado pela fonte': 'declared by the source', 'inferido': 'inferred', 'qualquer': 'any', 'MIT? (badge no README, sem ficheiro LICENSE)': 'MIT? (README badge, no LICENSE file)',
+};
+const VRX = [
+  [/^eventos JSON: definir o <localfile> json com a localização do ficheiro$/, 'JSON events: define the json <localfile> with the file location'],
+  [/^decoders próprios de texto: definir <localfile> ou <remote> syslog$/, 'own text decoders: define a <localfile> or <remote> syslog'],
+  [/^família oficial (\S+) \((\d+) regras\)$/, 'official family $1 ($2 rules)'], [/^canal (\S+)$/, 'channel $1'],
+  [/: em falta$/, ': missing'], [/: noutra pasta da mesma fonte/, ': in another folder of the same source'], [/: noutra fonte do pack/, ': in another source of the pack'],
+  [/grupo /g, 'group '], [/nível ≥/g, 'level ≥'],
+  [/^apanhado pelo decoder (oficial|outra origem) (.+); os decoders da pasta nunca correm para este log$/, (m, o, d) => `taken by the ${o === 'oficial' ? 'official' : 'other-origin'} decoder ${d}; the folder's decoders never run for this log`],
+  [/^nenhum decoder apanhou o log$/, 'no decoder took the log'], [/^decoder (\S+), regra (\S+)$/, 'decoder $1, rule $2'],
+  [/^regra (\S+) \(nível (\S+)\) disparou num log benigno$/, 'rule $1 (level $2) fired on a benign log'],
+  [/^a pasta não carrega no wazuh-analysisd$/, 'the folder does not load in wazuh-analysisd'],
+  [/script em falta/g, 'missing script'], [/regra (\S+) inexistente/g, 'rule $1 does not exist'], [/ID (\S+) renumerado pelo autor/g, 'ID $1 renumbered by the author'],
+  [/ID (\S+) só existe noutras fontes/g, 'ID $1 only exists in other sources'], [/ID (\S+) também existe noutras fontes/g, 'ID $1 also exists in other sources'],
+  [/ID oficial (\S+) reescrito por outras fontes/g, 'official ID $1 rewritten by other sources'], [/destrutivo sem allowlist/g, 'destructive without allowlist'],
+  [/bloqueio sem timeout/g, 'block without timeout'], [/sem filtro: recebe todos os alertas/g, 'no filter: receives every alert'], [/sem gatilho/g, 'no trigger'],
+  [/nome não coincide: (\S+) chama um script que se chama (\S+)/g, 'name mismatch: $1 calls a script named $2'], [/sem nome de comando\/integração/g, 'no command/integration name'],
+  [/ignorado: definido num agent.conf \(o Wazuh só lê <active-response> no ossec.conf do manager\)/g, 'ignored: defined in an agent.conf (Wazuh only reads <active-response> in the manager ossec.conf)'],
+  [/grupo (\S+) inexistente/g, 'group $1 does not exist'], [/só existe o código-fonte (\S+); falta o binário (\S+)/g, 'only the source code $1 exists; the $2 binary is missing'],
+];
+const V = s => {
+  if (LANG !== 'en' || s == null || s === '') return s ?? '';
+  if (s in VEN) return VEN[s];
+  let t = String(s); for (const [rx, rep] of VRX) t = t.replace(rx, rep); return t;
+};
+
+const $ = (s, el = document) => el.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+async function unpack(id) {
+  const bin = Uint8Array.from(atob($('#' + id).textContent.trim()), c => c.charCodeAt(0));
+  const stream = new Blob([bin]).stream().pipeThrough(new DecompressionStream('gzip'));
+  return JSON.parse(await new Response(stream).text());
+}
+let D, FILES = null;
+async function files() { if (!FILES) FILES = await unpack('blob'); return FILES; }
+const state = { tab: 'packs', q: '', area: '', status: '', lic: '', rf: '', gap: '', limit: 60, cart: new Set(), sort: 'gap' };
+try { JSON.parse(localStorage.getItem('wcr-cart') || '[]').forEach(f => state.cart.add(f)); } catch (e) {}
+const saveCart = () => { try { localStorage.setItem('wcr-cart', JSON.stringify([...state.cart])); } catch (e) {} ; $('#cartN').textContent = state.cart.size; };
+
+// ---------- textos fixos do cabeçalho e do rodapé
+function statics() {
+  document.title = 'Wazuh Community Rulesets';
+  $('#sub').textContent = _('COMMUNITY · 4.x');
+  $('#q').placeholder = _('search packs, rules, decoders, techniques, playbooks…'); $('#q').setAttribute('aria-label', _('Search'));
+  $('#theme').textContent = _('Theme'); $('#theme').title = _('Toggle theme'); $('#cartL').textContent = _('Install');
+  $('#curated').textContent = _('Curated by'); $('#press').title = _('Back to the top and search');
+  $('#foot').innerHTML = [_('Independent community registry, maintained by a Wazuh Ambassador; not an official Wazuh, Inc. product.'),
+    _('Original source files, unchanged, each with its origin and pinned commit; respect each source\'s license (NONE = no license: internal use only).'),
+    _('Validated with <code>wazuh-analysisd -t</code>, <code>verify-agent-conf</code> and <code>wazuh-logtest</code> on the reference wazuh-manager.'),
+    _('Questions, errors or suggestions: <a href="{issues}" target="_blank" rel="noopener">open an issue</a>. Author of a source and want it removed? Open an issue and it will be taken down.', {issues: REPO + '/issues'})].join('<br>');
+  const ld = $('#loading'); if (ld) ld.firstChild.textContent = _('LOADING DATA');
+}
+statics();
+// ---------- tema
+(function () {
+  let t = null; try { t = localStorage.getItem('wcr-theme'); } catch (e) {}
+  if (t) document.documentElement.dataset.theme = t;
+  $('#theme').onclick = () => {
+    const cur = document.documentElement.dataset.theme || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    const nx = cur === 'light' ? 'dark' : 'light';
+    document.documentElement.dataset.theme = nx; try { localStorage.setItem('wcr-theme', nx); } catch (e) {}
+  };
+})();
+function toast(m) { const t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove('on'), 1800); }
+async function copy(text, what) {
+  try { await navigator.clipboard.writeText(text); }
+  catch (e) { const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
+  toast(_('{what} copied', {what: what || _('Text')}));
+}
+function download(name, text) {
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], {type: 'text/plain'})); a.download = name; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+function hl(src) {   // realce simples de XML
+  return esc(src).replace(/(&lt;!--[\s\S]*?--&gt;)|(&lt;\/?)([\w:.-]+)((?:\s+[\w:.-]+=(?:&quot;.*?&quot;|&#39;.*?&#39;))*)\s*(\/?&gt;)/g,
+    (m, com, open, tag, attrs, close) => com ? `<span class="tok-com">${com}</span>` :
+      `${open}<span class="tok-tag">${tag}</span>${attrs.replace(/([\w:.-]+)=(&quot;.*?&quot;|&#39;.*?&#39;)/g, '<span class="tok-attr">$1</span>=<span class="tok-str">$2</span>')}${close}`);
+}
+const norm = s => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+const words = () => norm(state.q).split(/\s+/).filter(Boolean);
+const match = (hay, ws) => { const h = norm(hay); return ws.every(w => h.includes(w)); };
+const pct = (a, b) => b ? Math.round(100 * a / b) : 0;
+const areaName = a => a.replace(/^\d+-/, '').replace(/-/g, ' ');
+const areaDesc = a => (LANG === 'en' ? D.areas_en : D.areas)[a] || '';
+
+// ---------- estado de cada pack
+function packStatus(p) {
+  if (!p.ok) return ['bad', _('DOES NOT LOAD')];
+  if (p.w) return ['warn', _(p.w > 1 ? 'LOADS · {n} WARNINGS' : 'LOADS · {n} WARNING', {n: p.w})];
+  return ['ok', _('LOADS')];
+}
+function testBadge(p) {
+  const t = p.tests; if (!t || !t.samples || t.not_tested === t.samples) return '';
+  return t.failed ? `<span class="b warn" title="${esc(_('{a} shadowed, {b} not decoded, {c} rule missing, {d} false positives', {a: t.sombreado, b: t['não descodificado'], c: t['regra não disparou'], d: t['falso positivo']}))}">${_('TESTS {ok}/{n}', {ok: t.ok, n: t.samples - t.not_tested})}</span>`
+                  : `<span class="b ok">${_('TESTS {ok}/{n}', {ok: t.ok, n: t.samples})}</span>`;
+}
+function licBadge(l) { return l === 'NONE' ? `<span class="b bad">${_('NO LICENSE')}</span>` : `<span class="b mut" title="${esc(V(l))}">${esc(l.startsWith('MIT?') ? _('MIT? (no file)') : l)}</span>`; }
+const saBadge = p => p.sa ? `<span class="b ok">${_('STANDALONE')}</span>` : `<span class="b warn">${_('DEPENDENCIES')}</span>`;
+
+// ---------- separadores
+const TABS = [['packs', 'Packs'], ['rules', 'Rules'], ['decs', 'Decoders'], ['tech', 'Techniques & Playbooks'], ['resp', 'Responses'], ['groups', 'Agent groups'], ['gaps', 'Coverage'], ['cart', 'Install (cart)']];
+function nav() {
+  $('#tabs').innerHTML = TABS.map(([k, l]) => `<button data-t="${k}" class="${state.tab === k ? 'on' : ''}">${_(l)}${k === 'cart' ? `<span class="n">${state.cart.size}</span>` : ''}</button>`).join('');
+  $('#tabs').querySelectorAll('button').forEach(b => b.onclick = () => { if (b.dataset.t !== state.tab) Object.assign(state, {status: '', lic: '', rf: '', gap: ''}); go(b.dataset.t); });
+}
+function go(t) { state.tab = t; state.limit = 60; history.replaceState(null, '', '#' + t); render(); window.scrollTo(0, 0); }
+function areaSelect() {
+  return `<select id="fArea" aria-label="${_('Area')}"><option value="">${_('All areas')}</option>${Object.keys(D.areas).map(a => `<option value="${a}" ${state.area === a ? 'selected' : ''} title="${esc(areaDesc(a))}">${esc(a)}</option>`).join('')}</select>`;
+}
+function bindFilters() {
+  const fa = $('#fArea'); if (fa) fa.onchange = e => { state.area = e.target.value; state.limit = 60; render(); };
+  const fs = $('#fStatus'); if (fs) fs.onchange = e => { state.status = e.target.value; state.limit = 60; render(); };
+  const fl = $('#fLic'); if (fl) fl.onchange = e => { state.lic = e.target.value; state.limit = 60; render(); };
+  const so = $('#fSort'); if (so) so.onchange = e => { state.sort = e.target.value; render(); };
+  const rf = $('#fRule'); if (rf) rf.onchange = e => { state.rf = e.target.value; state.limit = 60; render(); };
+  const gp = $('#fGap'); if (gp) gp.onchange = e => { state.gap = e.target.value; state.limit = 60; render(); };
+  const m = $('#more'); if (m) m.onclick = () => { state.limit += 120; render(); };
+}
+function moreBtn(n) { return n > state.limit ? `<div class="more"><button class="btn" id="more">${_('Show more ({n})', {n: n - state.limit})}</button></div>` : ''; }
+const kpiLink = (v, l, c, to, active, sub = '') => `<a class="kpi ${c} ${active ? 'active' : ''}" href="#${to[0]}" data-to='${esc(JSON.stringify(active ? [to[0], Object.fromEntries(Object.keys(to[1]).map(k => [k, ''])), to[2]] : to))}' title="${active ? _('Clear this filter') : _('Show the matching items')}"><div class="l">${l}</div><div class="v">${v}</div>${sub ? `<div class="l">${sub}</div>` : ''}<div class="go">${active ? _('filter active · click to clear') : _('see list') + ' →'}</div></a>`;
+const opt = (v, cur, label) => `<option value="${v}" ${cur === v ? 'selected' : ''}>${label}</option>`;
+const empty = cols => `<tr><td colspan="${cols}" class="empty">${_('No results.')}</td></tr>`;
+
+// ---------- PACKS
+function renderPacks() {
+  const ws = words();
+  let list = D.packs.map((p, i) => [p, i]).filter(([p]) =>
+    (!state.area || p.a === state.area) &&
+    (!state.status || (state.status === 'ok' && p.ok && !p.w) || (state.status === 'warn' && p.ok && p.w) || (state.status === 'bad' && !p.ok) || (state.status === 'sa' && p.sa)
+      || (state.status === 'loads' && p.ok) || (state.status === 'tested' && p.tests && p.tests.samples > p.tests.not_tested)
+      || (state.status === 'shadowed' && p.tests && p.tests.sombreado > 0)) &&
+    (!state.lic || (state.lic === 'yes' ? p.lic !== 'NONE' : p.lic === 'NONE')) &&
+    (!ws.length || match([p.f, p.t, p.s, p.a, p.grp.join(' '), p.lic].join(' '), ws)));
+  const cards = list.slice(0, state.limit).map(([p, i]) => {
+    const [cls, lbl] = packStatus(p);
+    return `<article class="card" data-p="${i}" tabindex="0">
+      <div class="area" title="${esc(areaDesc(p.a))}">${esc(areaName(p.a))}</div>
+      <h3>${esc(p.t)}</h3>
+      <div class="src">${esc(p.s)}</div>
+      <div class="nums"><span><b>${p.r}</b> ${_('rules')}</span><span><b>${p.d}</b> ${_('decoders')}</span><span><b>${p.tech ? pct(p.tpb, p.tech) + '%' : '—'}</b> ${_('playbooks')}</span></div>
+      <div class="badges"><span class="b ${cls}">${lbl}</span>${saBadge(p)}${licBadge(p.lic)}${testBadge(p)}${state.cart.has(p.f) ? `<span class="b info">${_('IN CART')}</span>` : ''}</div>
+    </article>`;
+  }).join('');
+  return `<p class="lead">${_('Each pack is a source folder: original community files, validated on their own on top of the official ruleset {v}. Open a pack to view and copy its files, or add several to the cart to generate an install script.', {v: esc(D.stats.official_reference.split(' ')[1])})}</p>
+  <div class="filters">${areaSelect()}
+    <select id="fStatus" aria-label="${_('Status')}">${opt('', state.status, _('Any status'))}${opt('loads', state.status, _('Loads'))}${opt('ok', state.status, _('Loads without warnings'))}${opt('warn', state.status, _('Loads with warnings'))}${opt('bad', state.status, _('Does not load'))}${opt('sa', state.status, _('Standalone'))}${opt('tested', state.status, _('Decoders tested on real samples'))}${opt('shadowed', state.status, _('With shadowed samples'))}</select>
+    <select id="fLic" aria-label="${_('License')}">${opt('', state.lic, _('Any license'))}${opt('yes', state.lic, _('With license'))}${opt('no', state.lic, _('No license'))}</select>
+    <span class="count">${_('{n} of {m} packs', {n: list.length, m: D.packs.length})}</span></div>
+  ${list.length ? `<div class="grid">${cards}</div>` : `<div class="empty">${_('No pack matches the search.')}</div>`}${moreBtn(list.length)}`;
+}
+
+// ---------- REGRAS
+function renderRules() {
+  const ws = words();
+  let n = 0; const rows = [];
+  for (const r of D.rules) {
+    const p = D.packs[r[4]];
+    if (state.area && p.a !== state.area) continue;
+    if (state.rf === 'conflict' && !r[5]) continue;
+    if (state.rf === 'normalized' && r[7] !== 'normalizado') continue;
+    if (state.rf === 'invalid' && r[7] !== 'inválido') continue;
+    if (state.rf === 'lvl12' && r[1] < 12) continue;
+    if (ws.length && !match(r[0] + ' ' + r[2] + ' ' + r[3] + ' ' + r[6] + ' ' + p.t + ' ' + p.s, ws)) continue;
+    if (n++ < state.limit) rows.push(`<tr class="click" data-p="${r[4]}" data-rule="${esc(r[0])}"><td>${esc(r[0])}</td><td class="num">${r[1]}</td><td>${esc(r[2])}</td>
+      <td>${esc(r[3].replace(/,/g, ' '))}</td><td class="hide-sm">${esc(p.t)}<br><span class="pct">${esc(p.s)}</span></td>
+      <td>${r[5] ? `<span class="b ${r[5].startsWith('oficial: colisão') ? 'bad' : 'warn'}">${esc(V(r[5]))}</span>` : ''}</td></tr>`);
+  }
+  return `<p class="lead">${_('Every rule in the registry. Search by ID, description, ATT&amp;CK technique (normalized) or group. "Conflict" means the same ID exists in another source: do not load both packs together without renumbering.')}</p>
+  <div class="filters">${areaSelect()}
+    <select id="fRule" aria-label="${_('Filter')}">${opt('', state.rf, _('All rules'))}${opt('conflict', state.rf, _('ID in conflict'))}${opt('normalized', state.rf, _('MITRE only after normalization'))}${opt('invalid', state.rf, _('MITRE invalid (discontinued technique)'))}${opt('lvl12', state.rf, _('Level ≥12'))}</select>
+    <span class="count">${_('{n} rules', {n})}</span></div>
+  <div class="tablewrap"><table><thead><tr><th>ID</th><th class="num">${_('Level')}</th><th>${_('Description')}</th><th>ATT&amp;CK</th><th class="hide-sm">${_('Pack')}</th><th>${_('Conflict')}</th></tr></thead><tbody>${rows.join('') || empty(6)}</tbody></table></div>${moreBtn(n)}`;
+}
+
+// ---------- DECODERS
+const CONCEPTS = [['source.ip', 'source IP'], ['destination.ip', 'destination IP'], ['user.name', 'user'], ['source.port', 'source port'],
+  ['event.action', 'action'], ['process.name', 'process'], ['url.original', 'URL']];
+let ECSMAP = null;
+function fieldEcs(f) { if (!ECSMAP) { ECSMAP = new Map(D.dfields.map(x => [x[0], x[3]])); } return ECSMAP.get(f) || ''; }
+function renderDecs() {
+  const ws = words(), st = state.status;
+  let n = 0; const rows = [];
+  for (const d of D.decs) {
+    const p = D.packs[d[2]], col = D.dcoll[d[0]];
+    if (state.area && p.a !== state.area) continue;
+    if (st === 'col' && !(d[3] && col && !col.off)) continue;
+    if (st === 'offname' && !(d[3] && col && col.off)) continue;
+    if (st === 'root' && !d[3]) continue;
+    if (st === 'child' && d[3]) continue;
+    if (st === 'noecs' && !d[6].split(',').some(f => f && !fieldEcs(f))) continue;
+    if (ws.length && !match(d[0] + ' ' + d[1] + ' ' + d[6] + ' ' + p.t + ' ' + p.s, ws)) continue;
+    if (n++ >= state.limit) continue;
+    const flds = d[6].split(',').filter(Boolean);
+    rows.push(`<tr class="click" data-p="${d[2]}"><td><b>${esc(d[0])}</b>${d[3] ? '' : `<br><span class="pct">↳ ${esc(d[1])}</span>`}</td>
+      <td>${d[3] ? `<span class="b info">${_('ROOT')}</span>` : `<span class="b mut">${_('child')}</span>`} ${d[4] ? `<span class="b mut">${esc(d[4])}</span>` : ''}</td>
+      <td class="hide-sm">${esc(d[5] || '—')}</td>
+      <td>${flds.slice(0, 8).map(f => `<code title="${esc(fieldEcs(f) ? 'ECS: ' + fieldEcs(f) : _('no ECS match'))}">${esc(f)}</code>`).join(' ')}${flds.length > 8 ? ` <span class="pct">+${flds.length - 8}</span>` : ''}</td>
+      <td class="hide-sm">${esc(p.t)}<br><span class="pct">${esc(p.s)}</span></td>
+      <td>${d[3] && col ? `<span class="b ${col.off ? 'warn' : 'bad'}" title="${esc(col.p.map(i => D.packs[i].s).join(', '))}">${col.off ? _('OFFICIAL NAME') : _('COLLIDES ×{n}', {n: col.p.length})}</span>` : ''}</td></tr>`);
+  }
+  const S = D.stats.decoders_detail || {};
+  const variants = CONCEPTS.map(([ecs, label]) => { const v = D.dfields.filter(f => f[3] === ecs).sort((a, b) => b[1] - a[1]);
+    return v.length ? `<tr><td><b>${_(label)}</b><br><code>${ecs}</code></td><td>${v.slice(0, 8).map(f => `<code>${esc(f[0])}</code> <span class="pct">${f[1]}</span>`).join(' · ')}${v.length > 8 ? ` · +${v.length - 8}` : ''}</td></tr>` : ''; }).join('');
+  return `<p class="lead">${_('The sources\' decoders: how they identify the log, the regex engine and the fields they produce (hover a field to see the suggested ECS field). Root decoders with the same name in another source or in the official ruleset shadow each other: the first one loaded takes the log.')}</p>
+  <div class="kpis">
+    ${kpiLink(`${S.roots}/${S.children}`, _('decoders (root / children)'), '', ['decs', {status: 'root'}, 'decs-table'], st === 'root')}
+    ${kpiLink(S.root_collisions_between_sources, _('root names colliding between sources'), 'bad', ['decs', {status: 'col'}, 'decs-table'], st === 'col')}
+    ${kpiLink(S.root_names_also_official, _('root names of an official decoder'), '', ['decs', {status: 'offname'}, 'decs-table'], st === 'offname')}
+    ${kpiLink(S.distinct_fields, _('distinct field names (with ECS)'), '', ['decs', {status: 'noecs'}, 'decs-table'], st === 'noecs', _('{n} mapped · {p}% of uses', {n: S.fields_with_ecs, p: S.field_uses_with_ecs_pct}) + ' · ' + _('filter: decoders with unmapped fields'))}
+  </div>
+  <h2>${_('Same concept, different names')}</h2>
+  <div class="tablewrap"><table><thead><tr><th>${_('Concept (ECS)')}</th><th>${_('Names used by the decoders (uses)')}</th></tr></thead><tbody>${variants}</tbody></table></div>
+  <h2 id="decs-table">${_('Decoders')}</h2>
+  <div class="filters">${areaSelect()}
+    <select id="fStatus" aria-label="${_('Type')}">${opt('', st, _('All'))}${opt('root', st, _('Roots only'))}${opt('child', st, _('Children only'))}${opt('col', st, _('Colliding roots only'))}${opt('offname', st, _('Roots with an official name'))}${opt('noecs', st, _('With fields not mapped to ECS'))}</select>
+    <span class="count">${_('{n} decoders', {n})}</span></div>
+  <div class="tablewrap"><table><thead><tr><th>${_('Decoder')}</th><th>${_('Type')}</th><th class="hide-sm">${_('Regex')}</th><th>${_('Fields')}</th><th class="hide-sm">${_('Pack')}</th><th>${_('Collision')}</th></tr></thead><tbody>${rows.join('') || empty(6)}</tbody></table></div>${moreBtn(n)}`;
+}
+
+// ---------- TÉCNICAS & PLAYBOOKS
+function docsFor(t) { const base = t.split('.')[0]; return D.pbs.filter(d => d[4].split(',').some(x => x === t || x === base)); }
+const pbLink = d => `<a href="${esc(d[6])}" target="_blank" rel="noopener">${esc(d[0].split('/')[0])}: ${esc(d[2])}</a>`;
+function renderTech() {
+  const ws = words();
+  const tactic = state.status;
+  let list = D.techs.filter(t => (!state.area || t[6].split(';').includes(state.area)) && (!tactic || t[2].split(';').includes(tactic)) &&
+    (!state.gap || (state.gap === 'nopb' && t[4] && !t[7]) || (state.gap === 'nocont' && t[4] && !t[9]) || (state.gap === 'lvl12' && t[4])) &&
+    (!ws.length || match(t.join(' ') + ' ' + docsFor(t[0]).map(d => d[3]).join(' '), ws)));
+  list = list.slice().sort(state.sort === 'gap' ? (a, b) => (!!a[7] - !!b[7]) || b[4] - a[4] : (a, b) => b[3] - a[3]);
+  const tactics = [...new Set(D.techs.flatMap(t => t[2].split(';')).filter(Boolean))].sort();
+  const rows = list.slice(0, state.limit).map(t => {
+    const docs = docsFor(t[0]).filter(d => d[1].startsWith('procedimental')), cms = docsFor(t[0]).filter(d => d[1].startsWith('contramedida'));
+    return `<tr><td><a href="https://attack.mitre.org/techniques/${t[0].replace('.', '/')}/" target="_blank" rel="noopener">${t[0]}</a><br><span class="pct">${esc(t[1])}</span></td>
+      <td class="hide-sm">${esc(t[2].replace(/;/g, ', '))}</td><td class="num">${t[3]}</td><td class="num">${t[4] ? `<b>${t[4]}</b>` : '0'}</td>
+      <td>${docs.length ? docs.slice(0, 4).map(pbLink).join('<br>') + (docs.length > 4 ? `<br><span class="pct">+${docs.length - 4}</span>` : '') : `<span class="b bad">${_('NO PLAYBOOK')}</span>`}</td>
+      <td>${cms.length ? cms.slice(0, 3).map(d => `<span title="${esc(d[3])}">${esc(d[2])}</span>`).join(' ') + (cms.length > 3 ? ` +${cms.length - 3}` : '') : '—'}</td>
+      <td class="num">${t[9] ? `<span class="b ok">${t[9]}</span>` : '<span class="b mut">0</span>'}</td>
+      <td class="num hide-sm">${t[11] ? `<b>${t[12]}</b>/${t[11]}` : '—'}</td>
+      <td><button class="btn small" data-tq="${t[0]}">${_('Rules')}</button></td></tr>`;
+  }).join('');
+  return `<p class="lead">${_('ATT&amp;CK techniques covered by the registry\'s rules, with the procedural playbooks (ADORSYS, GuardSight, austinsonger) and the CISA COUN7ER countermeasures that match them. A playbook for a parent technique covers its sub-techniques.')}</p>
+  <div class="filters">${areaSelect()}
+    <select id="fStatus" aria-label="${_('Tactic')}">${opt('', state.status, _('All tactics'))}${tactics.map(t => opt(t, state.status, t)).join('')}</select>
+    <select id="fGap" aria-label="${_('Gap')}">${opt('', state.gap, _('All techniques'))}${opt('lvl12', state.gap, _('With level ≥12 rules'))}${opt('nopb', state.gap, _('Level ≥12 without playbook'))}${opt('nocont', state.gap, _('Level ≥12 without containment'))}</select>
+    <select id="fSort" aria-label="${_('Sort')}">${opt('gap', state.sort, _('Gaps first'))}${opt('rules', state.sort, _('Most rules'))}</select>
+    <span class="count">${_('{n} techniques', {n: list.length})}</span></div>
+  <div class="tablewrap"><table><thead><tr><th>${_('Technique')}</th><th class="hide-sm">${_('Tactics')}</th><th class="num">${_('Rules')}</th><th class="num">${_('Level ≥12')}</th><th>${_('Playbooks')}</th><th>${_('CISA countermeasures')}</th><th class="num">${_('Containment')}</th><th class="num hide-sm" title="${_('Sigma high+critical / total rules in SigmaHQ')}">Sigma</th><th></th></tr></thead><tbody>${rows || empty(9)}</tbody></table></div>${moreBtn(list.length)}`;
+}
+
+// ---------- RESPOSTAS
+const impactCls = i => i === 'destrutivo' ? 'fill-bad' : i.startsWith('contenção') ? 'warn' : 'mut';
+function renderResp() {
+  const ws = words();
+  const list = D.resps.filter(r => (!state.status || r[6] === state.status) && (!ws.length || match(r.join(' ') + ' ' + [r[3], r[4], r[6]].map(V).join(' '), ws)));
+  const rows = list.slice(0, state.limit).map(r => `<tr class="${r[9].length ? 'click' : ''}" ${r[9].length ? `data-p="${r[9][0]}"` : ''}>
+      <td><b>${esc(r[2])}</b><br><span class="pct">${esc(r[1])} · ${esc(r[0])}</span></td><td>${esc(V(r[3]))}</td>
+      <td><span class="b ${impactCls(r[4])}">${esc(V(r[4]))}</span></td>
+      <td class="hide-sm">${esc(V(r[5]))}</td>
+      <td><span class="b ${r[6] === 'ok' ? 'ok' : 'bad'}">${esc(V(r[6]))}</span></td>
+      <td>${esc(V(r[7] || r[8]))}</td></tr>`).join('');
+  return `<p class="lead">${_('Active responses and integrations shipped by the sources. None is recommended as is: the destructive ones have no allowlist nor test mode. Use this list as a reference of what exists and what is broken.')}</p>
+  <div class="alert warn"><b>${_('Warning')}</b>${_('Destructive responses (deleting files, disabling accounts, rebooting, sealing Vault) only with an allowlist, a timeout and lab testing.')}</div>
+  <div class="filters"><select id="fStatus" aria-label="${_('Status')}">${opt('', state.status, _('Any status'))}${['ok', 'partido', 'ignorado'].map(s => opt(s, state.status, V(s))).join('')}</select><span class="count">${_('{n} responses', {n: list.length})}</span></div>
+  <div class="tablewrap"><table><thead><tr><th>${_('Response')}</th><th>${_('Action')}</th><th>${_('Impact')}</th><th class="hide-sm">${_('Trigger')}</th><th>${_('Status')}</th><th>${_('Problems / warnings')}</th></tr></thead><tbody>${rows || empty(6)}</tbody></table></div>${moreBtn(list.length)}`;
+}
+
+// ---------- GRUPOS
+function renderGroups() {
+  const ws = words();
+  const shared = g => !g[0].startsWith('pack-');
+  const list = D.groups.filter(g => (!ws.length || match(g[0] + ' ' + g[1] + ' ' + g[4].map(i => D.packs[i].t + ' ' + D.packs[i].s).join(' '), ws)) &&
+    (!state.status || g[1].split(';').includes(state.status)) &&
+    (!state.rf || (state.rf === 'shared' ? shared(g) : !shared(g))) &&
+    (!state.gap || g[3].split(';').includes(state.gap)) &&
+    (!state.area || g[4].some(i => D.packs[i].a === state.area)));
+  const oses = [...new Set(D.groups.flatMap(g => g[1].split(';')))].sort();
+  const rows = list.map(g => `<tr><td><b>${esc(g[0])}</b></td><td>${esc(g[1].split(';').map(V).join(', '))}</td><td class="num">${g[2]}</td><td class="num">${g[4].length}</td>
+    <td class="hide-sm">${g[4].slice(0, 4).map(p => esc(D.packs[p].t)).join(', ')}${g[4].length > 4 ? ' …' : ''}</td>
+    <td>${g[6] ? `<span class="b ok">${_('VALID')}</span>` : `<span class="b bad">${_('INVALID')}</span>`}</td>
+    <td><button class="btn small" data-g="${D.groups.indexOf(g)}">${_('View agent.conf')}</button></td></tr>`).join('');
+  return `<p class="lead">${_('Model agent groups: the <i>extra</i> collection the packs depend on. Groups do not filter rules — they make sure the events arrive. An agent can be in several groups.')}</p>
+  <div class="filters">${areaSelect()}
+    <select id="fStatus" aria-label="${_('OS')}">${opt('', state.status, _('Any OS'))}${oses.map(o => opt(o, state.status, V(o))).join('')}</select>
+    <select id="fRule" aria-label="${_('Type')}">${opt('', state.rf, _('Any type'))}${opt('shared', state.rf, _('Shared (win-*, linux-*, osquery)'))}${opt('pack', state.rf, _('Pack-specific (pack-*)'))}</select>
+    <select id="fGap" aria-label="${_('Origin')}">${opt('', state.gap, _('Any origin'))}${opt('inferido', state.gap, V('inferido'))}${opt('declarado pela fonte', state.gap, V('declarado pela fonte'))}</select>
+    <span class="count">${_('{n} groups', {n: list.length})}</span></div>
+  <div class="tablewrap"><table><thead><tr><th>${_('Group')}</th><th>${_('OS')}</th><th class="num">${_('Entries')}</th><th class="num">${_('Packs')}</th><th class="hide-sm">${_('Serves')}</th><th>verify-agent-conf</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+async function showGroup(i) {
+  const g = D.groups[i], txt = (await files())[g[5]];
+  const cmd = groupCmd(g[0], txt);
+  openDrawer(`<div class="dhead"><div><div class="area">${_('agent group')}</div><h2>${esc(g[0])}</h2><div class="badges"><span class="b info">${esc(g[1].split(';').map(V).join(', '))}</span>${g[6] ? `<span class="b ok">${_('VALID')}</span>` : ''}</div></div><button class="btn x" data-close>${_('Close')}</button></div>
+  <div class="dbody"><h2>agent.conf</h2><div class="code"><button class="btn small copy" data-copy="gconf">${_('Copy')}</button><pre>${hl(txt)}</pre></div>
+  <h2>${_('Apply on the manager')}</h2><div class="code"><button class="btn small copy" data-copy="gcmd">${_('Copy')}</button><pre>${esc(cmd)}</pre></div>
+  <h2>${_('Packs served')}</h2><div class="chips">${g[4].map(p => `<button class="btn small" data-p="${p}">${esc(D.packs[p].t)} · ${esc(D.packs[p].s)}</button>`).join('')}</div></div>`,
+  {gconf: txt, gcmd: cmd});
+}
+function groupCmd(name, conf) {
+  return `${_('# on the Wazuh manager (root)')}
+/var/ossec/bin/agent_groups -a -g ${name} -q
+cat > /var/ossec/etc/shared/${name}/agent.conf <<'WCR_EOF'
+${conf.trimEnd()}
+WCR_EOF
+chown wazuh:wazuh /var/ossec/etc/shared/${name}/agent.conf
+/var/ossec/bin/verify-agent-conf -f /var/ossec/etc/shared/${name}/agent.conf
+${_('# add agents to the group:')}
+# /var/ossec/bin/agent_groups -a -i ${_('<AGENT_ID>')} -g ${name} -q`;
+}
+
+// ---------- LACUNAS
+function bar(parts) { const tot = parts.reduce((s, [v]) => s + v, 0) || 1; return `<div class="meter">${parts.map(([v, c]) => `<i class="${c}" style="width:${100 * v / tot}%"></i>`).join('')}</div>`; }
+function renderGaps() {
+  const S = D.stats, R = S.response || {}, M = S.mitre || {}, SG = S.sigma || {};
+  const P = D.packs, okN = P.filter(p => p.ok && !p.w).length, warnN = P.filter(p => p.ok && p.w).length, badN = P.filter(p => !p.ok).length;
+  const noLic = D.sources.filter(s => s[2] === 'incluída' && s[1] === 'NONE').length, inc = D.sources.filter(s => s[2] === 'incluída').length;
+  const kpi = (v, l, c = '', to = null) => to ? `<a class="kpi ${c}" href="#${to[0]}" data-to='${esc(JSON.stringify(to))}' title="${_('Show the matching items')}"><div class="l">${l}</div><div class="v">${v}</div><div class="go">${_('see list')} →</div></a>`
+                                              : `<div class="kpi ${c}"><div class="l">${l}</div><div class="v">${v}</div></div>`;
+  const areas = Object.keys(D.areas).map(a => {
+    const ps = P.filter(p => p.a === a); if (!ps.length) return '';
+    const tech = D.techs.filter(t => t[6].split(';').includes(a)), hi = tech.filter(t => t[4]);
+    return `<tr class="click" data-area="${a}"><td><b>${esc(areaName(a))}</b><br><span class="pct">${esc(areaDesc(a))}</span></td><td class="num">${ps.length}</td>
+      <td>${bar([[ps.filter(p => p.ok && !p.w).length, 'g'], [ps.filter(p => p.ok && p.w).length, 'y'], [ps.filter(p => !p.ok).length, 'r']])}<span class="pct">${_('{p}% load', {p: pct(ps.filter(p => p.ok).length, ps.length)})}</span></td>
+      <td>${bar([[ps.filter(p => p.sa).length, 'g'], [ps.filter(p => !p.sa).length, 'y']])}<span class="pct">${_('{p}% standalone', {p: pct(ps.filter(p => p.sa).length, ps.length)})}</span></td>
+      <td>${hi.length ? bar([[hi.filter(t => t[7]).length, 'g'], [hi.filter(t => !t[7]).length, 'r']]) + `<span class="pct">${_('{n} of {m} without playbook', {n: hi.filter(t => !t[7]).length, m: hi.length})}</span>` : `<span class="pct">${_('no level ≥12 techniques')}</span>`}</td>
+      <td class="num">${hi.filter(t => !t[9]).length}</td>
+      <td>${bar([[ps.filter(p => p.lic !== 'NONE').length, 'g'], [ps.filter(p => p.lic === 'NONE').length, 'r']])}<span class="pct">${_('{n} unlicensed', {n: ps.filter(p => p.lic === 'NONE').length})}</span></td></tr>`;
+  }).join('');
+  const tacts = {};
+  D.techs.forEach(t => t[2].split(';').filter(Boolean).forEach(x => { const o = tacts[x] ||= {n: 0, hi: 0, nopb: 0, noc: 0}; o.n++; if (t[4]) { o.hi++; if (!t[7]) o.nopb++; if (!t[9]) o.noc++; } }));
+  const trows = Object.entries(tacts).sort((a, b) => b[1].hi - a[1].hi).map(([k, o]) => `<tr><td>${esc(k)}</td><td class="num">${o.n}</td><td class="num">${o.hi}</td>
+    <td>${bar([[o.hi - o.nopb, 'g'], [o.nopb, 'r']])}<span class="pct">${_('{n} without playbook', {n: o.nopb})}</span></td><td>${bar([[o.hi - o.noc, 'g'], [o.noc, 'r']])}<span class="pct">${_('{n} without containment', {n: o.noc})}</span></td></tr>`).join('');
+  const top = D.techs.filter(t => t[4] && !t[7]).sort((a, b) => b[4] - a[4]).slice(0, 20).map(t => `<tr class="click" data-tq="${t[0]}"><td>${t[0]}</td><td>${esc(t[1])}</td><td class="hide-sm">${esc(t[2].replace(/;/g, ', '))}</td>
+    <td class="num"><b>${t[4]}</b></td><td class="num">${t[5]}</td><td class="num">${t[8] || '—'}</td></tr>`).join('');
+  const broken = D.packs.map((p, i) => [p, i]).filter(([p]) => !p.ok).map(([p, i]) => `<tr class="click" data-p="${i}"><td><b>${esc(p.t)}</b><br><span class="pct">${esc(p.s)}</span></td><td>${esc(p.err)}</td></tr>`).join('');
+  const sig = D.sigma.slice().sort((a, b) => b[4] - a[4] || b[3] - a[3]).slice(0, 30).map(s => `<tr><td><a href="https://attack.mitre.org/techniques/${s[0].replace('.', '/')}/" target="_blank" rel="noopener">${s[0]}</a></td>
+    <td>${esc(s[1])}</td><td class="num"><b>${s[4]}</b>/${s[3]}</td><td class="hide-sm"><span class="pct">${esc(s[5].replace(/;/g, ', '))}</span></td>
+    <td><span class="b ${s[7] === 'só Sigma' ? 'bad' : 'warn'}">${s[7] === 'só Sigma' ? _('no rules') : _('{n} rules, none ≥12', {n: s[8]})}</span></td>
+    <td>${s[6].split(' | ').filter(Boolean).map(x => { const m = x.match(/^(.*) <(.*)>$/); return m ? `<a href="${esc(m[2])}" target="_blank" rel="noopener">${esc(m[1])}</a>` : esc(x); }).join('<br>')}</td></tr>`).join('');
+  return `<p class="lead">${_('Where the registry stands and where it needs help: packs that do not load, dependencies between packs, techniques detected without playbook or containment, and unlicensed sources.')}</p>
+  <div class="cta"><p>${_('Want to help? Propose a source, fix a pack that does not load or write a rule for an uncovered technique — open an issue in the repository.')}</p><a class="btn yellow" href="${REPO}/issues/new/choose" target="_blank" rel="noopener">${_('Open an issue')}</a></div>
+  <div class="jump">${_('Jump to')}: ${[['cov-area', _('By area')], ['cov-tactic', _('By ATT&amp;CK tactic')], ['cov-priority', _('Priority techniques without playbook')], ['cov-sigma', _('Detected by Sigma, not by the registry')], ['cov-broken', _('Packs that do not load')]].map(([id, l]) => `<a href="#${id}" data-jump="${id}">${l}</a>`).join(' · ')}</div>
+  <div class="kpis">
+    <a class="kpi bad" href="#cov-sigma" data-jump="cov-sigma" style="text-decoration:none"><div class="l">${_('techniques detected only by SigmaHQ (with high/critical rules)')}</div><div class="v">${(SG.by_status || {})['só Sigma'] || 0} (${SG.sigma_only_with_high || 0})</div></a>
+    ${kpi(`${okN + warnN}/${P.length}`, _('packs that load on their own'), badN ? '' : 'ok', ['packs', {status: 'loads'}])}
+    ${kpi(badN, _('packs that do not load'), 'bad', ['packs', {status: 'bad'}])}
+    ${kpi(`${S.folders_standalone}/${S.folders}`, _('standalone packs (no dependencies)'), '', ['packs', {status: 'sa'}])}
+    ${kpi(S.id_conflicts, _('rule IDs in conflict between sources'), 'bad', ['rules', {rf: 'conflict'}])}
+    ${kpi(`${M['normalizado'] || 0}`, _('rules with MITRE only after normalization'), '', ['rules', {rf: 'normalized'}])}
+    ${kpi(`${R.techniques_level12_without_playbook}/${R.techniques_level12}`, _('level ≥12 techniques without playbook'), 'bad', ['tech', {gap: 'nopb'}])}
+    ${kpi(`${R.techniques_level12_without_containment}/${R.techniques_level12}`, _('level ≥12 techniques without automated containment'), 'bad', ['tech', {gap: 'nocont'}])}
+    ${kpi(`${noLic}/${inc}`, _('unlicensed sources (internal use)'), 'bad', ['packs', {lic: 'no'}])}
+    ${kpi(`${P.filter(p => p.tests && p.tests.samples > p.tests.not_tested).length}/${P.filter(p => p.d).length}`, _('packs with decoders tested on real samples'), 'bad', ['packs', {status: 'tested'}])}
+    ${kpi(P.reduce((s, p) => s + (p.tests ? p.tests.sombreado : 0), 0), _('samples shadowed by another decoder'), 'bad', ['packs', {status: 'shadowed'}])}
+  </div>
+  <h2 id="cov-area">${_('By area')}</h2>
+  <div class="tablewrap"><table><thead><tr><th>${_('Area')}</th><th class="num">${_('Packs')}</th><th>${_('Load')}</th><th>${_('Standalone ')}</th><th>${_('Playbooks (level ≥12 techniques)')}</th><th class="num">${_('Without containment')}</th><th>${_('License')}</th></tr></thead><tbody>${areas}</tbody></table></div>
+  <h2 id="cov-tactic">${_('By ATT&amp;CK tactic')}</h2>
+  <div class="tablewrap"><table><thead><tr><th>${_('Tactic')}</th><th class="num">${_('Techniques')}</th><th class="num">${_('Level ≥12')}</th><th>${_('Playbooks')}</th><th>${_('Containment')}</th></tr></thead><tbody>${trows}</tbody></table></div>
+  <h2 id="cov-priority">${_('Priority techniques without playbook')}</h2>
+  <div class="tablewrap"><table><thead><tr><th>${_('Technique')}</th><th>${_('Name')}</th><th class="hide-sm">${_('Tactics')}</th><th class="num">${_('Level ≥12 rules')}</th><th class="num">${_('Packs')}</th><th class="num">${_('CISA countermeasures')}</th></tr></thead><tbody>${top}</tbody></table></div>
+  <h2 id="cov-sigma">${_('Detected by Sigma, not by the registry')}</h2>
+  <p class="lead">${_('Techniques with rules in SigmaHQ ({n} rules, commit {c}) and no rule in the registry, or where the registry only has rules below level 12. Candidates for new rules.', {n: esc(SG.rules), c: esc(SG.commit)})}</p>
+  <div class="tablewrap"><table><thead><tr><th>${_('Technique')}</th><th>${_('Name')}</th><th class="num">${_('Sigma high/total')}</th><th class="hide-sm">${_('Log sources')}</th><th>${_('Registry status')}</th><th>${_('Sigma examples')}</th></tr></thead><tbody>${sig}</tbody></table></div>
+  <h2 id="cov-broken">${_('Packs that do not load')}</h2>
+  <div class="tablewrap"><table><thead><tr><th>${_('Pack')}</th><th>${_('First wazuh-analysisd error')}</th></tr></thead><tbody>${broken}</tbody></table></div>`;
+}
+
+// ---------- DETALHE DE UM PACK
+function openDrawer(html, copies = {}) {
+  const dr = $('#dr'); dr.innerHTML = html; dr.classList.add('on'); dr.setAttribute('aria-hidden', 'false'); $('#ov').classList.add('on');
+  dr.querySelectorAll('[data-close]').forEach(b => b.onclick = closeDrawer);
+  dr.querySelectorAll('[data-copy]').forEach(b => b.onclick = () => copy(copies[b.dataset.copy], _('Content')));
+  dr.querySelectorAll('[data-p]').forEach(b => b.onclick = () => showPack(+b.dataset.p));
+  dr.scrollTop = 0; const body = dr.querySelector('.dbody'); if (body) body.scrollTop = 0;
+}
+function closeDrawer() { $('#dr').classList.remove('on'); $('#dr').setAttribute('aria-hidden', 'true'); $('#ov').classList.remove('on'); }
+function packTechs(i) {
+  const s = new Set(); D.rules.forEach(r => { if (r[4] === i) r[3].split(',').filter(Boolean).forEach(t => s.add(t)); }); return [...s].sort();
+}
+async function showPack(i, tab = 'resumo', rule = null) {
+  const p = D.packs[i], [cls, lbl] = packStatus(p);
+  const inCart = state.cart.has(p.f);
+  const head = `<div class="dhead"><div><div class="area">${esc(p.a)} · ${esc(p.t)}</div><h2>${esc(p.s)}</h2>
+    <div class="badges"><span class="b ${cls}">${lbl}</span>${saBadge(p)}${licBadge(p.lic)}<span class="b mut">${_('{r} rules · {d} decoders', {r: p.r, d: p.d})}</span></div></div>
+    <button class="btn ${inCart ? '' : 'yellow'}" id="toggleCart">${inCart ? _('Remove from cart') : _('Add to cart')}</button><button class="btn x" data-close>${_('Close')}</button></div>
+    <div class="dtabs">${[['resumo', _('Summary')], ['files', _('Files ({n})', {n: p.files.length})], ['coll', _('Collection')], ['tests', p.tests ? _('Tests ({n})', {n: p.tests.samples}) : _('Tests')], ['pb', _('Playbooks & responses')]].map(([k, l]) => `<button class="btn small ${tab === k ? 'primary' : ''}" data-dt="${k}" style="margin:8px 0">${l}</button>`).join('')}</div>`;
+  let body = '', copies = {};
+  if (tab === 'resumo') {
+    body = `${!p.ok ? `<div class="alert"><b>${_('Does not load in wazuh-analysisd')}</b>${esc(p.err)}</div>` : ''}
+      ${p.ok && p.w ? `<div class="alert warn"><b>${_('Loads with warnings ')}</b>${esc(p.warn)}</div>` : ''}
+      ${p.lic === 'NONE' ? `<div class="alert warn"><b>${_('No license')}</b>${_('The author published no license: internal use only; do not redistribute.')}</div>` : ''}
+      ${p.dex === 'não usar' ? `<div class="alert info"><b>decoder_exclude</b>${_('Do not exclude the matching official file: this pack\'s decoders add to the official ones and excluding it breaks loading.')}</div>` : ''}
+      ${p.dex === 'necessário' ? `<div class="alert info"><b>${_('decoder_exclude required')}</b>${p.repl.map(x => `&lt;decoder_exclude&gt;ruleset/decoders/${esc(x)}&lt;/decoder_exclude&gt;`).join('<br>')}</div>` : ''}
+      <dl class="kv"><dt>${_('Origin')}</dt><dd><a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.url)}</a></dd>
+      <dt>Commit</dt><dd>${esc(p.commit)} (${esc(p.last)})</dd><dt>${_('License')}</dt><dd>${esc(V(p.lic))}</dd>
+      <dt>${_('Folder in the registry')}</dt><dd><code>${esc(p.f)}</code></dd>
+      <dt>${_('ATT&amp;CK techniques')}</dt><dd>${_('{n} ({p}% with playbook)', {n: p.tech, p: pct(p.tpb, p.tech)})}</dd>
+      <dt>${_('Source responses')}</dt><dd>${_('{a} ok, {b} broken', {a: p.rok, b: p.rbad})}</dd>
+      <dt>${_('Agent groups')}</dt><dd>${p.grp.map(g => `<code>${esc(g)}</code>`).join(', ') || '—'}</dd>
+      <dt>Manager</dt><dd>${p.mgr.map(esc).join(', ') || '—'}</dd>
+      <dt>${_('To be defined')}</dt><dd>${p.undef.map(x => esc(V(x))).join('<br>') || '—'}</dd></dl>
+      ${p.deps.length ? `<h2>${_('Dependencies outside the pack')}</h2><pre>${esc(p.deps.map(V).join('\n'))}</pre>` : ''}`;
+  } else if (tab === 'files') {
+    const F = await files();
+    let sel = 0;
+    if (rule) { const k = p.files.findIndex(f => f[0] === 'rules' && new RegExp(`<rule[^>]*\\bid=["']${rule}["']`).test(F[f[2]])); if (k >= 0) sel = k; }
+    const f = p.files[sel];
+    let txt = f ? F[f[2]] : '';
+    let shown = txt;
+    if (rule && f) { const m = txt.match(new RegExp(`<rule[^>]*\\bid=["']${rule}["'][\\s\\S]*?</rule>`)); if (m) shown = m[0]; }
+    copies.file = shown;
+    body = `<div class="files"><div class="flist">${p.files.map((x, k) => `<button data-f="${k}" class="${k === sel ? 'on' : ''}"><span class="k">${esc(x[0])}</span>${esc(x[1])}</button>`).join('')}</div>
+      <div class="code">${f ? `<button class="btn small copy" data-copy="file">${_('Copy')}</button>${rule && shown !== txt ? `<div class="alert info"><b>${_('Rule {id}', {id: esc(rule)})}</b>${_('Showing this rule only.')} <a href="#" id="whole">${_('View the whole file')}</a></div>` : ''}<pre>${hl(shown)}</pre>` : `<div class="empty">${_('No files.')}</div>`}</div></div>`;
+  } else if (tab === 'coll') {
+    const gs = D.groups.map((g, k) => [g, k]).filter(([g]) => p.grp.includes(g[0]));
+    body = `<p class="lead">${_('What has to reach the manager for this pack to fire.')}</p>
+      <dl class="kv"><dt>${_('Already collected by default')}</dt><dd>${p.def.map(x => esc(V(x))).join(', ') || '—'}</dd><dt>${_('Requirements on the manager')}</dt><dd>${p.mgr.map(esc).join('<br>') || '—'}</dd><dt>${_('To be defined')}</dt><dd>${p.undef.map(x => esc(V(x))).join('<br>') || '—'}</dd></dl>
+      <h2>${_('Agent groups')}</h2>${gs.length ? gs.map(([g, k]) => `<button class="btn small" data-g="${k}">${esc(g[0])}</button> `).join('') : `<div class="empty">${_('This pack needs no extra collection on the agent.')}</div>`}`;
+  } else if (tab === 'tests') {
+    const rows = D.dtests.filter(r => r[0] === i), t = p.tests;
+    body = !rows.length ? `<div class="empty">${_('No log samples: neither tests in the source nor examples in the decoders\' comments.')}</div>` :
+      `<p class="lead">${_('Log samples from the source (tests and examples in the decoders\' comments) run through <code>wazuh-logtest</code> with this pack loaded on its own.')}</p>
+      <div class="kpis"><div class="kpi ok"><div class="l">ok</div><div class="v">${t.ok}</div></div>
+      <div class="kpi ${t.sombreado ? 'bad' : ''}"><div class="l">${_('shadowed by another decoder')}</div><div class="v">${t.sombreado}</div></div>
+      <div class="kpi ${t['não descodificado'] ? 'bad' : ''}"><div class="l">${_('not decoded')}</div><div class="v">${t['não descodificado']}</div></div>
+      <div class="kpi ${t['regra não disparou'] + t['falso positivo'] ? 'bad' : ''}"><div class="l">${_('rule did not fire / false positive')}</div><div class="v">${t['regra não disparou']}/${t['falso positivo']}</div></div></div>
+      <div class="tablewrap"><table><thead><tr><th>${_('Result')}</th><th>${_('Sample')}</th><th>${_('Decoder · rule')}</th><th class="hide-sm">${_('Fields')}</th></tr></thead><tbody>
+      ${rows.map(r => `<tr><td><span class="b ${r[2] === 'ok' ? 'ok' : r[2] === 'não testado' ? 'mut' : 'bad'}">${esc(V(r[2]))}</span><br><span class="pct">${esc(V(r[1]))}</span>${r[3] ? `<br><span class="pct">${esc(V(r[3]))}</span>` : ''}</td>
+        <td><code style="overflow-wrap:anywhere">${esc(r[4])}</code></td><td>${esc(r[5] || '—')}${r[6] ? `<br>${_('rule {r} · level {l}', {r: esc(r[6]), l: esc(r[7])})}` : ''}</td>
+        <td class="hide-sm"><span class="pct">${esc(r[8].replace(/,/g, ', '))}</span></td></tr>`).join('')}</tbody></table></div>`;
+  } else {
+    const ts = packTechs(i);
+    const rs = D.resps.filter(r => r[9].includes(i));
+    body = `<h2>${_('Source responses')}</h2>${rs.length ? `<div class="tablewrap"><table><thead><tr><th>${_('Response')}</th><th>${_('Action')}</th><th>${_('Impact')}</th><th>${_('Status')}</th><th>${_('Problems')}</th></tr></thead><tbody>${rs.map(r => `<tr><td>${esc(r[2])}</td><td>${esc(V(r[3]))}</td><td>${esc(V(r[4]))}</td><td><span class="b ${r[6] === 'ok' ? 'ok' : 'bad'}">${esc(V(r[6]))}</span></td><td>${esc(V(r[7] || r[8]))}</td></tr>`).join('')}</tbody></table></div>` : `<div class="empty">${_('The source ships no responses for this pack.')}</div>`}
+      <h2>${_('Playbooks by technique ({n})', {n: ts.length})}</h2>${ts.length ? `<div class="tablewrap"><table><thead><tr><th>${_('Technique')}</th><th>${_('Playbooks')}</th><th>${_('CISA countermeasures')}</th></tr></thead><tbody>${ts.map(t => { const d = docsFor(t), pr = d.filter(x => x[1].startsWith('procedimental')), cm = d.filter(x => x[1].startsWith('contramedida'));
+        return `<tr><td><a href="https://attack.mitre.org/techniques/${t.replace('.', '/')}/" target="_blank" rel="noopener">${t}</a></td><td>${pr.map(x => `<a href="${esc(x[6])}" target="_blank" rel="noopener">${esc(x[0].split('/')[0])}: ${esc(x[3].slice(0, 70))}</a>`).join('<br>') || `<span class="b bad">${_('NO PLAYBOOK')}</span>`}</td><td>${cm.map(x => `<span title="${esc(x[3])}">${esc(x[2])}</span>`).join(' ') || '—'}</td></tr>`; }).join('')}</tbody></table></div>` : `<div class="empty">${_('This pack\'s rules have no ATT&amp;CK technique.')}</div>`}`;
+  }
+  openDrawer(head + `<div class="dbody">${body}</div>`, copies);
+  const dr = $('#dr');
+  dr.querySelectorAll('[data-dt]').forEach(b => b.onclick = () => showPack(i, b.dataset.dt));
+  dr.querySelectorAll('[data-f]').forEach(b => b.onclick = async () => {
+    const F = await files(), f = p.files[+b.dataset.f];
+    dr.querySelectorAll('[data-f]').forEach(x => x.classList.toggle('on', x === b));
+    const code = dr.querySelector('.code'); code.innerHTML = `<button class="btn small copy">${_('Copy')}</button><pre>${hl(F[f[2]])}</pre>`;
+    code.querySelector('.copy').onclick = () => copy(F[f[2]], f[1]);
+  });
+  const w = $('#whole', dr); if (w) w.onclick = e => { e.preventDefault(); showPack(i, 'files'); };
+  dr.querySelectorAll('[data-g]').forEach(b => b.onclick = () => showGroup(+b.dataset.g));
+  $('#toggleCart').onclick = () => { state.cart.has(p.f) ? state.cart.delete(p.f) : state.cart.add(p.f); saveCart(); nav(); showPack(i, tab); if (state.tab === 'packs' || state.tab === 'cart') render(); };
+}
+
+// ---------- CESTO / INSTALAÇÃO
+function cartPacks() { return D.packs.map((p, i) => [p, i]).filter(([p]) => state.cart.has(p.f)); }
+function cartConflicts(sel) {
+  const byId = new Map(), idxs = new Set(sel.map(([, i]) => i));
+  D.rules.forEach(r => { if (idxs.has(r[4])) { if (!byId.has(r[0])) byId.set(r[0], new Set()); byId.get(r[0]).add(r[4]); } });
+  const cross = [...byId].filter(([, s]) => s.size > 1).map(([id, s]) => [id, [...s]]);
+  const off = [...byId.keys()].filter(id => (D.conflicts[id] || '').startsWith('oficial: colisão'));
+  const lists = new Map();
+  sel.forEach(([p]) => p.files.filter(f => f[0] === 'lists').forEach(f => { if (!lists.has(f[1])) lists.set(f[1], []); lists.get(f[1]).push(p.t); }));
+  const dcol = Object.entries(D.dcoll).map(([n, c]) => [n, c.p.filter(x => idxs.has(x))]).filter(([, ps]) => ps.length > 1);
+  const need = new Set(); sel.forEach(([p]) => p.needs.forEach(x => { if (!idxs.has(x)) need.add(x); }));
+  return {cross, off, lists: [...lists].filter(([, v]) => v.length > 1), dcol, need: [...need]};
+}
+const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+async function buildScript(sel) {
+  const F = await files();
+  const out = [`#!/usr/bin/env bash
+${_('# Install generated by wazuh-community-rulesets ({d}) — REVIEW BEFORE RUNNING.', {d: D.stats.generated})}
+# Packs: ${sel.map(([p]) => p.t + ' (' + p.s + ')').join('; ')}
+${_('# Backs up etc/, installs rules, decoders and lists with the pack prefix, adjusts the <ruleset> in ossec.conf,')}
+${_('# and only restarts the manager if wazuh-analysisd -t passes.')}
+# ${REPO}
+set -euo pipefail
+OSSEC=\${OSSEC:-/var/ossec}
+[ "$(id -u)" = 0 ] || { echo "${_('run as root')}"; exit 1; }
+BACKUP="$OSSEC/etc.bak.$(date +%Y%m%d%H%M%S)"
+cp -a "$OSSEC/etc" "$BACKUP" && echo "${_('backup: $BACKUP')}"
+mkdir -p "$OSSEC/etc/rules" "$OSSEC/etc/decoders" "$OSSEC/etc/lists"
+`];
+  const lists = new Set(), excl = new Set(), groups = new Set(), mgr = new Set();
+  for (const [p] of sel) {
+    const pre = slug(p.t + '-' + p.s.split('/')[1]).slice(0, 60);
+    out.push(`\n# ===== ${p.t} · ${p.s} @ ${p.commit} ${_('(license: {l})', {l: p.lic})}`);
+    if (!p.ok) out.push(`${_('# WARNING: this pack does NOT load on its own:')} ${p.err.replace(/\n/g, ' ')}`);
+    for (const [kind, rel, idx] of p.files) {
+      if (!['rules', 'decoders', 'lists'].includes(kind)) continue;
+      const name = kind === 'lists' ? rel.replace(/^lists\//, '') : `${pre}__${rel.split('/').pop()}`;
+      if (kind === 'lists') lists.add(name);
+      const dest = `$OSSEC/etc/${kind}/${name}`;
+      if (kind === 'lists' && name.includes('/')) out.push(`mkdir -p "$(dirname "${dest}")"`);
+      out.push(`cat > "${dest}" <<'WCR_EOF_${idx}'\n${F[idx].replace(/\n$/, '')}\nWCR_EOF_${idx}`);
+    }
+    if (p.dex === 'necessário') p.repl.forEach(x => excl.add(x));
+    p.grp.forEach(g => groups.add(g)); p.mgr.forEach(m => mgr.add(m));
+  }
+  const conf = [...[...lists].map(l => `    <list>etc/lists/${l}</list>`), ...[...excl].map(x => `    <decoder_exclude>ruleset/decoders/${x}</decoder_exclude>`)];
+  if (conf.length) out.push(`
+${_('# ===== ossec.conf: add to <ruleset> (only if not there yet)')}
+CONF="$OSSEC/etc/ossec.conf"
+${conf.map(line => { const l = line.trim(); return `grep -qF '${l}' "$CONF" || sed -i '0,/<ruleset>/s##<ruleset>\\n${line}#' "$CONF"`; }).join('\n')}`);
+  out.push(`
+chown -R wazuh:wazuh "$OSSEC/etc/rules" "$OSSEC/etc/decoders" "$OSSEC/etc/lists"
+if "$OSSEC/bin/wazuh-analysisd" -t; then
+  systemctl restart wazuh-manager && echo "${_('installed; manager restarted')}"
+else
+  echo "${_('wazuh-analysisd -t failed: nothing was restarted. Restore with:')} rm -rf $OSSEC/etc && cp -a $BACKUP $OSSEC/etc"; exit 1
+fi`);
+  if (groups.size) out.push(`\n${_('# ===== Agent groups needed (see the Agent groups tab for each agent.conf):')}\n${[...groups].map(g => '#   ' + g).join('\n')}`);
+  if (mgr.size) out.push(`\n${_('# ===== Manager requirements (configure separately in ossec.conf):')}\n${[...mgr].map(g => '#   ' + g).join('\n')}`);
+  return out.join('\n') + '\n';
+}
+function renderCart() {
+  const sel = cartPacks();
+  if (!sel.length) return `<p class="lead">${_('The cart is empty. Open a pack and use "Add to cart".')}</p><div class="empty">${_('No pack selected.')}</div>`;
+  const c = cartConflicts(sel);
+  const notOk = sel.filter(([p]) => !p.ok), noLic = sel.filter(([p]) => p.lic === 'NONE');
+  return `<p class="lead">${_('Packs chosen to install together. The script copies the files with the pack prefix (so they do not collide), adds the required CDB lists and <code>decoder_exclude</code> to <code>ossec.conf</code>, and only restarts the manager if <code>wazuh-analysisd -t</code> passes.')}</p>
+  ${c.cross.length ? `<div class="alert"><b>${_('{n} rule IDs repeated between the chosen packs', {n: c.cross.length})}</b>${_('Only the first definition of each ID stays active. Remove one of the packs or renumber before installing:')} ${c.cross.slice(0, 20).map(([id, s]) => `${esc(id)} (${s.map(x => esc(D.packs[x].t)).join(' / ')})`).join(', ')}${c.cross.length > 20 ? ' …' : ''}</div>` : `<div class="alert info"><b>${_('No rule IDs repeated between the chosen packs')}</b>${_('Validation on the manager still applies.')}</div>`}
+  ${c.off.length ? `<div class="alert"><b>${_('Collision with official IDs')}</b>${c.off.map(esc).join(', ')} ${_('reuse official ruleset IDs without overwrite.')}</div>` : ''}
+  ${c.lists.length ? `<div class="alert warn"><b>${_('CDB lists with the same name')}</b>${c.lists.map(([l, v]) => `${esc(l)} (${v.map(esc).join(' / ')})`).join(', ')} ${_('— the last one written wins.')}</div>` : ''}
+  ${c.dcol.length ? `<div class="alert"><b>${_('{n} root decoders with the same name between the chosen packs', {n: c.dcol.length})}</b>${_('The first one loaded takes the log and the other goes silent, with no error:')} ${c.dcol.slice(0, 15).map(([n, ps]) => `${esc(n)} (${ps.map(x => esc(D.packs[x].s)).join(' / ')})`).join(', ')}</div>` : ''}
+  ${c.need.length ? `<div class="alert info"><b>${_('Dependencies in other packs')}</b>${_('The chosen packs use rules or decoders that live in other packs:')} ${c.need.map(x => `<button class="btn small" data-add="${x}">+ ${esc(D.packs[x].t)} · ${esc(D.packs[x].s)}</button>`).join(' ')}</div>` : ''}
+  ${notOk.length ? `<div class="alert"><b>${_('Packs that do not load on their own')}</b>${notOk.map(([p]) => esc(p.t + ' · ' + p.s)).join(', ')}</div>` : ''}
+  ${noLic.length ? `<div class="alert warn"><b>${_('No license')}</b>${noLic.map(([p]) => esc(p.s)).join(', ')} ${_('— internal use only.')}</div>` : ''}
+  <div class="tablewrap"><table><thead><tr><th>${_('Pack')}</th><th class="num">${_('Rules')}</th><th>${_('Status')}</th><th>${_('Agent groups')}</th><th></th></tr></thead><tbody>
+  ${sel.map(([p, i]) => `<tr><td class="click" data-p="${i}"><b>${esc(p.t)}</b><br><span class="pct">${esc(p.s)}</span></td><td class="num">${p.r}</td><td><span class="b ${packStatus(p)[0]}">${packStatus(p)[1]}</span></td><td>${p.grp.map(esc).join(', ') || '—'}</td><td><button class="btn small" data-rm="${esc(p.f)}">${_('Remove')}</button></td></tr>`).join('')}
+  </tbody></table></div>
+  <div class="filters" style="margin-top:18px"><button class="btn primary" id="mk">${_('Generate install script')}</button><button class="btn" id="clear">${_('Empty cart')}</button></div>
+  <div id="script"></div>`;
+}
+
+// ---------- render
+function render() {
+  nav();
+  const m = $('#main');
+  m.innerHTML = {packs: renderPacks, rules: renderRules, decs: renderDecs, tech: renderTech, resp: renderResp, groups: renderGroups, gaps: renderGaps, cart: renderCart}[state.tab]();
+  bindFilters();
+  m.querySelectorAll('[data-p]').forEach(el => {
+    const open = () => showPack(+el.dataset.p, el.dataset.rule ? 'files' : 'resumo', el.dataset.rule || null);
+    el.onclick = e => { if (e.target.closest('a,button[data-rm]')) return; open(); };
+    el.onkeydown = e => { if (e.key === 'Enter') open(); };
+  });
+  m.querySelectorAll('[data-tq]').forEach(el => el.onclick = () => { state.q = el.dataset.tq; $('#q').value = state.q; go('rules'); });
+  m.querySelectorAll('[data-to]').forEach(el => el.onclick = e => {
+    e.preventDefault(); const [tab, set, anchor] = JSON.parse(el.dataset.to);
+    if (tab !== state.tab || !anchor) { Object.assign(state, {q: '', area: '', status: '', lic: '', rf: '', gap: ''}); $('#q').value = ''; }
+    Object.assign(state, set); go(tab);
+    if (anchor) { const h = document.getElementById(anchor); if (h) window.scrollTo({top: h.getBoundingClientRect().top + scrollY - $('header').offsetHeight - 12, behavior: 'smooth'}); }
+  });
+  m.querySelectorAll('[data-jump]').forEach(el => el.onclick = e => { e.preventDefault(); const h = document.getElementById(el.dataset.jump), top = h.getBoundingClientRect().top + scrollY - $('header').offsetHeight - 12; window.scrollTo({top, behavior: 'smooth'}); });
+  m.querySelectorAll('[data-area]').forEach(el => el.onclick = () => { state.area = el.dataset.area; state.status = ''; go('packs'); });
+  m.querySelectorAll('[data-g]').forEach(el => el.onclick = () => showGroup(+el.dataset.g));
+  m.querySelectorAll('[data-add]').forEach(el => el.onclick = () => { state.cart.add(D.packs[+el.dataset.add].f); saveCart(); render(); });
+  m.querySelectorAll('[data-rm]').forEach(el => el.onclick = () => { state.cart.delete(el.dataset.rm); saveCart(); render(); });
+  const mk = $('#mk');
+  if (mk) mk.onclick = async () => {
+    mk.disabled = true; mk.textContent = _('Generating…');
+    const sc = await buildScript(cartPacks());
+    $('#script').innerHTML = `<h2>install-wazuh-packs.sh</h2><div class="filters"><button class="btn small" id="cp">${_('Copy')}</button><button class="btn small" id="dl">${_('Download .sh')}</button><span class="count">${(sc.length / 1024).toFixed(0)} KB</span></div><pre>${esc(sc)}</pre>`;
+    $('#cp').onclick = () => copy(sc, _('Script')); $('#dl').onclick = () => download('install-wazuh-packs.sh', sc);
+    mk.disabled = false; mk.textContent = _('Generate install script');
+  };
+  const cl = $('#clear'); if (cl) cl.onclick = () => { state.cart.clear(); saveCart(); render(); };
+}
+let deb;
+$('#q').addEventListener('input', e => { clearTimeout(deb); deb = setTimeout(() => { state.q = e.target.value; state.limit = 60; render(); }, 150); });
+document.addEventListener('keydown', e => {
+  if (e.key === '/' && document.activeElement !== $('#q')) { e.preventDefault(); $('#q').focus(); }
+  if (e.key === 'Escape') closeDrawer();
+});
+$('#ov').onclick = closeDrawer;
+$('#cartBtn').onclick = () => go('cart');
+// PRESS ▮ TO CONTINUE: volta ao topo e põe o cursor na pesquisa
+$('#press').onclick = () => { closeDrawer(); window.scrollTo({top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); setTimeout(() => $('#q').focus({preventScroll: true}), 350); };
+// manter o separador ao mudar de idioma
+$('#lang').addEventListener('click', () => { $('#lang').href = $('#lang').getAttribute('href').split('#')[0] + '#' + state.tab; });
+window.addEventListener('hashchange', () => { const h = location.hash.slice(1); if (TABS.some(([k]) => k === h) && h !== state.tab) { state.tab = h; render(); } });
+(async () => {
+  try {
+    D = await unpack('meta');
+    const h = location.hash.slice(1); if (TABS.some(([k]) => k === h)) state.tab = h;
+    saveCart(); render();
+  } catch (e) {
+    $('#main').innerHTML = `<div class="alert"><b>${_('Could not load the data')}</b>${esc(e.message)} — ${_('a recent browser is required (DecompressionStream).')}</div>`;
+  }
+})();
+</script>
+</body>
+</html>

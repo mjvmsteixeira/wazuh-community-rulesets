@@ -1,0 +1,10 @@
+<!-- Blocos de configuração extraídos, sem alterações, de socfortress/Wazuh-Rules:Windows Chainsaw/README.md @ 66b70d6a380b -->
+<wodle name="command">
+		<disabled>no</disabled>
+		<tag>windows_chainsaw</tag>
+		<command>Powershell.exe -executionpolicy bypass -File "C:\Program Files\socfortress\chainsaw.ps1"</command>
+		<interval>24h</interval>
+		<ignore_output>yes</ignore_output>
+		<run_on_start>yes</run_on_start>
+		<timeout>0</timeout>
+	</wodle>

@@ -1,0 +1,5 @@
+<!-- Blocos de configuração extraídos, sem alterações, de wazuh/integrations:integrations/cisco_meraki/README.md @ 38efcaaa3272 -->
+<localfile>
+        <log_format>syslog</log_format>
+        <location>/var/log/<FILE_NAME.log></location>
+    </localfile>

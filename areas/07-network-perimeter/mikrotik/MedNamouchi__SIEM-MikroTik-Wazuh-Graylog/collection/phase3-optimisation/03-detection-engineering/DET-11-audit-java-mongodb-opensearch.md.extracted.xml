@@ -1,0 +1,7 @@
+<!-- Blocos de configuração extraídos, sem alterações, de MedNamouchi/SIEM-MikroTik-Wazuh-Graylog:phase3-optimisation/03-detection-engineering/DET-11-audit-java-mongodb-opensearch.md @ e8dfa75059c7 -->
+<wodle name="syscollector">
+  <disabled>no</disabled>
+  <interval>1h</interval>
+  <scan_on_start>yes</scan_on_start>
+  <packages>yes</packages>
+</wodle>

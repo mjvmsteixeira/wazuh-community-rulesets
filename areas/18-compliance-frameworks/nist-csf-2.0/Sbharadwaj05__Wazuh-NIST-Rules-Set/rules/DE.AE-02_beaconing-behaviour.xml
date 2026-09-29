@@ -1,0 +1,33 @@
+<!--
+  Rule: Potential beaconing behaviour: high frequency connections to same host (Command and Control)
+  NIST CSF: DE.AE-02, DE.CM-01
+  MITRE ATT&CK: T1071.001
+  Severity: High
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-23
+  Note: Contains silent helper rule for correlation.
+-->
+
+<group name="nist_csf, de.ae-02, mitre_attack,">
+
+  <rule id="100054" level="1">
+      <decoded_as>json</decoded_as>
+      <field name="win.system.providerName">Microsoft-Windows-Sysmon</field>
+      <field name="win.system.eventID">^3$</field>
+      <field name="win.eventdata.destinationIsIpv6">false</field>
+      <options>no_log</options>
+      <description>Helper: Sysmon Network Connection IPv4</description>
+    </rule>
+
+  <rule id="100046" level="9" frequency="20" timeframe="600">
+      <!-- Detects frequent connections to the same external IP within a 10m window -->
+      <if_matched_sid>100054</if_matched_sid>
+      <same_field>win.eventdata.destinationIp</same_field>
+      <description>Potential beaconing behaviour: high frequency connections to same host (Command and Control)</description>
+      <mitre>
+        <id>T1071.001</id>
+      </mitre>
+      <group>DE.AE-02, DE.CM-01</group>
+    </rule>
+
+</group>

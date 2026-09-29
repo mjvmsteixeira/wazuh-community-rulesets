@@ -1,0 +1,102 @@
+<decoder name="arista">
+  <prematch>uvm\p\d\p</prematch>
+</decoder>
+
+<decoder name="arista-custom">
+  <parent>arista</parent>
+  <regex>"msg":"(\.+)",</regex>
+  <order>msg</order>
+</decoder>
+
+
+<decoder name="arista-custom">
+  <parent>arista</parent>
+  <regex>"reason":"(\S+)"</regex>
+  <order>reason</order>
+</decoder>
+
+<decoder name="arista-custom">
+  <parent>arista</parent>
+  <regex>"flagged":(\w+),</regex>
+  <order>flagged</order>
+</decoder>
+
+<decoder name="arista-custom">
+  <parent>arista</parent>
+  <regex>"poolAddress":"(\S+)",</regex>
+  <order>poolAddress</order>
+</decoder>
+
+
+<decoder name="arista-custom">
+  <parent>arista</parent>
+  <regex>"blocked":(\w+),</regex>
+  <order>blocked</order>
+</decoder>
+
+
+<decoder name="arista-custom">
+  <parent>arista</parent>
+  <regex>"sessionId":(\S+),</regex>
+  <order>sessionId</order>
+</decoder>
+
+<decoder name="arista-custom">
+  <parent>arista</parent>
+  <regex>"ruleId":(\d+)</regex>
+  <order>ruleId</order>
+</decoder>
+
+<decoder name="arista-custom">
+  <parent>arista</parent>
+  <regex>"ruleId":"(\S+)",</regex>
+  <order>ruleId</order>
+</decoder>
+
+<decoder name="arista-custom">
+  <parent>arista</parent>
+  <regex>"class":"(\.+)"</regex>
+  <order>class</order>
+</decoder>
+
+<decoder name="arista-custom">
+  <parent>arista</parent>
+  <regex>"hostname":"(\S+)"</regex>
+  <order>hostname</order>
+</decoder>
+
+<decoder name="arista-custom">
+  <parent>arista</parent>
+  <regex>"protocolName":"(\S+)"</regex>
+  <order>protocolName</order>
+</decoder>
+
+<decoder name="arista-custom">
+  <parent>arista</parent>
+  <regex>"localAddr":"(\S+)"</regex>
+  <order>localAddr</order>
+</decoder>
+
+<decoder name="arista-custom">
+  <parent>arista</parent>
+  <regex>"SServerAddr":"(\S+)"</regex>
+  <order>SServerAddr</order>
+</decoder>
+
+<decoder name="arista-custom">
+  <parent>arista</parent>
+  <regex>"clientCountry":"(\S+)"</regex>
+  <order>clientCountry</order>
+</decoder>
+
+<decoder name="arista-custom">
+  <parent>arista</parent>
+  <regex>"CClientAddr":"(\S+)"</regex>
+  <order>ClientAddr</order>
+</decoder>
+
+<decoder name="arista-custom">
+  <parent>arista</parent>
+  <regex>"ipSource":"(\S+)"</regex>
+  <order>ipSource</order>
+</decoder>

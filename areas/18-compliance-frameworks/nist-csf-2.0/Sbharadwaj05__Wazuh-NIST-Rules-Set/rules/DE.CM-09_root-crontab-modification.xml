@@ -1,0 +1,41 @@
+<!--
+  Rule: Root Crontab Modification
+  NIST CSF: DE.CM-09 (System configuration changes are monitored)
+            PR.DS-01 (Data-at-rest is protected)
+  MITRE ATT&CK: T1053.003 - Scheduled Task/Job: Cron
+  Severity: Critical
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-23
+
+  Description:
+    Detects modifications to the root user's crontab or the global /etc/crontab file. Attackers use this to maintain persistent root access.
+
+  False Positives:
+    - Administrators manually editing the root crontab.
+
+  Tuning Guidance:
+    Filter out legitimate configuration management agents (e.g., Ansible, Puppet) modifying global crontabs.
+
+  Assumptions:
+    - auditd is configured to monitor cron directories.
+    - Rule 100004 is active to catch general cron modifications.
+
+  Limitations:
+    - Will alert on any manual root cron edit.
+
+  Test: tests/sample-logs/de-cm-09/root-crontab-modification/
+-->
+
+<group name="nist_csf,de.cm-09,cron,auditd">
+
+  <rule id="100026" level="10">
+    <if_sid>80700</if_sid>
+    <regex type="pcre2">path=(/var/spool/cron/(crontabs/)?root|/etc/crontab)</regex>
+    <description>Root crontab modification detected (Persistence)</description>
+    <mitre>
+      <id>T1053.003</id>
+    </mitre>
+    <group>DE.CM-09, PR.AC-04</group>
+  </rule>
+
+</group>

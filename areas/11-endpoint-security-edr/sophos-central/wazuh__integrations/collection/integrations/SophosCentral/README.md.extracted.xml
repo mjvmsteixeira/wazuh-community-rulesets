@@ -1,0 +1,10 @@
+<!-- Blocos de configuração extraídos, sem alterações, de wazuh/integrations:integrations/SophosCentral/README.md @ 38efcaaa3272 -->
+<wodle name="command">
+  <disabled>no</disabled>
+  <tag>wazuh_sophos</tag>
+  <command>/var/ossec/framework/python/bin/python3 /var/ossec/wodles/custom_wazuh_sophos.py --client-id "CLIENT_ID" --client-secret "CLIENT_SECRET" --tenant-id "TENANT_ID"</command>
+  <interval>1m</interval>
+  <ignore_output>yes</ignore_output>
+  <run_on_start>yes</run_on_start>
+  <timeout>0</timeout>
+</wodle>

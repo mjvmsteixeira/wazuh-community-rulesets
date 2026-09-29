@@ -1,0 +1,4 @@
+<decoder name="keycloak_json">
+    <program_name>keycloak_events</program_name>
+    <plugin_decoder>JSON_Decoder</plugin_decoder>
+</decoder>

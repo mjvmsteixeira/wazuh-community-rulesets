@@ -1,0 +1,40 @@
+<!--
+  Rule: Kernel Module Loaded
+  NIST CSF: DE.CM-09 (System configuration changes are monitored)
+            DE.AE-02 (Detected events are analyzed to understand attack targets and methods)
+  MITRE ATT&CK: T1547.006 - Boot or Logon Autostart Execution: Kernel Modules and Extensions
+  Severity: High
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-23
+
+  Description:
+    Detects the loading of a kernel module via insmod or modprobe. Attackers use kernel modules (rootkits) for deep persistence and defense evasion.
+
+  False Positives:
+    - Administrator troubleshooting or installing new hardware drivers.
+
+  Tuning Guidance:
+    Allowlist specific signed modules used in your environment if they load dynamically during business hours.
+
+  Assumptions:
+    - System logs sudo execution to syslog/auth.log.
+
+  Limitations:
+    - Cannot detect modules loaded directly by malware without using insmod/modprobe binaries.
+
+  Test: tests/sample-logs/de-cm-09/kernel-module-loaded/
+-->
+
+<group name="nist_csf,de.cm-09,de.ae-02,persistence,syslog">
+
+  <rule id="100023" level="8">
+    <if_sid>5402, 5403</if_sid>
+    <regex type="pcre2">COMMAND=(/sbin/modprobe|/sbin/insmod|/usr/sbin/modprobe|/usr/sbin/insmod|/bin/kmod\s)</regex>
+    <description>Kernel module loaded (Potential Rootkit Persistence)</description>
+    <mitre>
+      <id>T1547.006</id>
+    </mitre>
+    <group>rootkit,kernel,nist_de.cm-09,nist_de.ae-02</group>
+  </rule>
+
+</group>

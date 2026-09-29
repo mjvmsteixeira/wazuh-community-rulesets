@@ -1,0 +1,11 @@
+<rule id="250170" level="14">
+	<if_group>sysmon_event_11</if_group>
+	<field name="win.eventdata.TargetFilename">\\\\Temp\\\\debug.bin</field>
+	<description>ATT&CK T1003: Detection of SafetyKatz</description>
+	<info type="text">Detects possible SafetyKatz Behaviour </info>
+	<info type="text">Falsepositives: Unknown. </info>
+	<info type="text">Sigma UUID: e074832a-eada-4fd7-94a1-10642b130e16 </info>
+	<info type="link">https://github.com/GhostPack/SafetyKatz </info>
+	<group>attack.credential_access,attack.t1003,MITRE</group>
+</rule>
+

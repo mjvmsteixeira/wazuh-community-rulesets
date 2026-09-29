@@ -1,0 +1,8 @@
+<!-- Blocos de resposta extraídos, sem alterações, de wazuh/integrations:integrations/ChatGPT/README.md @ 38efcaaa3272 -->
+<integration>
+  <name>custom-chatgpt</name>
+  <level>15</level>  
+  <hook_url>https://api.openai.com/v1/chat/completions</hook_url>  
+  <api_key>dummyKey</api_key>  
+  <alert_format>json</alert_format>
+</integration>

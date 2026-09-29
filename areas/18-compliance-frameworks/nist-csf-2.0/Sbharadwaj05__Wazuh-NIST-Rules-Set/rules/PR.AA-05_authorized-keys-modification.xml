@@ -1,0 +1,40 @@
+<!--
+  Rule: SSH authorized_keys Modified
+  NIST CSF: PR.AA-05 (Access permissions and authorizations are managed)
+            DE.CM-09 (System configuration changes are monitored)
+  MITRE ATT&CK: T1098.004 - Account Manipulation: SSH Authorized Keys
+  Severity: High
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-23
+
+  Description:
+    Detects write modifications to SSH authorized_keys files, indicating potential persistence by an attacker.
+
+  False Positives:
+    - Legitimate user or configuration management adding new SSH keys.
+
+  Tuning Guidance:
+    Exclude approved configuration management tools (e.g., Ansible) by checking the comm or exe fields.
+
+  Assumptions:
+    - auditd or Wazuh FIM is monitoring user .ssh directories.
+
+  Limitations:
+    - Does not detect keys added manually to memory-only agents.
+
+  Test: tests/sample-logs/pr-aa-05/authorized-keys-modification/
+-->
+
+<group name="nist_csf,pr.aa-05,de.cm-09,persistence,auditd">
+
+  <rule id="100021" level="8">
+    <if_sid>80700</if_sid>
+    <regex type="pcre2">path=.*\.ssh/authorized_keys.*perm=(w|a|wa|aw)</regex>
+    <description>SSH authorized_keys file modified (Persistence)</description>
+    <mitre>
+      <id>T1098.004</id>
+    </mitre>
+    <group>persistence,ssh_keys,nist_pr.aa-05,nist_de.cm-09</group>
+  </rule>
+
+</group>

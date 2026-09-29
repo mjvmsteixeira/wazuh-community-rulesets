@@ -1,0 +1,56 @@
+<!-- Local Decoders -->
+
+<!-- Modify it at your will. -->
+<!-- Copyright (C) 2015, Wazuh Inc. -->
+
+<!--
+  - Allowed static fields:
+  - location   - where the log came from (only on FTS)
+  - srcuser    - extracts the source username
+  - dstuser    - extracts the destination (target) username
+  - user       - an alias to dstuser (only one of the two can be used)
+  - srcip      - source ip
+  - dstip      - dst ip
+  - srcport    - source port
+  - dstport    - destination port
+  - protocol   - protocol
+  - id         - event id
+  - url        - url of the event
+  - action     - event action (deny, drop, accept, etc)
+  - status     - event status (success, failure, etc)
+  - extra_data - Any extra data
+-->
+
+<decoder name="local_decoder_example">
+    <program_name>local_decoder_example</program_name>
+</decoder>
+
+<!-- Wazuh Custom Decoder for Ubiquiti UniFi (CEF Format) -->
+<!-- Deploy to: /var/ossec/etc/decoders/local_decoder.xml -->
+<!-- Validated working with Wazuh v4.14.3 -->
+
+<!-- Parent decoder: matches the mangled Ubiquiti double-timestamp program_name (e.g. "2026-03-07T04") -->
+<decoder name="unifi-custom">
+  <program_name>^202</program_name>
+</decoder>
+
+<!-- Child decoder: extracts CEF header fields using PCRE2 -->
+<decoder name="unifi-custom-fields">
+  <parent>unifi-custom</parent>
+  <regex type="pcre2">CEF:0\|Ubiquiti\|([^|]+)\|([^|]+)\|([^|]+)\|([^|]+)\|([^|]+)\|</regex>
+  <order>unifi.product, unifi.version, unifi.event_id, unifi.event_name, unifi.severity</order>
+</decoder>
+
+<!-- Child decoder: extracts the msg= field -->
+<decoder name="unifi-custom-msg">
+  <parent>unifi-custom</parent>
+  <regex type="pcre2">msg=(.+)</regex>
+  <order>unifi.message</order>
+</decoder>
+
+<!-- Child decoder: extracts the device IP and maps it to Wazuh's native srcip field (enables GeoIP mapping) -->
+<decoder name="unifi-custom-ip">
+  <parent>unifi-custom</parent>
+  <regex type="pcre2">UNIFIdeviceIp=(\S+)</regex>
+  <order>srcip</order>
+</decoder>

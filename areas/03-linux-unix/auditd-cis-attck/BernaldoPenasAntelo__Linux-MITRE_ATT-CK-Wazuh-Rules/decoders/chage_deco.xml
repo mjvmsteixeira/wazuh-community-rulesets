@@ -1,0 +1,16 @@
+<!--
+Decoder for chage
+
+Feb 16 17:03:30 Test chage[7750]: changed password expiry for testuser2
+-->
+
+
+<decoder name="chage">
+  <program_name>^chage</program_name>
+</decoder>
+
+<decoder name="chage">
+    <parent>chage</parent>
+    <regex>(changed) password expiry for (\.*)</regex>
+    <order>event.action, user.name</order>
+</decoder>

@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Search page / Página de pesquisa
+    url: https://mjvmsteixeira.github.io/wazuh-community-rulesets/
+    about: Browse packs, rules, decoders, techniques and playbooks before opening an issue.

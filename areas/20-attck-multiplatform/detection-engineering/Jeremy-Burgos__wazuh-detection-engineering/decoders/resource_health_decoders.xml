@@ -1,0 +1,87 @@
+<decoder name="CPU_health">
+  <program_name>CPU_health</program_name>
+</decoder>
+
+<decoder name="CPU_health_value">
+  <parent>CPU_health</parent>
+  <prematch>ossec: output: 'CPU_health':\.</prematch>
+  <regex offset="after_prematch">(\S+)</regex>
+  <order>cpu_usage_%</order>
+</decoder>
+
+<decoder name="memory_health">
+  <program_name>memory_health</program_name>
+</decoder>
+
+<decoder name="memory_health_value">
+  <parent>memory_health</parent>
+  <prematch>ossec: output: 'memory_health':\.</prematch>
+  <regex offset="after_prematch">(\S+)</regex>
+  <order>memory_usage_%</order>
+</decoder>
+
+<decoder name="disk_health">
+  <program_name>disk_health</program_name>
+</decoder>
+
+<decoder name="disk_health_value">
+  <parent>disk_health</parent>
+  <prematch>ossec: output: 'disk_health':\.</prematch>
+  <regex offset="after_prematch">(\S+)</regex>
+  <order>disk_usage_%</order>
+</decoder>
+
+<decoder name="cpu_usage_check">
+  <program_name>cpu_usage_check</program_name>
+</decoder>
+
+<decoder name="cpu_usage_check_fields">
+  <parent>cpu_usage_check</parent>
+  <prematch>ossec: output: 'cpu_metrics':\.</prematch>
+  <regex offset="after_prematch">(\S+%) (\S+%) (\S+) (\S+%)</regex>
+  <order>userCPU_usage_%,sysCPU_usage_%,totalCPU_used_%,idleCPU_%</order>
+</decoder>
+
+<decoder name="load_average_check">
+  <program_name>load_average_check</program_name>
+</decoder>
+
+<decoder name="load_average_check_fields">
+  <parent>load_average_check</parent>
+  <prematch>ossec: output: 'load_average_metrics':\.</prematch>
+  <regex offset="after_prematch">(\S+), (\S+), (\S+)</regex>
+  <order>1min_loadAverage,5mins_loadAverage,15mins_loadAverage</order>
+</decoder>
+
+<decoder name="memory_check">
+  <program_name>memory_check</program_name>
+</decoder>
+
+<decoder name="memory_check_fields">
+  <parent>memory_check</parent>
+  <prematch>ossec: output: 'memory_metrics':\.</prematch>
+  <regex offset="after_prematch">(\S+) (\S+)</regex>
+  <order>memory_used_bytes,memory_available_bytes</order>
+</decoder>
+
+<decoder name="disk_check">
+  <program_name>disk_check</program_name>
+</decoder>
+
+<decoder name="disk_check_fields">
+  <parent>disk_check</parent>
+  <prematch>ossec: output: 'disk_metrics':\.</prematch>
+  <regex offset="after_prematch">(\S+) (\S+) (\S+) (\S+)</regex>
+  <order>total_disk_size,disk_used,disk_free,total_usable</order>
+</decoder>
+
+<decoder name="network_check">
+  <program_name>network_check</program_name>
+</decoder>
+
+<decoder name="network_check_fields">
+  <parent>network_check</parent>
+  <prematch>ossec: output: 'network_metrics':\.</prematch>
+  <regex offset="after_prematch">(\S+) (\S+)</regex>
+  <order>network_in,network_out</order>
+</decoder>

@@ -1,0 +1,40 @@
+<decoder name="postgresql">
+  <program_name>^postgresql</program_name> 
+</decoder> 
+
+<decoder name="postgres_fields">
+  <parent>postgresql</parent>
+  <regex>\S+,(\S+),\S+,\d+</regex>
+  <order>db</order> 
+</decoder> 
+
+<decoder name="postgres_fields">
+  <parent>postgresql</parent>
+  <regex>,\S+,\d+,(\d+.\d+.\d+.\d+)</regex>
+  <order>srcip</order> 
+</decoder> 
+
+<decoder name="postgres_fields">
+  <parent>postgresql</parent>
+  <regex>\d+.\d+.\d+.\d+:(\d+)</regex>
+  <order>srcport</order> 
+</decoder> 
+
+<decoder name="postgres_fields">
+  <parent>postgresql</parent>
+  <regex>(\.+), not logged</regex>
+  <order>srcport</order> 
+</decoder> 
+
+<decoder name="postgres_fields">
+  <parent>postgresql</parent>
+  <regex>SELECT,,,(\.*)\.not logged</regex>
+  <order>command</order> 
+</decoder> 
+
+<decoder name="postgres_fields">
+  <parent>postgresql</parent>
+  <regex>SET,,,(\.*),\.not logged</regex>
+  <order>command</order> 
+</decoder>
+

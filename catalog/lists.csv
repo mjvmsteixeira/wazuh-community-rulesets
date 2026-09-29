@@ -1,0 +1,68 @@
+list,status,origin_path,rules,source,folder
+etc/lists/common-ports,copiada da fonte,Windows_Sysmon/common-ports,1,socfortress/Wazuh-Rules,areas/01-windows-endpoint/sysmon-eventchannel/socfortress__Wazuh-Rules
+etc/lists/malicious-powershell,copiada da fonte,Windows Powershell/malicious-powershell,1,socfortress/Wazuh-Rules,areas/01-windows-endpoint/sysmon-eventchannel/socfortress__Wazuh-Rules
+etc/lists/emotet-list,em falta,,1,fusuyfusuy/wazuh_local_rules,areas/01-windows-endpoint/sysmon-modular/fusuyfusuy__wazuh_local_rules
+etc/lists/ad_disabled_accounts,em falta,,1,adampielak/wazuh_custom_rules,areas/02-identity-access/active-directory/adampielak__wazuh_custom_rules
+etc/lists/labels.keys,em falta,,5,BernaldoPenasAntelo/Linux-MITRE_ATT-CK-Wazuh-Rules,areas/03-linux-unix/auditd-cis-attck/BernaldoPenasAntelo__Linux-MITRE_ATT-CK-Wazuh-Rules
+etc/lists/audit-keys,copiada da fonte,lists/ioc/audit-keys.example,4,Jeremy-Burgos/wazuh-detection-engineering,areas/03-linux-unix/detection-engineering/Jeremy-Burgos__wazuh-detection-engineering
+etc/lists/malware-hashes-koske,copiada da fonte,lists/ioc/malware-hashes-koske.example,1,Jeremy-Burgos/wazuh-detection-engineering,areas/03-linux-unix/detection-engineering/Jeremy-Burgos__wazuh-detection-engineering
+etc/lists/suspicious-programs,copiada da fonte,lists/ioc/suspicious-programs.example,1,Jeremy-Burgos/wazuh-detection-engineering,areas/03-linux-unix/detection-engineering/Jeremy-Burgos__wazuh-detection-engineering
+etc/lists/usb-drives,em falta,,2,Jeremy-Burgos/wazuh-detection-engineering,areas/03-linux-unix/detection-engineering/Jeremy-Burgos__wazuh-detection-engineering
+etc/lists/bash_profile,copiada da fonte,Auditd/bash_profile,1,socfortress/Wazuh-Rules,areas/03-linux-unix/sysmon-linux-auditd/socfortress__Wazuh-Rules
+etc/lists/audit-keys,oficial,,4,adampielak/wazuh-scripts-resource,areas/03-linux-unix/wazuh-blog-pack/adampielak__wazuh-scripts-resource
+etc/lists/usb-drives,em falta,,2,Jeremy-Burgos/wazuh-detection-engineering,areas/04-macos/detection-engineering/Jeremy-Burgos__wazuh-detection-engineering
+etc/lists/cities,em falta,,1,adampielak/wazuh_custom_rules,areas/07-network-perimeter/openvpn/adampielak__wazuh_custom_rules
+etc/lists/dch_providers,em falta,,2,adampielak/wazuh_custom_rules,areas/07-network-perimeter/openvpn/adampielak__wazuh_custom_rules
+etc/lists/cities,em falta,,1,bret99/wazuh_custom_rules,areas/07-network-perimeter/openvpn/bret99__wazuh_custom_rules
+etc/lists/dch_providers,em falta,,2,bret99/wazuh_custom_rules,areas/07-network-perimeter/openvpn/bret99__wazuh_custom_rules
+etc/lists/orangebox-private-networks,copiada da fonte,configuration/manager/etc/lists/orangebox-private-networks,2,OrangeBox-Labs/Wazuh,areas/07-network-perimeter/orangebox/OrangeBox-Labs__Wazuh
+etc/lists/malicious-ioc/malicious-ip,oficial,,1,OrangeBox-Labs/Wazuh,areas/09-web-apps-waf/orangebox/OrangeBox-Labs__Wazuh
+etc/lists/orangebox-web-auth-proxies,copiada da fonte,configuration/manager/etc/lists/orangebox-web-auth-proxies,1,OrangeBox-Labs/Wazuh,areas/09-web-apps-waf/orangebox/OrangeBox-Labs__Wazuh
+etc/lists/orangebox-web-discovery-proxies,copiada da fonte,configuration/manager/etc/lists/orangebox-web-discovery-proxies,1,OrangeBox-Labs/Wazuh,areas/09-web-apps-waf/orangebox/OrangeBox-Labs__Wazuh
+etc/lists/malware_ips,em falta,,6,adampielak/wazuh_custom_rules,areas/12-threat-intel/malware-ip/adampielak__wazuh_custom_rules
+etc/lists/opencti_domains,em falta,,4,federicofantini/Wazuh-TI,areas/12-threat-intel/opencti-retrohunt/federicofantini__Wazuh-TI
+etc/lists/opencti_file_hashes,em falta,,2,federicofantini/Wazuh-TI,areas/12-threat-intel/opencti-retrohunt/federicofantini__Wazuh-TI
+etc/lists/opencti_ips,em falta,,4,federicofantini/Wazuh-TI,areas/12-threat-intel/opencti-retrohunt/federicofantini__Wazuh-TI
+etc/lists/malicious-ioc/malicious-ip,oficial,,3,OrangeBox-Labs/Wazuh,areas/12-threat-intel/orangebox/OrangeBox-Labs__Wazuh
+etc/lists/socradar-domain,em falta,,1,wazuh/integrations,areas/12-threat-intel/socradar/wazuh__integrations
+etc/lists/socradar-hash,em falta,,2,wazuh/integrations,areas/12-threat-intel/socradar/wazuh__integrations
+etc/lists/socradar-ip,em falta,,3,wazuh/integrations,areas/12-threat-intel/socradar/wazuh__integrations
+etc/lists/socradar-url,em falta,,1,wazuh/integrations,areas/12-threat-intel/socradar/wazuh__integrations
+etc/lists/authorized_dnp3_masters,copiada da fonte,cdb-lists/authorized_dnp3_masters,1,Sbharadwaj05/ot-sentinel-rules,areas/14-ot-ics-iot/ot-sentinel/Sbharadwaj05__ot-sentinel-rules
+etc/lists/authorized_iec104_clients,copiada da fonte,cdb-lists/authorized_iec104_clients,3,Sbharadwaj05/ot-sentinel-rules,areas/14-ot-ics-iot/ot-sentinel/Sbharadwaj05__ot-sentinel-rules
+etc/lists/authorized_modbus_masters,copiada da fonte,cdb-lists/authorized_modbus_masters,2,Sbharadwaj05/ot-sentinel-rules,areas/14-ot-ics-iot/ot-sentinel/Sbharadwaj05__ot-sentinel-rules
+etc/lists/authorized_opcua_clients,copiada da fonte,cdb-lists/authorized_opcua_clients,2,Sbharadwaj05/ot-sentinel-rules,areas/14-ot-ics-iot/ot-sentinel/Sbharadwaj05__ot-sentinel-rules
+etc/lists/known_dnp3_addresses,copiada da fonte,cdb-lists/known_dnp3_addresses,1,Sbharadwaj05/ot-sentinel-rules,areas/14-ot-ics-iot/ot-sentinel/Sbharadwaj05__ot-sentinel-rules
+etc/lists/known_dnp3_outstations,copiada da fonte,cdb-lists/known_dnp3_outstations,1,Sbharadwaj05/ot-sentinel-rules,areas/14-ot-ics-iot/ot-sentinel/Sbharadwaj05__ot-sentinel-rules
+etc/lists/known_iec104_ioas,copiada da fonte,cdb-lists/known_iec104_ioas,1,Sbharadwaj05/ot-sentinel-rules,areas/14-ot-ics-iot/ot-sentinel/Sbharadwaj05__ot-sentinel-rules
+etc/lists/known_modbus_masters,copiada da fonte,cdb-lists/known_modbus_masters,1,Sbharadwaj05/ot-sentinel-rules,areas/14-ot-ics-iot/ot-sentinel/Sbharadwaj05__ot-sentinel-rules
+etc/lists/known_mqtt_clients,copiada da fonte,cdb-lists/known_mqtt_clients,1,Sbharadwaj05/ot-sentinel-rules,areas/14-ot-ics-iot/ot-sentinel/Sbharadwaj05__ot-sentinel-rules
+etc/lists/non_standard_modbus_ports,copiada da fonte,cdb-lists/non_standard_modbus_ports,1,Sbharadwaj05/ot-sentinel-rules,areas/14-ot-ics-iot/ot-sentinel/Sbharadwaj05__ot-sentinel-rules
+etc/lists/warning_list,em falta,,1,wazuh/integrations,areas/16-dns-email/technitium-dns/wazuh__integrations
+etc/lists/Allowed_dnsresolvers,em falta,,2,adampielak/wazuh-scripts-resource,areas/16-dns-email/wazuh-blog-pack/adampielak__wazuh-scripts-resource
+etc/lists/c2-domains,copiada da fonte,lists/c2-domains,1,Sbharadwaj05/Wazuh-NIST-Rules-Set,areas/18-compliance-frameworks/nist-csf-2.0/Sbharadwaj05__Wazuh-NIST-Rules-Set
+etc/lists/rare-ports,copiada da fonte,lists/rare-ports,1,Sbharadwaj05/Wazuh-NIST-Rules-Set,areas/18-compliance-frameworks/nist-csf-2.0/Sbharadwaj05__Wazuh-NIST-Rules-Set
+etc/lists/malicious-ioc-cl-ta-1087/C2-hashes,em falta,,1,Dinas-Kominfo-Kota-Tangerang/cl-sta-1087-malware-rules,areas/19-threats-campaigns-cves/cl-sta-1087/Dinas-Kominfo-Kota-Tangerang__cl-sta-1087-malware-rules
+etc/lists/malicious-ioc-cl-ta-1087/C2-ip,em falta,,1,Dinas-Kominfo-Kota-Tangerang/cl-sta-1087-malware-rules,areas/19-threats-campaigns-cves/cl-sta-1087/Dinas-Kominfo-Kota-Tangerang__cl-sta-1087-malware-rules
+etc/lists/blacklist-alienvault,copiada da fonte,lists/ioc/blacklist-alienvault.example,1,Jeremy-Burgos/wazuh-detection-engineering,areas/20-attck-multiplatform/detection-engineering/Jeremy-Burgos__wazuh-detection-engineering
+etc/lists/malware-hashes,copiada da fonte,lists/ioc/malware-hashes.example,1,Jeremy-Burgos/wazuh-detection-engineering,areas/20-attck-multiplatform/detection-engineering/Jeremy-Burgos__wazuh-detection-engineering
+etc/lists/malware-hashes-koske,copiada da fonte,lists/ioc/malware-hashes-koske.example,1,Jeremy-Burgos/wazuh-detection-engineering,areas/20-attck-multiplatform/detection-engineering/Jeremy-Burgos__wazuh-detection-engineering
+etc/lists/malware-hashes-md5,copiada da fonte,lists/ioc/malware-hashes-md5.example,1,Jeremy-Burgos/wazuh-detection-engineering,areas/20-attck-multiplatform/detection-engineering/Jeremy-Burgos__wazuh-detection-engineering
+etc/lists/orangebox-agent-profiles,copiada da fonte,configuration/manager/etc/lists/orangebox-agent-profiles,7,OrangeBox-Labs/Wazuh,areas/20-attck-multiplatform/orangebox/OrangeBox-Labs__Wazuh
+etc/lists/orangebox-backuppc-dynamic,copiada da fonte,configuration/manager/etc/lists/orangebox-backuppc-dynamic,1,OrangeBox-Labs/Wazuh,areas/20-attck-multiplatform/orangebox/OrangeBox-Labs__Wazuh
+etc/lists/orangebox-backuppc-static,copiada da fonte,configuration/manager/etc/lists/orangebox-backuppc-static,1,OrangeBox-Labs/Wazuh,areas/20-attck-multiplatform/orangebox/OrangeBox-Labs__Wazuh
+etc/lists/orangebox-recon-programs,copiada da fonte,configuration/manager/etc/lists/orangebox-recon-programs,1,OrangeBox-Labs/Wazuh,areas/20-attck-multiplatform/orangebox/OrangeBox-Labs__Wazuh
+etc/lists/orangebox-sftp-external,copiada da fonte,configuration/manager/etc/lists/orangebox-sftp-external,1,OrangeBox-Labs/Wazuh,areas/20-attck-multiplatform/orangebox/OrangeBox-Labs__Wazuh
+etc/lists/orangebox-suspicious-programs,copiada da fonte,configuration/manager/etc/lists/orangebox-suspicious-programs,1,OrangeBox-Labs/Wazuh,areas/20-attck-multiplatform/orangebox/OrangeBox-Labs__Wazuh
+etc/lists/whitelist-processes.cdb,em falta,,1,paolokappa/wazuh-siem-rules,areas/20-attck-multiplatform/suricata-sysmon-fim/paolokappa__wazuh-siem-rules
+etc/lists/BQTLock-hashes,em falta,,1,adampielak/wazuh-scripts-resource,areas/20-attck-multiplatform/wazuh-blog-pack/adampielak__wazuh-scripts-resource
+etc/lists/blacklist-alienvault,em falta,,2,adampielak/wazuh-scripts-resource,areas/20-attck-multiplatform/wazuh-blog-pack/adampielak__wazuh-scripts-resource
+etc/lists/doge-big-balls-ransomware,em falta,,1,adampielak/wazuh-scripts-resource,areas/20-attck-multiplatform/wazuh-blog-pack/adampielak__wazuh-scripts-resource
+etc/lists/malware-hashes,em falta,,6,adampielak/wazuh-scripts-resource,areas/20-attck-multiplatform/wazuh-blog-pack/adampielak__wazuh-scripts-resource
+etc/lists/malware-hashes-koske,em falta,,1,adampielak/wazuh-scripts-resource,areas/20-attck-multiplatform/wazuh-blog-pack/adampielak__wazuh-scripts-resource
+etc/lists/phishing_domains,em falta,,1,adampielak/wazuh-scripts-resource,areas/20-attck-multiplatform/wazuh-blog-pack/adampielak__wazuh-scripts-resource
+etc/lists/phishing_ips,em falta,,1,adampielak/wazuh-scripts-resource,areas/20-attck-multiplatform/wazuh-blog-pack/adampielak__wazuh-scripts-resource
+etc/lists/phishing_md5s,em falta,,1,adampielak/wazuh-scripts-resource,areas/20-attck-multiplatform/wazuh-blog-pack/adampielak__wazuh-scripts-resource
+etc/lists/phishing_urls,em falta,,1,adampielak/wazuh-scripts-resource,areas/20-attck-multiplatform/wazuh-blog-pack/adampielak__wazuh-scripts-resource
+etc/lists/trusted-ips,em falta,,2,adampielak/wazuh-scripts-resource,areas/20-attck-multiplatform/wazuh-blog-pack/adampielak__wazuh-scripts-resource
+etc/lists/ad_hostnames,em falta,,2,adampielak/wazuh_custom_rules,areas/90-misc/politicas-internas/adampielak__wazuh_custom_rules

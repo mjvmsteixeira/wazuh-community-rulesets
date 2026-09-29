@@ -1,0 +1,42 @@
+<!--
+  Rule: Service Installed Outside Business Hours
+  NIST CSF: DE.CM-09 (Monitoring for unauthorized personnel, connections, devices, and software)
+            DE.AE-03 (Event data are aggregated and correlated)
+  MITRE ATT&CK: T1543.003 - Create or Modify System Process: Windows Service
+  Severity: Medium
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-21
+
+  Description:
+    Detects new Windows service installs outside business hours.
+
+  False Positives:
+    - Approved after-hours maintenance
+
+  Tuning Guidance:
+    Adjust the time window to match your local business hours or time zone.
+
+  Assumptions:
+    - Local manager time matches your business hours.
+
+  Limitations:
+    - Uses a time filter; confirm time syntax is supported by your Wazuh version.
+
+  Test: tests/sample-logs/de-cm-09/after-hours-service-install/
+-->
+
+<group name="nist_csf,de.cm-09,windows,service_install">
+
+  <rule id="100015" level="8">
+    <decoded_as>json</decoded_as>
+    <field name="win.system.eventID">7045</field>
+    <field name="win.system.providerName">Service Control Manager</field>
+    <time>!08:00-18:00</time>
+    <description>Service installed outside business hours</description>
+    <mitre>
+      <id>T1543.003</id>
+    </mitre>
+    <group>persistence,service_install,nist_de.cm-09,nist_de.ae-03</group>
+  </rule>
+
+</group>

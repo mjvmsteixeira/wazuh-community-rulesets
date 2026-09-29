@@ -1,0 +1,33 @@
+<!-- Vipnet CEF decoders -->
+<decoder name="vipnet_cef_outbound_full">
+  <program_name>CEF</program_name>
+  <prematch type="pcre2">0\|infotecs\|hw\|.+?out=\d+ .+?shost=.+?dhost=</prematch>
+</decoder>
+
+<decoder name="vipnet_cef_outbound_full_child">
+  <parent>vipnet_cef_outbound_full</parent>
+  <regex type="pcre2">0\|infotecs\|hw\|(\d+\.\d+)\|(\d+)\|(.+?)\|\d+\|\S+ .+? src=(\d+\.\d+\.\d+\.\d+) dst=(\d+\.\d+\.\d+\.\d+) spt=(\d+) dpt=(\d+) proto=(\S+) cnt=\d+ dvc=(\d+\.\d+\.\d+\.\d+) out=\d+ deviceOutboundInterface=(\S+) .+? shost=(.+?), .+? dhost=(.+?), .+? devProd=.+? devVer=\S+ dvchost=(\S+) customerURI=(\S+)</regex>
+  <order>vipnet.version,vipnet.rule.id,vipnet.rule.name,srcip,dstip,srcport,dstport,protocol,vipnet.coordinator.ip,vipnet.deviceOutboundInterface,vipnet.srchost,vipnet.dsthost,dvchost,url</order>
+</decoder>
+
+<decoder name="vipnet_cef_outbound_minimal">
+  <program_name>CEF</program_name>
+  <prematch type="pcre2">0\|infotecs\|hw\|.+?out=\d+ deviceOutboundInterface=</prematch>
+</decoder>
+
+<decoder name="vipnet_cef_outbound_minimal_child">
+  <parent>vipnet_cef_outbound_minimal</parent>
+  <regex type="pcre2">0\|infotecs\|hw\|(\d+\.\d+)\|(\d+)\|(.+?)\|\d+\|\S+ .+? src=(\d+\.\d+\.\d+\.\d+) dst=(\d+\.\d+\.\d+\.\d+) spt=(\d+) dpt=(\d+) proto=(\S+) cnt=\d+ dvc=(\d+\.\d+\.\d+\.\d+) out=\d+ deviceOutboundInterface=(\S+) .+? devProd=.+? devVer=\S+ dvchost=(\S+) customerURI=(\S+)</regex>
+  <order>vipnet.version,vipnet.rule.id,vipnet.rule.name,srcip,dstip,srcport,dstport,protocol,vipnet.coordinator.ip,vipnet.deviceOutboundInterface,dvchost,url</order>
+</decoder>
+
+<decoder name="vipnet_cef_inbound">
+  <program_name>CEF</program_name>
+  <prematch type="pcre2">0\|infotecs\|hw\|.+?in=\d+ deviceInboundInterface=</prematch>
+</decoder>
+
+<decoder name="vipnet_cef_inbound_child">
+  <parent>vipnet_cef_inbound</parent>
+  <regex type="pcre2">0\|infotecs\|hw\|(\d+\.\d+)\|(\d+)\|(.+?)\|\d+\|\S+ .+? src=(\d+\.\d+\.\d+\.\d+) dst=(\d+\.\d+\.\d+\.\d+) spt=(\d+) dpt=(\d+) proto=(\S+) cnt=\d+ dvc=(\d+\.\d+\.\d+\.\d+) in=\d+ deviceInboundInterface=(\S+) .+? devProd=.+? devVer=\S+ dvchost=(\S+) customerURI=(\S+)</regex>
+  <order>vipnet.version,vipnet.rule.id,vipnet.rule.name,srcip,dstip,srcport,dstport,protocol,vipnet.coordinator.ip,vipnet.deviceInboundInterface,dvchost,url</order>
+</decoder>

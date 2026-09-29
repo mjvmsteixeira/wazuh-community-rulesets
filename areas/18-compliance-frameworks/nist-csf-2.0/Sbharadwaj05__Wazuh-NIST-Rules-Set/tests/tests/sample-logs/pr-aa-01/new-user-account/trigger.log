@@ -1,0 +1,1 @@
+Dec 10 14:25:01 webserver01 useradd[13000]: new user: name=backdoor, UID=1001, GID=1001, home=/home/backdoor, shell=/bin/bash

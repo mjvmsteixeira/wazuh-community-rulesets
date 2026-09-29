@@ -1,0 +1,17 @@
+<!-- Blocos de configuração extraídos, sem alterações, de wazuh/integrations:integrations/auth0/README.md @ 38efcaaa3272 -->
+<localfile>
+  <log_format>json</log_format>
+  <location>/var/log/auth0_logs.json</location>
+</localfile>
+
+<wodle>`:
+```
+<wodle name="command">
+  <disabled>no</disabled>
+  <tag>auth0-logs</tag>
+  <command>/var/ossec/bin/auth0_wodle_fetch.sh</command>
+  <interval>1m</interval>     
+  <timeout>30</timeout>        
+  <ignore_output>no</ignore_output>
+  <run_on_start>yes</run_on_start> 
+</wodle>

@@ -1,0 +1,13 @@
+<!-- 
+  Custom Wazuh decoders for HP 2920 series switches.
+  This file contains a decoder for parsing login attempts from HP 2920 devices.
+-->
+<decoder name="hp_2920">
+  <!-- 
+    Decodes login attempts.
+    Example log: Jan 01 00:00:00 User 'admin' ... from 192.168.1.10
+  -->
+  <prematch>^ \w\w\w \d\d \d\d:\d\d:\d\d</prematch>
+  <regex offset="after_prematch">User '(\S+)' \.+ from (\d+.\d+.\d+.\d+)</regex>
+  <order>user,srcip</order>
+</decoder>

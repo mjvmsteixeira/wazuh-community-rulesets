@@ -1,0 +1,41 @@
+<!--
+  Rule: Process Injection Indicator (Sysmon)
+  NIST CSF: DE.AE-02 (Detected events are analyzed to understand attack targets and methods)
+            RS.AN-08 (Incident impacts are understood and fed into analysis)
+  MITRE ATT&CK: T1055 - Process Injection
+  Severity: High
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-21
+
+  Description:
+    Detects Sysmon CreateRemoteThread events, a common process injection signal.
+
+  False Positives:
+    - Some legitimate software (EDR, debuggers) can trigger CreateRemoteThread
+
+  Tuning Guidance:
+    Allowlist known security tools or signed binaries if noise is high.
+
+  Assumptions:
+    - Sysmon is installed and forwarding Event ID 8.
+
+  Limitations:
+    - Other injection techniques may not generate CreateRemoteThread events.
+
+  Test: tests/sample-logs/rs-an-08/process-injection/
+-->
+
+<group name="nist_csf,rs.an-08,windows,process_injection">
+
+  <rule id="100012" level="10">
+    <decoded_as>json</decoded_as>
+    <field name="win.system.providerName">Microsoft-Windows-Sysmon</field>
+    <field name="win.system.eventID">8</field>
+    <description>Process injection indicator (Sysmon CreateRemoteThread)</description>
+    <mitre>
+      <id>T1055</id>
+    </mitre>
+    <group>process_injection,nist_de.ae-02,nist_rs.an-08</group>
+  </rule>
+
+</group>

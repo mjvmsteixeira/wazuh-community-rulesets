@@ -1,0 +1,27 @@
+<!--
+  MineCraft rulesett:
+  - rule_id_range: 1002xx
+    
+  Decoders:
+  - minecraft
+  - minecraft-time-event
+  - minecraft-auth
+  - minecraft-disconnect
+ -->
+
+<group name="minecraft,">
+  <!-- Connection -->
+  <rule id="100200" level="5">
+    <field name="alert_type">normal</field>
+    <match>^\.*\pUser Authenticator #\d+/INFO\p+</match>
+    <description>A user authenticated</description>
+  </rule>
+
+  <!-- Multiple disconnects from same IP -->
+
+
+  <!-- RCON brute force -->
+
+
+</group>
+

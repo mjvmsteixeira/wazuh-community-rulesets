@@ -1,0 +1,201 @@
+<!-- Decoders for Cisco Meraki Syslog v0.1 -->
+<!-- by cbrede -->
+
+<!--
+##################### IDS todo need more samples
+-->
+
+<decoder name="meraki-ids">
+  <prematch>^1 (\.+) (\.+) security_event ids_alerted</prematch>
+</decoder>
+
+
+<decoder name="meraki-idx">
+  <parent>meraki-ids</parent>
+  <type>ids</type>
+    <regex>^1 (\.+) (\.+) (\.+) (\.+)</regex>
+    <order>ts,system_name,merevent</order>
+</decoder> 
+
+<decoder name="meraki-idx">
+  <parent>meraki-ids</parent>
+    <regex> src=(\.+):(\.+) dst=(\.+):(\.+) (\.*) </regex>
+    <order>srcip,srcport,dstip,dstport</order>
+</decoder>
+
+<decoder name="meraki-idx">
+  <parent>meraki-ids</parent>
+    <!-- ipv6 guess !! never seen -->
+    <regex> src=[(\.+)]:(\.+) dst=[(\.+)]:(\.+) (\.*) </regex>
+    <order>srcip,srcport,dstip,dstport</order>
+</decoder>
+
+<decoder name="meraki-idx">
+  <parent>meraki-ids</parent>
+    <regex> decision=(\.+) action=(\.+) (\.*)</regex>
+    <order>deciscion, action</order>
+</decoder>
+
+<decoder name="meraki-idx">
+  <parent>meraki-ids</parent>
+    <regex> message: (\.*)</regex>
+    <order>mermessage</order>
+</decoder>
+
+<decoder name="meraki-idx">
+  <parent>meraki-ids</parent>
+    <regex> signature=(\.+) </regex>
+    <order>mersnortsig</order>
+</decoder>
+
+
+<!--
+##################### Secrity todo - need more samples
+-->
+
+<decoder name="meraki-sec">
+  <prematch>^1 (\.+) (\.+) security_event security_filtering_file_scanned|security_filtering_disposition_change</prematch>
+</decoder>
+
+
+
+<!--
+##################### Firewall
+-->
+
+
+<decoder name="meraki-fw">
+  <prematch>^1 (\.+) (\.+) firewall|cellular_firewall|vpn_firewall|flows|ip_flow_start|ip_flow_end|l7_firewall</prematch>
+</decoder>
+
+<decoder name="meraki-fwx">
+  <parent>meraki-fw</parent>
+  <type>firewall</type>
+    <regex>^1 (\.+) (\.+) (\.+) (\.+)</regex>
+    <order>ts,system_name,merevent</order>
+</decoder> 
+
+
+<decoder name="meraki-fwx">
+  <parent>meraki-fw</parent>
+    <regex> src=(\.+) dst=(\.+) (\.*) </regex>
+  <order>srcip,dstip</order>
+</decoder>
+
+<decoder name="meraki-fwx">
+  <parent>meraki-fw</parent>
+   <regex> protocol=(\w+) </regex>
+  <order>protocol</order>
+</decoder>
+
+<decoder name="meraki-fwx">
+  <parent>meraki-fw</parent>
+   <regex> type=(\d+)</regex>
+  <order>protocoltype</order>
+</decoder>
+
+<decoder name="meraki-fwx">
+  <parent>meraki-fw</parent>
+   <regex> mac=(\.+) (\.*)</regex>
+  <order>mac</order>
+</decoder>
+
+<decoder name="meraki-fwx">
+  <parent>meraki-fw</parent>
+   <regex> pattern: (\.+) (\.*)</regex>
+  <order> action,merextra</order>
+</decoder>
+
+<decoder name="meraki-fwx">
+  <parent>meraki-fw</parent>
+   <regex> sport=(\d+) dport=(\d+)</regex>
+  <order>srcport,dstport</order>
+</decoder>
+
+
+<!-- hack for old flows -->
+<decoder name="meraki-fwx">
+  <parent>meraki-fw</parent>
+   <regex> flows (\w+) src=</regex>
+  <order>action</order>
+</decoder>
+
+<decoder name="meraki-fwx">
+  <parent>meraki-fw</parent>
+   <regex> decision=(\w+)</regex>
+  <order>decision</order>
+</decoder>
+
+
+<!--
+##################### URLS
+-->
+
+
+<decoder name="meraki-urls">
+  <prematch>^1 (\.+) (\.+) urls</prematch>
+</decoder>
+
+<decoder name="meraki-url">
+  <parent>meraki-urls</parent>
+    <regex>^1 (\.+) (\.+) (\w+)</regex>
+    <order>ts,system_name,merevent</order>
+</decoder>  
+
+<!--- ipv4 -->
+<decoder name="meraki-url">
+  <parent>meraki-urls</parent>
+    <regex> src=(\.+):(\.+) dst=(\.+):(\.+) (\.*) </regex>
+    <order>srcip,srcport,dstip,dstport</order>
+</decoder>
+
+<!--- ipv6 []: -->
+<decoder name="meraki-url">
+  <parent>meraki-urls</parent>
+    <regex> src=[(\.+)]:(\.+) dst=[(\.+)]:(\.+) (\.*) </regex>
+  <order>srcip,srcport,dstip,dstport</order>
+</decoder>
+
+<decoder name="meraki-url">
+  <parent>meraki-urls</parent>
+   <regex> request: (\.+) (\.+)</regex>
+  <order>requesttype,url</order>
+</decoder>
+
+<decoder name="meraki-url">
+  <parent>meraki-urls</parent>
+   <regex> mac=(\.+) (\.*)</regex>
+  <order>mac</order>
+</decoder>
+
+
+<!--
+##################### EVENTS
+-->
+
+
+<decoder name="meraki-events">
+   <prematch>^1 (\.+) (\.+) events </prematch>
+</decoder>
+
+
+<decoder name="meraki-event">
+  <parent>meraki-events</parent>
+  <prematch offset="after_parent">^content_filtering_block</prematch>
+   <regex>server='(\.+):(\d+)' client_ip='(\.*)'</regex>
+  <order>dstip,dstport,srcip</order>
+</decoder>
+
+
+<decoder name="meraki-event">
+  <parent>meraki-events</parent>
+  
+  <regex> url='(\.+)' category(\d+)='(\.+)' </regex>
+  <order>url,mercategoryno,mercategory</order>
+</decoder>
+
+<decoder name="meraki-event">
+   <parent>meraki-events</parent>
+    <regex>^1 (\.+) (\.+) (\.+) (\w+) </regex>
+    <order>ts,system_name,merevent, mersubevent</order>
+</decoder>

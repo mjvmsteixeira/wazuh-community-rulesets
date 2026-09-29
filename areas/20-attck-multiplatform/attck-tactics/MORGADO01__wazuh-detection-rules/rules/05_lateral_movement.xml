@@ -1,0 +1,32 @@
+<!--
+  Categoria: Lateral Movement
+  Táticas MITRE ATT&CK cobertas: PsExec (T1569.002, T1021.002, T1570),
+  Masquerading (T1036)
+-->
+<group name="local,lateral_movement,">
+
+  <rule id="100704" level="12">
+    <if_sid>60602</if_sid>
+    <field name="win.eventdata.serviceName" type="pcre2">(?i)^PSEXESVC</field>
+    <description>ALERTA: Execução do PsExec detectada (Criação do serviço PSEXESVC). Possível Movimentação Lateral.</description>
+    <mitre>
+      <id>T1569.002</id>
+      <id>T1021.002</id>
+      <id>T1570</id>
+    </mitre>
+    <info type="link">https://attack.mitre.org/software/S0029/</info>
+    <group>pci_dss_10.6.1,gdpr_IV_35.7.d,nist_800_53_SI.4,</group>
+  </rule>
+
+  <rule id="100705" level="13">
+    <if_sid>60602</if_sid>
+    <field name="win.eventdata.serviceName" type="pcre2" negate="yes">(?i)^PSEXESVC</field>
+    <field name="win.eventdata.imagePath" type="pcre2">(?i)PSEXESVC\.exe</field>
+    <description>CRÍTICO: Variação do PsExec detectada (Binário PSEXESVC com nome de serviço alterado).</description>
+    <mitre>
+      <id>T1036</id>
+      <id>T1569.002</id>
+    </mitre>
+  </rule>
+
+</group>

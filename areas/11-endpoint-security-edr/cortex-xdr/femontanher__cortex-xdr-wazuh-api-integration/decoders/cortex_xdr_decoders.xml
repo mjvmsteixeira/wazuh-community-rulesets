@@ -1,0 +1,33 @@
+<decoder name="cortex_xdr">
+  <prematch type="pcre2">^\{"log_source"\s*:\s*"cortex_xdr"</prematch>
+</decoder>
+
+<decoder name="cortex_xdr">
+  <parent>cortex_xdr</parent>
+  <plugin_decoder>JSON_Decoder</plugin_decoder>
+  <json_null_field>discard</json_null_field>
+  <json_array_structure>csv</json_array_structure>
+</decoder>
+
+<decoder name="cortex_xdr">
+  <parent>cortex_xdr</parent>
+  <regex type="pcre2">"module_id"\s*:\s*"([^"]+)".*?"event_type"\s*:\s*"([^"]+)".*?"actor_process_image_name"\s*:\s*(?:"([^"]+)"|null).*?"action_file_name"\s*:\s*(?:"([^"]+)"|null).*?"action_file_sha256"\s*:\s*(?:"([^"]+)"|null).*?"user_name"\s*:\s*"([^"]+)"</regex>
+  <order>xdr_module_id,xdr_event_type,xdr_actor_process_image_name,xdr_action_file_name,xdr_action_file_sha256,xdr_user_name</order>
+</decoder>
+
+<decoder name="cortex_xdr_alert_nested_events">
+  <prematch type="pcre2">^\{"log_source"\s*:\s*"cortex_xdr".*"log_type"\s*:\s*"alert"</prematch>
+  <regex type="pcre2">"severity"\s*:\s*"([^"]+)".*?"module_id"\s*:\s*"([^"]+)".*?"event_type"\s*:\s*"([^"]+)".*?"action_file_name"\s*:\s*"([^"]+)".*?"action_file_sha256"\s*:\s*"([^"]+)".*?"name"\s*:\s*"([^"]+)".*?"category"\s*:\s*"([^"]+)".*?"description"\s*:\s*"([^"]+)".*?"host_name"\s*:\s*"([^"]+)".*?"source"\s*:\s*"([^"]+)".*?"action"\s*:\s*"([^"]+)".*?"action_pretty"\s*:\s*"([^"]+)"</regex>
+  <order>severity,xdr_module_id,xdr_event_type,xdr_action_file_name,xdr_action_file_sha256,name,category,description,host_name,source,action,action_pretty</order>
+</decoder>
+
+<!-- Decoder adicional para alerts do Cortex XDR com events aninhado -->
+<decoder name="cortex_xdr_alert_nested_base">
+  <prematch type="pcre2">^\{"log_source"\s*:\s*"cortex_xdr"\s*,\s*"log_type"\s*:\s*"alert"</prematch>
+</decoder>
+
+<decoder name="cortex_xdr_alert_nested">
+  <parent>cortex_xdr_alert_nested_base</parent>
+  <regex type="pcre2">"severity"\s*:\s*"([^"]+)".*?"module_id"\s*:\s*"([^"]+)".*?"event_type"\s*:\s*"([^"]+)".*?"alert_id"\s*:\s*"([^"]+)".*?"name"\s*:\s*"([^"]+)".*?"category"\s*:\s*"([^"]+)".*?"description"\s*:\s*"([^"]+)".*?"host_name"\s*:\s*"([^"]+)".*?"source"\s*:\s*"([^"]+)".*?"action"\s*:\s*"([^"]+)".*?"action_pretty"\s*:\s*"([^"]+)"</regex>
+  <order>xdr_severity,xdr_module_id,xdr_event_type,xdr_alert_id,xdr_name,xdr_category,xdr_description,xdr_host_name,xdr_source,xdr_action,xdr_action_pretty</order>
+</decoder>

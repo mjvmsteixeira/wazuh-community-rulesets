@@ -1,0 +1,5 @@
+<!-- Blocos de configuração extraídos, sem alterações, de paolokappa/wazuh-siem-rules:README.md @ ac6095c5b025 -->
+<localfile>
+  <location>Microsoft-Windows-Sysmon/Operational</location>
+  <log_format>eventchannel</log_format>
+</localfile>

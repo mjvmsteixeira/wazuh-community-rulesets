@@ -1,0 +1,41 @@
+<!--
+  MikroTik RouterOS Wazuh Decoder
+  https://github.com/H2FSpawn/wazuh-mikrotik-decoder
+
+  Tested: RouterOS 7.x, Wazuh 4.12-4.14
+  Syslog format: BSD (RFC 3164)
+
+  Known limitations:
+  - TCP flag annotations like "(SYN)" or "(ACK)" in firewall logs
+    prevent full field extraction. Configure RouterOS firewall
+    logging without TCP flags for reliable srcip/dstip extraction.
+    See docs/mikrotik-syslog-setup.md for the recommended configuration.
+    Events still match and fire rules even without field extraction.
+  - DHCP field extraction only works for "assigned" lease events.
+    "offering" and other DHCP events match rule 110003 without fields.
+  - Parent-child decoder structures are unreliable in this context.
+    All decoders here are standalone.
+-->
+
+<!-- Firewall: extracts srcip, srcport, dstip, dstport               -->
+<!-- Requires RouterOS firewall logging without TCP flag annotations. -->
+<!-- \p\p matches the "->" separator between src and dst IP:port.    -->
+<!-- Events with TCP flags still match and fire rules,               -->
+<!-- but IP fields will not be extracted.                            -->
+<decoder name="mikrotik-firewall">
+  <prematch>firewall,</prematch>
+  <regex type="pcre2">proto \S+, (\d+\.\d+\.\d+\.\d+):(\d+)->(\d+\.\d+\.\d+\.\d+):(\d+)</regex>
+  <order>srcip, srcport, dstip, dstport</order>
+</decoder>
+
+<!-- DHCP: extracts assigned IP, MAC address, and client hostname -->
+<decoder name="mikrotik-dhcp">
+  <prematch>dhcp,</prematch>
+  <regex type="pcre2">assigned (\d+\.\d+\.\d+\.\d+) to (\S+) \((\S+)\)</regex>
+  <order>srcip, extra_data, extra_data2</order>
+</decoder>
+
+<!-- System: general RouterOS system messages, no field extraction -->
+<decoder name="mikrotik-system">
+  <prematch>system,</prematch>
+</decoder>

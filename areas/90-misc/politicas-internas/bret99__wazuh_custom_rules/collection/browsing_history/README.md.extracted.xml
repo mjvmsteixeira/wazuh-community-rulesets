@@ -1,0 +1,24 @@
+<!-- Blocos de configuração extraídos, sem alterações, de bret99/wazuh_custom_rules:browsing_history/README.md @ 8783ac892999 -->
+<agent_config>
+  <syscheck>
+      <directories check_all="yes" report_changes="yes" realtime="yes">C:\tools</directories>
+      <directories check_all="yes" report_changes="yes" realtime="yes">C:\Windows\systeminfo.vbs</directories>
+      <directories check_all="yes" report_changes="yes" realtime="yes">C:\Windows\systeminfocollect.bat</directories>
+      <directories check_all="yes" report_changes="yes" realtime="yes">C:\Windows\Temp\SystemInfoCollect\*_history.json</directories>   
+  </syscheck>
+  <localfile>
+      <location>C:\Windows\Temp\SystemInfoCollect\*.json</location>
+      <log_format>json</log_format>
+  </localfile>
+</agent_config>
+
+<agent_config>
+  <syscheck>
+      <directories check_all="yes" realtime="yes" whodata="yes">/opt/systeminfocollect</directories>
+      <directories check_all="yes" realtime="yes" whodata="yes">/var/log/systeminfocollect.json</directories>
+  </syscheck>
+  <localfile>
+     <location>/var/log/systeminfocollect.json</location>
+     <log_format>json</log_format> 
+  </localfile>
+</agent_config>

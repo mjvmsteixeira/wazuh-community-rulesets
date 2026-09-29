@@ -1,0 +1,135 @@
+<decoder name="beyond-insight">
+        <program_name>^BeyondInsight</program_name>
+</decoder>
+
+<decoder name="beyondtrust-syslog">
+        <parent>beyond-insight</parent>
+        <regex>Agent Desc: "(\S+)",</regex>
+        <order>agent_desc</order>
+</decoder>
+
+<decoder name="beyondtrust-syslog">
+        <parent>beyond-insight</parent>
+        <regex>Agent ID: "(\S+)",</regex>
+        <order>agent_id</order>
+</decoder>
+
+<decoder name="beyondtrust-syslog">
+        <parent>beyond-insight</parent>
+        <regex>Agent ver: "(\S+)",</regex>
+        <order>agent_version</order>
+</decoder>
+
+<decoder name="beyondtrust-syslog">
+        <parent>beyond-insight</parent>
+        <regex>Category: "(\.+)",</regex>
+        <order>category</order>
+</decoder>
+
+<decoder name="beyondtrust-syslog">
+        <parent>beyond-insight</parent>
+        <regex>Source Host: "(\S+)",</regex>
+        <order>source_host</order>
+</decoder>
+
+<decoder name="beyondtrust-syslog">
+        <parent>beyond-insight</parent>
+        <regex>Event Desc: "(\S+)",</regex>
+        <order>event_desc</order>
+</decoder>
+
+<decoder name="beyondtrust-syslog">
+        <parent>beyond-insight</parent>
+        <regex>Event Name: "(\S+)",</regex>
+        <order>event_name</order>
+</decoder>
+
+<decoder name="beyondtrust-syslog">
+        <parent>beyond-insight</parent>
+        <regex>OS: "(\S+)",</regex>
+        <order>os</order>
+</decoder>
+
+<decoder name="beyondtrust-syslog">
+        <parent>beyond-insight</parent>
+        <regex>Event Severity: "(\d+)",</regex>
+        <order>event_severity</order>
+</decoder>
+
+<decoder name="beyondtrust-syslog">
+        <parent>beyond-insight</parent>
+        <regex>Source IP: "(\d+.\d+.\d+.\d+)"</regex>
+        <order>source_ip</order>
+</decoder>
+
+<decoder name="beyondtrust-syslog">
+        <parent>beyond-insight</parent>
+        <regex>User: "(\S+)",</regex>
+        <order>user</order>
+</decoder>
+
+<decoder name="beyondtrust-syslog">
+        <parent>beyond-insight</parent>
+        <regex>User Name: "(\S+)",</regex>
+        <order>email</order>
+</decoder>
+
+<decoder name="beyondtrust-syslog">
+        <parent>beyond-insight</parent>
+        <regex>SAML IDP URL: "(\S+)"</regex>
+        <order>saml_idp_url</order>
+</decoder>
+
+<decoder name="beyondtrust-syslog">
+        <parent>beyond-insight</parent>
+        <regex>Configuration Name: "(\.+)"</regex>
+        <order>configuration_name</order>
+</decoder>
+
+<decoder name="beyondtrust-syslog">
+        <parent>beyond-insight</parent>
+        <regex>SSO Service URL: "(\S+)"</regex>
+        <order>sso_service_url</order>
+</decoder>
+
+<decoder name="beyondtrust-syslog">
+        <parent>beyond-insight</parent>
+        <regex>Authentication Type: "(\S+)"</regex>
+        <order>authentication_type</order>
+</decoder>
+
+<decoder name="beyondtrust-syslog">
+        <parent>beyond-insight</parent>
+        <regex>Mapped Managed Account: "(\S+)"</regex>
+        <order>mapped_managed_account</order>
+</decoder>
+
+<decoder name="beyondtrust-syslog">
+        <parent>beyond-insight</parent>
+        <regex>Mapped Managed Account AccountName: "(\.+)"</regex>
+        <order>mapped_managed_account_name</order>
+</decoder>
+
+<decoder name="beyondtrust-syslog">
+        <parent>beyond-insight</parent>
+        <regex>Mapped Managed Account Platform: "(\.+)"</regex>
+        <order>mapped_managed_account_platform</order>
+</decoder>
+
+<decoder name="beyondtrust-syslog">
+        <parent>beyond-insight</parent>
+        <regex>Group: "(\.+)"</regex>
+        <order>group</order>
+</decoder>
+
+<decoder name="beyondtrust-syslog">
+        <parent>beyond-insight</parent>
+        <regex>Context: "(\S+)"</regex>
+        <order>context</order>
+</decoder>
+
+<decoder name="beyondtrust-syslog">
+        <parent>beyond-insight</parent>
+        <regex>Source: "(\S+)"</regex>
+        <order>source</order>
+</decoder>

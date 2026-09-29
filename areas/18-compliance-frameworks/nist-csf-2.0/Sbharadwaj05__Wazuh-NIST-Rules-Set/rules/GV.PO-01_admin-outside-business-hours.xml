@@ -1,0 +1,23 @@
+<!--
+  Rule: Administrator account logged in outside of standard business hours (Valid Accounts)
+  NIST CSF: GV.PO-01, DE.CM-03
+  MITRE ATT&CK: T1078
+  Severity: High
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-23
+-->
+
+<group name="nist_csf, gv.po-01, mitre_attack,">
+
+  <rule id="100049" level="8">
+      <if_sid>60106, 5715</if_sid> <!-- Win Logon (4624) or Linux sshd success -->
+      <regex type="pcre2">(?i)(TargetUserName.*(Administrator|DomainAdmin)|\bfor root\b)</regex>
+      <time>18:00 - 06:00</time> <!-- Outside normal business hours -->
+      <description>Administrator account logged in outside of standard business hours (Valid Accounts)</description>
+      <mitre>
+        <id>T1078</id>
+      </mitre>
+      <group>GV.PO-01, DE.CM-03</group>
+    </rule>
+
+</group>

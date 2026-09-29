@@ -1,0 +1,5 @@
+<!-- Blocos de configuração extraídos, sem alterações, de mjvmsteixeira/wazuh-database-compliance:mssql/README.md @ 21031af7fa3f -->
+<localfile>
+    <log_format>json</log_format>
+    <location>C:\Logs\MSSQL\wazuh_mssql_audit.log</location>
+  </localfile>

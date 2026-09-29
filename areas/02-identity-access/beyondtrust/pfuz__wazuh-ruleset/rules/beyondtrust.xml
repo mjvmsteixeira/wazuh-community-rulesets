@@ -1,0 +1,36 @@
+<group name="beyondtrust_syslog,">
+        <rule id="100101" level="0">
+                <decoded_as>beyond-insight</decoded_as>
+                <description>BeyondTrust Rules</description>
+        </rule>
+
+        <rule id="100102" level="3">
+                <if_sid>100101</if_sid>
+                <field name="category">^Login$</field>
+                <description>BeyondTrust: Login Event from user $(dstuser)</description>
+        </rule>
+
+        <rule id="100103" level="3">
+                <if_sid>100101</if_sid>
+                <field name="category">System</field>
+                <description>BeyondTrust: System Event</description>
+        </rule>
+
+        <rule id="100104" level="3">
+                <if_sid>100101</if_sid>
+                <field name="category">PMM Login</field>
+                <description>BeyondTrust: PMM Login Event from user $(dstuser)</description>
+        </rule>
+
+        <rule id="100105" level="3">
+                <if_sid>100101</if_sid>
+                <field name="category">PMM API SignAppIn</field>
+                <description>BeyondTrust: PMM API SignAppIn Event</description>
+        </rule>
+
+        <rule id="100106" level="3">
+                <if_sid>100101</if_sid>
+                <field name="category">^Logout$</field>
+                <description>BeyondTrust: Logout event from user $(dstuser)</description>
+        </rule>
+</group>

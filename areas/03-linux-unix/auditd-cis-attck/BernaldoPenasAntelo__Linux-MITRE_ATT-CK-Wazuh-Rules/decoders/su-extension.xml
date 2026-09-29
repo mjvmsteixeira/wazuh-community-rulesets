@@ -1,0 +1,15 @@
+<!--
+su decoder extension
+
+Feb 22 13:10:38 wazuh01 su[27595]: Successful su for root by root
+
+-->
+
+
+<decoder name="su-successful">
+  <parent>su</parent>
+  <prematch>^Successful </prematch>
+  <regex>(Successful) su for (\.*) by (\.*)</regex>
+  <order>event.action, fields.su_for, user.name</order>
+</decoder>
+

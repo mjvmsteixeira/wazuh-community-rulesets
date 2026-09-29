@@ -1,0 +1,22 @@
+<!--
+  Rule: Reverse shell execution detected (Command and Control)
+  NIST CSF: DE.AE-02, RS.MA-02
+  MITRE ATT&CK: T1059.004
+  Severity: Critical
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-23
+-->
+
+<group name="nist_csf, de.ae-02, mitre_attack,">
+
+  <rule id="100042" level="12">
+      <if_sid>80700, 61603</if_sid> <!-- Auditd syscall or Sysmon process creation -->
+      <regex type="pcre2">(?i)(bash\s-i|sh\s-i|nc\s-e|\/dev\/tcp\/|mkfifo\s.*?nc)</regex>
+      <description>Reverse shell execution detected (Command and Control)</description>
+      <mitre>
+        <id>T1059.004</id>
+      </mitre>
+      <group>DE.AE-02, RS.MA-02</group>
+    </rule>
+
+</group>

@@ -1,0 +1,25 @@
+<!-- 
+decoder for NPS.only the main fields are decoded!
+prematch shall be added in <out_format> on agent side!
+:::::::shared agent config:::::::
+  <agent_config>
+    <localfile>
+      <location>C:\Windows\System32\LogFiles\*.log</location>
+      <log_format>syslog</log_format>
+      <out_format>nps :: $(log)</out_format>
+    </localfile>
+  </agent_config>
+::::::::::event example::::::::::::
+nps :: "SRV-DC","IAS",12/26/2025,21:52:55,1,"ivanov","domain.net/domain_users/Staff/support/Ivanov Ival",,,,,"postgresql",,,0,"10.1.1.2","DB_integration_24",,,,,,8,1,"Databases Auth - integration_24",0,"311 1 10.2.1.2 12/20/2025 20:50:44 47502",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"nps Standart Client Request Policy",1,,,,1
+::::::template for a new fields in <regex>:::::
+…,(?:"?(?'var'.*?)"?)?,…
+-->
+<decoder name="nps">
+    <prematch>nps :: </prematch>
+</decoder>
+
+<decoder name="nps-fields">
+    <parent>nps</parent>
+    <regex type="pcre2" offset="after_parent">"(?'dc'.*?)","IAS",(?'date'\d\d\/\d\d\/\d\d\d\d),(?'time'\d\d:\d\d:\d\d),(?'packet_type'\d+),"?(?'username'.*?)"?,"?(?'object'.*?)"?,.*?,.*?,.*?,.*?,"?(?'nas_id'.*?)"?,(?:"?(?'nas_ip'[\d\.]+)"?)?,(?:"?(?'nas_port'\d+)"?)?,(?:"?(?'client_vendor'.*?)"?)?,(?:"(?'client_ip'[\d\.]+)")?,"(?'client_name'.*?)",(?:"?(?'event_time'.*?)"?)?,(?:"?(?'port_limit'.*?)"?)?,(?:"?(?'nas_port_type'.*?)"?)?,(?:"?(?'connect_info'.*?)"?)?,(?:"?(?'fremed_proto'.*?)"?)?,(?:"?(?'service_type'.*?)"?)?,(?:"?(?'auth_type'.*?)"?)?,(?:"?(?'policy_name'.*?)"?)?,</regex>
+    <order>dc,date,time,packet_type,username,object_fqdn,nas_id,nas_ip,nas_port,client_vendor,client_ip,client_name,event_time,port_limit,nas_port_type,connect_info,framed_proto,service_type,auth_type,policy_name</order>
+</decoder>

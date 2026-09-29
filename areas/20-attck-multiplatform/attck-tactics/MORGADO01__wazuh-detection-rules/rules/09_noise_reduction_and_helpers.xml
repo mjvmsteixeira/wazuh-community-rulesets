@@ -1,0 +1,32 @@
+<!--
+  Categoria: Noise Reduction & Helper Rules
+  Regras de nível 0 usadas para: (a) agrupar eventos que servem de gatilho para regras de
+  correlação sem gerar alerta próprio, e (b) suprimir falsos positivos conhecidos.
+  Boa prática: manter estas regras separadas facilita auditoria de "por que este evento
+  não gerou alerta" durante troubleshooting.
+-->
+<group name="local,wazuh_custom_levels,">
+
+  <rule id="100900" level="0">
+    <if_sid>5716, 5503, 5504, 5710</if_sid>
+    <description>Helper: Agrupamento de falhas de autenticação Linux</description>
+  </rule>
+
+  <rule id="100901" level="0">
+    <if_sid>5710, 5504</if_sid>
+    <description>Helper: Agrupamento de usuário inexistente (Linux)</description>
+  </rule>
+
+  <rule id="100904" level="1">
+    <if_sid>60122, 60123, 18130</if_sid>
+    <description>Helper: Agrupamento de falha de RDP (Windows)</description>
+    <options>no_log</options>
+  </rule>
+
+  <rule id="100004" level="10" frequency="3" timeframe="288000">
+    <if_matched_sid>204</if_matched_sid>
+    <description>ALERTA: Fila de eventos do agente está inundada. Perda de logs iminente.</description>
+    <group>agent_status,</group>
+  </rule>
+
+</group>

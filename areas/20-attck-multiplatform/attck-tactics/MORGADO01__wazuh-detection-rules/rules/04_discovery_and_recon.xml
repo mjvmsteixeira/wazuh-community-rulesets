@@ -1,0 +1,99 @@
+<!--
+  Categoria: Discovery & Reconnaissance
+  Táticas MITRE ATT&CK cobertas: Network Service Scanning (T1046), Active Scanning (T1595),
+  System Owner/User Discovery (T1033), Account Discovery (T1087), System Network Config Discovery (T1016)
+
+  Nota: os IPs de exceção usados abaixo (192.0.2.0/24, 198.51.100.0/24, 203.0.113.0/24) são
+  faixas reservadas para documentação (RFC 5737) — substitua pelos IPs reais de scanners
+  autorizados no seu ambiente (ex: OpenVAS, Nessus) antes de usar em produção.
+-->
+<group name="local,discovery,">
+
+  <rule id="100401" level="10" frequency="10" timeframe="60">
+    <if_matched_sid>4101</if_matched_sid>
+    <same_srcip />
+    <same_field>dstip</same_field>
+    <different_dstport />
+    <description>ALERTA: Port Scan Vertical detectado (10+ portas em 60s). Atacante: $(srcip) Alvo: $(dstip)</description>
+    <mitre>
+      <id>T1046</id>
+    </mitre>
+    <group>reconnaissance,pci_dss_11.4,gdpr_IV_35.7.d,</group>
+  </rule>
+
+  <rule id="100402" level="10" frequency="10" timeframe="60">
+    <if_matched_sid>4101</if_matched_sid>
+    <same_srcip />
+    <description>ALERTA: Port Scan Horizontal detectado (10+ Hosts em 60s). Atacante: $(srcip)</description>
+    <mitre>
+      <id>T1046</id>
+      <id>T1595</id>
+    </mitre>
+    <group>reconnaissance,pci_dss_11.4,gdpr_IV_35.7.d,</group>
+  </rule>
+
+  <rule id="100403" level="14" frequency="3" timeframe="300">
+    <if_matched_sid>100905</if_matched_sid>
+    <same_srcip />
+    <description>CRÍTICO: Atividade persistente de Port Scan de $(srcip). Bloqueio recomendado.</description>
+    <mitre>
+      <id>T1046</id>
+    </mitre>
+    <group>reconnaissance,apt,</group>
+  </rule>
+
+  <!-- Exceções de falso positivo: origem de scanner autorizado (ex: OpenVAS) -->
+  <rule id="100404" level="0">
+    <if_sid>100401, 100402</if_sid>
+    <srcip>192.0.2.10</srcip>
+    <description>Ignorar alertas de Scan de origem confiável.</description>
+    <options>no_log</options>
+  </rule>
+
+  <rule id="100408" level="0">
+    <if_sid>100401, 100402</if_sid>
+    <srcip>198.51.100.10</srcip>
+    <description>Ignorar alertas de Scan de origem confiável (Scanner autorizado).</description>
+    <options>no_log</options>
+  </rule>
+
+  <!-- Regra auxiliar de agrupamento (nível 0, não gera alerta próprio) -->
+  <rule id="100905" level="0">
+    <if_sid>100401, 100402</if_sid>
+    <description>Helper: Port Scan Grouping</description>
+  </rule>
+
+  <rule id="100701" level="0">
+    <if_sid>61603, 60103</if_sid>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)(whoami|net\s+(user|group|localgroup)|ipconfig\s+\/all|systeminfo|tasklist|netstat\s+-a)</field>
+    <description>Sinal de Reconhecimento (Recon) Windows Detectado</description>
+  </rule>
+
+  <rule id="100702" level="0">
+    <if_sid>80710</if_sid>
+    <field name="audit.command" type="pcre2">^(whoami|id|ifconfig|ip|netstat|uname|cat\s+\/etc\/passwd|cat\s+\/etc\/shadow)$</field>
+    <description>Sinal de Reconhecimento (Recon) Linux Detectado</description>
+  </rule>
+
+  <!-- Regra auxiliar de agrupamento (nível 0, não gera alerta próprio) -->
+  <rule id="100798" level="0">
+    <if_sid>100701, 100702</if_sid>
+    <description>Agrupa comandos de Reconhecimento</description>
+    <options>no_log</options>
+  </rule>
+
+  <rule id="100703" level="12" frequency="5" timeframe="30">
+    <if_matched_sid>100798</if_matched_sid>
+    <same_system_name />
+    <description>ALERTA: Possível Script de Reconhecimento em Execução (Múltiplos comandos de discovery)</description>
+    <mitre>
+      <id>T1033</id>
+      <id>T1087</id>
+      <id>T1016</id>
+      <id>T1069</id>
+    </mitre>
+    <group>recon_scan,pci_dss_10.6.1,gdpr_IV_35.7.d,</group>
+    <info type="text">Detectada execução rápida de whoami, net user, ipconfig, etc. Isso geralmente indica um script automatizado (ex: Seatbelt, LinPEAS) ou um atacante enumerando o host manualmente.</info>
+  </rule>
+
+</group>

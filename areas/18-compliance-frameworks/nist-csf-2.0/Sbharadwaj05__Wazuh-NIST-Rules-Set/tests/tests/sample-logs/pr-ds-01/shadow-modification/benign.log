@@ -1,0 +1,1 @@
+type=SYSCALL msg=audit(1779953401.123:460): path=/etc/shadow perm=r

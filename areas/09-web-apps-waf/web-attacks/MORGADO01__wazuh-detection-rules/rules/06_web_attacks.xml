@@ -1,0 +1,195 @@
+<!--
+  Categoria: Web Attacks (Exploit Public-Facing Application)
+  Táticas MITRE ATT&CK cobertas: Webshell (T1505.003, T1190), Directory Traversal (T1083, T1006),
+  SQL Injection (T1190, T1059.006), Data Leak via Backup Files (T1005, T1567),
+  Vulnerability Scanning (T1595.002), DoS via Error Flood (T1498)
+
+  Nota: o IP de exceção usado abaixo (203.0.113.20) é uma faixa reservada para documentação
+  (RFC 5737) — substitua pelo IP real do seu scanner de vulnerabilidade autorizado (ex: OpenVAS).
+-->
+<group name="local,web_attack,">
+
+  <!-- Webshell em diretório de upload -->
+  <rule id="100101" level="12">
+    <if_sid>550, 554</if_sid>
+    <field name="syscheck.path">/uploads/|/images/|/media/public/</field>
+    <field name="syscheck.path" type="pcre2">(?i)\.(php|php5|phtml|jsp|jspx|asp|aspx|sh|py|pl|cgi)$</field>
+    <description>ALERTA: Possível WebShell detectado em diretório de upload de imagens.</description>
+    <mitre>
+      <id>T1505.003</id>
+      <id>T1190</id>
+    </mitre>
+    <group>pci_dss_11.5, nist_800_53_SI.7, gdpr_IV_32,</group>
+    <info type="text">Verifique o conteúdo do arquivo imediatamente. Scripts não devem existir em pastas de upload.</info>
+  </rule>
+
+  <rule id="100102" level="14" frequency="4" timeframe="60">
+    <if_matched_sid>100101</if_matched_sid>
+    <same_field>agent.id</same_field>
+    <description>CRÍTICO: Múltiplas tentativas de upload de scripts detectadas em curto período.</description>
+    <mitre>
+      <id>T1190</id>
+    </mitre>
+  </rule>
+
+  <!-- Directory Traversal -->
+  <rule id="100501" level="10">
+    <if_sid>31101, 31103, 31104, 31105, 31301, 31302, 31303</if_sid>
+    <regex type="pcre2">(?i)(\.\.(\/|\\)|%2e%2e(\/|\\|%2f)|%252e%252e(\/|\\|%252f)|%c0%ae%c0%ae)</regex>
+    <description>ALERTA: Tentativa de Directory Traversal detectada vinda de $(srcip).</description>
+    <mitre>
+      <id>T1190</id>
+      <id>T1083</id>
+    </mitre>
+    <group>pci_dss_11.4,gdpr_IV_35.7.d,</group>
+  </rule>
+
+  <rule id="100502" level="12">
+    <if_sid>100501</if_sid>
+    <regex type="pcre2">(?i)(/etc/(passwd|shadow|group|hosts)|boot\.ini|win\.ini|system32|windows/repair)</regex>
+    <description>ALERTA: Tentativa Crítica de Acesso a Arquivos de Sistema via Traversal por $(srcip).</description>
+    <mitre>
+      <id>T1006</id>
+    </mitre>
+  </rule>
+
+  <rule id="100503" level="10" frequency="8" timeframe="60">
+    <if_matched_sid>100501</if_matched_sid>
+    <same_srcip />
+    <description>ALERTA: Múltiplas tentativas de Directory Traversal (Scan) do IP $(srcip).</description>
+    <options>no_full_log</options>
+  </rule>
+
+  <rule id="100504" level="15">
+    <if_sid>31100, 31108</if_sid>
+    <id>^200$</id>
+    <url type="pcre2">(?i)(\.\.(\/|\\)|%2e%2e(\/|\\|%2f)|%252e%252e(\/|\\|%252f)|%c0%ae%c0%ae)</url>
+    <description>CRÍTICO: Directory Traversal com Resposta de Sucesso (HTTP 200) para $(srcip).</description>
+    <mitre>
+      <id>T1083</id>
+      <id>T1567</id>
+    </mitre>
+    <group>pci_dss_11.4,gdpr_IV_33,</group>
+  </rule>
+
+  <!-- SQL Injection -->
+  <rule id="100505" level="6">
+    <if_sid>31100, 31106</if_sid>
+    <regex type="pcre2">(?i)union[\s+%]+select|%27[\s+%]+or[\s+%]+%27|'[\s+]+or[\s+]+'[\s+]*=|;\s*--|%3B\s*--|\s+--\s+</regex>
+    <description>INFO: Padrão suspeito de SQL Injection</description>
+    <mitre>
+      <id>T1190</id>
+      <id>T1059.006</id>
+    </mitre>
+    <group>pci_dss_11.4,pci_dss_6.5.1,gdpr_IV_35.7.d,nist_800_53_SI.4,hipaa_164.306.a.1,owasp_top10_a03,</group>
+    <info type="text">Tentativa de injeção SQL detectada via padrão de assinatura específico (UNION/OR/Comments).</info>
+  </rule>
+
+  <!-- Redução de falso positivo: cores hexadecimais em URL confundidas com padrão de injeção -->
+  <rule id="100557" level="0">
+    <if_sid>100505</if_sid>
+    <regex type="pcre2">(?i)color.*%23[a-f0-9]{3,6}|background.*%23</regex>
+    <description>Falso Positivo: Ignorar cores hexadecimais em URL</description>
+  </rule>
+
+  <rule id="100506" level="13" frequency="8" timeframe="60">
+    <if_matched_sid>100505</if_matched_sid>
+    <same_srcip />
+    <description>CRÍTICO: Ataque de SQL Injection ativo vindo de $(srcip)</description>
+    <mitre>
+      <id>T1190</id>
+      <id>T1087</id>
+    </mitre>
+    <group>pci_dss_11.4,gdpr_IV_35.7.d,nist_800_53_SI.4,</group>
+    <options>no_full_log</options>
+  </rule>
+
+  <!-- Pico de erros 500: possível fuzzing/exploit ativo -->
+  <rule id="100507" level="4">
+    <if_sid>31122, 30112</if_sid>
+    <status>^500$</status>
+    <description>INFO: Resposta HTTP 500 (Internal Server Error) detectada.</description>
+    <options>no_full_log</options>
+  </rule>
+
+  <rule id="100508" level="10" frequency="15" timeframe="30">
+    <if_matched_sid>100507</if_matched_sid>
+    <same_srcip />
+    <description>ALERTA: Pico de Erros 500 detectado do IP $(srcip). Possível Fuzzing ou Exploit.</description>
+    <mitre>
+      <id>T1190</id>
+      <id>T1059</id>
+    </mitre>
+    <group>pci_dss_6.5,gdpr_IV_35.7,attack_web,</group>
+  </rule>
+
+  <rule id="100509" level="13" frequency="3" timeframe="120">
+    <if_matched_sid>100508</if_matched_sid>
+    <same_srcip />
+    <description>CRÍTICO: Atividade excessiva de Erros 500 do IP $(srcip). Risco iminente de DoS.</description>
+    <mitre>
+      <id>T1498</id>
+    </mitre>
+    <info type="text">Verificar integridade do serviço web e logs de aplicação imediatamente.</info>
+  </rule>
+
+  <!-- Acesso a arquivos de backup/configuração sensíveis -->
+  <rule id="100510" level="9">
+    <if_sid>31106, 31104, 31103</if_sid>
+    <regex type="pcre2">(\.bak|\.old|\.sql|\.sql\.gz|\.tar\.gz|\.zip|\.env)($|\?|\s)</regex>
+    <description>ALERTA: Tentativa de acesso a arquivos de backup/configuração sensíveis</description>
+    <mitre>
+      <id>T1595.002</id>
+      <id>T1087</id>
+    </mitre>
+    <group>web_scan,reconnaissance,</group>
+  </rule>
+
+  <rule id="100511" level="12">
+    <if_sid>31100</if_sid>
+    <status>^200$</status>
+    <url type="pcre2">(?i)(\.bak|\.old|\.sql|\.sql\.gz|\.tar\.gz|\.zip|\.env)($|\?|\s)</url>
+    <description>ALERTA: Download bem-sucedido de arquivo de backup/sensível detectado na origem $(srcip)</description>
+    <mitre>
+      <id>T1005</id>
+      <id>T1567</id>
+    </mitre>
+    <info type="link">https://owasp.org/www-project-top-ten/2017/A6_2017-Security_Misconfiguration</info>
+    <group>data_leak,gdpr_violation,pci_dss_10.2.4,</group>
+  </rule>
+
+  <rule id="100512" level="10" frequency="8" timeframe="60">
+    <if_matched_sid>100510</if_matched_sid>
+    <same_srcip />
+    <description>ALERTA: Múltiplas tentativas de varredura por arquivos de backup vindas de $(srcip)</description>
+    <mitre>
+      <id>T1190</id>
+    </mitre>
+    <group>web_scan,brute_force,</group>
+  </rule>
+
+  <!-- Detecção de scanner de vulnerabilidade por alta taxa de erros 4xx -->
+  <rule id="100513" level="0">
+    <if_sid>31101, 30101</if_sid>
+    <description>Agrupador de Erros Web Genéricos</description>
+  </rule>
+
+  <rule id="100514" level="12" frequency="15" timeframe="30">
+    <if_matched_sid>100513</if_matched_sid>
+    <same_srcip />
+    <description>ALERTA: Scanner de Vulnerabilidade Detectado (IP: $(srcip))</description>
+    <mitre>
+      <id>T1595.002</id>
+      <id>T1190</id>
+    </mitre>
+    <group>pci_dss_11.4,nist_800_53_SI.4,gdpr_IV_32,</group>
+    <info type="text">Alta taxa de erros 4xx detectada (Potencial Scan).</info>
+  </rule>
+
+  <rule id="100515" level="0">
+    <if_sid>100514</if_sid>
+    <srcip>203.0.113.20</srcip>
+    <description>INFO: Ignorar Falso Positivo - Scan Autorizado (OpenVAS)</description>
+  </rule>
+
+</group>

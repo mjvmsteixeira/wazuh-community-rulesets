@@ -1,0 +1,22 @@
+<!--
+  Rule: Linux shadow/passwd file read by non-root process (Credential Access)
+  NIST CSF: PR.AA-05, DE.AE-02
+  MITRE ATT&CK: T1003.008
+  Severity: High
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-23
+-->
+
+<group name="nist_csf, pr.aa-05, mitre_attack,">
+
+  <rule id="100041" level="8">
+      <if_sid>80700</if_sid>
+      <regex type="pcre2">(?i)path=\/etc\/(shadow|passwd)\s.*uid=[1-9][0-9]*\b.*exe="(?!(\/usr\/bin\/(sudo|passwd|su|login|sshd)))</regex>
+      <description>Linux shadow/passwd file read by non-root process (Credential Access)</description>
+      <mitre>
+        <id>T1003.008</id>
+      </mitre>
+      <group>PR.AA-05, DE.AE-02</group>
+    </rule>
+
+</group>

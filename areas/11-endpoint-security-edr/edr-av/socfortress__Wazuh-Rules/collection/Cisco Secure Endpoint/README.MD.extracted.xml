@@ -1,0 +1,5 @@
+<!-- Blocos de configuração extraídos, sem alterações, de socfortress/Wazuh-Rules:Cisco Secure Endpoint/README.MD @ 66b70d6a380b -->
+<localfile>
+		<location>CiscoSecureEndpoint/Events</location>
+		<log_format>eventchannel</log_format>
+</localfile>

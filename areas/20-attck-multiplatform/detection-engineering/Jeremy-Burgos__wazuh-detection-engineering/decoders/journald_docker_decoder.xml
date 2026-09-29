@@ -1,0 +1,10 @@
+<decoder name="docker_service">
+  <program_name type="pcre2">^\w{12}$</program_name>
+  <prematch type="pcre2">\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2} \[\w+]</prematch>
+</decoder>
+
+<decoder name="docker_service_fields">
+  <parent>docker_service</parent>
+  <regex type="pcre2">(\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2}) \[(\w+)] .*: (.*)$</regex>
+  <order>log_timestamp,severity,message</order>
+</decoder>

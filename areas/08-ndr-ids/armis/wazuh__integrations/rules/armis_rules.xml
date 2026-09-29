@@ -1,0 +1,91 @@
+<group name="armis">
+
+  <rule id="101001" level="0">
+    <field name="data_stream.dataset">armis.alert</field>
+    <description>Armis Alert event received.</description>
+  </rule>
+
+  <rule id="101002" level="12">
+    <if_sid>101001</if_sid>
+    <field name="armis.alert.severity">Critical</field>
+    <description>Armis CRITICAL Alert: $(armis.alert.title) - $(armis.alert.description)</description>
+  </rule>
+
+  <rule id="101003" level="10">
+    <if_sid>101001</if_sid>
+    <field name="armis.alert.severity">High</field>
+    <description>Armis HIGH Alert: $(armis.alert.title) - $(armis.alert.description)</description>
+  </rule>
+
+  <rule id="101004" level="8">
+    <if_sid>101001</if_sid>
+    <field name="armis.alert.severity">Medium</field>
+    <description>Armis MEDIUM Alert: $(armis.alert.title) - $(armis.alert.description)</description>
+  </rule>
+
+  <rule id="101005" level="5">
+    <if_sid>101001</if_sid>
+    <field name="armis.alert.severity">Low</field>
+    <description>Armis LOW Alert: $(armis.alert.title) - $(armis.alert.description)</description>
+  </rule>
+
+  <rule id="101006" level="10">
+    <if_sid>101001</if_sid>
+    <field name="armis.alert.type">System Policy Violation</field>
+    <description>Armis Policy Violation Detected: $(armis.alert.title).</description>
+  </rule>
+
+  <rule id="101007" level="8">
+    <if_sid>101001</if_sid>
+    <field name="armis.alert.title">Risk</field>
+    <description>Armis Risk Detected: $(armis.alert.title)</description>
+  </rule>
+  
+  <rule id="101010" level="0">
+    <field name="data_stream.dataset">armis.device</field>
+    <description>Armis Device event received.</description>
+  </rule>
+
+  <rule id="101011" level="12">
+    <if_sid>101010</if_sid>
+    <field name="armis.device.risk_level">10</field>
+    <description>Armis Device with CRITICAL Risk Level (10): $(armis.device.name) ($(armis.device.ip_address)) - Category: $(armis.device.category)</description>
+  </rule>
+
+  <rule id="101012" level="8">
+    <if_sid>101010</if_sid>
+    <field name="armis.device.category">Network Equipment</field>
+    <field name="armis.device.operating_system" type="pcre2">\.+</field>
+    <description>Armis Network Equipment Device: $(armis.device.name) ($(armis.device.ip_address)) - OS: $(armis.device.operating_system)</description>
+  </rule>
+  
+  <rule id="101020" level="0">
+    <field name="data_stream.dataset">armis.vulnerability</field>
+    <description>Armis Vulnerability event received.</description>
+  </rule>
+
+  <rule id="101021" level="14">
+    <if_sid>101020</if_sid>
+    <field name="armis.vulnerability.severity">Critical</field>
+    <description>Armis CRITICAL Vulnerability: $(armis.vulnerability.id) (CVE: $(armis.vulnerability.cve_uid)) - Status: $(armis.vulnerability.status)</description>
+  </rule>
+
+  <rule id="101022" level="12">
+    <if_sid>101020</if_sid>
+    <field name="armis.vulnerability.severity">High</field>
+    <description>Armis HIGH Vulnerability: $(armis.vulnerability.id) (CVE: $(armis.vulnerability.cve_uid)) - Status: $(armis.vulnerability.status)</description>
+  </rule>
+
+  <rule id="101023" level="7">
+    <if_sid>101020</if_sid>
+    <field name="armis.vulnerability.severity">Medium</field>
+    <description>Armis MEDIUM Vulnerability: $(armis.vulnerability.id) (CVE: $(armis.vulnerability.cve_uid))</description>
+  </rule>
+
+  <rule id="101024" level="10">
+    <if_sid>101020</if_sid>
+    <field name="armis.vulnerability.status">Open</field>
+    <description>Armis Open Vulnerability: $(armis.vulnerability.id) (CVE: $(armis.vulnerability.cve_uid))</description>
+  </rule>
+
+</group>

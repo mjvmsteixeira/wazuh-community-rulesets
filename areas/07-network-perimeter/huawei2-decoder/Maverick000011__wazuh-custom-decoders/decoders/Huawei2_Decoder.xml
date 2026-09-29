@@ -1,0 +1,112 @@
+<decoder name="Huawei_Device">
+<prematch>%%</prematch>
+</decoder>
+
+
+<decoder name="Huawei_Device_Child2">
+  <parent>Huawei_Device</parent>
+  <regex type="pcre2">^(\w+\s\d+\s\d+\s\S+)\s(\S+)\s(%%)(\d+)(\w+)\W+(\d+)\W+(\w+)(\(\w+\))\S+:((?:\(?\w+\)?\s*)+)</regex>
+    <order>date,host,identifier,version,module,severity,breif,info_type,message</order>
+ 
+</decoder>
+
+<!--FOR FURTHER FIELD PARSING WE USE THESE DECODERS-->
+
+
+<decoder name="Huawei_Device_Child2">
+  <parent>Huawei_Device</parent>
+  <regex offset="after_regex">src=(\S+)|SrcIp=(\S+),|Ip=(\S+),</regex>
+  <order>srcip</order>
+</decoder>
+
+
+<decoder name="Huawei_Device_Child2">
+  <parent>Huawei_Device</parent>
+  <regex offset="after_regex">dst=(\S+)|DstIp=(\S+),</regex>
+  <order>dstip</order>
+</decoder>
+
+
+<decoder name="Huawei_Device_Child2">
+  <parent>Huawei_Device</parent>
+  <regex offset="after_regex">SrcPort=(\d+),</regex>
+  <order>srcport</order>
+</decoder>
+
+<decoder name="Huawei_Device_Child2">
+  <parent>Huawei_Device</parent>
+  <regex offset="after_regex">DstPort=(\d+),dst=(\d+),</regex>
+  <order>dstport</order>
+</decoder>
+
+<decoder name="Huawei_Device_Child2">
+  <parent>Huawei_Device</parent>
+  <regex offset="after_regex">Protocol=(\w+),</regex>
+  <order>protocol</order>
+</decoder>
+
+<decoder name="Huawei_Device_Child2">
+  <parent>Huawei_Device</parent>
+  <regex offset="after_regex">vpn=(\w+)</regex>
+  <order>vpn_name</order>
+</decoder>
+
+<decoder name="Huawei_Device_Child2">
+  <parent>Huawei_Device</parent>
+  <regex offset="after_regex">Application="(\w+)",</regex>
+  <order>application</order>
+</decoder>
+
+<decoder name="Huawei_Device_Child2">
+  <parent>Huawei_Device</parent>
+  <regex offset="after_regex">rcvpkt=(\S+)</regex>
+  <order>received_packet</order>
+</decoder>
+
+<decoder name="Huawei_Device_Child2">
+  <parent>Huawei_Device</parent>
+  <regex offset="after_regex">rcvbyte=(\S+)</regex>
+  <order>received_byte</order>
+</decoder>
+
+
+<decoder name="Huawei_Device_Child2">
+  <parent>Huawei_Device</parent>
+  <regex offset="after_regex">sentpkt=(\S+)</regex>
+  <order>sent_packet</order>
+</decoder>
+
+
+<decoder name="Huawei_Device_Child2">
+  <parent>Huawei_Device</parent>
+  <regex offset="after_regex">sentbyte=(\S+)</regex>
+  <order>sent_byte</order>
+</decoder>
+
+<decoder name="Huawei_Device_Child2">
+  <parent>Huawei_Device</parent>
+  <regex offset="after_regex">type=(\w+)</regex>
+  <order>type</order>
+</decoder>
+
+<decoder name="Huawei_Device_Child2">
+  <parent>Huawei_Device</parent>
+  <regex offset="after_regex">msg="(\.+)"|SignName="(\.+)"</regex>
+  <order>msg</order>
+</decoder>
+
+<decoder name="Huawei_Device_Child2">
+  <parent>Huawei_Device</parent>
+  <regex offset="after_regex">UserName=(\S+),</regex>
+  <order>username</order>
+</decoder>
+
+
+
+
+
+
+
+
+
+

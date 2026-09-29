@@ -1,0 +1,40 @@
+<!--
+  Rule: SUID/SGID Bit Set on Binary
+  NIST CSF: PR.AA-05 (Access permissions and authorizations are managed)
+            DE.AE-02 (Detected events are analyzed to understand attack targets and methods)
+  MITRE ATT&CK: T1548.001 - Abuse Elevation Control Mechanism: Setuid and Setgid
+  Severity: High
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-23
+
+  Description:
+    Detects the SUID or SGID bit being set on a file, which allows the file to be executed with the privileges of its owner (often root). Attackers use this for privilege escalation and persistence.
+
+  False Positives:
+    - System updates patching standard SUID binaries (e.g., sudo, passwd).
+
+  Tuning Guidance:
+    Allowlist standard system directories like /usr/bin or /bin if changes are initiated by dpkg or rpm.
+
+  Assumptions:
+    - auditd is configured to monitor chmod syscalls.
+
+  Limitations:
+    - Needs tuning for noisy update cycles.
+
+  Test: tests/sample-logs/pr-aa-05/suid-sgid-set/
+-->
+
+<group name="nist_csf,pr.aa-05,de.ae-02,privilege_escalation,auditd">
+
+  <rule id="100022" level="9">
+    <if_sid>80700</if_sid>
+    <regex type="pcre2">key="perm_mod".*(a2|mode)=0?[426][0-7]{3}</regex>
+    <description>SUID/SGID bit set on file (Potential Privilege Escalation)</description>
+    <mitre>
+      <id>T1548.001</id>
+    </mitre>
+    <group>privilege_escalation,suid,nist_pr.aa-05,nist_de.ae-02</group>
+  </rule>
+
+</group>

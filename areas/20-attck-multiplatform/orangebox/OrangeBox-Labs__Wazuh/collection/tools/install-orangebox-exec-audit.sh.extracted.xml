@@ -1,0 +1,5 @@
+<!-- Blocos de configuração extraídos, sem alterações, de OrangeBox-Labs/Wazuh:tools/install-orangebox-exec-audit.sh @ 24ec1207b89b -->
+<localfile>
+    <log_format>audit</log_format>
+    <location>/var/log/audit/audit.log</location>
+  </localfile>

@@ -1,0 +1,141 @@
+<!--
+  Categoria: Command and Control / Exfiltration
+  Táticas MITRE ATT&CK cobertas: DNS Tunneling (T1071.004), Exfiltration over DNS (T1048.003),
+  Ingress Tool Transfer (T1105, T1218), VirusTotal integration (T1204, T1059)
+-->
+<group name="local,command_and_control,">
+
+  <!-- DNS Tunneling -->
+  <rule id="100405" level="7">
+    <if_sid>61650</if_sid>
+    <regex type="pcre2">[\w-]{50,}\.</regex>
+    <description>ALERTA: Suspeita de DNS Tunneling (Subdomínio longo). Query: $(win.eventdata.queryName)</description>
+    <mitre>
+      <id>T1071.004</id>
+    </mitre>
+  </rule>
+
+  <rule id="100406" level="0">
+    <if_matched_sid>100405</if_matched_sid>
+    <match>amazonaws.com|azure.com|mcafee.com|sophosxl.net|googleapis.com|cdn.mozilla.net</match>
+    <description>Ignorar DNS Longo de provedores legítimos.</description>
+    <options>no_log</options>
+  </rule>
+
+  <rule id="100407" level="12" frequency="20" timeframe="60">
+    <if_matched_sid>100405</if_matched_sid>
+    <same_srcip />
+    <description>ALERTA: Possível exfiltração de dados via DNS (Alto Volume). Origem: $(win.eventdata.image)</description>
+    <mitre>
+      <id>T1048.003</id>
+    </mitre>
+  </rule>
+
+  <!-- Downloads suspeitos via ferramentas nativas do SO (LOLBins) -->
+  <rule id="100710" level="12">
+    <if_sid>61603</if_sid>
+    <field name="win.eventdata.originalFileName" type="pcre2">(?i)(certutil\.exe|bitsadmin\.exe)</field>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)(-urlcache|-verifyctl|\/transfer|download)</field>
+    <description>ALERTA: Tentativa de download suspeito via linha de comando detectada (Certutil/Bitsadmin).</description>
+    <mitre>
+      <id>T1105</id>
+      <id>T1218</id>
+    </mitre>
+    <info type="text">Verifique se este processo foi iniciado por um administrador ou script autorizado.</info>
+  </rule>
+
+  <rule id="100711" level="10">
+    <if_sid>61603, 80700</if_sid>
+    <regex type="pcre2">(?i)(curl|wget)(\.exe)?\s+.*(http:\/\/|https:\/\/|ftp:\/\/)</regex>
+    <description>ALERTA: Comando de download (Curl/Wget) detectado acessando recurso externo.</description>
+    <mitre>
+      <id>T1105</id>
+    </mitre>
+    <group>web_download,</group>
+  </rule>
+
+  <rule id="100714" level="10">
+    <if_sid>61603</if_sid>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)(Invoke-WebRequest|iwr|wget|curl)\s+.*(http|ftp)</field>
+    <description>ALERTA: Download via PowerShell detectado (Sysmon).</description>
+    <mitre>
+      <id>T1105</id>
+    </mitre>
+  </rule>
+
+  <!-- Regra auxiliar de agrupamento (nível 0, não gera alerta próprio) -->
+  <rule id="100799" level="0">
+    <if_sid>100710, 100711</if_sid>
+    <description>Agrupamento de downloads</description>
+    <options>no_log</options>
+  </rule>
+
+  <rule id="100712" level="14" frequency="4" timeframe="60">
+    <if_matched_sid>100799</if_matched_sid>
+    <same_field>agent.id</same_field>
+    <description>CRÍTICO: Múltiplas tentativas de download via linha de comando em curto período.</description>
+    <mitre>
+      <id>T1105</id>
+      <id>T1071</id>
+    </mitre>
+  </rule>
+
+  <!-- Execução a partir de pasta temporária -->
+  <rule id="100706" level="12">
+    <if_sid>61603</if_sid>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\AppData\\Local\\Temp\\|\\Windows\\Temp\\).*(\.exe|\.bat|\.ps1)$</field>
+    <description>ALERTA: Executável ou Script rodando a partir de Pasta Temporária.</description>
+    <mitre>
+      <id>T1059</id>
+      <id>T1204.002</id>
+    </mitre>
+    <info type="text">Verifique se o processo é legítimo. Malwares frequentemente usam %TEMP% para execução inicial.</info>
+  </rule>
+
+  <rule id="100707" level="10">
+    <if_sid>60107</if_sid>
+    <field name="win.eventdata.newProcessName" type="pcre2">(?i)(\\AppData\\Local\\Temp\\|\\Windows\\Temp\\).*(\.exe|\.bat|\.ps1)$</field>
+    <description>ALERTA: Processo suspeito criado em pasta temporária (Log Nativo).</description>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+  </rule>
+
+  <rule id="100708" level="12">
+    <if_sid>80792</if_sid>
+    <field name="audit.cwd" type="pcre2">^(/tmp|/var/tmp)</field>
+    <description>ALERTA: Execução de comando a partir de diretório temporário (/tmp).</description>
+    <mitre>
+      <id>T1059.004</id>
+    </mitre>
+  </rule>
+
+  <rule id="100709" level="14" frequency="4" timeframe="60">
+    <if_matched_sid>100706</if_matched_sid>
+    <same_field>win.eventdata.image</same_field>
+    <description>CRÍTICO: Múltiplas execuções do mesmo binário em %TEMP% detectadas em 1 minuto.</description>
+    <mitre>
+      <id>T1059</id>
+      <id>T1497</id>
+    </mitre>
+  </rule>
+
+  <!-- Integração com VirusTotal -->
+  <rule id="100713" level="15">
+    <if_sid>87105</if_sid>
+    <field name="virustotal.positives" type="pcre2">[1-9][0-9]*</field>
+    <description>CRÍTICO: VirusTotal confirmou arquivo/processo malicioso no servidor.</description>
+    <mitre>
+      <id>T1204</id>
+      <id>T1059</id>
+    </mitre>
+    <info type="text">O hash analisado consta na base de dados do VirusTotal como malicioso. Isole o servidor imediatamente.</info>
+  </rule>
+
+  <!-- Redução de ruído: limite de taxa da API do VirusTotal -->
+  <rule id="100906" level="0">
+    <if_sid>87101</if_sid>
+    <description>Silencia o alerta de limite de taxa da API do VirusTotal (regra 87101)</description>
+  </rule>
+
+</group>

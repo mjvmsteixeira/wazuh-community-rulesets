@@ -1,0 +1,10 @@
+<!-- Blocos de configuração extraídos, sem alterações, de wazuh/integrations:integrations/salesforce/README.md @ 38efcaaa3272 -->
+<wodle name="command">
+  <disabled>no</disabled>
+  <run_on_start>yes</run_on_start>
+  <interval>1m</interval>
+  <tag>salesforce-setup-audit</tag>
+  <command>/var/ossec/integrations/custom-salesforce.py</command>
+  <timeout>0</timeout>
+  <ignore_output>no</ignore_output>
+</wodle>

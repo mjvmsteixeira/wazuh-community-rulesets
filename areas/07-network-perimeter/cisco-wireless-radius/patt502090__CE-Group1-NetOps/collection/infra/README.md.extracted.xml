@@ -1,0 +1,10 @@
+<!-- Blocos de configuração extraídos, sem alterações, de patt502090/CE-Group1-NetOps:infra/README.md @ e4a6e50507f1 -->
+<localfile>
+  <log_format>syslog</log_format>
+  <location>/var/log/freeradius/radius.log</location>
+</localfile>
+
+<localfile>
+  <log_format>syslog</log_format>
+  <location>/var/log/syslog</location>
+</localfile>

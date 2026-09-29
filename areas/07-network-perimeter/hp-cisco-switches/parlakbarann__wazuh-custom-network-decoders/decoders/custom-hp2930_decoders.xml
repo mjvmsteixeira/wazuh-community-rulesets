@@ -1,0 +1,19 @@
+<!-- 
+  Custom Wazuh decoders for HP 2930 series switches.
+  This file contains decoders for parsing commander logs from HP 2930 devices, specifically for user login events.
+-->
+
+<!-- Parent decoder for HP 2930 commander logs -->
+<decoder name="hp2930">
+    <prematch>^\d+\s+\w+:\s+ST1-CMDR:</prematch>
+</decoder>
+
+<!-- 
+  Child decoder for user login events.
+  Example log: ... ST1-CMDR: User 'admin' ... from 192.168.1.10
+-->
+<decoder name="hp29302">
+    <parent>hp2930</parent>
+    <regex>\d+\s+\w+:\s+ST1-CMDR:\s+User\s+'(\w+)'\s+\.+from\s+(\S+)</regex>
+    <order>srcuser, srcip</order>
+</decoder>

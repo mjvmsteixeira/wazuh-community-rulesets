@@ -1,0 +1,51 @@
+<decoder name="barracuda-syslog">
+        <prematch>archive[(\d+)]: </prematch>
+</decoder>
+
+<decoder name="barracuda-archive">
+        <parent>barracuda-syslog</parent>
+        <regex offset="after_parent">(\S+) </regex>
+        <order>id</order>
+</decoder>
+
+<decoder name="barracuda-archive">
+        <parent>barracuda-syslog</parent>
+        <regex offset="after_regex">(\d+) </regex>
+        <order>num</order>
+</decoder>
+
+<decoder name="barracuda-archive">
+        <parent>barracuda-syslog</parent>
+        <regex offset="after_regex">(\S+@\S+.\S+) | (\<\S+@\S+.\S+>) </regex>
+        <order>src_address</order>
+</decoder>
+
+<decoder name="barracuda-archive">
+        <parent>barracuda-syslog</parent>
+        <regex offset="after_regex">(\S+@\S+.\S+) </regex>
+        <order>dst_address</order>
+</decoder>
+
+<decoder name="barracuda-archive">
+        <parent>barracuda-syslog</parent>
+        <regex offset="after_regex">(\d) </regex>
+        <order>reserved</order>
+</decoder>
+
+<decoder name="barracuda-archive">
+        <parent>barracuda-syslog</parent>
+        <regex offset="after_regex">(\S+) </regex>
+        <order>message_type</order>
+</decoder>
+
+<decoder name="barracuda-archive">
+        <parent>barracuda-syslog</parent>
+        <regex offset="after_regex">(\d+) </regex>
+        <order>uncompressed_message_size</order>
+</decoder>
+
+<decoder name="barracuda-archive">
+        <parent>barracuda-syslog</parent>
+        <regex offset="after_regex">(\d+)$</regex>
+        <order>size_occupied_in_disk</order>
+</decoder>

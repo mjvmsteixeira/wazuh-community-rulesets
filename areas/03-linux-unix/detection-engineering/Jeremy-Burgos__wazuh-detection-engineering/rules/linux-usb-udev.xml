@@ -1,0 +1,27 @@
+<group name="linux,usb,udev,">
+
+  <rule id="100720" level="5">
+    <decoded_as>linux_usb_udev_fields</decoded_as>
+    <field name="usb_action">^add$</field>
+    <description>Linux USB device connected: $(vendor) $(product) serial $(serial)</description>
+  </rule>
+
+  <rule id="100721" level="8">
+    <if_sid>100720</if_sid>
+    <list field="serial" lookup="not_match_key">etc/lists/usb-drives</list>
+    <description>Linux unauthorized USB device connected: $(vendor) $(product) serial $(serial)</description>
+  </rule>
+
+  <rule id="100722" level="5">
+    <decoded_as>linux_usb_udev_fields</decoded_as>
+    <field name="usb_action">^remove$</field>
+    <description>Linux USB device disconnected: $(vendor) $(product) serial $(serial)</description>
+  </rule>
+
+  <rule id="100723" level="8">
+    <if_sid>100722</if_sid>
+    <list field="serial" lookup="not_match_key">etc/lists/usb-drives</list>
+    <description>Linux unauthorized USB device disconnected: $(vendor) $(product) serial $(serial)</description>
+  </rule>
+
+</group>

@@ -1,0 +1,516 @@
+<!--
+  -  Sophos "Standard syslog protocol" or "Central Reporting Format" rules for Wazuh
+  -  Created by Jörn Schönyan
+  -  Reference used: https://docs.sophos.com/nsg/sophos-firewall/20.0/pdf/sf-syslog-guide-20.0.pdf
+  -  This program is a free software; you can redistribute it and/or modify it under the terms of GPLv2.
+-->
+
+<group name="sophos_fw_ng">
+    <rule id="113800" level="0">
+        <decoded_as>sophos-fw-ng</decoded_as>
+        <description>Sophos Firewall event</description>
+    </rule>
+
+    <!-- 801+ - general firewall events -->
+    <rule id="113801" level="5">
+        <if_sid>113800</if_sid>
+        <field name="log_type">Firewall</field>
+        <field name="log_subtype">Denied</field>
+        <description>Traffic Denied: from $(srcip) to $(dstip)</description>
+        <options>no_full_log</options>
+    </rule>
+
+    <rule id="113802" level="3">
+        <if_sid>113800</if_sid>
+        <field name="log_type">Firewall</field>
+        <field name="log_subtype">Allowed</field>
+        <description>Traffic Allowed: from $(srcip) to $(dstip)</description>
+        <options>no_full_log</options>
+    </rule>
+    
+    <rule id="113803" level="5">
+        <if_sid>113800</if_sid>
+        <field name="log_type">Firewall</field>
+        <field name="log_subtype">Drop</field>
+        <description>Connection dropped from $(srcip) to $(dstip)</description>
+        <options>no_full_log</options>
+    </rule>
+
+    <!-- 810+ - ATP events -->
+    <rule id="113810" level="5">
+        <if_sid>113800</if_sid>
+        <field name="log_type">ATP</field>
+        <field name="log_subtype">Drop</field>
+        <description>ATP dropped a connection from $(srcip) to $(dstip)</description>
+		<mitre>
+			<id>T1203</id>
+		</mitre>
+        <options>no_full_log</options>
+    </rule>
+    
+    <rule id="113811" level="5">
+        <if_sid>113800</if_sid>
+        <field name="log_type">ATP</field>
+        <field name="log_subtype">Alert</field>
+        <description>ATP raised an alert, connection from $(srcip) to $(dstip)</description>
+		<mitre>
+			<id>T1203</id>
+		</mitre>
+        <options>no_full_log</options>
+    </rule>    
+    
+    <!-- 820+ - Firewall authentication events -->
+    <rule id="113820" level="5">
+        <if_sid>113800</if_sid>
+        <field name="log_subtype">Authentication</field>
+        <field name="log_component">Firewall Authentication</field>
+        <description>$(message)</description>
+		<mitre>
+			<id>T1078</id>
+		</mitre>
+        <options>no_full_log</options>
+    </rule>
+
+    <!-- this can be SSH or a local console, but also HA cluster communication -->
+    <rule id="113821" level="5">
+        <if_sid>113800</if_sid>
+        <field name="log_component">CLI</field>
+        <description>$(message)</description>
+        <options>no_full_log</options>
+    </rule>
+	
+	<rule id="113822" level="8" frequency="5" timeframe="5">
+        <if_matched_sid>113821</if_matched_sid>
+        <field name="sophos-fw-ng" negate="yes">Successful</field>
+        <description>There may be a bruteforce attack ongoing</description>
+		<mitre>
+			<id>T1110</id>
+		</mitre>
+        <options>no_full_log</options>
+    </rule>
+
+    <!-- 840+ - misc events -->
+    <rule id="113840" level="3">
+        <if_sid>113800</if_sid>
+        <field name="log_component">DDNS</field>
+        <description>$(message)</description>
+        <options>no_full_log</options>
+    </rule>
+
+    <rule id="113841" level="3">
+        <if_sid>113800</if_sid>
+        <field name="log_component">DHCP</field>
+        <description>$(message)</description>
+        <options>no_full_log</options>
+    </rule>
+	
+	<rule id="113842" level="3">
+        <if_sid>113800</if_sid>
+        <field name="log_component">Gateway</field>
+        <description>$(message)</description>
+        <options>no_full_log</options>
+    </rule>
+	
+	<rule id="113843" level="3">
+        <if_sid>113800</if_sid>
+        <field name="log_component">HA</field>
+		<field name="severity">Notification</field>
+        <description>HA status changed</description>
+        <options>no_full_log</options>
+    </rule>
+	
+	<rule id="113844" level="5">
+        <if_sid>113800</if_sid>
+        <field name="log_component">HA</field>
+		<field name="severity">Warning</field>
+        <description>HA has a warning</description>
+        <options>no_full_log</options>
+    </rule>
+	
+	<rule id="113845" level="3">
+        <if_sid>113800</if_sid>
+		<field name="log_component">Interface</field>
+		<field name="log_type">System Health</field>
+		<field name="log_subtype">Usage</field>
+        <description>FW reported interface usage for $(interface)</description>
+        <options>no_full_log</options>
+    </rule>
+    
+    <rule id="113846" level="3">
+        <if_sid>113800</if_sid>
+		<field name="log_component">CPU</field>
+		<field name="log_type">System Health</field>
+		<field name="log_subtype">Usage</field>
+        <description>FW reported CPU usage</description>
+        <options>no_full_log</options>
+    </rule>
+    
+    <rule id="113847" level="3">
+        <if_sid>113800</if_sid>
+		<field name="log_component">Memory</field>
+		<field name="log_type">System Health</field>
+		<field name="log_subtype">Usage</field>
+        <description>FW reported RAM usage</description>
+        <options>no_full_log</options>
+    </rule>
+    
+    <rule id="113848" level="3">
+        <if_sid>113800</if_sid>
+		<field name="log_component">Live User</field>
+		<field name="log_type">System Health</field>
+		<field name="log_subtype">Usage</field>
+        <description>FW reported active user count</description>
+        <options>no_full_log</options>
+    </rule>
+    
+    <rule id="113849" level="3">
+        <if_sid>113800</if_sid>
+		<field name="log_component">SSL</field>
+		<field name="log_type">System Health</field>
+		<field name="log_subtype">Usage</field>
+        <description>FW reported stats about SSL encryption</description>
+        <options>no_full_log</options>
+    </rule>
+    
+    <rule id="113850" level="3">
+        <if_sid>113800</if_sid>
+		<field name="log_component">Disk</field>
+		<field name="log_type">System Health</field>
+		<field name="log_subtype">Usage</field>
+        <description>FW reported disk space usage</description>
+        <options>no_full_log</options>
+    </rule>
+
+    <!-- 860+ - Mail events -->
+    <rule id="113860" level="5">
+        <if_sid>113800</if_sid>
+        <field name="log_component">SMTP|SMTPS|IMAP4|IMAPS|POP3|POPS</field>
+        <field name="antispam_action">Quarantine</field>
+        <description>Mail in quarantine</description>
+		<mitre>
+			<id>T1566</id>
+		</mitre>
+        <options>no_full_log</options>
+    </rule>
+	
+	<rule id="113861" level="5">
+        <if_sid>113800</if_sid>
+        <field name="log_component">SMTP|SMTPS|IMAP4|IMAPS|POP3|POPS</field>
+        <field name="antispam_action">Drop</field>
+        <description>Mail dropped: $(reason)</description>
+        <options>no_full_log</options>
+    </rule>
+	
+	<rule id="113862" level="5">
+        <if_sid>113800</if_sid>
+        <field name="log_component">SMTP|SMTPS|IMAP4|IMAPS|POP3|POPS</field>
+        <field name="antispam_action">Reject</field>
+        <description>Mail rejected: $(reason)</description>
+        <options>no_full_log</options>
+    </rule>
+	
+	<rule id="113863" level="5">
+        <if_sid>113800</if_sid>
+        <field name="log_component">SMTP|SMTPS|IMAP4|IMAPS|POP3|POPS</field>
+        <field name="antispam_action">Tmpreject</field>
+        <description>Mail tmp-rejected: $(reason)</description>
+        <options>no_full_log</options>
+    </rule>
+	
+	<rule id="113864" level="3">
+        <if_sid>113800</if_sid>
+        <field name="log_component">SMTP|SMTPS|IMAP4|IMAPS|POP3|POPS</field>
+        <field name="antispam_action">Accept</field>
+        <description>Mail accepted</description>
+        <options>no_full_log</options>
+    </rule>
+	
+	<!-- 870+ - Heartbeats -->
+	<rule id="113870" level="3">
+        <if_sid>113800</if_sid>
+        <field name="log_type">Heartbeat</field>
+		<field name="log_component">Endpoint</field>
+        <description>$(reported_host) changed Heartbeat status to $(hb_status)</description>
+        <options>no_full_log</options>
+    </rule>
+	
+	<rule id="113871" level="3">
+        <if_sid>113800</if_sid>
+        <field name="log_type">Heartbeat</field>
+		<field name="log_component">Heartbeat</field>
+        <description>Heartbeat status of endpoints reported</description>
+        <options>no_full_log</options>
+    </rule>
+	
+	<!-- 880+ - IPS/IDS -->
+	<rule id="113880" level="8">
+        <if_sid>113800</if_sid>
+        <field name="log_type">IDP</field>
+		<field name="log_subtype">Drop</field>
+        <description>IPS dropped a connection</description>
+        <options>no_full_log</options>
+    </rule>
+	
+	<rule id="113881" level="8">
+        <if_sid>113800</if_sid>
+        <field name="log_type">IDP</field>
+		<field name="log_subtype">Detect</field>
+		<field name="log_component">Anomaly</field>
+        <description>IPS detected a connection with an anomaly</description>
+        <options>no_full_log</options>
+    </rule>
+	
+	<rule id="113882" level="8">
+        <if_sid>113800</if_sid>
+        <field name="log_type">IDP</field>
+		<field name="log_subtype">Detect</field>
+		<field name="log_component">Signatures</field>
+        <description>IPS detected a connection with a known signature</description>
+        <options>no_full_log</options>
+    </rule>
+    
+    <!-- 900+ - VPN -->
+	<rule id="113900" level="5">
+        <if_sid>113800</if_sid>
+        <field name="log_component">IPSec</field>
+		<field name="sophos_fw_status">Established</field>
+        <description>IPSec VPN event: $(sophos_fw_status)</description>
+        <options>no_full_log</options>
+    </rule>
+	
+	<rule id="113901" level="5">
+        <if_sid>113800</if_sid>
+        <field name="log_component">IPSec</field>
+		<field name="sophos_fw_status">Terminated</field>
+        <description>IPSec VPN event: $(sophos_fw_status)</description>
+        <options>no_full_log</options>
+    </rule>
+	
+	<rule id="113902" level="5">
+        <if_sid>113800</if_sid>
+        <field name="log_component">IPSec</field>
+		<field name="sophos_fw_status">Disconnected</field>
+        <description>IPSec VPN event: $(sophos_fw_status)</description>
+        <options>no_full_log</options>
+    </rule>
+	
+	<rule id="113903" level="5">
+        <if_sid>113800</if_sid>
+        <field name="log_component">IPSec</field>
+		<field name="sophos_fw_status">Deny Session</field>
+        <description>IPSec VPN event: $(sophos_fw_status)</description>
+        <options>no_full_log</options>
+    </rule>
+	
+	<rule id="113904" level="5">
+        <if_sid>113800</if_sid>
+        <field name="log_component">IPSec</field>
+		<field name="sophos_fw_status">Failed</field>
+        <description>IPSec VPN event: $(sophos_fw_status)</description>
+        <options>no_full_log</options>
+    </rule>
+	
+	<rule id="113905" level="5">
+        <if_sid>113800</if_sid>
+        <field name="log_component">IPSec</field>
+		<field name="sophos_fw_status">Expire</field>
+        <description>IPSec VPN event: $(sophos_fw_status)</description>
+        <options>no_full_log</options>
+    </rule>
+    
+    <rule id="113906" level="5">
+        <if_sid>113800</if_sid>
+        <field name="log_component">L2TP</field>
+		<field name="sophos_fw_status">Established</field>
+        <description>L2TP VPN event: $(sophos_fw_status)</description>
+        <options>no_full_log</options>
+    </rule>
+	
+	<rule id="113907" level="5">
+        <if_sid>113800</if_sid>
+        <field name="log_component">L2TP</field>
+		<field name="sophos_fw_status">Terminated</field>
+        <description>L2TP VPN event: $(sophos_fw_status)</description>
+        <options>no_full_log</options>
+    </rule>
+	
+	<rule id="113908" level="5">
+        <if_sid>113800</if_sid>
+        <field name="log_component">RED</field>
+		<field name="sophos_fw_status">Connected</field>
+        <description>RED VPN event: $(sophos_fw_status)</description>
+        <options>no_full_log</options>
+    </rule>
+	
+	<rule id="113909" level="5">
+        <if_sid>113800</if_sid>
+        <field name="log_component">RED</field>
+		<field name="sophos_fw_status">Disconnected</field>
+        <description>RED VPN event: $(sophos_fw_status)</description>
+        <options>no_full_log</options>
+    </rule>
+	
+	<rule id="113910" level="5">
+        <if_sid>113800</if_sid>
+        <field name="log_component">RED</field>
+		<field name="sophos_fw_status">Interim</field>
+        <description>RED VPN event: $(sophos_fw_status)</description>
+        <options>no_full_log</options>
+    </rule>
+	
+	<rule id="113911" level="5">
+        <if_sid>113800</if_sid>
+        <field name="log_component">PPTP</field>
+		<field name="sophos_fw_status">Established</field>
+        <description>PPTP VPN event: $(sophos_fw_status)</description>
+        <options>no_full_log</options>
+    </rule>
+	
+	<rule id="113912" level="5">
+        <if_sid>113800</if_sid>
+        <field name="log_component">PPTP</field>
+		<field name="sophos_fw_status">Terminated</field>
+        <description>PPTP VPN event: $(sophos_fw_status)</description>
+        <options>no_full_log</options>
+    </rule>
+	
+	<rule id="113913" level="5">
+        <if_sid>113800</if_sid>
+        <field name="log_component">SSL VPN</field>
+		<field name="sophos_fw_status">Established</field>
+        <description>$(message)</description>
+        <options>no_full_log</options>
+    </rule>
+	
+	<rule id="113914" level="5">
+        <if_sid>113800</if_sid>
+        <field name="log_component">SSL VPN</field>
+		<field name="sophos_fw_status">Terminated</field>
+        <description>$(message)</description>
+        <options>no_full_log</options>
+    </rule>
+	
+	<rule id="113915" level="3">
+        <if_sid>113800</if_sid>
+        <field name="log_component">SSL VPN</field>
+		<field name="sophos_fw_status">Allow</field>
+        <description>$(message)</description>
+        <options>no_full_log</options>
+    </rule>
+	
+	<!-- 920+ - Sandstorm -->
+	<rule id="113920" level="5">
+		<if_sid>113800</if_sid>
+		<field name="log_type">Sandbox</field>
+		<field name="log_subtype">Pending</field>
+		<description>Sandstorm is analyzing a pending file from $(srcip) with filename $(filename)</description>
+        <options>no_full_log</options>
+	</rule>
+	
+	<rule id="113921" level="10">
+		<if_sid>113800</if_sid>
+		<field name="log_type">Sandbox</field>
+		<field name="log_subtype">Denied</field>
+		<description>Sandstorm detected a malicious file from $(srcip) with filename $(filename)</description>
+        <options>no_full_log</options>
+	</rule>
+	
+	<rule id="113922" level="3">
+		<if_sid>113800</if_sid>
+		<field name="log_type">Sandbox</field>
+		<field name="log_subtype">Allowed</field>
+		<description>Sandstorm has analyzed a file and found it clean</description>
+        <options>no_full_log</options>
+	</rule>
+	
+	<!-- 930+ - SD-WAN -->
+	<rule id="113930" level="3">
+		<if_sid>113800</if_sid>
+		<field name="log_type">SD-WAN</field>
+		<field name="log_subtype">Available</field>
+		<description>$(message)</description>
+        <options>no_full_log</options>
+	</rule>
+	
+	<rule id="113931" level="5">
+		<if_sid>113800</if_sid>
+		<field name="log_type">SD-WAN</field>
+		<field name="log_subtype">Unavailable</field>
+		<description>$(message)</description>
+        <options>no_full_log</options>
+	</rule>
+	
+	<rule id="113932" level="3">
+		<if_sid>113800</if_sid>
+		<field name="log_type">SD-WAN</field>
+		<field name="log_component">Route</field>
+		<description>$(message)</description>
+        <options>no_full_log</options>
+	</rule>
+	
+	<!-- 940+ - SSL/TLS filter -->
+	<rule id="113940" level="3">
+		<if_sid>113800</if_sid>
+		<field name="log_type">SSL</field>
+		<field name="log_subtype">Decrypt</field>
+		<description>SSL connection decrypted</description>
+        <options>no_full_log</options>
+	</rule>
+	
+	<rule id="113941" level="3">
+		<if_sid>113800</if_sid>
+		<field name="log_type">SSL</field>
+		<field name="log_subtype">Reject</field>
+		<description>SSL connection rejected</description>
+        <options>no_full_log</options>
+	</rule>
+	
+	<rule id="113942" level="5">
+		<if_sid>113800</if_sid>
+		<field name="log_type">SSL</field>
+		<field name="log_subtype">Error</field>
+		<description>Error on decryption of a SSL decryption</description>
+        <options>no_full_log</options>
+	</rule>
+	
+	<rule id="113943" level="3">
+		<if_sid>113800</if_sid>
+		<field name="log_type">SSL</field>
+		<field name="log_subtype">Reject and notify</field>
+		<description>SSL connection rejected</description>
+        <options>no_full_log</options>
+	</rule>
+	
+	<rule id="113944" level="3">
+		<if_sid>113800</if_sid>
+		<field name="log_type">SSL</field>
+		<field name="log_subtype">Do not decrypt</field>
+		<description>SSL connection was excluded from decryption</description>
+        <options>no_full_log</options>
+	</rule>
+	
+	<!-- 950+ - Web application firewall -->
+	<rule id="113950" level="8">
+		<if_sid>113800</if_sid>
+		<field name="log_type">WAF</field>
+		<field name="reason">waf|cookie|url hardening|av|geoip|dnsrbl</field>
+		<description>WAF intercepted a request</description>
+        <options>no_full_log</options>
+	</rule>
+	
+	<rule id="113951" level="3">
+		<if_sid>113800</if_sid>
+		<field name="log_type">WAF</field>
+		<field name="reason">-</field>
+		<description>WAF accepted a request for $(local_ip)</description>
+        <options>no_full_log</options>
+	</rule>
+
+    <!-- 960+ - NDR -->
+	<rule id="113960" level="8">
+		<if_sid>113800</if_sid>
+		<field name="threatscore">\.+</field>
+		<description>NDR detected a threat named $(threat)</description>
+        <options>no_full_log</options>
+	</rule>
+</group>

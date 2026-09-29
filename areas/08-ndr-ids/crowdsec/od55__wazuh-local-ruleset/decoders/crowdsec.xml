@@ -1,0 +1,15 @@
+<!--
+CROWDSEC decoder. only one decoded event
+need to add prematch prefix on source side!
+:::::::: example event :::::::
+crowdsec :: time="2026-01-26T07:27:28+03:00" level=info msg="(11a7f153497c4ec8b4af89665b27ec0fjtTKnvc23Ba4TPld/crowdsec) mstilkerich/bind9-refused by ip 31.148.20.19 (UA/204889) : 4h ban on Ip 31.148.20.19"
+-->
+<decoder name="crowdsec">
+    <prematch type="pcre2">crowdsec ::</prematch>
+</decoder>
+
+<decoder name="crowdsec-fields">
+    <parent>crowdsec</parent>
+    <regex type="pcre2" offset="after_parent">by ip (?'srcip'[\d\.]+) \((?'country'\w+)\/(?'code'\d+)\) : (?'timeban'\S+) ban on Ip</regex>
+    <order>srcip,country,code,timeban</order>
+</decoder>

@@ -1,0 +1,1 @@
+type=SYSCALL msg=audit(1779953408.123:468): exe="base64 -d dGhpcyBpcyBhIHZlcnkgbG9uZyBzdHJpbmcgZm9yIGJhc2U2NA=="

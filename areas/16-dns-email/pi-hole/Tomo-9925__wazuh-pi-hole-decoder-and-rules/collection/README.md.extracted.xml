@@ -1,0 +1,5 @@
+<!-- Blocos de configuração extraídos, sem alterações, de Tomo-9925/wazuh-pi-hole-decoder-and-rules:README.md @ 96f332f4edb6 -->
+<localfile>
+    <location>/var/log/pihole/pihole.log</location>
+    <log_format>syslog</log_format>
+</localfile>

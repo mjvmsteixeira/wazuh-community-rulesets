@@ -1,0 +1,6 @@
+<!-- Blocos de configuração extraídos, sem alterações, de LeeHoang26/ad-kerberos-attack-detection-soar:README.md @ 762362409912 -->
+<integration>
+  <name>custom-soar.py</name>
+  <rule_id>100100, 100101</rule_id>
+  <alert_format>json</alert_format>
+</integration>

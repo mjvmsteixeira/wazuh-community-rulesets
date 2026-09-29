@@ -1,0 +1,42 @@
+<!--
+  Rule: Outbound Connection to Monitored Port
+  NIST CSF: DE.CM-01 (The network is monitored to detect potential cybersecurity events)
+            DE.AE-03 (Event data are aggregated and correlated)
+  MITRE ATT&CK: T1048 - Exfiltration Over Alternative Protocol
+  Severity: Medium
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-21
+
+  Description:
+    Detects outbound connections to ports listed in etc/lists/rare-ports.
+    Treat the list as your "rare or high-risk" port set.
+
+  False Positives:
+    - Legitimate services using non-standard ports
+
+  Tuning Guidance:
+    Update the list to reflect your environment. Consider filtering by
+    destination CIDR if needed.
+
+  Assumptions:
+    - iptables decoder is enabled and extracts dstport.
+
+  Limitations:
+    - Only ports listed in the CDB list will trigger.
+
+  Test: tests/sample-logs/de-cm-01/outbound-rare-port/
+-->
+
+<group name="nist_csf,de.cm-01,network,egress">
+
+  <rule id="100005" level="7">
+    <if_sid>4100</if_sid>
+    <list field="dstport" lookup="match_key">etc/lists/rare-ports</list>
+    <description>Outbound connection to monitored port</description>
+    <mitre>
+      <id>T1048</id>
+    </mitre>
+    <group>network_egress,rare_port,nist_de.cm-01,nist_de.ae-03</group>
+  </rule>
+
+</group>

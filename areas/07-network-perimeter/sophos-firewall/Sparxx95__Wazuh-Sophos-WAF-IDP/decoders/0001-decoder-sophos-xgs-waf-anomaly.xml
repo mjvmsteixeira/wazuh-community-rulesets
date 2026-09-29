@@ -1,0 +1,120 @@
+  <!-- Parent: selektiert WAF-Logs -->
+  <decoder name="sophos-waf">
+    <prematch>log_type="WAF"</prematch>
+  </decoder>
+
+  <!-- Modular (Geschwister), alle mit parent 'sophos-waf' -->
+
+  <decoder name="sophos-waf">
+    <parent>sophos-waf</parent>
+    <regex type="pcre2">reason="([^"]+)"</regex>
+    <order>reason</order>
+  </decoder>
+
+  <decoder name="sophos-waf">
+    <parent>sophos-waf</parent>
+    <regex type="pcre2">http_status=([0-9]+)</regex>
+    <order>http_status</order>
+  </decoder>
+
+  <decoder name="sophos-waf">
+    <parent>sophos-waf</parent>
+    <regex type="pcre2">url="([^"]+)"</regex>
+    <order>url</order>
+  </decoder>
+
+  <decoder name="sophos-waf">
+    <parent>sophos-waf</parent>
+    <regex type="pcre2">http_method="([^"]+)"</regex>
+    <order>http_method</order>
+  </decoder>
+
+  <decoder name="sophos-waf">
+    <parent>sophos-waf</parent>
+    <regex type="pcre2">http_query="([^"]*)"</regex>
+    <order>http_query</order>
+  </decoder>
+
+  <decoder name="sophos-waf">
+    <parent>sophos-waf</parent>
+    <regex type="pcre2">domain="([^"]+)"</regex>
+    <order>domain</order>
+  </decoder>
+
+  <decoder name="sophos-waf">
+    <parent>sophos-waf</parent>
+    <regex type="pcre2">src_ip="([^"]+)"</regex>
+    <order>srcip</order>
+  </decoder>
+
+  <decoder name="sophos-waf">
+    <parent>sophos-waf</parent>
+    <regex type="pcre2">dst_ip="([^"]+)"</regex>
+    <order>dstip</order>
+  </decoder>
+
+  <decoder name="sophos-waf">
+    <parent>sophos-waf</parent>
+    <regex type="pcre2">protocol="([^"]+)"</regex>
+    <order>protocol</order>
+  </decoder>
+
+  <decoder name="sophos-waf">
+    <parent>sophos-waf</parent>
+    <regex type="pcre2">message="([^"]+)"</regex>
+    <order>message</order>
+  </decoder>
+
+  <decoder name="sophos-waf">
+    <parent>sophos-waf</parent>
+    <regex type="pcre2">content_type="([^"]+)"</regex>
+    <order>content_type</order>
+  </decoder>
+
+  <decoder name="sophos-waf">
+    <parent>sophos-waf</parent>
+    <regex type="pcre2">http_user_agent="([^"]+)"</regex>
+    <order>http_user_agent</order>
+  </decoder>
+
+  <decoder name="sophos-waf">
+    <parent>sophos-waf</parent>
+    <regex type="pcre2">http_response_time=([0-9]+)</regex>
+    <order>http_response_time</order>
+  </decoder>
+
+  <decoder name="sophos-waf">
+    <parent>sophos-waf</parent>
+    <regex type="pcre2">bytes_sent=([0-9]+)</regex>
+    <order>bytes_sent</order>
+  </decoder>
+
+  <decoder name="sophos-waf">
+    <parent>sophos-waf</parent>
+    <regex type="pcre2">bytes_received=([0-9]+)</regex>
+    <order>bytes_received</order>
+  </decoder>
+
+  <decoder name="sophos-waf">
+    <parent>sophos-waf</parent>
+    <regex type="pcre2">fw_rule_id="([^"]+)"</regex>
+    <order>fw_rule_id</order>
+  </decoder>
+
+  <decoder name="sophos-waf">
+    <parent>sophos-waf</parent>
+    <regex type="pcre2">fw_rule_name="([^"]+)"</regex>
+    <order>fw_rule_name</order>
+  </decoder>
+
+  <decoder name="sophos-waf">
+    <parent>sophos-waf</parent>
+    <regex type="pcre2">fw_rule_section="([^"]+)"</regex>
+    <order>fw_rule_section</order>
+  </decoder>
+
+  <decoder name="sophos-waf">
+    <parent>sophos-waf</parent>
+    <regex type="pcre2">log_type="([^"]+)"</regex>
+    <order>log_type</order>
+  </decoder>

@@ -1,0 +1,74 @@
+<!-- 
+  Custom Wazuh decoders for HP ProCurve devices.
+  This file contains decoders for parsing authentication and manager logs from HP ProCurve switches.
+-->
+
+<!-- Parent decoder for authentication logs -->
+<decoder name="auth">
+        <prematch>\d+ auth:</prematch>
+</decoder>
+
+<!-- 
+  Decoder for failed login attempts.
+  Example log: ... auth: REJECT: ... on ... session User 'admin' is trying to login from 192.168.1.10
+-->
+<decoder name="auth_test">
+        <parent>auth</parent>
+        <regex offset="after_parent">\s+(\w+):\s+(\.+) on (\.+) session User '(\.+)' is trying to login from (\.+)</regex>
+        <order>status_code, status, session, user, srcip</order>
+</decoder>
+
+<!-- 
+  Decoder for successful SSH logins.
+  Example log: ... auth:   User 'admin' logged in from 192.168.1.10 to SSH session
+-->
+<decoder name="auth_test">
+        <parent>auth</parent>
+        <regex offset="after_parent">  User '(\.+)' logged in from (\.+) to SSH session</regex>
+        <order>user, ip_address</order>
+</decoder>
+
+<!-- 
+  Decoder for successful SSH logins (alternative format).
+  Example log: ... auth: User 'admin' logged in from 192.168.1.10 to SSH session
+-->
+<decoder name="auth_test">
+        <parent>auth</parent>
+        <regex offset="after_parent">User '(\.+)' logged in from (\.+) to SSH session</regex>
+        <order>user, ip_address</order>
+</decoder>
+
+<!-- 
+  Decoder for generic login events.
+  Example log: ... auth:   User 'admin' login from 192.168.1.10
+-->
+<decoder name="auth_test">
+        <parent>auth</parent>
+        <regex offset="after_parent">  User '(\.+)' login from (\.+)</regex>
+        <order>user, ip_address</order>
+</decoder>
+
+<!-- 
+  Decoder for generic login events (alternative format).
+  Example log: ... auth: User 'admin' login from 192.168.1.10
+-->
+<decoder name="auth_test">
+        <parent>auth</parent>
+        <regex offset="after_parent">User '(\.+)' login from (\.+)</regex>
+        <order>user, ip_address</order>
+</decoder>
+
+<!-- Parent decoder for manager logs -->
+<decoder name="mgr">
+        <prematch>\d+ mgr:</prematch>
+</decoder>
+
+<!--
+  Decoder for manager mode changes.
+  Example log: ... mgr:  SME ... from 192.168.1.10 - ... Mode
+-->
+<decoder name="mgr_test">
+        <parent>mgr</parent>
+        <regex offset="after_parent">  SME (\.+) from (\.+) - (\.+) Mode</regex>
+        <order>status, ip_address, mode</order>
+</decoder>

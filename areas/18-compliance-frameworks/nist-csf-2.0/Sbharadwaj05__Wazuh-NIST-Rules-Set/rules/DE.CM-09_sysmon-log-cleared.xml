@@ -1,0 +1,23 @@
+<!--
+  Rule: Sysmon operational event log cleared
+  NIST CSF: DE.CM-09, RS.MA-02
+  MITRE ATT&CK: T1070.001
+  Severity: High
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-23
+-->
+
+<group name="nist_csf, de.cm-09, mitre_attack,">
+
+  <rule id="100051" level="10">
+      <decoded_as>json</decoded_as>
+      <field name="win.system.eventID">104</field>
+      <field name="win.system.channel">Microsoft-Windows-Sysmon/Operational</field>
+      <description>Sysmon operational event log cleared</description>
+      <mitre>
+        <id>T1070.001</id>
+      </mitre>
+      <group>DE.CM-09, RS.MA-02</group>
+    </rule>
+
+</group>

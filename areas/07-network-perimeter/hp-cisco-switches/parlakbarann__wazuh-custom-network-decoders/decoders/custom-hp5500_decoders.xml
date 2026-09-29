@@ -1,0 +1,18 @@
+<!-- 
+  Custom Wazuh decoders for HP 5500 series switches.
+  This file contains decoders for parsing command logs from HP 5500 devices.
+-->
+
+<!-- 
+  This decoder extracts command execution details from HP 5500 logs.
+  NOTE: This decoder expects a parent decoder named "hp_5500" which is not defined in this file.
+  You must have a decoder named "hp_5500" defined elsewhere for this to work.
+
+  Example log (after parent decoder): -IPAddr=192.168.1.10-User=admin; Command display version
+-->
+<decoder name="hp_5500_fields">
+    <parent>hp_5500</parent>
+    <regex offset="after_parent">-IPAddr=(\d+.\d+.\d+.\d+)-User=(\w+); Command (\.+)</regex>
+
+    <order>srcip, user, command</order>
+</decoder>

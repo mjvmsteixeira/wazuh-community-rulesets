@@ -1,0 +1,8 @@
+# Ports considered rare or high-risk for outbound traffic.
+# Update to match your environment.
+4444:
+5555:
+1337:
+9001:
+8081:
+31337:

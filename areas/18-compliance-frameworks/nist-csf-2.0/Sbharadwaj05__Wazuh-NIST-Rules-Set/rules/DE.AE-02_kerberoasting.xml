@@ -1,0 +1,25 @@
+<!--
+  Rule: Kerberoasting TGS request downgrade detected (Credential Access)
+  NIST CSF: ID.RA-03, PR.AC-04
+  MITRE ATT&CK: T1558.003
+  Severity: High
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-23
+-->
+
+<group name="nist_csf, de.ae-02, mitre_attack,">
+
+  <rule id="100039" level="10">
+      <decoded_as>json</decoded_as>
+      <field name="win.system.providerName">Microsoft-Windows-Security-Auditing</field>
+      <field name="win.system.eventID">^4769$</field>
+      <field name="win.eventdata.ticketOptions">0x40810000</field>
+      <field name="win.eventdata.ticketEncryptionType">0x17</field>
+      <description>Kerberoasting TGS request downgrade detected (Credential Access)</description>
+      <mitre>
+        <id>T1558.003</id>
+      </mitre>
+      <group>ID.RA-03, PR.AC-04</group>
+    </rule>
+
+</group>

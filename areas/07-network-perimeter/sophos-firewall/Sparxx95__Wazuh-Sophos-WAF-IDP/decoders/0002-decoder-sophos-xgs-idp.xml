@@ -1,0 +1,45 @@
+  <decoder name="sophos-idp">
+    <prematch>log_type="IDP"</prematch>
+  </decoder>
+
+  <decoder name="sophos-idp">
+    <parent>sophos-idp</parent>
+    <regex type="pcre2">log_type="([^"]+)"</regex>
+    <order>log_type</order>
+  </decoder>
+
+  <decoder name="sophos-idp">
+    <parent>sophos-idp</parent>
+    <regex type="pcre2">classification="([^"]+)"</regex>
+    <order>classification</order>
+  </decoder>
+
+  <decoder name="sophos-idp">
+    <parent>sophos-idp</parent>
+    <regex type="pcre2">rule_priority="([^"]+)"</regex>
+    <order>rule_priority</order>
+  </decoder>
+
+  <decoder name="sophos-idp">
+    <parent>sophos-idp</parent>
+    <regex type="pcre2">src_ip="([^"]+)"</regex>
+    <order>srcip</order>
+  </decoder>
+
+  <decoder name="sophos-idp">
+    <parent>sophos-idp</parent>
+    <regex type="pcre2">dst_ip="([^"]+)"</regex>
+    <order>dstip</order>
+  </decoder>
+  
+  <decoder name="sophos-idp">
+    <parent>sophos-idp</parent>
+    <regex type="pcre2">fw_rule_name="([^"]+)"</regex>
+    <order>fw_rule_name</order>
+  </decoder>
+  
+  <decoder name="sophos-idp">
+    <parent>sophos-idp</parent>
+    <regex type="pcre2">message="([^"]+)"</regex>
+    <order>message</order>
+  </decoder>

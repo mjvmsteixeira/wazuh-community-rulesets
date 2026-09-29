@@ -1,0 +1,43 @@
+<!--
+  Regra genérica de exemplo — Detecção de Força Bruta SSH
+  Mapeamento MITRE ATT&CK: T1110 (Brute Force) / T1110.001 (Password Guessing)
+
+  ATENÇÃO: Exemplo educacional/portfólio, com thresholds ilustrativos.
+  Ajuste frequency/timeframe conforme o perfil de tráfego real do
+  seu ambiente antes de usar em produção.
+-->
+
+<group name="example_bruteforce,authentication_failed,">
+
+  <rule id="100010" level="5">
+    <if_sid>5716</if_sid>
+    <match>example-sshd-auth-fail</match>
+    <description>Falha de autenticação SSH (evento único)</description>
+    <mitre>
+      <id>T1110</id>
+    </mitre>
+    <group>authentication_failed,</group>
+  </rule>
+
+  <rule id="100011" level="10" frequency="6" timeframe="120">
+    <if_matched_sid>100010</if_matched_sid>
+    <same_source_ip />
+    <description>Possível ataque de força bruta SSH: 6+ falhas de autenticação em 120s do mesmo IP</description>
+    <mitre>
+      <id>T1110.001</id>
+    </mitre>
+    <group>authentication_failures,pci_dss_10.2.4,pci_dss_10.2.5,</group>
+  </rule>
+
+  <rule id="100012" level="12">
+    <if_matched_sid>100011</if_matched_sid>
+    <match>example-sshd-auth-success</match>
+    <description>Autenticação bem-sucedida após padrão de força bruta — possível comprometimento de credencial</description>
+    <mitre>
+      <id>T1110</id>
+      <id>T1078</id>
+    </mitre>
+    <group>authentication_success,high_priority,</group>
+  </rule>
+
+</group>

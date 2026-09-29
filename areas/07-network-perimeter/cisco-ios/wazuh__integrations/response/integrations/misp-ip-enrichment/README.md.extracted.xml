@@ -1,0 +1,16 @@
+<!-- Blocos de resposta extraídos, sem alterações, de wazuh/integrations:integrations/misp-ip-enrichment/README.md @ 38efcaaa3272 -->
+<integration>
+  <name>custom-misp-ips.py</name>
+  <hook_url>https://MISP_HOST</hook_url>
+  <api_key>MISP_API_KEY</api_key>
+  <group>syslog</group>
+  <alert_format>json</alert_format>
+  <options>{
+      "timeout": 10,
+      "retries": 3,
+      "debug": false,
+      "tags": ["tlp:white", "tlp:clear", "malware"],
+      "push_sightings": true,
+      "sightings_source": "wazuh"
+  }</options>
+</integration>

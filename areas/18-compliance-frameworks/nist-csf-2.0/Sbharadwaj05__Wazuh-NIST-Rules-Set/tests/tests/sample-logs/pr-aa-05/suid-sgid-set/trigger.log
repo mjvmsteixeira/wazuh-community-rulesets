@@ -1,0 +1,1 @@
+type=SYSCALL msg=audit(1779953403.123:462): key="perm_mod" mode=04755 a2=4755

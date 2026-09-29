@@ -1,0 +1,12 @@
+<!-- Blocos de resposta extraídos, sem alterações, de MedNamouchi/SIEM-MikroTik-Wazuh-Graylog:phase3-optimisation/03-detection-engineering/DET-07-multi-source-correlation.md @ e8dfa75059c7 -->
+<command>
+  <name>mattermost-correlation-alert</name>
+  <executable>mattermost-correlation-alert.sh</executable>
+  <timeout_allowed>no</timeout_allowed>
+</command>
+
+<active-response>
+  <command>mattermost-correlation-alert</command>
+  <location>server</location>
+  <rules_id>100800,100801</rules_id>
+</active-response>

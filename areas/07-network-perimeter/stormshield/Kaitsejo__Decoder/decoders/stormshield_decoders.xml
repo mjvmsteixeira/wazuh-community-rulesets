@@ -1,0 +1,61 @@
+<!-- Initial decoder matching Stormshield logs -->
+<decoder name="stormshield">
+  <prematch>id=firewall</prematch>
+</decoder>
+
+<!-- Decoding the timestamp and firewall identifier -->
+<decoder name="stormshield_time_fw">
+  <parent>stormshield</parent>
+  <regex>time="(\S+)" fw="(\S+)"</regex>
+  <order>time, fw</order>
+</decoder>
+
+<!-- Decoding timezone and start time -->
+<decoder name="stormshield_tz_startime">
+  <parent>stormshield</parent>
+  <regex>tz=(\S+) startime="(\S+)"</regex>
+  <order>tz, startime</order>
+</decoder>
+
+<!-- Decoding priority, confidence, and slot level -->
+<decoder name="stormshield_priority_confid">
+  <parent>stormshield</parent>
+  <regex>pri=(\d+) confid=(\d+) slotlevel=(\d+)</regex>
+  <order>pri, confid, slotlevel</order>
+</decoder>
+
+<!-- Decoding source and destination information -->
+<decoder name="stormshield_src_dst_proto">
+  <parent>stormshield</parent>
+  <regex>src=(\S+) dst=(\S+) proto=(\S+)</regex>
+  <order>src, dst, proto</order>
+</decoder>
+
+<!-- Decoding source and destination ports -->
+<decoder name="stormshield_ports">
+  <parent>stormshield</parent>
+  <regex>srcport=(\d+) dstport=(\d+)</regex>
+  <order>srcport, dstport</order>
+</decoder>
+
+<!-- Decoding additional source information (MAC address, continent, country) -->
+<decoder name="stormshield_src_additional">
+  <parent>stormshield</parent>
+  <regex>srcmac=(\S+) srccontinent="(\S+)" srccountry="(\S+)"</regex>
+  <order>srcmac, srccontinent, srccountry</order>
+</decoder>
+
+<!-- Decoding destination information (continent, country) -->
+<decoder name="stormshield_dst_additional">
+  <parent>stormshield</parent>
+  <regex>dstcontinent="(\S+)" dstcountry="(\S+)"</regex>
+  <order>dstcontinent, dstcountry</order>
+</decoder>
+
+<!-- Decoding message content and log type -->
+<decoder name="stormshield_msg_logtype">
+  <parent>stormshield</parent>
+  <regex>msg="(.*)" logtype="(\S+)"</regex>
+  <order>msg, logtype</order>
+</decoder>
+

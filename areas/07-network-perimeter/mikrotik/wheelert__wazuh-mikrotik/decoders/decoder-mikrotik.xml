@@ -1,0 +1,95 @@
+<!--
+  Wazuh Decoders for MikroTik RouterOS
+  
+  Copy to: /var/ossec/etc/decoders/
+  Include in ossec.conf: <decoder>/etc/decoders/decoder-mikrotik.xml</decoder>
+-->
+
+<!-- Parent MikroTik decoder -->
+<decoder name="mikrotik">
+  <prematch>mikrotik</prematch>
+</decoder>
+
+<!-- Alternative: Match by syslog tag prefix -->
+<decoder name="mikrotik-syslog">
+  <parent>mikrotik</parent>
+  <regex>^(\w+),(\w+),(\w+)\s+(\.+)$</regex>
+  <order>facility,severity,tag,message</order>
+</decoder>
+
+<!-- Authentication events -->
+<decoder name="mikrotik-auth">
+  <parent>mikrotik</parent>
+  <regex>user (\S+) logged (\w+) from (\S+) via (\w+)</regex>
+  <order>user,action,srcip,protocol</order>
+</decoder>
+
+<!-- Failed authentication -->
+<decoder name="mikrotik-login-failure">
+  <parent>mikrotik</parent>
+  <regex>login failure for user (\S+) from (\S+) via (\w+)</regex>
+  <order>user,srcip,protocol</order>
+</decoder>
+
+<!-- Firewall events -->
+<decoder name="mikrotik-firewall">
+  <parent>mikrotik</parent>
+  <regex>(\w+):\s+in:(\S+)\s+out:(\S+),\s+proto\s+(\S+)\s+\((\S+)\),\s+(\S+):(\d+)->(\S+):(\d+)</regex>
+  <order>action,in_interface,out_interface,protocol,flags,srcip,srcport,dstip,dstport</order>
+</decoder>
+
+<!-- Firewall NAT events -->
+<decoder name="mikrotik-firewall-nat">
+  <parent>mikrotik</parent>
+  <regex>NAT\s+(\S+):(\d+)->\((\S+):(\d+)\)->(\S+):(\d+)</regex>
+  <order>orig_srcip,orig_srcport,nat_dstip,nat_dstport,final_dstip,final_dstport</order>
+</decoder>
+
+<!-- DHCP events -->
+<decoder name="mikrotik-dhcp">
+  <parent>mikrotik</parent>
+  <regex>(\w+) (\S+) assigned (\S+) to (\S+)\s*(.*)</regex>
+  <order>action,pool,ip,mac,hostname</order>
+</decoder>
+
+<!-- Interface state changes -->
+<decoder name="mikrotik-interface">
+  <parent>mikrotik</parent>
+  <regex>interface (\S+) (\w+) \((\w+)\)</regex>
+  <order>interface,state,link</order>
+</decoder>
+
+<!-- PPP events -->
+<decoder name="mikrotik-ppp">
+  <parent>mikrotik</parent>
+  <regex>(\S+) (\w+) (\w+) for user (\S+) from (\S+)</regex>
+  <order>service,action,status,user,srcip</order>
+</decoder>
+
+<!-- Hotspot events -->
+<decoder name="mikrotik-hotspot">
+  <parent>mikrotik</parent>
+  <regex>(\S+):\s+(\S+)\s+\((\S+)\)\s+logged (\w+)\s*(.*)</regex>
+  <order>method,mac,identity,action,info</order>
+</decoder>
+
+<!-- System events -->
+<decoder name="mikrotik-system">
+  <parent>mikrotik</parent>
+  <regex>router (\w+) (\w+)</regex>
+  <order>action,status</order>
+</decoder>
+
+<!-- Configuration changes -->
+<decoder name="mikrotik-config">
+  <parent>mikrotik</parent>
+  <regex>(\w+) configuration by (\S+)\s*(.*)</regex>
+  <order>action,user,changes</order>
+</decoder>
+
+<!-- Backup events -->
+<decoder name="mikrotik-backup">
+  <parent>mikrotik</parent>
+  <regex>(\w+) (\w+) (\S+) (\S+) created by (\S+)</regex>
+  <order>type,action,format,filename,user</order>
+</decoder>

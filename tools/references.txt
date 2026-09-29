@@ -1,0 +1,2 @@
+# Referências de cobertura (clonadas para .cache/refs; só se aponta para elas, nada é copiado)
+SigmaHQ/sigma

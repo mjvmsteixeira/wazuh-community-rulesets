@@ -1,0 +1,517 @@
+<group name="Linux CIS auditd MITRE ATT&CK">
+
+	<rule id="200500" level="1">
+        <if_sid>80700</if_sid>
+        <field name="audit.type">^USER_AUTH$</field>
+        <description>Mitre ATT&CK T1078.003, Valid Accounts: Local Accounts</description>
+    </rule>
+	
+	<rule id="200501" level="1">
+        <if_sid>80700</if_sid>
+        <field name="audit.type">^USER_LOGIN$</field>
+        <description>Mitre ATT&CK T1078.003, Valid Accounts: Local Accounts</description>
+    </rule>
+	
+	<rule id="200502" level="1">
+        <if_sid>80700</if_sid>
+        <field name="audit.type">^USER_LOGIN$</field>
+        <description>Mitre ATT&CK T1078.003, Valid Accounts: Local Accounts</description>
+    </rule>
+	
+	<rule id="200503" level="1">
+        <if_sid>80700</if_sid>
+        <field name="audit.type">^SYSCALL$</field>
+        <description>Auditd: system call to the kernel.</description>
+    </rule>
+	
+	<rule id="200504" level="1">
+        <if_sid>80730</if_sid>
+        <field name="audit.type">^AVC$</field>
+        <description>Auditd: Access Vector Cache</description>
+    </rule>
+	
+	<rule id="200505" level="3">
+        <if_sid>80730</if_sid>
+        <field name="audit.type">^PATH$</field>
+        <description>Auditd: Triggered to record file name path information.</description>
+    </rule>
+	
+	<rule id="200506" level="1">
+        <if_sid>80700</if_sid>
+        <field name="audit.type">^USER_MGMT$</field>
+        <description>Auditd: User management event.</description>
+    </rule>
+	
+	<rule id="200507" level="1">
+        <if_sid>80700</if_sid>
+        <field name="audit.type">^ADD_USER$</field>
+        <description>Auditd: User added to the system.</description>
+    </rule>
+	
+	<rule id="200508" level="3">
+        <if_sid>80700</if_sid>
+        <field name="audit.type">^KERN_MODULE$</field>
+        <description>Auditd: Kernel Module.</description>
+    </rule>
+<!--
+************Ensure changes to system administration scope (sudoers) is collected ***********
+
+type=CONFIG_CHANGE msg=audit(1605030611.668:238): auid=1000 ses=1 op=updated_rules path="/etc/sudoers" key="scope" list=4 res=1
+
+type=USER_AUTH msg=audit(1605090425.924:472): pid=1831 uid=0 auid=1000 ses=20 subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 msg='op=PAM:authentication grantors=pam_rootok acct="root" exe="/usr/bin/su" hostname=centos7 addr=? terminal=pts/0 res=success'
+
+type=USER_AUTH msg=audit(1605709938.604:259): pid=2393 uid=1000 auid=1000 ses=4 subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 msg='op=PAM:authentication grantors=? acct="enoc" exe="/usr/bin/sudo" hostname=? addr=? terminal=/dev/pts/0 res=failed'
+
+-->
+    <rule id="200520" level="7">
+        <if_sid>80705</if_sid>
+        <field name="audit.path">sudoers</field>
+        <description>Mitre ATT&CK T1548.003, Privilege Escalation, Abuse Elevation Control Mechanism: Sudo and Sudo Caching, Change in /etc/sudoers file</description>
+		<group>27001_A9.2.3, 27001_A12.4.1, 27001_A12.1.2, 27001_A16.1.7, CIS_4.8, audit_configuration,gpg13_10.1,gdpr_IV_30.1.g,</group>
+		<!--
+		 <mitre>
+            <id>T1548.003</id>
+        </mitre>
+		-->
+    </rule>
+	
+	<rule id="200521" level="7">
+        <if_sid>200500</if_sid>
+        <field name="audit.exe">/usr/bin/su</field>
+		<field name="audit.res">success</field>
+        <description>Mitre ATT&CK T1548.003, Privilege Escalation, Abuse Elevation Control Mechanism: Sudo and Sudo Caching, User $(audit.acct) sudo to root acccount</description>
+		<group>27001_A9.2.3, 27001_A12.4.1, 27001_A16.1.7, CIS_4.8, </group>
+		<!--
+		 <mitre>
+            <id>T1548.003</id>
+        </mitre>
+		-->
+    </rule>
+	<rule id="200522" level="7">
+        <if_sid>200500</if_sid>
+        <field name="audit.exe">/usr/bin/su</field>
+		<field name="audit.res">failed</field>
+        <description>Mitre ATT&CK T1548.003, Privilege Escalation, Abuse Elevation Control Mechanism: Sudo and Sudo Caching, User $(audit.acct) failed to sudo to root acccount</description>
+		<group>27001_A9.2.3, 27001_A12.4.1, 27001_A16.1.7, CIS_4.8, </group>
+		<!--
+		 <mitre>
+            <id>T1548.003</id>
+        </mitre>
+		-->
+    </rule>
+	<rule id="200523" level="10" timeframe="60" frequency="3">
+        <if_matched_sid>200522</if_matched_sid>
+        <description>Mitre ATT&CK T1548.003, Privilege Escalation, Abuse Elevation Control Mechanism: Sudo and Sudo Caching, User $(audit.acct) perform multiple privilege escalation FAILS</description>
+		<group>27001_A9.2.3, 27001_A12.4.1, 27001_A16.1.7, CIS_4.8, </group>
+		<!--
+		 <mitre>
+            <id>T1548.003</id>
+        </mitre>
+		-->
+    </rule>
+
+<!--
+**************Monitoring login/logout events************
+
+type=USER_LOGIN msg=audit(1605104919.958:474): pid=4096 uid=0 auid=1000 ses=10 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='op=login id=1000 exe="/usr/sbin/sshd" hostname=192.168.11.56 addr=192.168.11.56 terminal=/dev/pts/1 res=success'
+
+type=USER_AUTH msg=audit(1605187375.182:763): pid=7471 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='op=password acct="enoc" exe="/usr/sbin/sshd" hostname=? addr=192.168.11.54 terminal=ssh res=failed'
+
+type=USER_LOGOUT msg=audit(1605105628.281:506): pid=4096 uid=0 auid=1000 ses=10 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='op=login id=1000 exe="/usr/sbin/sshd" hostname=? addr=? terminal=/dev/pts/1 res=success'
+
+-->
+
+	<rule id="200540" level="3">
+        <if_sid>200501</if_sid>
+        <field name="audit.res">success</field>
+        <description>Mitre ATT&CK T1078.003,Initial Access, Valid Accounts: Local Accounts, User $(audit.acct) loged from $(audit.srcip)</description>
+		<group>27001_A9.4.2, 27001_A12.4.1, 27001_A16.1.7, CIS_4.9, CIS_16.13</group>
+		<!--
+		 <mitre>
+            <id>T1078.003</id>
+        </mitre>
+		-->
+    </rule>
+
+	<rule id="200541" level="3">
+        <if_sid>200501</if_sid>
+        <field name="audit.res">failed</field>
+        <description>Mitre ATT&CK T1078.003,Initial Access, Valid Accounts: Local Accounts, User $(audit.acct) FAILED to log from $(audit.srcip)</description>
+		<group>27001_A9.4.2, 27001_A12.4.1, 27001_A16.1.7, CIS_4.9, CIS_16.13</group>
+		<!--
+		 <mitre>
+            <id>T1078.003</id>
+        </mitre>
+		-->
+    </rule>
+
+	<rule id="200542" level="10" timeframe="60" frequency="6">
+        <if_matched_sid>200541</if_matched_sid>
+        <description>Mitre ATT&CK T1110.001,Credential Access, Brute Force: Password Guessing, User $(audit.acct) FAILED to log from $(audit.srcip)</description>
+		<group>27001_A9.4.2, 27001_A12.4.1, 27001_A16.1.7, CIS_4.9, CIS_16.13</group>
+		<!--
+		 <mitre>
+            <id>T1110.001</id>
+        </mitre>
+		-->
+    </rule>
+
+<!--
+***********Ensure events that modify date and time information are collected********************
+
+type=SYSCALL msg=audit(1605194931.230:240): arch=c000003e syscall=227 success=yes exit=0 a0=0 a1=7ffce8589020 a2=1 a3=7ffce8588a20 items=0 ppid=2118 pid=2154 auid=1000 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=pts1 ses=2 comm="date" exe="/usr/bin/date" subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 key="time-change"
+
+type=SYSCALL msg=audit(1605195636.289:244): arch=c000003e syscall=227 success=yes exit=0 a0=0 a1=7ffc43352650 a2=0 a3=7f6aeadba7b8 items=0 ppid=1 pid=2164 auid=4294967295 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=4294967295 comm="systemd-timedat" exe="/usr/lib/systemd/systemd-timedated" subj=system_u:system_r:systemd_timedated_t:s0 key="time-change"
+
+-->
+
+	<rule id="200560" level="4">
+        <if_sid>200503</if_sid>
+        <field name="audit.success">yes</field>
+		<field name="audit.command">^date$|^systemd-timedat$</field>
+        <description>Mitre ATT&CK T1070, Defense Evasion, Indicator Removal on Host, Modification on system datetime</description>
+		<group>27001_A12.4.1, 27001_A12.4.4, 27001_A16.1.7, CIS_5.5,</group>
+		<!--
+		 <mitre>
+            <id>T1070</id>
+        </mitre>
+		-->
+    </rule>
+	
+<!--
+SElinux must be enabled
+************Ensure events that modify the system's Mandatory Access Controls are collected**********
+type=AVC msg=audit(1567799177.932:3031): avc:  denied  { read } for  pid=24527 comm="sshd" name="authorized_keys" dev="dm-11" ino=26047253 scontext=system_u:system_r:sshd_t:s0-s0:c0.c1023 tcontext=system_u:object_r:var_t:s0 tclass=file permissive=0
+type=AVC msg=audit(1218128130.653:334): avc:  denied  { connectto } for  pid=9111 comm="smtpd" path="/var/spool/postfix/postgrey/socket" scontext=system_u:system_r:postfix_smtpd_t:s0 tcontext=system_u:system_r:initrc_t:s0 tclass=unix_stream_socket
+type=AVC msg=audit(1226270358.848:238): avc:  denied  { write } for  pid=13349 comm="certwatch" name="cache" dev=dm-0 ino=218171 scontext=system_u:system_r:certwatch_t:s0 tcontext=system_u:object_r:var_t:s0 tclass=dir
+
+-->
+
+	<rule id="200580" level="7">
+        <if_sid>200504</if_sid>
+        <field name="audit.status">denied</field>
+        <description>Mitre ATT&CK T1543.002,  Persistence, Create or Modify System Process: Systemd Service, denied execution of $(audit.command)</description>
+		<group>27001_A12.4.1, 27001_A12.6.2, 27001_A16.1.7, CIS_5.5,</group>
+		<!--
+		 <mitre>
+            <id>T1543.002</id>
+        </mitre>
+		-->
+    </rule>
+
+
+<!--
+************Ensure events that modify the system's network environment are collected************
+type=CONFIG_CHANGE msg=audit(1605611027.623:262): auid=1000 ses=4 op=updated_rules path="/etc/sysconfig/network" key="system-locale" list=4 res=1
+
+type=CONFIG_CHANGE msg=audit(1605611128.200:269): auid=1000 ses=4 op=updated_rules path="/etc/issue" key="system-locale" list=4 res=1
+
+type=CONFIG_CHANGE msg=audit(1605611177.607:278): auid=1000 ses=4 op=updated_rules path="/etc/hosts" key="system-locale" list=4 res=1
+
+type=SYSCALL msg=audit(1605629078.384:451): arch=c000003e syscall=170 success=yes exit=0 a0=5606712e69d0 a1=8 a2=8 a3=ffffff80 items=0 ppid=1 pid=3293 auid=4294967295 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=4294967295 comm="systemd-hostnam" exe="/usr/lib/systemd/systemd-hostnamed" subj=system_u:system_r:systemd_hostnamed_t:s0 key="syste
+-->
+
+
+	<rule id="200600" level="5">
+        <if_sid>80705</if_sid>
+        <field name="audit.path">/etc/hosts</field>
+        <description>Mitre ATT&CK TA0003, Persistence, configuration change in $(audit.path)</description>
+		<group>27001_A12.4.1, 27001_A12.1.2, 27001_A16.1.7, CIS_5.5, </group>
+		<!--
+		 <mitre>
+            <id>TA0003</id>
+        </mitre>
+		-->
+    </rule>
+	<rule id="200601" level="5">
+        <if_sid>80705</if_sid>
+        <field name="audit.path">/etc/sysconfig/network|/etc/issue</field>
+        <description>Mitre ATT&CK TA0003, Persistence, configuration change in $(audit.path)</description>
+		<group>27001_A12.4.1, 27001_A12.1.2, 27001_A16.1.7, CIS_5.5, </group>
+		<!--
+		 <mitre>
+            <id>TA0003</id>
+        </mitre>
+		-->
+    </rule>
+	<rule id="200602" level="5">
+        <if_sid>200503</if_sid>
+        <field name="audit.exe">/usr/lib/systemd/systemd-hostnamed</field>
+        <description>Mitre ATT&CK TA0003, Persistence, Hostname changed</description>
+		<group>27001_A12.4.1, 27001_A12.1.2, 27001_A16.1.7, CIS_5.5, </group>
+		<!--
+		 <mitre>
+            <id>TA0003</id>
+        </mitre>
+		-->
+    </rule>
+
+
+<!-- 
+**********Ensure discretionary access control permission modification events are collected*********
+
+type=SYSCALL msg=audit(1605687378.427:250): arch=c000003e syscall=268 success=yes exit=0 a0=ffffffffffffff9c a1=25bc0f0 a2=1e4 a3=7ffcc5d4ce20 items=1 ppid=2117 pid=2143 auid=1000 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=pts1 ses=2 comm="chmod" exe="/usr/bin/chmod" subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 key="perm_mod"
+
+type=SYSCALL msg=audit(1605687900.427:256): arch=c000003e syscall=260 success=yes exit=0 a0=ffffffffffffff9c a1=fc1980 a2=3e8 a3=3e8 items=1 ppid=2117 pid=2161 auid=1000 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=pts1 ses=2 comm="chown" exe="/usr/bin/chown" subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 key="perm_mod"
+
+-->
+
+	<rule id="200620" level="7">
+        <if_sid>200503</if_sid>
+        <field name="audit.command">chown|chmod</field>
+        <description>Mitre ATT&CK T1222.002, Defense Evasion, File and Directory Permissions Modification: Linux and Mac File and Directory Permissions Modification, follow audit.id to trace path modified in rule.id 200505 </description>
+		<group>27001_A12.4.1, 27001_A9.2.5, 27001_A12.1.2, 27001_A16.1.7, CIS_5.5, </group>
+		<!--
+		 <mitre>
+            <id>T1222.002</id>
+        </mitre>
+		-->
+    </rule>
+
+<!--
+***********Ensure unsuccessful unauthorized file access attempts are collected*******************
+type=SYSCALL msg=audit(1605773109.074:257): arch=c000003e syscall=2 success=no exit=-13 a0=7ffce552d817 a1=0 a2=1fffffffffff0000 a3=7ffce552b720 items=1 ppid=2047 pid=2132 auid=1000 uid=1000 gid=1000 euid=1000 suid=1000 fsuid=1000 egid=1000 sgid=1000 fsgid=1000 tty=pts0 ses=1 comm="cat" exe="/usr/bin/cat" subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 key="access"
+
+-->
+
+	<rule id="200640" level="4">
+        <if_sid>200503</if_sid>
+        <field name="audit.exit">^-13$</field>
+		<field name="audit.success">no</field>
+        <description>Mitre ATT&CK T1592.004, Reconnaissance, Gather Victim Host Information: Client Configurations, Monitor for unsuccessful attempts to access files, follow audit.id to trace path tried to be accessed in rule.id 200505 </description>
+		<group>27001_A12.4.1, 27001_A16.1.7, CIS_14.9</group>
+		<!--
+		 <mitre>
+            <id>T1592.004</id>
+        </mitre>
+		-->
+    </rule>
+	<rule id="200641" level="4">
+        <if_sid>200503</if_sid>
+        <field name="audit.exit">^-1$</field>
+		<field name="audit.success">no</field>
+        <description>Mitre ATT&CK T1592.004, Reconnaissance, Gather Victim Host Information: Client Configurations, Monitor for attempts to perform an not permitted operation, follow audit.id to trace path tried to be accessed in rule.id 200505 </description>
+		<group>27001_A12.4.1, 27001_A9.4.1, 27001_A16.1.7, CIS_14.9</group>
+		<!--
+		 <mitre>
+            <id>T1592.004</id>
+        </mitre>
+		-->
+    </rule>
+	
+<!--
+*******************Ensure events that modify user/group information are collected********************
+T1078, Initial Access, Valid Accounts,
+cambio en configuración
+type=CONFIG_CHANGE msg=audit(1605800655.040:286): auid=1000 ses=4 op=updated_rules path="/etc/group" key="identity" list=4 res=1
+cambio en grupos de usuario
+type=USER_MGMT msg=audit(1605800655.032:280): pid=2407 uid=0 auid=1000 ses=4 subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 msg='op=add-user-to-group grp="ossec" acct="enoc" exe="/usr/sbin/usermod" hostname=centos-1 addr=? terminal=pts/0 res=success'
+type=USER_MGMT msg=audit(1605801133.692:303): pid=2429 uid=0 auid=1000 ses=4 subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 msg='op=delete-user-from-group grp="ossec" acct="enoc" exe="/usr/bin/gpasswd" hostname=centos-1 addr=? terminal=pts/0 res=success'
+
+T1136.001, Persistence, Create Account: Local Account,  
+type=ADD_USER msg=audit(1605801325.413:308): pid=2433 uid=0 auid=1000 ses=4 subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 msg='op=add-user id=1001 exe="/usr/sbin/useradd" hostname=centos-1 addr=? terminal=pts/0 res=success'
+
+add group
+type=ADD_GROUP msg=audit(1605095009.604:210): pid=1414 uid=0 auid=1000 ses=1 subj=unconfined_u:unconfined_r:groupadd_t:s0-s0:c0.c1023 msg='op=add-group id=996 exe="/usr/sbin/groupadd" hostname=? addr=? terminal=? res=success'
+delete account
+type=DEL_USER msg=audit(1605873608.406:665): pid=5131 uid=0 auid=1000 ses=29 subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 msg='op=delete-user id=1001 exe="/usr/sbin/userdel" hostname=centos-1 addr=? terminal=pts/0 res=success'
+delete group
+type=DEL_GROUP msg=audit(1605873608.406:666): pid=5131 uid=0 auid=1000 ses=29 subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 msg='op=delete-group grp="test" acct="test" exe="/usr/sbin/userdel" hostname=centos-1 addr=? terminal=pts/0 res=success'
+
+cambio contrasinal
+type=USER_CHAUTHTOK msg=audit(1605801549.292:351): pid=2447 uid=0 auid=1000 ses=4 subj=unconfined_u:unconfined_r:passwd_t:s0-s0:c0.c1023 msg='op=PAM:chauthtok grantors=pam_pwquality,pam_unix acct="test" exe="/usr/bin/passwd" hostname=centos-1 addr=? terminal=pts/0 res=success'
+-->
+
+	<rule id="200660" level="5">
+        <if_sid>80705</if_sid>
+        <field name="audit.path">/etc/group|/etc/passwd|/etc/gshadow|/etc/shadow|/etc/security/opasswd</field>
+        <description>Mitre ATT&CK T1078, Initial Access, Valid Accounts, Configuration change in $(audit.path)</description>
+		<group>27001_A12.4.1, 27001_A9.2.1, 27001_A9.4.2, 27001_A16.1.7, CIS_4.8, </group>
+		<!--
+		 <mitre>
+            <id>T1078</id>
+        </mitre>
+		-->
+    </rule>
+	
+	<rule id="200661" level="5">
+        <if_sid>200506</if_sid>
+        <field name="audit.res">^success$</field>
+		<field name="audit.op">^delete-user-from-group$</field>
+        <description>Mitre ATT&CK T1078, Initial Access, Valid Accounts, Delete user from group</description>
+		<group>27001_A12.4.1, 27001_A9.2.1, 27001_A9.4.2, 27001_A16.1.7, CIS_4.8, </group>
+		<!--
+		 <mitre>
+            <id>T1078</id>
+        </mitre>
+		-->
+    </rule>
+
+	<rule id="200662" level="5">
+        <if_sid>200506</if_sid>
+        <field name="audit.res">^success$</field>
+		<field name="audit.op">^add-user-from-group$</field>
+        <description>Mitre ATT&CK T1078, Initial Access, Valid Accounts, Add user from group</description>
+		<group>27001_A12.4.1, 27001_A9.2.1, 27001_A9.4.2, 27001_A16.1.7, CIS_4.8, </group>
+		<!--
+		 <mitre>
+            <id>T1078</id>
+        </mitre>
+		-->
+    </rule>
+	
+	<rule id="200662" level="7">
+        <if_sid>200507</if_sid>
+        <field name="audit.res">^success$</field>
+		<field name="audit.op">^add-user$</field>
+        <description>Mitre ATT&CK T1136.001, Persistence, Create Account: Local Account, New user id $(audit.acct) created</description>
+		<group>27001_A12.4.1, 27001_A9.2.1, 27001_A9.4.2, 27001_A16.1.7, CIS_4.8, </group>
+		<!--
+		 <mitre>
+            <id>T1136.001</id>
+        </mitre>
+		-->
+    </rule>
+	
+	<rule id="200663" level="7">
+        <if_sid>200507</if_sid>
+        <field name="audit.res">^success$</field>
+		<field name="audit.op">^PAM:chauthtok$</field>
+        <description>Mitre ATT&CK T1078, Initial Access, Valid Accounts, Password change for user with id $(audit.acct) using $(audit.exe)</description>
+		<group>27001_A12.4.1, 27001_A9.2.1, 27001_A9.4.2, 27001_A16.1.7, CIS_4.8, </group>
+		<!--
+		 <mitre>
+            <id>T1078</id>
+        </mitre>
+		-->
+    </rule>
+
+	<rule id="200664" level="7">
+        <if_sid>200507</if_sid>
+        <field name="audit.res">^success$</field>
+		<field name="audit.op">^add-group$</field>
+        <description>Mitre ATT&CK T1078, Initial Access, Valid Accounts, Created new group with id $(audit.acct) using $(audit.exe)</description>
+		<group>27001_A12.4.1, 27001_A9.2.1, 27001_A9.4.2, 27001_A16.1.7, CIS_4.8, </group>
+		<!--
+		 <mitre>
+            <id>T1078</id>
+        </mitre>
+		-->
+    </rule>
+	
+	<rule id="200665" level="7">
+        <if_sid>200507</if_sid>
+        <field name="audit.res">^success$</field>
+		<field name="audit.op">^delete-user$</field>
+        <description>Mitre ATT&CK T1078, Initial Access, Valid Accounts, Deleted user id $(audit.acct) using $(audit.exe)</description>
+		<group>27001_A12.4.1, 27001_A9.2.1, 27001_A9.4.2, 27001_A16.1.7, CIS_4.8, </group>
+		<!--
+		 <mitre>
+            <id>T1078</id>
+        </mitre>
+		-->
+    </rule>
+	
+	<rule id="200666" level="7">
+        <if_sid>200507</if_sid>
+        <field name="audit.res">^success$</field>
+		<field name="audit.op">^delete-group$</field>
+        <description>Mitre ATT&CK T1078, Initial Access, Valid Accounts, Deleted group id $(audit.acct) using $(audit.exe)</description>
+		<group>27001_A12.4.1, 27001_A9.2.1, 27001_A9.4.2, 27001_A16.1.7, CIS_4.8, </group>
+		<!--
+		 <mitre>
+            <id>T1078</id>
+        </mitre>
+		-->
+    </rule>
+	
+<!--
+******Ensure successful file system mounts are collected******
+CIS_5.1
+
+type=SYSCALL msg=audit(1301280283.689:15549): arch=c000003e syscall=2 success=yes exit=3 a0=7f0d3af92820 a1=0 a2=0 a3=1 items=1 ppid=14660 pid=14661 auid=500 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=pts4 ses=231 comm="mount" exe="/bin/mount" key=(null)
+type=SYSCALL msg=audit(1606147167.144:306): arch=c000003e syscall=165 success=yes exit=0 a0=55da12a47f20 a1=55da12a47240 a2=55da12a47f40 a3=c0ed0001 items=2 ppid=2196 pid=2198 auid=1000 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=pts0 ses=2 comm="mount" exe="/usr/bin/mount" subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 key="mounts"
+
+-->
+
+	<rule id="200680" level="7">
+        <if_sid>200503</if_sid>
+        <field name="audit.exe">/bin/mount</field>
+		<field name="audit.success">yes</field>
+        <description>Mitre ATT&CK T1200,Initial Access, Hardware Additions, mounted block device, follow audit.id to trace path tried to be accessed in rule.id 200505</description>
+		<group>27001_A12.4.1, 27001_A8.3, 27001_A16.1.7, CIS_5.1</group>
+		<!--
+		 <mitre>
+            <id>T1200</id>
+        </mitre>
+		-->
+    </rule>
+
+<!--
+**********************Ensure file deletion events by users are collected*************
+CIS_13
+
+type=SYSCALL msg=audit(1606146565.138:293): arch=c000003e syscall=263 success=yes exit=0 a0=ffffffffffffff9c a1=ac60c0 a2=0 a3=7ffc538516e0 items=2 ppid=2080 pid=2174 auid=1000 uid=1000 gid=1000 euid=1000 suid=1000 fsuid=1000 egid=1000 sgid=1000 fsgid=1000 tty=pts0 ses=2 comm="rm" exe="/usr/bin/rm" subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 key="delete"
+
+-->
+
+	<rule id="200700" level="7">
+        <if_sid>200503</if_sid>
+        <field name="audit.exe">/bin/rm</field>
+		<field name="audit.success">yes</field>
+        <description>Mitre ATT&CK T1070.004,Defense Evasion, Indicator Removal on Host: File Deletion, follow audit.id to trace path deleted in rule.id 200505</description>
+		<group>27001_A12.4.1, 27001_A16.1.7, CIS_13</group>
+		<!--
+		 <mitre>
+            <id>T1070.004</id>
+        </mitre>
+		-->
+    </rule>
+
+<!--
+*****************Ensure kernel module loading and unloading is collected********************
+CIS_5.1
+
+type=SYSCALL msg=audit(1606215448.086:489): arch=c000003e syscall=175 success=yes exit=0 a0=709480 a1=4a3d a2=41a96e a3=6ff300 items=0 ppid=4492 pid=4560 auid=1000 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=pts0 ses=21 comm="insmod" exe="/usr/bin/kmod" subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 key="modules"
+
+type=SYSCALL msg=audit(1606215479.949:490): arch=c000003e syscall=176 success=yes exit=0 a0=9152a8 a1=800 a2=7fe849b8f860 a3=7fff72ac6820 items=0 ppid=4492 pid=4562 auid=1000 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=pts0 ses=21 comm="rmmod" exe="/usr/bin/kmod" subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 key="modules"
+
+type=KERN_MODULE msg=audit(1606215448.086:489): name="speedstep_lib"
+-->
+
+	<rule id="200720" level="7">
+        <if_sid>200503</if_sid>
+        <field name="audit.exe">/bin/kmod</field>
+		<field name="audit.success">insmod|modprobe</field>
+        <description>Mitre ATT&CK T1547.006, Persistence, Boot or Logon Autostart Execution: Kernel Modules and Extensions,load kernel module, follow audit.id to trace path deleted in rule.id 200508</description>
+		<group>27001_A12.4.1, 27001_A16.1.7,  CIS_5.1</group>
+		<!--
+		 <mitre>
+            <id>T1547.006</id>
+        </mitre>
+		-->
+    </rule>
+
+	<rule id="200721" level="7">
+        <if_sid>200503</if_sid>
+        <field name="audit.exe">/bin/kmod</field>
+		<field name="audit.success">rmmod</field>
+        <description>Mitre ATT&CK T1547.006, Persistence, Boot or Logon Autostart Execution: Kernel Modules and Extensions,unload kernel module, follow audit.id to trace path deleted in rule.id 200508</description>
+		<group>27001_A12.4.1, 27001_A16.1.7, CIS_5.1</group>
+		<!--
+		 <mitre>
+            <id>T1547.006</id>
+        </mitre>
+		-->
+    </rule>
+
+
+
+
+
+
+<!--
+
+-->
+
+</group>

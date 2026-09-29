@@ -1,0 +1,24 @@
+<!--
+  Rule: Registry Run/RunOnce key modification (Persistence)
+  NIST CSF: DE.AE-02
+  MITRE ATT&CK: T1547.001
+  Severity: High
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-23
+-->
+
+<group name="nist_csf, de.cm-09, mitre_attack,">
+
+  <rule id="100030" level="10">
+      <decoded_as>json</decoded_as>
+      <field name="win.system.providerName">Microsoft-Windows-Sysmon</field>
+      <field name="win.system.eventID">^12$|^13$|^14$</field>
+      <field name="win.eventdata.targetObject" type="pcre2">(?i)(Software\\Microsoft\\Windows\\CurrentVersion\\Run|Software\\Microsoft\\Windows\\CurrentVersion\\RunOnce)</field>
+      <description>Registry Run/RunOnce key modification (Persistence)</description>
+      <mitre>
+        <id>T1547.001</id>
+      </mitre>
+      <group>DE.AE-02</group>
+    </rule>
+
+</group>

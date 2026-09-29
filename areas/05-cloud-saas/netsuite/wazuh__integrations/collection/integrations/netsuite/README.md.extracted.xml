@@ -1,0 +1,13 @@
+<!-- Blocos de configuração extraídos, sem alterações, de wazuh/integrations:integrations/netsuite/README.md @ 38efcaaa3272 -->
+<wodle name="command">
+      <tag>NetSuite integration</tag>
+      <command>/PATH/TO/python3 /PATH/TO/custom-netsuite.py</command>
+      <interval>10m</interval>
+      <run_on_start>no</run_on_start>
+      <ignore_output>yes</ignore_output>
+  </wodle>
+
+<localfile>
+    <log_format>json</log_format>
+    <location>/var/log/netsuite_logs.json</location>
+  </localfile>

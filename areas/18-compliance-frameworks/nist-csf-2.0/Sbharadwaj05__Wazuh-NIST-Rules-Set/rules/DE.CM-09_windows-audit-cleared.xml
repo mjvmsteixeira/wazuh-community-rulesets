@@ -1,0 +1,42 @@
+<!--
+  Rule: Windows Audit Log Cleared
+  NIST CSF: DE.CM-09 (Monitoring for unauthorized personnel, connections, devices, and software)
+            RS.MA-02 (Notifications from detection systems are investigated)
+  MITRE ATT&CK: T1070.001 - Indicator Removal: Clear Windows Event Logs
+  Severity: High
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-21
+
+  Description:
+    Alerts when the Windows Security audit log is cleared (Event ID 1102).
+
+  False Positives:
+    - Rare, but may occur during maintenance or log management
+
+  Tuning Guidance:
+    Alert on all occurrences; consider adding an allowlist for approved
+    maintenance accounts if needed.
+
+  Assumptions:
+    - Windows Event Channel logs are collected by Wazuh.
+
+  Limitations:
+    - If auditing is disabled, no event will be generated.
+
+  Test: tests/sample-logs/de-cm-09/windows-audit-cleared/
+-->
+
+<group name="nist_csf,de.cm-09,windows,log_integrity">
+
+  <rule id="100009" level="10">
+    <decoded_as>json</decoded_as>
+    <field name="win.system.eventID">1102</field>
+    <field name="win.system.channel">Security</field>
+    <description>Windows Security audit log cleared</description>
+    <mitre>
+      <id>T1070.001</id>
+    </mitre>
+    <group>log_clearing,anti_forensics,nist_de.cm-09,nist_rs.ma-02</group>
+  </rule>
+
+</group>

@@ -1,0 +1,25 @@
+<!-- Blocos de configuração extraídos, sem alterações, de Sbharadwaj05/ot-sentinel-rules:docs/lab-setup/wazuh-agent-config.md @ 49252c86e503 -->
+<localfile>
+    <log_format>json</log_format>
+    <location>/var/ossec/logs/modbus/modbus_tap.log</location>
+  </localfile>
+
+<localfile>
+    <log_format>json</log_format>
+    <location>/var/ossec/logs/dnp3/dnp3_tap.log</location>
+  </localfile>
+
+<localfile>
+    <log_format>json</log_format>
+    <location>/var/ossec/logs/iec104/iec104_tap.log</location>
+  </localfile>
+
+<localfile>
+    <log_format>json</log_format>
+    <location>/var/ossec/logs/mqtt/mqtt_tap.log</location>
+  </localfile>
+
+<localfile>
+    <log_format>json</log_format>
+    <location>/var/ossec/logs/opcua/opcua_tap.log</location>
+  </localfile>

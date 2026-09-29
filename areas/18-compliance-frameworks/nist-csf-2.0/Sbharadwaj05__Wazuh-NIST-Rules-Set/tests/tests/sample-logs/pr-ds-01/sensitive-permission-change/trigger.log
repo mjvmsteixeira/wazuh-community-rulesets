@@ -1,0 +1,1 @@
+type=SYSCALL msg=audit(1779953300.123:458): path=/etc/nginx/nginx.conf comm="chmod"

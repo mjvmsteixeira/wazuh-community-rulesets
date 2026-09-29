@@ -1,0 +1,24 @@
+<!--
+  Rule: CRITICAL: Windows Defender tampering detected (Defense Evasion)
+  NIST CSF: DE.AE-02, PR.DS-01
+  MITRE ATT&CK: T1562.001
+  Severity: Critical
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-23
+-->
+
+<group name="nist_csf, de.ae-02, mitre_attack,">
+
+  <rule id="100052" level="12">
+      <decoded_as>json</decoded_as>
+      <field name="win.system.providerName">Microsoft-Windows-Sysmon</field>
+      <field name="win.system.eventID">^1$</field>
+      <field name="win.eventdata.commandLine" type="pcre2">(?i)(Set-MpPreference|Add-MpPreference).*(-DisableRealtimeMonitoring|-ExclusionPath|-ExclusionProcess|-ExclusionExtension)</field>
+      <description>CRITICAL: Windows Defender tampering detected (Defense Evasion)</description>
+      <mitre>
+        <id>T1562.001</id>
+      </mitre>
+      <group>DE.AE-02, PR.DS-01</group>
+    </rule>
+
+</group>

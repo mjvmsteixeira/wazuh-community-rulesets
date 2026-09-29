@@ -1,0 +1,10 @@
+<!-- Blocos de configuração extraídos, sem alterações, de MedNamouchi/SIEM-MikroTik-Wazuh-Graylog:phase3-optimisation/02-log-collection/LOG-01-graylog-agent-enrichment.md @ e8dfa75059c7 -->
+<localfile>
+  <log_format>syslog</log_format>
+  <location>/var/log/auth.log</location>
+</localfile>
+
+<localfile>
+  <log_format>syslog</log_format>
+  <location>/var/log/syslog</location>
+</localfile>

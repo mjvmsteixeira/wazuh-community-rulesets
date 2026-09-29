@@ -1,0 +1,1 @@
+{"win":{"system":{"eventID":"1","providerName":"Microsoft-Windows-Sysmon"},"eventdata":{"commandLine":"powershell.exe Get-Process"}}}

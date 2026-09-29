@@ -1,0 +1,39 @@
+<group name="linux,persistence,fim,">
+
+  <rule id="100700" level="12">
+    <if_group>syscheck</if_group>
+    <field name="file" type="pcre2">^/etc/(crontab|cron\.(hourly|daily|weekly|monthly)/.*|init\.d/.*|rc\.local)$|^/var/spool/cron/.*$</field>
+    <description>Linux persistence-related scheduled task file changed: $(file)</description>
+    <mitre>
+      <id>T1053.003</id>
+    </mitre>
+  </rule>
+
+  <rule id="100701" level="12">
+    <if_group>syscheck</if_group>
+    <field name="file" type="pcre2">^/etc/systemd/system/.*\.(service|timer)$|^/usr/lib/systemd/system/.*\.(service|timer)$</field>
+    <description>Linux systemd persistence artifact changed: $(file)</description>
+    <mitre>
+      <id>T1543.002</id>
+    </mitre>
+  </rule>
+
+  <rule id="100702" level="13">
+    <if_group>syscheck</if_group>
+    <field name="file" type="pcre2">^/root/\.ssh/authorized_keys$|^/home/[^/]+/\.ssh/authorized_keys$</field>
+    <description>Linux SSH authorized_keys changed: $(file)</description>
+    <mitre>
+      <id>T1098.004</id>
+    </mitre>
+  </rule>
+
+  <rule id="100703" level="12">
+    <if_group>syscheck</if_group>
+    <field name="file" type="pcre2">^/etc/(profile|bash\.bashrc|ld\.so\.preload)$|^/home/[^/]+/\.(bashrc|profile|zshrc)$</field>
+    <description>Linux shell or loader persistence file changed: $(file)</description>
+    <mitre>
+      <id>T1574.006</id>
+    </mitre>
+  </rule>
+
+</group>

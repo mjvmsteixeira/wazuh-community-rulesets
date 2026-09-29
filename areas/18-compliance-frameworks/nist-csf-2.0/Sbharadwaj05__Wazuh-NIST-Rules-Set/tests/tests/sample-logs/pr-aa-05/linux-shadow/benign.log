@@ -1,0 +1,1 @@
+type=SYSCALL msg=audit(1779953406.123:466): path=/etc/shadow uid=0 exe="/usr/bin/passwd"

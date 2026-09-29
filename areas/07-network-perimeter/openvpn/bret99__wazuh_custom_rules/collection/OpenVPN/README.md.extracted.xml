@@ -1,0 +1,28 @@
+<!-- Blocos de configuração extraídos, sem alterações, de bret99/wazuh_custom_rules:OpenVPN/README.md @ 8783ac892999 -->
+<agent_config>
+  <localfile>
+    <log_format>json</log_format>
+    <location>/var/log/openvpn/users_connections.json</location>
+  </localfile>
+</agent_config>
+
+<agent_config>
+  <localfile>
+    <log_format>json</log_format>
+    <location>/var/log/openvpn/users_connections.json</location>
+  </localfile>
+</agent_config>
+
+<agent_config>
+  <localfile>
+    <log_format>syslog</log_format>
+    <location>/var/log/openvpn/status*.log</location> <!-- Change if necessary -->
+  </localfile>    
+</agent_config>
+
+<agent_config>
+  <localfile>
+    <log_format>json</log_format>
+    <location>/var/log/openvpn/users_connections.json</location>
+  </localfile>
+</agent_config>

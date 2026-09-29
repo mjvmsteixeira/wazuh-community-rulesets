@@ -1,0 +1,15 @@
+<!-- Blocos de configuração extraídos, sem alterações, de wazuh/integrations:integrations/m365_inventory/README.md @ 38efcaaa3272 -->
+<wodle name="command">
+    <disabled>no</disabled>
+    <tag>m365_inventory</tag>
+    <command>/var/ossec/framework/python/bin/python3 /var/ossec/wodles/m365_inventory/m365_inventory.py</command>
+    <interval>10m</interval>
+    <run_on_start>yes</run_on_start>
+    <ignore_output>yes</ignore_output>
+    <timeout>300</timeout>
+  </wodle>
+
+<localfile>
+    <log_format>json</log_format>
+    <location>/var/ossec/logs/m365_inventory.log</location>
+  </localfile>

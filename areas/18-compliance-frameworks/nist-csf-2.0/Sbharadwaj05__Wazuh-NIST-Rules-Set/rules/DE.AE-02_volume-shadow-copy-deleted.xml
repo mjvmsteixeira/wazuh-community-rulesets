@@ -1,0 +1,24 @@
+<!--
+  Rule: Volume Shadow Copy deletion detected (Impact)
+  NIST CSF: DE.AE-02
+  MITRE ATT&CK: T1490
+  Severity: Critical
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-23
+-->
+
+<group name="nist_csf, de.ae-02, mitre_attack,">
+
+  <rule id="100031" level="14">
+      <decoded_as>json</decoded_as>
+      <field name="win.system.providerName">Microsoft-Windows-Sysmon</field>
+      <field name="win.system.eventID">^1$</field>
+      <field name="win.eventdata.commandLine" type="pcre2">(?i)(vssadmin|wmic).*(delete\s+shadows|shadowcopy\s+delete)</field>
+      <description>Volume Shadow Copy deletion detected (Impact)</description>
+      <mitre>
+        <id>T1490</id>
+      </mitre>
+      <group>DE.AE-02</group>
+    </rule>
+
+</group>

@@ -1,0 +1,281 @@
+
+<decoder name="radware">
+  <prematch>^" \S+="\S+" </prematch>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>role="(\w+)"</regex>
+  <order>role</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>security="(\w+)"</regex>
+  <order>security</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>severity="(\w+)"</regex>
+  <order>severity</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>sourceIp="(\d+.\d+.\d+.\d+)"</regex>
+  <order>srcip</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>sourcePort="(\d+)"</regex>
+  <order>srcport</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>targetModule="(\w+)"</regex>
+  <order>targetModule</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>title="(\.+)"</regex>
+  <order>title</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>transId="(\d+)"</regex>
+  <order>transId</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>tunnel="(\.*)"</regex>
+  <order>tunnel</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>uri="(\.+)"</regex>
+  <order>uri</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>user="(\w+)"</regex>
+  <order>user</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>vhost="(\.+)"</regex>
+  <order>vhost</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>violationCategory="(\.+)"</regex>
+  <order>violationCategory</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>violationType="(\.+)"</regex>
+  <order>violationType</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>webApp="(\.*)"]</regex>
+  <order>webApp</order>
+</decoder>
+
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>action="(\w+)"</regex>
+  <order>action</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>appPath="(\w+)"</regex>
+  <order>appPath</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>appWallTimeStamp="(\d+)"</regex>
+  <order>appWallTimeStamp</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>awVersion="(\d+)"</regex>
+  <order>awVersion</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>destination="(\d+)"</regex>
+  <order>destination</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>destinationIp="(\d+.\d+.\d+.\d+)"</regex>
+  <order>dstip</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>destinationPort="(\d+)"</regex>
+  <order>dstPort</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>deIpvType="(\.+)"</regex>
+  <order>deIpvType</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>enrichmentContainer="(\.+)"</regex>
+  <order>enrichmentContainer</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>externalIp="(\d+.\d+.\d+.\d+)"</regex>
+  <order>externalIp</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>host="(\.*)"</regex>
+  <order>host</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>method="(\w+)"</regex>
+  <order>method</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>module="(\w+)"</regex>
+  <order>module</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>protocol="(\w+)"</regex>
+  <order>protocol</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>receivedTimeStamp="(\d+)"</regex>
+  <order>receivedTimeStamp</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>refine="(\.+)"</regex>
+  <order>refine</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>refineCRC="(\d+)"</regex>
+  <order>refineCRC</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>request="(\S+) (\S+) (\S+)</regex>
+  <order>requestObj.method, requestObj.endpoint, requestObj.protocol</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>request="\.*Accept-Encoding: (\S+)</regex>
+  <order>requestObj.encoding</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>request="\.*Host: (\S+)</regex>
+  <order>requestObj.host</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>request="\.*X-RDWR-IP: (\S+)</regex>
+  <order>requestObj.rdwrIP</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>request="\.*X-RDWR-PORT: (\S+)</regex>
+  <order>requestObj.rdwrPort</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>request="\.*X-RDWR-PORT-MM-ORIG-FE-PORT: (\S+)</regex>
+  <order>requestObj.rdwrOrigPort</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>request="\.*X-RDWR-PORT-MM: (\S+)</regex>
+  <order>requestObj.rdwrPortMM</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>request="\.*X-RDWR-APP-ID: (\S+)</regex>
+  <order>requestObj.rdwrAppID</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>request="\.*Content-Length: (\d+)</regex>
+  <order>requestObj.contentLength</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>request="\.*User-Agent: (\S+); (\S+)</regex>
+  <order>requestObj.userAgent, requestObj.agentUrl</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>request="\.*Accept: (\S+)</regex>
+  <order>requestObj.accept</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>request="\.*Referer: (\S+)</regex>
+  <order>requestObj.referer</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>request="\.*Content-Type: (\S+)</regex>
+  <order>requestObj.contentType</order>
+</decoder>
+
+<decoder name="radware-next-fields">
+  <parent>radware</parent>
+  <regex>request="\.*ShieldSquare-Response: (\d+)</regex>
+  <order>requestObj.shieldsquareResponse</order>
+</decoder>

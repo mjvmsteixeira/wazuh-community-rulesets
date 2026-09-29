@@ -1,0 +1,37 @@
+<!-- Blocos de resposta extraídos, sem alterações, de Jeremy-Burgos/wazuh-detection-engineering:examples/manager/ossec.conf.active-response.example.xml @ 278dadd69731 -->
+<active-response>
+    <disabled>no</disabled>
+    <command>firewall-drop</command>
+    <location>local</location>
+    <rules_id>5710</rules_id>
+    <timeout>100</timeout>
+  </active-response>
+
+<active-response>
+    <disabled>no</disabled>
+    <command>disable-account</command>
+    <location>local</location>
+    <rules_id>120100</rules_id>
+    <timeout>300</timeout>
+  </active-response>
+
+<active-response>
+    <disabled>no</disabled>
+    <command>remove-threat</command>
+    <location>local</location>
+    <rules_id>87105</rules_id>
+  </active-response>
+
+<active-response>
+    <disabled>no</disabled>
+    <command>yara_linux</command>
+    <location>local</location>
+    <rules_id>100200,100201</rules_id>
+  </active-response>
+
+<active-response>
+    <disabled>no</disabled>
+    <command>ioc-builder</command>
+    <location>server</location>
+    <rules_id>5712,87105,31103</rules_id>
+  </active-response>

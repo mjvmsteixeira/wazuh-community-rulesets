@@ -1,0 +1,8 @@
+<!-- Blocos de resposta extraídos, sem alterações, de mjvmsteixeira/wazuh-database-compliance:shared/active-response/active-response.conf @ 21031af7fa3f -->
+<active-response>
+  <command>firewall-drop</command>
+  <location>local</location>
+  <rules_id>100203,100213,100272</rules_id>
+  <timeout>600</timeout>
+  <repeated_offenders>30,60,120,240,480</repeated_offenders>
+</active-response>

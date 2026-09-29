@@ -1,0 +1,15 @@
+<!-- Blocos de configuração extraídos, sem alterações, de wazuh/integrations:integrations/detect_new_agents/README.md @ 38efcaaa3272 -->
+<wodle name="command">
+  <disabled>no</disabled>
+  <tag>new-agent-detector</tag>
+  <command>/opt/scripts/detect_new_agents.py</command>
+  <interval>5m</interval>
+  <run_on_start>yes</run_on_start>
+  <timeout>60</timeout>
+  <ignore_output>yes</ignore_output>
+</wodle>
+
+<localfile>
+  <log_format>json</log_format>
+  <location>/var/ossec/logs/new_agents.json</location>
+</localfile>

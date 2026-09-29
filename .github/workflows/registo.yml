@@ -1,0 +1,50 @@
+# Ruleset as code: reconstrói o registo a partir das fontes fixadas no sources.lock, valida cada pasta num
+# wazuh-manager real e corre as amostras de log no wazuh-logtest. Falha se alguma ferramenta falhar;
+# as diferenças face ao que está no repositório ficam como aviso (o runner Linux distingue maiúsculas).
+name: registo
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 5 * * 1'   # segunda-feira: confirma que o snapshot continua reprodutível
+
+jobs:
+  build-validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - name: Fontes e bibliotecas de playbooks no commit fixado
+        run: ./tools/fetch.sh
+      - name: Imagem do wazuh-manager de referência
+        run: docker pull -q "wazuh/wazuh-manager:$(awk -F'"' '/OFFICIAL_TAG:-/ {sub(/.*OFFICIAL_TAG:-v/, ""); sub(/}.*/, ""); print; exit}' tools/fetch.sh)"
+      - name: Build
+        run: python3 tools/build.py --src .cache/src --official .cache/official/ruleset --out .
+      - name: wazuh-analysisd -t e verify-agent-conf por pasta
+        run: python3 tools/validate.py
+      - name: Amostras de log no wazuh-logtest
+        run: python3 tools/logtest.py
+      - name: Documentação e página
+        run: |
+          python3 tools/make_docs.py .
+          python3 tools/make_site.py .
+      - name: Diferenças face ao repositório (aviso)
+        run: |
+          git add -N . >/dev/null
+          if ! git diff --quiet -- areas catalog groups README.md NOTICE.md site; then
+            echo "::warning::o registo gerado difere do que está no repositório"
+            git diff --stat -- areas catalog groups README.md NOTICE.md site | tail -20
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: registo
+          path: |
+            site/index.html
+            catalog/
+          retention-days: 30

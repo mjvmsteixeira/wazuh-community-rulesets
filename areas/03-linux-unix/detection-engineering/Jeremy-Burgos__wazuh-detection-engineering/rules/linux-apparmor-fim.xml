@@ -1,0 +1,24 @@
+<group name="linux,apparmor,fim,">
+
+  <rule id="100630" level="3">
+    <if_group>syscheck</if_group>
+    <field name="file" type="pcre2">^/etc/apparmor\.d/.*$</field>
+    <description>Linux AppArmor profile file changed: $(file)</description>
+    <group>apparmor,fim,</group>
+  </rule>
+
+  <rule id="100631" level="5">
+    <if_group>syscheck</if_group>
+    <field name="file" type="pcre2">^/etc/apparmor\.d/(disable|force-complain)/.*$</field>
+    <description>Linux AppArmor enforcement-state file changed: $(file)</description>
+    <group>apparmor,fim,</group>
+  </rule>
+
+  <rule id="100632" level="7">
+    <if_group>syscheck</if_group>
+    <field name="file" type="pcre2">^/etc/apparmor\.d/(local|tunables|abstractions)/.*$</field>
+    <description>Linux AppArmor local override or tunable changed: $(file)</description>
+    <group>apparmor,fim,</group>
+  </rule>
+
+</group>

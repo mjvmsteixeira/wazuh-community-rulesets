@@ -1,0 +1,14 @@
+<!-- Blocos de configuração extraídos, sem alterações, de adampielak/wazuh_custom_rules:jira/README.md @ de502789e220 -->
+<agent_config>
+  <localfile>>
+    <log_format>json</log_format>
+    <location>/var/log/jira/tasks.json</location>
+  </localfile>
+</agent_config>
+
+<agent_config>
+  <localfile>
+    <log_format>json</log_format>
+    <location>/var/log/jira/tasks.json</location>
+  <localfile>
+</agent_config>

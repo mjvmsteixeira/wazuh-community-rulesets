@@ -1,0 +1,5 @@
+<!-- Blocos de configuração extraídos, sem alterações, de Jeremy-Burgos/wazuh-detection-engineering:docs/linux-auditd-notes.md @ 278dadd69731 -->
+<localfile>
+  <log_format>audit</log_format>
+  <location>/var/log/audit/audit.log</location>
+</localfile>

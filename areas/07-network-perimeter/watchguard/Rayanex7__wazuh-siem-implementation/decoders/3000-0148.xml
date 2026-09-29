@@ -1,0 +1,218 @@
+<!-- Ping -->
+<decoder name="watchguard-allow-Ping-id-seq-geo_src">
+  <program_name>firewall</program_name>
+  <prematch>msg_id="3000-0148"\s+Allow\s+External\s+Firebox\s+\d+\s+icmp\s+\d+\s+\d+\s+\S+\s+\S+\s+\d+\s+\d+\s+id=\d+\s+seq=\d+\s+geo_src="\w+"</prematch>
+  <regex>^msg_id="\S+"\s+(Allow)\s+(\w+)\s+(\w+)\s+(\d+)\s+(\w+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\d+)\s+\w+\W(\d+)\s+\w+\W(\d+)\s+\w+\W+(\w+)\W+(\w+)</regex>
+  <order>action, service, device, rule_id, protocole, packet_size, ttl, srcip, dstip, srcport, dstport, id, seq, geo_src, policy</order>
+</decoder>
+
+<decoder name="watchguard-allow-Ping-id-seq">
+  <program_name>firewall</program_name>
+  <prematch>msg_id="3000-0148"\s+Allow\s+External\s+Firebox\s+\d+\s+icmp\s+\d+\s+\d+\s+\S+\s+\S+\s+\d+\s+\d+\s+id=\d+\s+seq=\d+</prematch>
+  <regex>^msg_id="\S+"\s+(Allow)\s+(\w+)\s+(\w+)\s+(\d+)\s+(\w+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\d+)\s+\w+\W(\d+)\s+\w+\W(\d+)\W+(\w+)</regex>
+  <order>action, service, device, rule_id, protocole, packet_size, ttl, srcip, dstip, srcport, dstport, id, seq, policy</order>
+</decoder>
+<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+<!-- Allow External -->
+<decoder name="watchguard-allow-VOIP_Firebox-DATA_Firebox-VOIP_VOIP-ByGEO-Allow_External_Firebox">
+  <program_name>firewall</program_name>
+  <prematch>msg_id="3000-0148"\s+(Allow)\s+\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+geo_src="\S+"\W+\S+</prematch>
+  <regex>^msg_id="\S+"\s+(Allow)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+\s+\d+\s+\S+\s+\d+\s+\S+\s+\d+)\s+\w+\W+(\w+)\W+(\w+)</regex>
+  <order>action, service, device, rule_id, protocole, packet_size, ttl, srcip, dstip, srcport, dstport, tcp_flags, geo_src, policy</order>
+</decoder>
+
+<decoder name="watchguard-allow-Bygeo_src">
+  <program_name>firewall</program_name>
+  <prematch>msg_id="3000-0148"\s+(Allow)\s+\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+geo_src="\S+"\W+Outgoing</prematch>
+  <regex>^msg_id="\S+"\s+(Allow)\s+(\w+)\s+(\w+)\s+(\d+)\s+(\w+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\d+)\s+\w+\W+(\w+)\W+(\w+)</regex>
+  <order>action, service, device, rule_id, protocole, packet_size, ttl, srcip, dstip, srcport, dstport, geo_src, policy</order>
+</decoder>
+
+<decoder name="watchguard-allow-Bygeo_src-Tcp_flags">
+  <program_name>firewall</program_name>
+  <prematch>msg_id="3000-0148"\s+(Allow)\s+\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+offset\s+\d+\s+\w+\s+\w+\s+\w+\s+\d+\W+Outgoing</prematch>
+  <regex>^msg_id="\S+"\s+(Allow)\s+(\w+)\s+(\w+)\s+(\d+)\s+(\w+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\d+)\W+(\w+\s+\d+\s+\w+\s+\d+\s+\w+\s+\d+)\W+(\w+)</regex>
+  <order>action, service, device, rule_id, protocole, packet_size, ttl, srcip, dstip, srcport, dstport, geo_src, policy</order>
+</decoder>
+
+<decoder name="watchguard-allow-VOIP_Firebox-DATA_Firebox-VOIP_VOIP">
+  <program_name>firewall</program_name>
+  <prematch>msg_id="3000-0148" Allow</prematch>
+  <regex>^msg_id="\S+"\s+(Allow)\s+(\w+)\s+(\w+)\s+(\d+)\s+(\w+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\d+)\W+(\w+)</regex>
+  <order>Action, service, device, rule_id, protocole, packet_size, ttl, srcip, dstip, srcport, dstport, policy</order>
+</decoder>
+<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+<!-- Deny ddos server quota  -->
+<decoder name="watchguard-deny-parent">
+  <program_name>firewall</program_name>
+  <prematch>msg_id="3000-0148" Deny</prematch>
+  <regex>^msg_id="\S+"\s+(Deny)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\d+)</regex>
+  <order>action, service, device, rule_id, protocole, packet_size, ttl, srcip, dstip, srcport, dstport</order>
+</decoder>
+
+
+<decoder name="watchguard-deny-tcp_flags-geo_dst">
+  <parent>watchguard-deny-parent</parent>
+  <prematch>offset\s+\d+\s+\w+\s+\d+\s+\w+\s+\d+\W+geo_dst="\w+\W+\w+\S\S\w+\s+\w+\s+\w+\W+\w+\s+\w+</prematch>
+  <regex>^msg_id="\S+"\s+(Deny)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\w+\s+\d+\s+\w+\s+\d+\s+\w+\s+\d+)\W+\w+\S\S(\w+)\W+\w+\S\S(\w+\s+\w+\s+\w+)\W+(\w+\s+\w+)</regex>
+  <order>action, service, device, rule_id, protocole, packet_size, ttl, srcip, dstip, srcport, dstport, tcp_flags, geo_dst, message, policy</order>
+</decoder>
+
+<decoder name="watchguard-deny-ddos-tcp_flags">
+  <parent>watchguard-deny-parent</parent>
+  <prematch>offset\s+\d+\s+\w+\s+\d+\s+\w+\s+\d+\W+msg="ddos client quota"</prematch>
+  <regex>^msg_id="\S+"\s+(Deny)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\w+\s+\d+\s+\w+\s+\d+\s+\w+\s+\d+)\W+\w+\S\S(\w+\s+\w+\s+\w+)\W+(\w+\s+\w+)</regex>
+  <order>action, service, device, rule_id, protocole, packet_size, ttl, srcip, dstip, srcport, dstport, tcp_flags, message, policy</order>
+</decoder>
+
+<decoder name="watchguard-deny-ddos-geo_dst">
+  <parent>watchguard-deny-parent</parent>
+  <prematch>geo_dst="\w+"\s+msg="\w+\s+\w+\s+\w+"</prematch>
+  <regex>^msg_id="\S+"\s+(Deny)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\d+)\s+\w+\S\S(\w+)\W+\w+\S\S(\w+\s+\w+\s+\w+)\W+(\w+\s+\w+)</regex>
+  <order>action, service, device, rule_id, protocole, packet_size, ttl, srcip, dstip, srcport, dstport, geo_dst, message, policy</order>
+</decoder>
+
+<decoder name="watchguard-deny-ddos">
+  <parent>watchguard-deny-parent</parent>
+  <prematch>msg_id="\S+"\s+(Deny)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\d+)\s+msg="(\w+\s+\w+\s+\w+)</prematch>
+  <regex>^msg_id="\S+"\s+(Deny)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\d+)\s+\w+\S\S(\w+\s+\w+\s+\w+)\W+(\w+\s+\w+)</regex>
+  <order>action, service, device, rule_id, protocole, packet_size, ttl, srcip, dstip, srcport, dstport, message, policy</order>
+</decoder>
+<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+<!-- Deny Tcp Syn Failed  -->
+<decoder name="watchguard-deny-parent">
+  <program_name>firewall</program_name>
+  <prematch>msg_id="3000-0148" Deny</prematch>
+  <regex>^msg_id="\S+"\s+(Deny)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\w+\s+\d+\s+\w+\s+\d+\s+\w+\s+\d+)</regex>
+  <order>action, service, device, rule_id, protocole, packet_size, ttl, srcip, dstip, srcport, dstport, tcp_flag</order>
+</decoder>
+
+
+<decoder name="watchguard-deny-synfail-geo_dst-byUser">
+  <parent>watchguard-deny-parent</parent>
+  <prematch>geo_dst="\S+" msg="\w+ \w+ \w+ \w+ \S+ \w+ \w+ \w+ \w+ \w+ \S+ \w+ \w+ \S+ \S+ \w+ \w+ \S+" src_user="\S+"</prematch>
+  <regex>^msg_id="\S+"\s+(Deny)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+\s+\d+\s+\S+\s+\d+\s+\S+\s+\d+)\s+\w+\W+(\w+)\S\s+\w+\W+(\w+\w+\s+\w+\s+\w+\s+\w+\s+\S+\s+\w+\s+\w+\s+\w+\s+\w+\s+\w+\s+\w+\S+\s+\w+\s+\w+\s+\w+\S+\s+\w+\S+\s+\w+\s+\w+\s+\w+\S\S)\S+\s+\w+\W+(\w+\S\w+\S\w+\S\w+)\S\s+\S(\w+\s+\w+)</regex>
+  <order>action, service, device, rule_id, protocole, packet_size, ttl, srcip, dstip, srcport, dstport, tcp_flags, geo_dst, message, src_user, policy</order>
+</decoder>
+
+
+<decoder name="watchguard-deny-synfail-ByUser">
+  <parent>watchguard-deny-parent</parent>
+  <prematch>msg="\w+ \w+ \w+ \w+ \S+ \w+ \w+ \w+ \w+ \w+ \S+ \w+ \w+ \S+ \S+ \w+ \w+ \S+" src_user="\S+"</prematch>
+  <regex>^msg_id="\S+"\s+(Deny)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+\s+\d+\s+\S+\s+\d+\s+\S+\s+\d+)\s+\w+\W+(\w+\s+\w+\s+\w+\s+\w+\W+\w+\s+\w+\s+\w+\s+\w+\s+\w+\s+\w+\s+\w+\W+\w+\s+\w+\s+\w+\W+\w+\W+\w+\s+\w+\s+\w+)\W+\w+\W+(\w+\S\w+\S\w+\S\w+)\W+(\w+\s+\w+)</regex>
+  <order>action, service, device, rule_id, protocole, packet_size, ttl, srcip, dstip, srcport, dstport, tcp_flags, message, src_user, policy</order>
+</decoder>
+
+
+<decoder name="watchguard-deny-synfail-geo_dst">
+  <parent>watchguard-deny-parent</parent>
+  <prematch>geo_dst="\S+" msg="\S+\w+ \w+ \w+ \w+ \S+ \w+ \w+ \w+ \w+ \w+ \w+\S+ \w+ \w+ \w+\S+ \w+\S+ \w+ \w+ \w+\S+"</prematch>
+  <regex>^msg_id="\S+"\s+(Deny)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+\s+\d+\s+\S+\s+\d+\s+\S+\s+\d+)\s+\w+\W+(\w+)\S\s+\w+\W+(\w+\w+\s+\w+\s+\w+\s+\w+\s+\S+\s+\w+\s+\w+\s+\w+\s+\w+\s+\w+\s+\w+\S+\s+\w+\s+\w+\s+\w+\S+\s+\w+\S+\s+\w+\s+\w+\s+\w+\S\S)\W+(\w+\s+\w+)</regex>
+  <order>action, service, device, rule_id, protocole, packet_size, ttl, srcip, dstip, srcport, dstport, tcp_flags, geo_dst, message, policy</order>
+</decoder>
+
+<decoder name="watchguard-deny-synfail-geo_src">
+  <parent>watchguard-deny-parent</parent>
+  <prematch>geo_src="\S+" msg="\S+\w+ \w+ \w+ \w+ \S+ \w+ \w+ \w+ \w+ \w+ \w+\S+ \w+ \w+ \w+\S+ \w+\S+ \w+ \w+ \w+\S+"</prematch>
+  <regex>^msg_id="\S+"\s+(Deny)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+\s+\d+\s+\S+\s+\d+\s+\S+\s+\d+)\s+\w+\W+(\w+)\W+\w+\W+(\w+\s+\w+\s+\w+\s+\w+\s+\S\w+\s+\w+\s+\w+\s+\w+\s+\w+\s+\w+\s+\w+\W+\w+\s+\w+\s+\w+\W+\w+\W+\w+\W+\w+\W+\w+)\W+(\w+\s+\w+)</regex>
+  <order>action, service, device, rule_id, protocole, packet_size, ttl, srcip, dstip, srcport, dstport, tcp_flags, geo_src, message, policy</order>
+</decoder>
+
+<decoder name="watchguard-deny-synfail">
+  <parent>watchguard-deny-parent</parent>
+  <prematch>tcp syn checking failed</prematch>
+  <regex>^msg_id="\S+"\s+(Deny)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+\s+\d+\s+\S+\s+\d+\s+\S+\s+\d+)\s+\w+\W+(\w+\s+\w+\s+\w+\s+\w+\s+\S\w+\s+\w+\s+\w+\s+\w+\s+\w+\s+\w+\s+\w+\W+\w+\s+\w+\s+\w+\W+\w+\W+\w+\s+\w+\s+\w+)\W+(\w+\s+\w+)</regex>
+  <order>action, service, device, rule_id, protocole, packet_size, ttl, srcip, dstip, srcport, dstport, tcp_flags, message, policy</order>
+</decoder>
+
+<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+<!-- Deny Blocked Ports  -->
+<decoder name="watchguard-deny-parent">
+  <program_name>firewall</program_name>
+  <prematch>msg_id="3000-0148" Deny</prematch>
+  <regex>^msg_id="\S+"\s+(Deny)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\w+\s+\d+\s+\w+\s+\d+\s+\w+\s+\d+)</regex>
+  <order>action, service, device, rule_id, protocole, packet_size, ttl, srcip, dstip, srcport, dstport, tcp_flag</order>
+</decoder>
+
+
+<decoder name="watchguard-deny-blocked_ports-tcp_flags-geo_src">
+  <parent>watchguard-deny-parent</parent>
+  <prematch>offset\s+\d+\s+\w+\s+\d+\s+\w+\s+\d+\s+geo_src="\S+" msg="\S+\s+\S+"</prematch>
+  <regex>^msg_id="\S+"\s+(Deny)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+\s+\d+\s+\S+\s+\d+\s+\S+\s+\d+)\s+\w+\W+(\w+)\S\s+\w+\W+(\w+\s+\w+)\W+(\w+\s+\w+)</regex>
+  <order>action, service, device, rule_id, protocole, packet_size, ttl, srcip, dstip, srcport, dstport, tcp_flags, geo_src, message, policy</order>
+</decoder>
+
+
+<decoder name="watchguard-deny-blocked_ports-geo_src">
+  <parent>watchguard-deny-parent</parent>
+  <prematch>geo_src="\S+" msg="\S+\s+\S+"</prematch>
+  <regex>^msg_id="\S+"\s+(Deny)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\d+)\s+\w+\W+(\w+)\W+\w+\W+(\w+\s+\w+)\W+(\w+\s+\w+)</regex>
+  <order>action, service, device, rule_id, protocole, packet_size, ttl, srcip, dstip, srcport, dstport, geo_src, message, policy</order>
+</decoder>
+
+
+
+<decoder name="watchguard-deny-blocked_ports">
+  <parent>watchguard-deny-parent</parent>
+  <prematch>msg="blocked ports"\s+\SInternal Policy\S</prematch>
+  <regex>^msg_id="\S+"\s+(Deny)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+\s+\d+\s+\S+\s+\d+\s+\S+\s+\d+)\s+\w+\W+(\w+\s+\w+)\W+(\w+\s+\w+)</regex>
+  <order>action, service, device, rule_id, protocole, packet_size, ttl, srcip, dstip, srcport, dstport, tcp_flags, message, policy</order>
+</decoder>
+<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+<!-- Deny Ip Spoofing  -->
+<decoder name="watchguard-deny-parent">
+  <program_name>firewall</program_name>
+  <prematch>msg_id="3000-0148" Deny</prematch>
+  <regex>^msg_id="\S+"\s+(Deny)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\w+\s+\d+\s+\w+\s+\d+\s+\w+\s+\d+)</regex>
+  <order>action, service, device, rule_id, protocole, packet_size, ttl, srcip, dstip, srcport, dstport, tcp_flag</order>
+</decoder>
+
+
+<decoder name="watchguard-deny-ipspofing-tcp_flags">
+  <parent>watchguard-deny-parent</parent>
+  <prematch>offset\s+\d+\s+\w+\s+\d+\s+\w+\s+\w+\s+msg=\Sip\s+spoofing\s+sites\S</prematch>
+  <regex>^msg_id="\S+"\s+(Deny)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\w+\s+\d+\s+\w+\s+\d+\s+\w+\s+\d+)\s+\w+\W+(\w+\s+\w+\s+\w+)\W+(\w+\s+\w+)</regex>
+  <order>action, service, device, rule_id, protocole, packet_size, ttl, srcip, dstip, srcport, dstport, tcp_flags, message, policy</order>
+</decoder>
+
+
+<decoder name="watchguard-deny-ipspofing-no_tcp_flags">
+  <parent>watchguard-deny-parent</parent>
+  <prematch>ip spoofing sites</prematch>
+  <regex>^msg_id="\S+"\s+(Deny)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\d+)\s+\w+\W+(\w+\s+\w+\s+\w+)\W+(\w+\s+\w+)</regex>
+  <order>action, service, device, rule_id, protocole, packet_size, ttl, srcip, dstip, srcport, dstport, message, policy</order>
+</decoder>
+<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+<!-- Deny unhandled packet -->
+<decoder name="watchguard-deny-parent">
+  <program_name>firewall</program_name>
+  <prematch>msg_id="3000-0148" Deny</prematch>
+  <regex>^msg_id="\S+"\s+(Deny)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\d+)</regex>
+  <order>action, service, device, rule_id, protocole, packet_size, ttl, srcip, dstip, srcport, dstport</order>
+</decoder>
+
+
+<decoder name="watchguard-deny-By_geo_src">
+  <parent>watchguard-deny-parent</parent>
+  <prematch>geo_src="\S+"\s+\SUnhandled External Packet-00\S</prematch>
+  <regex>^msg_id="\S+"\s+(Deny)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\S+)\s+\w+\W+(\w+)\W+(\w+\s+\w+\s+\w+)</regex>
+  <order>action, service, device, rule_id, protocole, packet_size, ttl, srcip, dstip, geo_src, policy</order>
+</decoder>
+
+
+
+<decoder name="watchguard-deny-Unhandled_external_packets-igmp-ByUser">
+  <parent>watchguard-deny-parent</parent>
+  <prematch>src_user="\S+"  (\S+\s+\S+\s+\S+)</prematch>
+  <regex>^msg_id="\S+"\s+(Deny)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\S+)\s+\w+\W+(\w+\S\w+\S\w+\S\w+)\W+(\w+\s+\w+\s+\w+)</regex>
+  <order>action, service, device, rule_id, protocole, packet_size, ttl, srcip, dstip, src_user, policy</order>
+</decoder>
+
+<decoder name="watchguard-deny-Unhandled_external_packets-igmp">
+  <parent>watchguard-deny-parent</parent>
+  <prematch>(Unhandled Internal Packet-00)|(Unhandled External Packet-00)</prematch>
+  <regex>^msg_id="\S+"\s+(Deny)\s+(\S+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\S+)\W+(\w+\s+\w+\s+\w+)</regex>
+  <order>action, service, device, rule_id, protocole, packet_size, ttl, srcip, dstip, policy</order>
+</decoder>
+
+<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->

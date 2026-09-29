@@ -1,0 +1,130 @@
+<!--
+  Decoders for macOS Unified Logging System events collected by the Wazuh
+  agent's native `macos` log format (location=macos, query predicate pushed
+  centrally via the macOS agent group).
+  Astier Consulting - Jul 2026
+
+  IMPORTANT pattern note: ULS-predecoded events are only matched through
+  <program_name>-keyed decoders (same pattern as the stock
+  0580-macos_decoders.xml). A free-standing <prematch> decoder is never
+  tried on these events — hence one parent decoder per process family.
+
+  Message shape (after predecoding strips timestamp + program[pid]):
+    [subsystem:category] message
+    (library.dylib) [subsystem:category] message
+  The field extraction child is shared logic repeated per family:
+    macos.subsystem, macos.category, macos.event
+-->
+
+<!-- MDM client (Jamf-managed fleet): mdmclient + ManagedClient, plus the
+     auxiliary MDM-managed daemons that log under subsystem
+     com.apple.ManagedClient (FileVault, application firewall config, Find My,
+     profiles tool). -->
+<decoder name="macos-mdmclient">
+  <program_name type="pcre2">^(?:mdmclient|ManagedClient|FirewallService|fdesetup|findmydeviced|profiles)$</program_name>
+</decoder>
+
+<decoder name="macos-mdmclient-fields">
+  <parent>macos-mdmclient</parent>
+  <regex type="pcre2">^(?:\([\w.]+\) )?\[([\w.-]+):([^\]]*)\] (.+)$</regex>
+  <order>macos.subsystem, macos.category, macos.event</order>
+</decoder>
+
+<!-- Gatekeeper / execution policy -->
+<decoder name="macos-syspolicyd">
+  <program_name type="pcre2">^syspolicyd$</program_name>
+</decoder>
+
+<decoder name="macos-syspolicyd-fields">
+  <parent>macos-syspolicyd</parent>
+  <regex type="pcre2">^(?:\([\w.]+\) )?\[([\w.-]+):([^\]]*)\] (.+)$</regex>
+  <order>macos.subsystem, macos.category, macos.event</order>
+</decoder>
+
+<!-- XProtect (XProtectRemediator*, xprotectd...) -->
+<decoder name="macos-xprotect">
+  <program_name type="pcre2">^(?:XProtect|xprotect)</program_name>
+</decoder>
+
+<decoder name="macos-xprotect-fields">
+  <parent>macos-xprotect</parent>
+  <regex type="pcre2">^(?:\([\w.]+\) )?\[([\w.-]+):([^\]]*)\] (.+)$</regex>
+  <order>macos.subsystem, macos.category, macos.event</order>
+</decoder>
+
+<!-- Directory services (authentication) -->
+<decoder name="macos-opendirectoryd">
+  <program_name type="pcre2">^opendirectoryd$</program_name>
+</decoder>
+
+<decoder name="macos-opendirectoryd-fields">
+  <parent>macos-opendirectoryd</parent>
+  <regex type="pcre2">^(?:\([\w.]+\) )?\[([\w.-]+):([^\]]*)\] (.+)$</regex>
+  <order>macos.subsystem, macos.category, macos.event</order>
+</decoder>
+
+<!-- Application firewall: plain messages (no subsystem prefix) -->
+<decoder name="macos-socketfilterfw">
+  <program_name type="pcre2">^socketfilterfw$</program_name>
+</decoder>
+
+<!-- Package installs: "Installed ..." messages -->
+<decoder name="macos-installd">
+  <program_name type="pcre2">^installd$</program_name>
+</decoder>
+
+<!-- Jamf Protect (EDR): JamfProtect daemon, JamfDaemon, and the
+     com.jamf.protect.security-extension — same [subsystem:category] ULS
+     shape as the com.apple families. -->
+<decoder name="macos-jamfprotect">
+  <program_name type="pcre2">^(?:JamfProtect|JamfDaemon|com\.jamf\.protect[\w.-]*)$</program_name>
+</decoder>
+
+<decoder name="macos-jamfprotect-fields">
+  <parent>macos-jamfprotect</parent>
+  <regex type="pcre2">^(?:\([\w.]+\) )?\[([\w.-]+):([^\]]*)\] (.+)$</regex>
+  <order>macos.subsystem, macos.category, macos.event</order>
+</decoder>
+
+<!-- Jamf Pro agent log (/var/log/jamf.log). Its timestamp format
+     ("Thu Jul 09 11:03:42 host jamf[pid]: msg", day-of-week prefixed) is
+     NOT standard syslog: Wazuh predecoding extracts nothing, so this is a
+     raw-line prematch decoder (not program_name-keyed). -->
+<decoder name="macos-jamf">
+  <prematch type="pcre2">^\w{3} \w{3} [ \d]\d \d{2}:\d{2}:\d{2} \S+ jamf\[\d+\]: </prematch>
+</decoder>
+
+<decoder name="macos-jamf-fields">
+  <parent>macos-jamf</parent>
+  <regex type="pcre2">jamf\[\d+\]: (.+)$</regex>
+  <order>jamf.event</order>
+</decoder>
+
+<!-- Jamf binary via ULS (distinct from /var/log/jamf.log above): the jamf
+     agent also logs to the unified log as program_name "jamf" with the
+     [com.jamf.management.binary:cat] subsystem shape. -->
+<decoder name="macos-jamf-uls">
+  <program_name type="pcre2">^jamf$</program_name>
+</decoder>
+
+<decoder name="macos-jamf-uls-fields">
+  <parent>macos-jamf-uls</parent>
+  <regex type="pcre2">^(?:\([\w.]+\) )?\[([\w.-]+):([^\]]*)\] (.+)$</regex>
+  <order>macos.subsystem, macos.category, jamf.event</order>
+</decoder>
+
+<!-- Catch-all for any remaining ULS event whose process name Wazuh could
+     NOT predecode (names with spaces/+ like "Self Service+ CLI" lose their
+     program_name) — this is the only case where a prematch decoder is
+     reached (events WITH a program_name never try prematch decoders).
+     Parses process + [subsystem:category] from the raw line so nothing
+     stays undecoded; classified at level 0 (archive only). -->
+<decoder name="macos-uls-orphan">
+  <prematch type="pcre2">\[\d+\]: (?:\([\w.]+\) )?\[[\w-]+(?:\.[\w-]+)+:[^\]]*\] </prematch>
+</decoder>
+
+<decoder name="macos-uls-orphan-fields">
+  <parent>macos-uls-orphan</parent>
+  <regex type="pcre2">\[\d+\]: (?:\([\w.]+\) )?\[([\w.-]+):([^\]]*)\] (.+)$</regex>
+  <order>macos.subsystem, macos.category, macos.event</order>
+</decoder>

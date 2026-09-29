@@ -1,0 +1,7 @@
+<!-- Blocos de configuração extraídos, sem alterações, de wazuh/integrations:integrations/virustotal-ip/README.md @ 38efcaaa3272 -->
+<integration>
+  <name>custom-virustotal_ip</name>
+  <api_key>YOUR_VT_KEY</api_key> <!-- replace this with your API key -->
+  <group>sshd</group> <!-- you can use groups,rule_id or event_location-->
+  <alert_format>json</alert_format>
+</integration>

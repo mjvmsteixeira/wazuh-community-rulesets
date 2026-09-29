@@ -1,0 +1,25 @@
+<group name="barracuda_syslog,">
+        <rule id="100201" level="0">
+                <decoded_as>barracuda-syslog</decoded_as>
+                <description>Barracuda Rules.</description>
+        </rule>
+
+        <rule id="100202" level="3">
+                <if_sid>100201</if_sid>
+                <field name="message_type">Outbound</field>
+                <description>Barracuda Archive: Outbound email from $(src_address) to $(dst_address)</description>
+        </rule>
+</group>
+
+<group name="barracuda_web,">
+        <rule id="100301" level="0">
+                <decoded_as>barracuda-web</decoded_as>
+                <description>Barracuda web rules</description>
+        </rule>
+
+        <rule id="100302" level="3">
+                <if_sid>100301</if_sid>
+                <field name="stat_name">traffic_stat_hourly_outbound</field>
+                <description>Barracuda Web: Hourly outbound traffic status</description>
+        </rule>
+</group>

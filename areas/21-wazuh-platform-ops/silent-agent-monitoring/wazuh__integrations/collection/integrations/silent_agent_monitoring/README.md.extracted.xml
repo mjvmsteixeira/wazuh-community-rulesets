@@ -1,0 +1,77 @@
+<!-- Blocos de configuração extraídos, sem alterações, de wazuh/integrations:integrations/silent_agent_monitoring/README.md @ 38efcaaa3272 -->
+<localfile>` block, so the built-in JSON decoder handles them and no custom decoder is needed. They trigger rules 100121 and 100122, which are routed to email and to Telegram.
+
+## Prerequisites
+- Wazuh manager 4.4 or later, with an API user that can read `/agents`.
+- Wazuh indexer reachable from the manager, with a user that can search the alerts (or archives) indices.
+- An agent group to monitor.
+- The scripts use only the standard library, so the Wazuh embedded interpreter at `/var/ossec/framework/python/bin/python3` is enough and there is no `pip install` step.
+
+In a cluster, install on the master node only: running the script on several nodes duplicates every notification and splits the state.
+
+## Integration Steps
+
+### Add the integration files
+```
+cp silent_agent_monitor.py /var/ossec/wodles/
+cp custom-server-telegram custom-server-telegram.py /var/ossec/integrations/
+
+chown root:wazuh /var/ossec/wodles/silent_agent_monitor.py /var/ossec/integrations/custom-server-telegram*
+chmod 750 /var/ossec/wodles/silent_agent_monitor.py /var/ossec/integrations/custom-server-telegram*
+```
+A manager upgrade can replace the contents of `/var/ossec/wodles`, so keep a copy of the configured script outside `/var/ossec`.
+
+### Script configuration
+Edit the `CONFIGURATION` block at the top of `silent_agent_monitor.py`, or set the matching environment variables and leave the file untouched:
+
+| Setting | Variable | Default |
+| --- | --- | --- |
+| Wazuh API URL | `SAM_API_URL` | `https://127.0.0.1:55000` |
+| Wazuh API user / password | `SAM_API_USER`, `SAM_API_PASSWORD` | `wazuh-wui` / `CHANGE_ME` |
+| Indexer URL | `SAM_INDEXER_URL` | `https://127.0.0.1:9200` |
+| Indexer user / password | `SAM_INDEXER_USER`, `SAM_INDEXER_PASSWORD` | `admin` / `CHANGE_ME` |
+| Index pattern | `SAM_INDEX_PATTERN` | `wazuh-alerts-*` |
+| Agent groups | `--group`, `SAM_GROUP` | `Server` |
+| Silence threshold, hours | `SAM_THRESHOLD_HOURS` | `24` |
+| Lookback window, days | `SAM_LOOKBACK_DAYS` | `7` |
+| State file | `SAM_STATE_FILE` | `/var/ossec/var/silent_agents_state.json` |
+| Output log | `SAM_OUTPUT_LOG` | `/var/ossec/logs/silent_agents.json` |
+| Script log | `SAM_SCRIPT_LOG` | `/var/ossec/logs/silent_agent_monitor.log` |
+| Verify TLS certificates | `SAM_VERIFY_SSL` | `no` |
+
+The groups are normally passed with `--group` from the wodle, so `ossec.conf` owns them and the script needs no edit to change them. The file holds credentials, so keep it root-owned and `chmod 750`. `SAM_LOOKBACK_DAYS` must stay larger than the threshold: it bounds the indexer query, and an agent with nothing inside it is reported as silent for "more than" that window.
+
+The index pattern decides what counts as a log. `wazuh-alerts-*` is available everywhere but only sees alerts, so an agent that ships logs normally while producing no alert for a full day is reported as silent. `wazuh-archives-*` is the exact answer to "no logs received" but needs `<logall_json>` enabled and the archives indexed. Use archives when they are available; otherwise confirm that every agent in the group normally produces alerts within the threshold.
+
+### Wazuh manager configuration
+Add to `/var/ossec/etc/ossec.conf`:
+
+```xml
+<wodle name="command">
+  <disabled>no</disabled>
+  <tag>silent-agent-monitor</tag>
+  <command>/var/ossec/framework/python/bin/python3 /var/ossec/wodles/silent_agent_monitor.py --group Server,Windows</command>
+  <interval>1h</interval>
+  <run_on_start>yes</run_on_start>
+  <timeout>300</timeout>
+  <ignore_output>yes</ignore_output>
+</wodle>
+
+<localfile>
+  <log_format>json</log_format>
+  <location>/var/ossec/logs/silent_agents.json</location>
+</localfile>
+
+<integration>
+  <name>custom-server-telegram</name>
+  <rule_id>100121,100122</rule_id>
+  <api_key>&lt;CHAT_ID&gt;:&lt;BOT_TOKEN&gt;</api_key>
+  <alert_format>json</alert_format>
+</integration>
+
+<integration>
+  <name>custom-server-telegram</name>
+  <rule_id>100121,100122</rule_id>
+  <api_key>123123123123:8454124324:niwefn76t5safuef8s76tg</api_key>
+  <alert_format>json</alert_format>
+</integration>

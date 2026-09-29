@@ -1,0 +1,66 @@
+<decoder name="sangfor-fw">
+<program_name>fwlog</program_name>
+<type>syslog</type>
+</decoder>
+
+<decoder name="sangfor-fw">
+<parent>sangfor-fw</parent>
+<regex>Log type:(\.+),</regex>
+<order>log_type</order>
+</decoder>
+
+<decoder name="sangfor-fw">
+<parent>sangfor-fw</parent>
+<regex>policy name:(\.+),</regex>
+<order>policy_name</order>
+</decoder>
+
+<decoder name="sangfor-fw">
+<parent>sangfor-fw</parent>
+<regex>user:(\.+),</regex>
+<order>username</order>
+</decoder>
+
+
+<decoder name="sangfor-fw">
+<parent>sangfor-fw</parent>
+<regex>Src IP:(\d+.\d+.\d+.\d+),</regex>
+<order>srcip</order>
+</decoder>
+
+<decoder name="sangfor-fw">
+<parent>sangfor-fw</parent>
+<regex>Src Port:(\d+),</regex>
+<order>srcport</order>
+</decoder>
+
+<decoder name="sangfor-fw">
+<parent>sangfor-fw</parent>
+<regex>Dst IP:(\d+.\d+.\d+.\d+),</regex>
+<order>dstip</order>
+</decoder>
+
+<decoder name="sangfor-fw">
+<parent>sangfor-fw</parent>
+<regex>Dst Port: (\d+),</regex>
+<order>dstport</order>
+</decoder>
+
+<decoder name="sangfor-fw">
+<parent>sangfor-fw</parent>
+<regex>App category:(\.+),</regex>
+<order>app_category</order>
+</decoder>
+
+<decoder name="sangfor-fw">
+<parent>sangfor-fw</parent>
+<regex>application:(\.+),</regex>
+<order>application</order>
+</decoder>
+
+<decoder name="sangfor-fw">
+<parent>sangfor-fw</parent>
+<regex>action:(\w+)</regex>
+<order>action</order>
+</decoder>
+

@@ -1,0 +1,15 @@
+<decoder name="cron_service">
+  <program_name>cron|CRON</program_name>
+</decoder>
+
+<decoder name="cron_service_cmd">
+  <parent>cron_service</parent>
+  <regex type="pcre2">\((\w+)\) CMD \((.*?)\)$</regex>
+  <order>service_user,command</order>
+</decoder>
+
+<decoder name="cron_service_skip_jobs">
+  <parent>cron_service</parent>
+  <regex type="pcre2">\((\w+)\) INFO \(Skipping @(\w+) jobs .*?\)$</regex>
+  <order>service,message</order>
+</decoder>

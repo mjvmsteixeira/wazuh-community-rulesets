@@ -1,0 +1,175 @@
+<!-- Keycloak Security Rules -->
+<group name="keycloak,authentication,security,">
+
+    <!-- Base rule - Already implemented in your decoder -->
+    <rule id="110001" level="3">
+        <decoded_as>keycloak_json</decoded_as>
+        <description>Keycloak event detected</description>
+        <group>keycloak,authentication,</group>
+    </rule>
+
+    <!-- Multiple Failed Logins - Brute Force Detection -->
+    <rule id="110101" level="10" frequency="5" timeframe="300">
+        <if_matched_sid>110001</if_matched_sid>
+        <field name="type">LOGIN_ERROR</field>
+        <same_source_ip/>
+        <description>Keycloak: Possible brute force attack from IP $(ipAddress) - multiple failed logins</description>
+        <group>authentication_failures,brute_force,attack,</group>
+        <mitre>
+            <id>T1110</id> <!-- Brute Force -->
+        </mitre>
+    </rule>
+
+    <!-- Multiple Failed Logins - Different Users -->
+    <rule id="110102" level="12" frequency="5" timeframe="300">
+        <if_matched_sid>110001</if_matched_sid>
+        <field name="type">LOGIN</field>
+        <same_srcip/>
+        <different_user/>
+        <description>Keycloak: Brute force attack on multiple users from IP $(ipAddress)</description>
+        <group>authentication_failures,brute_force,attack,</group>
+        <mitre>
+            <id>T1110.003</id> <!-- Brute Force: Password Spraying -->
+        </mitre>
+    </rule>
+
+    <!-- Account Lockout Events -->
+    <rule id="110110" level="8">
+        <if_matched_sid>110001</if_matched_sid>
+        <field name="type">USER_DISABLED</field>
+        <description>Keycloak: User account $(userId) has been locked</description>
+        <group>account_locked,</group>
+    </rule>
+
+    <!-- Suspicious Login Outside of Business Hours -->
+    <rule id="110140" level="7">
+        <if_matched_sid>110001</if_matched_sid>
+        <field name="type">LOGIN</field>
+        <time>22:00-06:00</time>
+        <description>Keycloak: Login outside business hours from IP $(ipAddress)</description>
+        <group>policy_violation,suspicious_time,</group>
+    </rule>
+
+    <!-- Failed logins -->
+    <rule id="110100" level="5">
+        <if_matched_sid>110001</if_matched_sid>
+        <field name="type">LOGIN_ERROR</field>
+        <description>Keycloak: Failed login attempt from IP $(ipAddress)</description>
+        <group>authentication_failures,</group>
+    </rule>
+
+    <!-- Login From Unusual Location -->
+    <rule id="110150" level="7">
+        <if_matched_sid>110001</if_matched_sid>
+        <field name="type">LOGIN</field>
+        <different_srcgeoip/>
+        <description>Keycloak: Login from new geographic location - IP: $(ipAddress)</description>
+        <group>authentication_success,unusual_location,</group>
+    </rule>
+
+    <!-- Login From Unusual Location -->
+    <rule id="110151" level="11" frequency="5" timeframe="300">
+        <if_matched_sid>110150</if_matched_sid>
+        <description>Keycloak: Possible bruteforce attack from new geographic location - with IP: $(ipAddress)</description>
+        <group>authentication_success,unusual_location,brute_force,</group>
+    </rule>
+    
+    <!-- Client Registration -->
+    <rule id="110180" level="8">
+        <if_matched_sid>110001</if_matched_sid>
+        <field name="type">CLIENT-CREATE</field>
+        <description>Keycloak: New client $(clientId) registered by user $(userId)</description>
+        <group>configuration_changes,</group>
+    </rule>
+
+    <!-- Suspicious Client Auth Method Change -->
+    <rule id="110190" level="9">
+        <if_matched_sid>110001</if_matched_sid>
+        <field name="type">CLIENT_UPDATE</field>
+        <field name="details.client_auth_method">none</field>
+        <description>Keycloak: Client $(clientId) updated with no authentication</description>
+        <group>configuration_changes,security_bypass,</group>
+        <mitre>
+            <id>T1550</id> <!-- Use Alternate Authentication Material -->
+        </mitre>
+    </rule>
+
+    <!-- Refresh Token Reuse -->
+    <rule id="110200" level="12">
+        <if_sid>110001</if_sid>
+        <field name="type">REFRESH_TOKEN</field>
+        <field name="error">invalid_token</field>
+        <description>Keycloak: Possible refresh token replay attack for user $(userId) from IP $(ipAddress)
+        </description>
+        <group>authentication_failures,attack,replay_attack,</group>
+        <mitre>
+            <id>T1550.001</id> <!-- Use Alternate Authentication Material: Application Access Token -->
+        </mitre>
+    </rule>
+
+    <!-- Account management -->
+    <rule id="110004" level="3">
+        <if_sid>110001</if_sid>
+        <field name="type">UPDATE_PASSWORD</field>
+        <description>Keycloak: Password updated</description>
+        <options>no_full_log</options>
+    </rule>
+
+    <!-- Multiple Different IPs for Same User -->
+    <rule id="110210" level="8" frequency="4" timeframe="300">
+        <if_matched_sid>110001</if_matched_sid>
+        <field name="type">LOGIN</field>
+        <same_user/>
+        <different_srcip/>
+        <description>Keycloak: User $(userId) logged in from multiple IP addresses</description>
+        <group>authentication_success,account_sharing,suspicious_activity,</group>
+        <mitre>
+            <id>T1078</id> <!-- Valid Accounts -->
+        </mitre>
+    </rule>
+    
+    <!-- Realm configuration changes -->
+    <rule id="110005" level="4">
+        <if_sid>110001</if_sid>
+        <field name="type">REALM-UPDATE</field>
+        <description>Keycloak: User $(userId) updated Realm configuration</description>
+        <options>no_full_log</options>
+        <group>configuration_changes,system_changes,</group>
+    </rule>
+
+    <!-- Realm Creation -->
+    <rule id="110240" level="8">
+        <if_sid>110001</if_sid>
+        <field name="type">REALM-CREATE</field>
+        <description>Keycloak: New realm created</description>
+        <group>configuration_changes,system_changes,</group>
+    </rule>
+
+    <!-- Required Action Changes -->
+    <rule id="110250" level="7">
+        <if_sid>110001</if_sid>
+        <field name="type">UPDATE_REQUIRED_ACTION</field>
+        <description>Keycloak: Required actions updated for user $(userId)</description>
+        <group>account_modification,</group>
+    </rule>
+
+    <!-- Multiple failed authentication attempts -->
+    <rule id="110007" level="10" frequency="5" timeframe="300">
+        <if_matched_sid>110003</if_matched_sid>
+        <same_field>ipAddress</same_field>
+        <description>Keycloak: Multiple failed login attempts from same IP</description>
+        <mitre>
+            <id>T1078</id> <!-- Valid Accounts -->
+        </mitre>
+    </rule>
+
+    <!-- Unusual scope requested -->
+    <rule id="110270" level="7">
+        <if_sid>110001</if_sid>
+        <field name="type">CODE_TO_TOKEN</field>
+        <field name="details.scope">\.offline_access\.</field>
+        <description>Keycloak: Offline access token requested for user $(userId) from IP $(ipAddress)</description>
+        <group>authentication_success,suspicious_scope,</group>
+    </rule>
+
+</group>

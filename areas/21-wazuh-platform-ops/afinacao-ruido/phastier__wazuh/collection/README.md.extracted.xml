@@ -1,0 +1,224 @@
+<!-- Blocos de configuração extraídos, sem alterações, de phastier/wazuh:README.md @ a8bb1c05d670 -->
+<localfile>` / journald), not syslog.
+
+**Jamf Pro is collected differently**: it does not emit syslog, so its `JSSAccess.log` and `JAMFChangeManagement.log` (and `jamf-pro-installer.log`) are read directly on the Jamf Pro host by the Wazuh agent via `<localfile>` — there is no syslog pre-decoder, so the decoders match the raw file lines. See [Device configuration](#jamf-pro-on-prem).
+
+## Key technical learnings
+
+These are hard-won lessons from building these integrations:
+
+1. **Wazuh PCRE2: one child decoder per parent** — When multiple `<decoder>` children with `type="pcre2"` share the same `<parent>`, only the first one matches. Solution: create separate parent/child pairs for each log type.
+
+2. **`[^\]]+` fails in Wazuh PCRE2** — Use explicit character classes like `[a-f0-9:]+` for IPv6 addresses instead.
+
+3. **BSD syslog pre-decoder consumes the hostname** — Your decoder `<prematch>` must NOT include the device hostname (e.g., `MikroTik`), as it's already extracted by the pre-decoder.
+
+4. **UniFi CEF `program_name` extraction** — When UDM hostname contains hyphens (`UDM-Pro-Max-AC`), the pre-decoder extracts `program_name: CEF`. Decoders must use `<program_name>^CEF</program_name>` to match.
+
+5. **`<match>` vs `<field>` in rules** — `action` is a static decoded field. Use `<match>` to search the raw log, or `<decoded_as>` with specific decoder names for targeting.
+
+6. **Rule hierarchy matters** — Use `<if_sid>` for child rules. Without it, catch-all rules at the same level may match before specific ones.
+
+7. **Anchor all prematches with `^`** — Generic prematches like `lease ` can match unexpected content (e.g., "Please" contains "lease"). Always anchor with `^` to match only at the start of the decoded message.
+
+8. **Fortinet noise in Apple environments** — A single Apple TV or HomePod can generate 2000+ mDNS deny logs per minute on a FortiGate. Use level 0 rules in Wazuh to suppress noise while preserving archives for forensics.
+
+9. **Catch-all rules must be parents, not siblings** — When multiple rules share the same `<decoded_as>` without `<match>`, the catch-all (no `<match>`) wins unpredictably over specific rules. Solution: make the catch-all the parent rule, and specific rules its children via `<if_sid>`. This pattern is used for both UniFi Protect (100312 as parent) and Network CEF (100344 as parent).
+
+10. **Avoid spaces in UDM hostname** — The BSD syslog pre-decoder splits on spaces. A hostname like `UDM Pro Max AC` gets truncated to `UDM`, breaking decoder matching for Protect events. Use hyphens instead: `UDM-Pro-Max-AC`.
+
+11. **Decoder order matters across files** — Wazuh loads decoder files alphabetically. A catch-all decoder in `ubiquiti.xml` will match before specific decoders in `unifi.xml`. Place specific decoders (UPS, WiFi) in the same file as the catch-all, or ensure they load first.
+
+12. **FortiGate VPN rule: always filter on action** — A rule matching `vpntype="ipsecvpn"` without `action="deny"` will flag all ZTNA/IPsec traffic (accept, close, client-rst) as "denied". Always combine VPN type with action filter.
+
+13. **UniFi debug mode reveals hidden CEF events** — Some CEF event types (like Config Modified, ID 546) only appear when syslog is set to debug level. Enable debug temporarily to discover all available event types, then revert to normal.
+
+14. **UniFi Protect needs its own CEF parent decoder** — A hyphenated UDM hostname makes the BSD pre-decoder set `program_name=CEF` (learning #4); once that happens, the bare `ubiquiti` prematch decoder no longer matches, so **Protect events silently stop decoding** (`decoder: {}`, no alert) while Network/OS keep working because they have dedicated `*-cef-parent` decoders with `<program_name>^CEF</program_name>`. Fix: add a `unifi-protect-cef-parent` (program_name CEF + prematch `Ubiquiti\|UniFi Protect`) and point the Protect rule (100312) at it instead of `decoded_as ubiquiti`. Symptom to watch for: UniFi *Network* events alert but *Protect* events (smart detect, tamper, motion) never do.
+
+15. **UniFi AP (hostapd) events collide with the built-in `symantec-av` decoder** — Access points/switches send syslog as `<12-hex-MAC>,<model>: hostapd[..]: ... STA <mac> IEEE 802.11: associated|disassociated`. That leading `<12 hex>,` matches the built-in `symantec-av` prematch (`^\w{12},`); its own regex then fails (our prefix is hex, not the digits-CSV it expects). On some Wazuh builds the engine falls through to the next decoder so `unifi-ap` matches, but on others (observed on 4.14.5) it **locks onto `symantec-av` on the prematch alone** — AP client connect/disconnect events get mis-labelled "symantec-av" (fires rule 7300) and `unifi-ap` never runs. **Two managers on the same version can behave differently here** (decoder_dir ordering does NOT override it). Fix — upgrade-safe, no base-file edits — exclude the symantec decoder in `ossec.conf`: `<decoder_exclude>0330-symantec_decoders.xml</decoder_exclude>` plus the matching `<rule_exclude>` lines. Symptom to watch for: "who connects to which AP/switch" events appear under Symantec AV instead of UniFi.
+
+16. **A parent decoder's `<regex>`/`<order>` is IGNORED once it has children** — analysisd never applies the parent's own field extraction when `<parent>` children exist, whether a child matches or not. Pattern that works: parent = `<prematch>` only; every child captures all the fields it needs (including "parent-level" identity like program/pid or device MAC); finish with one or two catch-all children that capture identity + message for lines no specific child handles.
+
+17. **A child whose prematch matches but whose regex fails STOPS the sibling chain** — the remaining children are never tried and the event stays field-less. A trailing period is enough to trigger this (`Succeeded.` vs a regex ending in `(Succeeded|Failed.*)$`). Keep child regex endings tolerant: `[^.]*`, `\.?$`.
+
+18. **Root rules are evaluated by descending level — stock rule 1002 steals your events** — a level-1 base rule on `decoded_as` loses every log containing `failed`/`error` to the built-in "Unknown problem" rule 1002 (level 2). Put base `decoded_as` rules at level 3 and reclassify noise down to level 1 through child rules; never anchor a rule tree on a level-1/2 root.
+
+19. **`<field name="status">` is rejected in rules** — `status` (like `action`, `id`, `srcip`...) is a *static* field; analysisd fails to load the rule with "Field 'status' is static". Match static fields with their dedicated element (`<status>^down$</status>`, OS_Match syntax — no `\d` classes) or fall back to `<match>` on the raw log.
+
+20. **`<program_name>` uses OS_Regex where `\d*` does not match** — `^python\d*$` silently matches nothing. Use literal alternations: `^python$|^python2$|^python3$`.
+
+21. **UDM debug syslog doubles the hostname and kills `program_name` pre-decoding** — in debug mode every UDM *system* line reads `UDM-Pro-Max-AC UDM-Pro-Max-AC prog[pid]: msg`; the BSD pre-decoder consumes the first hostname, chokes on the second, and never sets `program_name` — so sudo/systemd/earlyoom events silently stop matching the stock decoders. `unifi_udm_syslog.xml` re-extracts program/pid from the message body (anchored `^UDM-` so it also covers UDM SE).
+
+22. **Some UniFi devices log with NO syslog timestamp** — USW-Flex 2.5G switches and UPS Tower units send `HOSTNAME <mac>,<model>-<fw>: SUBSYS: msg` with no timestamp at all; the pre-decoder extracts nothing and prematches must match from the raw line start (`^\S+ [0-9a-fA-F]{12},...`).
+
+23. **Stormshield SNS `key="value"`: dispatch on the trailing `logtype=`, keep the verdict dynamic** — every SNS event ends with `logtype="filter|ssl|alarm|vpn|server|..."`. One parent on `^id=firewall ` + one child per logtype (each discriminating on its own `logtype=`) + a catch-all last decodes every type cleanly. Decode the firewall verdict into a **dynamic** field (`fw.action`), not the static `action` — matching a static field with `<field name="action">` fails on some builds (learnings #5/#19). Space-bearing values (`msg="..."`) need a quoted capture, and ` src=`/` dst=` must be **space-anchored** so they don't match `modsrc=`/`origdst=`.
+
+24. **Wazuh `<field>` matching is substring, not exact — anchor it** — `<field name="logtype">auth</field>` also matches `authstat` (and `vpn` matches `xvpn`), so the wrong rule fires and the specific one never runs. Anchor every discriminating field match: `<field name="logtype" type="pcre2">^auth$</field>`. Same trap as prematches (learning #7), one layer up in the rules.
+
+25. **The first matching prematch wins even if its regex then fails — a sibling decoder can never fix a stock decoder** — when several children share a parent, analysisd picks the first child whose `<prematch>` matches and stops there; if that child's `<regex>` then extracts nothing, the event stays undecoded and your sibling with the better regex is never tried. To fix a stock child decoder you must `<decoder_exclude>` the whole stock file in `ossec.conf` and ship a full replacement (keeping the stock parent decoder names so stock rules keep matching) — that is exactly what `pve_extra.xml` does for Proxmox VE non-`@pam`/`@pve` realms.
+
+
+## Installation
+
+### 1. Copy decoders
+```bash
+cp decoders/mikrotik_custom.xml /var/ossec/etc/decoders/
+cp decoders/mikrotik_dhcp_extra.xml /var/ossec/etc/decoders/   # DHCP bindings + debug dump + iface links
+cp decoders/ubiquiti.xml /var/ossec/etc/decoders/
+cp decoders/unifi_ap.xml /var/ossec/etc/decoders/      # UniFi AP hostapd (client assoc/disassoc) - see learning #15
+cp decoders/unifi_ap_kernel.xml /var/ossec/etc/decoders/       # UniFi AP kernel: 802.11 auth/assoc, DHCP-SM, DNS timeouts
+cp decoders/unifi_udm_syslog.xml /var/ossec/etc/decoders/      # UDM system syslog in debug mode (doubled hostname) - see learning #21
+cp decoders/unifi_mca.xml /var/ossec/etc/decoders/             # USW-Flex 2.5G + UPS Tower (no syslog timestamp) - see learning #22
+cp decoders/journald_extra.xml /var/ossec/etc/decoders/        # zed, pvescheduler, CRON, qemu-ga, LibreNMS...
+cp decoders/web_accesslog_malformed.xml /var/ossec/etc/decoders/  # scanner probes on public endpoints
+cp decoders/authentik.xml /var/ossec/etc/decoders/             # Authentik IdP (structlog JSON via journald)
+cp decoders/pve_extra.xml /var/ossec/etc/decoders/             # Proxmox VE auth, any realm (requires excluding stock 0440 - step 4)
+cp decoders/docker_decoders.xml /var/ossec/etc/decoders/       # Docker container resources/health (agent command localfiles)
+cp decoders/synology.xml /var/ossec/etc/decoders/              # Synology DSM (Log Center syslog: auth, share access, SMB transfer log)
+cp decoders/pve_tasks.xml /var/ossec/etc/decoders/             # Proxmox VE task trail (actor+result on qm/pct/vzdump/... tasks)
+# Only if you have a Stormshield SNS firewall:
+cp decoders/stormshield_sns.xml /var/ossec/etc/decoders/          # Stormshield SNS key=value syslog (all logtypes)
+# Only if you use UniFi Protect (CEF format):
+cp decoders/unifi.xml /var/ossec/etc/decoders/
+```
+
+### 2. Copy rules
+```bash
+cp rules/mikrotik_rules.xml /var/ossec/etc/rules/
+cp rules/mikrotik_extra_rules.xml /var/ossec/etc/rules/        # DHCP bindings, link flapping (100800-100806)
+cp rules/unifi_rules.xml /var/ossec/etc/rules/
+cp rules/unifi_ap_rules.xml /var/ossec/etc/rules/      # UniFi AP hostapd rules (100368-100370)
+cp rules/unifi_ap_kernel_rules.xml /var/ossec/etc/rules/       # AP kernel events (100750-100758)
+cp rules/unifi_udm_sys_rules.xml /var/ossec/etc/rules/         # UDM system: sudo, IPS updates, earlyoom (100700-100708)
+cp rules/unifi_mca_rules.xml /var/ossec/etc/rules/             # USW-Flex + UPS Tower (100770-100778)
+cp rules/journald_extra_rules.xml /var/ossec/etc/rules/        # zed, pvescheduler, CRON... (100840-100858)
+cp rules/web_malformed_rules.xml /var/ossec/etc/rules/         # scanner detection (100820-100821)
+cp rules/stormshield_sns_rules.xml /var/ossec/etc/rules/       # Stormshield SNS (100900-100919)
+cp rules/authentik_rules.xml /var/ossec/etc/rules/             # Authentik IdP (101000-101042)
+cp rules/stock_description_overrides.xml /var/ossec/etc/rules/ # readable user/IP in stock PAM/sshd/sudo/PVE alerts
+cp rules/docker_rules.xml /var/ossec/etc/rules/                # Docker container resources/health (100100-100106)
+cp rules/synology_rules.xml /var/ossec/etc/rules/              # Synology DSM + Hyper Backup (100950-100966)
+cp rules/office365_extra_rules.xml /var/ossec/etc/rules/       # Office 365: noise cut + auth/admin/BEC/phishing (101100-101125)
+cp rules/pve_access_rules.xml /var/ossec/etc/rules/            # Proxmox pveproxy Web/API access (101131-101135, on stock web-accesslog)
+cp rules/pve_task_rules.xml /var/ossec/etc/rules/              # Proxmox VE task trail (100860-100867)
+cp rules/pbs_task_rules.xml /var/ossec/etc/rules/              # Proxmox Backup Server task archive (100870-100875)
+cp decoders/macos_uls.xml /var/ossec/etc/decoders/             # macOS Unified Logging System (program_name-keyed)
+cp rules/macos_rules.xml /var/ossec/etc/rules/                 # macOS MDM/Gatekeeper/XProtect/auth (101150-101179)
+# Only if you have a FortiGate:
+cp rules/fortigate_rules.xml /var/ossec/etc/rules/
+```
+
+### 3. Set permissions
+```bash
+chown wazuh:wazuh /var/ossec/etc/decoders/mikrotik_custom.xml
+chown wazuh:wazuh /var/ossec/etc/decoders/ubiquiti.xml
+chown wazuh:wazuh /var/ossec/etc/rules/*.xml
+chmod 660 /var/ossec/etc/decoders/*.xml /var/ossec/etc/rules/*.xml
+```
+
+### 4. Disable conflicting built-in decoders/rules
+Add to `/var/ossec/etc/ossec.conf` inside `<ruleset>`:
+```xml
+<rule_exclude>0999-bnc-unifi-rules.xml</rule_exclude>
+<!-- Required for pve_extra.xml (see learning #25): the stock PVE decoder
+     only extracts users for the @pam/@pve realms and shadows any sibling. -->
+<decoder_exclude>0440-proxmox-ve_decoders.xml</decoder_exclude>
+<!-- Required for UniFi AP hostapd events (see learning #15): the built-in
+     symantec-av decoder false-matches the "<12-hex>," AP syslog prefix. -->
+<decoder_exclude>0330-symantec_decoders.xml</decoder_exclude>
+<rule_exclude>0120-symantec-av_rules.xml</rule_exclude>
+<rule_exclude>0125-symantec-ws_rules.xml</rule_exclude>
+```
+
+### 5. Validate and restart
+```bash
+/var/ossec/bin/wazuh-analysisd -t
+systemctl restart wazuh-manager
+```
+
+## Device configuration
+
+### MikroTik RouterOS 7.x
+```routeros
+/system logging action add name=wazuh target=remote remote=<WAZUH_IP> remote-port=514 src-address=<ROUTER_IP> bsd-syslog=yes
+/system logging add action=wazuh topics=firewall
+/system logging add action=wazuh topics=dhcp
+/system logging add action=wazuh topics=system
+```
+
+### UniFi Network controller (via Network UI)
+On the UniFi Network controller (UDM Pro Max/SE, UDR, Cloud Key, UXG, self-hosted…), navigate to **Settings → System → Activity Logging (Syslog)**:
+- Select **SIEM Server**
+- Server Address: `<WAZUH_IP>`
+- Port: `514`
+- Contents: Gateway, Access Points, Switches, Admin Activity, Clients, Security Detections, Triggers, Devices, Updates, VPN, Firewall Default Policy
+
+> **Tip**: Avoid spaces in your UDM hostname (e.g., use `UDM-Pro-Max-AC` instead of `UDM Pro Max AC`). Spaces break the BSD syslog pre-decoder and cause Protect events to be misclassified.
+
+### Fortinet FortiGate
+The FortiGate should be configured to send syslog to your Wazuh server. No special format is needed — Wazuh's built-in decoders handle FortiGate's native key=value format. Our custom rules layer on top for noise suppression and enhanced alerting.
+```
+config log syslogd setting
+    set status enable
+    set server "<WAZUH_IP>"
+    set port 514
+    set facility local7
+    set source-ip "<FORTIGATE_IP>"
+end
+```
+
+### Stormshield SNS
+On the appliance, add a syslog profile under **Configuration → Notifications → Logs - Syslog - IPFIX → Syslog**: destination = your Wazuh server, **UDP port 514**, and enable the log families you want (filter, connection, alarm, system, ssl, vpn, xvpn, server, authentication…). Then declare a syslog listener on the Wazuh manager in `/var/ossec/etc/ossec.conf` and restart:
+```xml
+<remote>
+  <connection>syslog</connection>
+  <port>514</port>
+  <protocol>udp</protocol>
+  <allowed-ips>198.51.100.1/32</allowed-ips>   <!-- the SN's real source IP -->
+</remote>
+```
+> **Firewall self-traffic through IPsec**: if the SN reaches Wazuh over a *policy-based* IPsec tunnel, its **self-originated** syslog must be sourced from an IP inside the tunnel's local network, or it never enters the tunnel. Confirm the received source with `sudo tcpdump -ni any udp port 514` on the Wazuh host, then pin `<allowed-ips>` to that exact `/32` — otherwise `wazuh-remoted` silently drops packets whose source isn't whitelisted.
+
+### Jamf Pro (on-prem)
+Jamf Pro writes log4j files under `/usr/local/jss/logs/` — it does **not** send syslog. Install the Wazuh agent on the Jamf Pro host and add to `/var/ossec/etc/ossec.conf`:
+```xml
+<localfile>
+  <log_format>syslog</log_format>
+  <location>/usr/local/jss/logs/JSSAccess.log</location>
+</localfile>
+
+<localfile>
+  <log_format>multi-line-regex</log_format>
+  <location>/usr/local/jss/logs/JAMFChangeManagement.log</location>
+  <multiline_regex match="start" replace="no-replace">^\[</multiline_regex>
+</localfile>
+
+<localfile>
+  <log_format>syslog</log_format>
+  <location>/usr/local/jss/logs/jamf-pro-installer.log</location>
+</localfile>
+
+<localfile>
+  <location>journald</location>
+  <log_format>journald</log_format>
+</localfile>
+
+<agent_config>
+  <!-- Command to extract container resource information. -->
+  <localfile>
+    <log_format>command</log_format>
+    <command>docker stats --format "{{.Container}} {{.Name}} {{.CPUPerc}} {{.MemUsage}} {{.MemPerc}} {{.NetIO}}" --no-stream</command>
+    <alias>docker container stats</alias>
+    <frequency>120</frequency>
+    <out_format>$(timestamp) $(hostname) docker-container-resource: $(log)</out_format>
+  </localfile>
+
+  <!-- Command to extract container health information. -->
+  <localfile>
+    <log_format>command</log_format>
+    <command>docker ps --format "{{.Image}} {{.Names}} {{.Status}}"</command>
+    <alias>docker container ps</alias>
+    <frequency>120</frequency>
+    <out_format>$(timestamp) $(hostname) docker-container-health: $(log)</out_format>
+  </localfile>
+</agent_config>

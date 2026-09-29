@@ -1,0 +1,9 @@
+<!-- Blocos de resposta extraídos, sem alterações, de wazuh/integrations:integrations/google_threat_intelligence/README.md @ 38efcaaa3272 -->
+<integration>
+        <name>custom-gti</name>
+        <api_key>GTI_API_KEY</api_key> 
+        <alert_format>json</alert_format>
+        <options>
+        {"mitre_attack": true, "realtime": false, "log_level": "INFO", "ip_fields":"src_ip,ip_addresses", "domain_fields":"domain", "url_fields":"", "filehash_fields":"", "vuln_fields":"cveid,cve_id"}
+        </options>
+    </integration>

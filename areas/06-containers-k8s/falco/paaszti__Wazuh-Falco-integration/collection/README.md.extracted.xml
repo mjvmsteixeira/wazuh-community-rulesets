@@ -1,0 +1,5 @@
+<!-- Blocos de configuração extraídos, sem alterações, de paaszti/Wazuh-Falco-integration:README.md @ acc4e26860c2 -->
+<localfile>
+    <log_format>syslog</log_format>
+    <location>/var/log/pods/[falco-pod-name]/falco/*.log</location>
+  </localfile>

@@ -1,0 +1,5 @@
+<!-- Blocos de configuração extraídos, sem alterações, de femontanher/cortex-xdr-wazuh-api-integration:README.md @ 35c84d0cb3d3 -->
+<localfile>
+  <log_format>json</log_format>
+  <location>/var/ossec/logs/cortex_xdr/alerts.json</location>
+</localfile>

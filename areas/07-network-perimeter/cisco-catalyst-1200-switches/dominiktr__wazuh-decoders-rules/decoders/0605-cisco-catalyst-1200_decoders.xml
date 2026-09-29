@@ -1,0 +1,365 @@
+<!--
+    ____________________________________________________________________________________________________________
+
+    Cisco Catalyst 1200 Series Switch Decoders
+
+    Related rules: 1600-Cisco-Catalyst-1200_rules.xml
+
+    Original syslog message format:
+
+        %FACILITY-SEV-MNEMONIC: message
+
+    Logs format as found in archives.log:
+
+        YYYY Mon DD HH:MM:SS agent->device_ip %FACILITY-SEV-MNEMONIC: message
+
+    Example from archives.log:
+
+        2026 Feb 24 07:23:41 wazuh->192.168.0.20 %AAA-I-DISCONNECT: https connection for user myuser, source 192.168.0.15 destination 192.168.0.111 TERMINATED
+
+    Supported facilities:
+        AAA, COPY, CBD, INIT, LINK, MLDP, QOS_CLI, SecureBoot,
+        SNMP, SSHD, SSL, STP, SYSLOG, TIMEMANAGE, Entity
+    ____________________________________________________________________________________________________________
+
+    Made by:
+        dominiktr
+-->
+
+<!-- ########################## AAA ########################## -->
+
+<!-- AAA: new HTTPS connection with username -->
+<decoder name="cisco-switch-aaa-connect-https">
+  <prematch>%AAA-\w-CONNECT: New https connection for user</prematch>
+  <regex type="pcre2">%AAA-\w-CONNECT: New https connection for user (\S+), source (\S+) destination (\S+) (\w+)</regex>
+  <order>srcuser, srcip, dstip, event_action</order>
+</decoder>
+
+<!-- AAA: new HTTPS connection without username (REJECT before auth) -->
+<decoder name="cisco-switch-aaa-connect-https-nouser">
+  <prematch>%AAA-\w-\w+: New https connection, source</prematch>
+  <regex type="pcre2">%AAA-\w-\w+: New https connection, source (\S+) destination (\S+) +(\w+)</regex>
+  <order>srcip, dstip, event_action</order>
+</decoder>
+
+<!-- AAA: CLI session over SSH - established -->
+<decoder name="cisco-switch-aaa-connect-ssh">
+  <prematch>%AAA-\w-CONNECT: User CLI session</prematch>
+  <regex type="pcre2">%AAA-\w-CONNECT: User CLI session for user (\S+) over (\S+) *, *source (\S+) destination +(\S+) (\w+)</regex>
+  <order>srcuser, protocol, srcip, dstip, event_action</order>
+</decoder>
+
+<!-- AAA: HTTPS session disconnected -->
+<decoder name="cisco-switch-aaa-disconnect-https">
+  <prematch>%AAA-\w-DISCONNECT: https connection</prematch>
+  <regex type="pcre2">%AAA-\w-DISCONNECT: https connection for user (\S+), source (\S+) destination (\S+) (\w+)</regex>
+  <order>srcuser, srcip, dstip, event_action</order>
+</decoder>
+
+<!-- AAA: CLI/SSH session disconnected -->
+<decoder name="cisco-switch-aaa-disconnect-ssh">
+  <prematch>%AAA-\w-DISCONNECT: User CLI session</prematch>
+  <regex type="pcre2">%AAA-\w-DISCONNECT: User CLI session for user (\S+) over (\S+) *, *source (\S+) destination +(\S+) +(\w+)</regex>
+  <order>srcuser, protocol, srcip, dstip, event_action</order>
+</decoder>
+
+<!-- AAA: SSH connection rejected -->
+<decoder name="cisco-switch-aaa-reject-ssh">
+  <prematch>%AAA-\w-REJECT: New ssh connection for</prematch>
+  <regex type="pcre2">%AAA-\w-REJECT: New ssh connection for user (\S+).+source (\S+) destination (\S+) +(\w+)</regex>
+  <order>srcuser,srcip, dstip, event_action</order>
+</decoder>
+
+<!-- AAA: HTTPS connection rejected -->
+<decoder name="cisco-switch-aaa-reject-https">
+  <prematch>%AAA-\w-REJECT: New https connection</prematch>
+  <regex type="pcre2">%AAA-\w-REJECT: New https connection for user (\S+) source (\S+) destination (\S+) +(\w+)</regex>
+  <order>srcuser, srcip, dstip, event_action</order>
+</decoder>
+
+<!-- AAA: connection rejected -->
+<decoder name="cisco-switch-aaa-reject">
+  <prematch>%AAA-\w-REJECT:</prematch>
+  <regex type="pcre2">%AAA-\w-REJECT: .+source (\S+) destination (\S+) +(\w+)</regex>
+  <order>srcip, dstip, event_action</order>
+</decoder>
+
+<!-- AAA: fallback - other AAA mnemonics -->
+<decoder name="cisco-switch-aaa-generic">
+  <prematch>%AAA-\w-</prematch>
+  <regex type="pcre2">%AAA-(\w)-(\w+): (.+)</regex>
+  <order>event_status, event_id, extra_data</order>
+</decoder>
+
+<!-- ########################## COPY ########################## -->
+
+<!-- COPY: file copy operation (source URL -> destination URL) -->
+<decoder name="cisco-switch-copy-filecpy">
+  <prematch>%COPY-\w-FILECPY:</prematch>
+  <regex type="pcre2">%COPY-\w-FILECPY: Files Copy - source URL (\S+) destination URL (\S+)</regex>
+  <order>url, extra_data</order>
+</decoder>
+
+<!-- COPY: copy operation result (TRAP notification) -->
+<decoder name="cisco-switch-copy-trap">
+  <prematch>%COPY-\w-TRAP:</prematch>
+  <regex type="pcre2">%COPY-\w-TRAP: (.+)</regex>
+  <order>extra_data</order>
+</decoder>
+
+<!-- COPY: fallback - other COPY mnemonics -->
+<decoder name="cisco-switch-copy-generic">
+  <prematch>%COPY-\w-</prematch>
+  <regex type="pcre2">%COPY-(\w)-(\w+): (.+)</regex>
+  <order>event_status, event_id, extra_data</order>
+</decoder>
+
+<!-- ########################## CBD ########################## -->
+
+<!-- CBD: connection status to CBD server -->
+<decoder name="cisco-switch-cbd-connstat">
+  <prematch>%CBD-\w-CBDCONNSTAT:</prematch>
+  <regex type="pcre2">%CBD-\w-CBDCONNSTAT: (.+)</regex>
+  <order>extra_data</order>
+</decoder>
+
+<!-- CBD: fallback - other CBD events -->
+<decoder name="cisco-switch-cbd-generic">
+  <prematch>%CBD-\w-</prematch>
+  <regex type="pcre2">%CBD-(\w)-(\w+): (.+)</regex>
+  <order>event_status, event_id, extra_data</order>
+</decoder>
+
+<!-- ########################## INIT ########################## -->
+
+<!-- INIT: initialization completed -->
+<decoder name="cisco-switch-init-completed">
+  <prematch>%INIT-\w-InitCompleted:</prematch>
+  <regex type="pcre2">%INIT-\w-InitCompleted: (.+)</regex>
+  <order>extra_data</order>
+</decoder>
+
+<!-- INIT: cold startup -->
+<decoder name="cisco-switch-init-startup">
+  <prematch>%INIT-\w-Startup:</prematch>
+  <regex type="pcre2">%INIT-\w-Startup: (.+)</regex>
+  <order>extra_data</order>
+</decoder>
+
+<!-- INIT: fallback - warm reload and other init events -->
+<decoder name="cisco-switch-init-generic">
+  <prematch>%INIT-\w-</prematch>
+  <regex type="pcre2">%INIT-(\w)-(\w+): (.+)</regex>
+  <order>event_status, event_id, extra_data</order>
+</decoder>
+
+<!-- ########################## LINK ########################## -->
+
+<!-- LINK: interface came up -->
+<decoder name="cisco-switch-link-up">
+  <prematch>%LINK-\w-Up:</prematch>
+  <regex type="pcre2">%LINK-\w-Up: +(.+)</regex>
+  <order>extra_data</order>
+</decoder>
+
+<!-- LINK: interface went down -->
+<decoder name="cisco-switch-link-down">
+  <prematch>%LINK-\w-Down:</prematch>
+  <regex type="pcre2">%LINK-\w-Down: +(.+)</regex>
+  <order>extra_data</order>
+</decoder>
+
+<!-- LINK: fallback - other link events -->
+<decoder name="cisco-switch-link-generic">
+  <prematch>%LINK-\w-</prematch>
+  <regex type="pcre2">%LINK-(\w)-(\w+): (.+)</regex>
+  <order>event_status, event_id, extra_data</order>
+</decoder>
+
+<!-- ########################## STP ########################## -->
+
+<!-- STP: port status change -->
+<decoder name="cisco-switch-stp-portstatus">
+  <prematch>%STP-\w-PORTSTATUS:</prematch>
+  <regex type="pcre2">%STP-\w-PORTSTATUS: (\S+): STP status (\w+)</regex>
+  <order>extra_data, event_status</order>
+</decoder>
+
+<!-- STP: fallback - other STP events -->
+<decoder name="cisco-switch-stp-generic">
+  <prematch>%STP-\w-</prematch>
+  <regex type="pcre2">%STP-(\w)-(\w+): (.+)</regex>
+  <order>event_status, event_id, extra_data</order>
+</decoder>
+
+<!-- ########################## SNMP ########################## -->
+
+<!-- SNMP: unauthorized access attempt -->
+<decoder name="cisco-switch-snmp-authfail">
+  <prematch>%SNMP-\w-SNMPAUTHFAIL:</prematch>
+  <regex type="pcre2">%SNMP-\w-SNMPAUTHFAIL: Access attempted by unauthorized NMS: (\S+)</regex>
+  <order>srcip</order>
+</decoder>
+
+<!-- SNMP: number of CDB items -->
+<decoder name="cisco-switch-snmp-cdb">
+  <prematch>%SNMP-\w-CDBITEMSNUM:</prematch>
+  <regex type="pcre2">%SNMP-\w-CDBITEMSNUM: (.+)</regex>
+  <order>extra_data</order>
+</decoder>
+
+<!-- SNMP: fallback -->
+<decoder name="cisco-switch-snmp-generic">
+  <prematch>%SNMP-\w-</prematch>
+  <regex type="pcre2">%SNMP-(\w)-(\w+): (.+)</regex>
+  <order>event_status, event_id, extra_data</order>
+</decoder>
+
+<!-- ########################## SSHD ########################## -->
+
+<!-- SSHD: disconnect with details -->
+<decoder name="cisco-switch-sshd-disconnect">
+  <prematch>%SSHD-\w-LOG: SSH log:</prematch>
+  <regex type="pcre2">%SSHD-\w-LOG: SSH log: (.+) from (\S+) port (\d+), Reason \(\d+\): (.+)</regex>
+  <order>extra_data, srcip, srcport, event_status</order>
+</decoder>
+
+<!-- SSHD: fallback -->
+<decoder name="cisco-switch-sshd-generic">
+  <prematch>%SSHD-\w-</prematch>
+  <regex type="pcre2">%SSHD-(\w)-(\w+): (.+)</regex>
+  <order>event_status, event_id, extra_data</order>
+</decoder>
+
+<!-- ########################## SSL ########################## -->
+
+<!-- SSL: CA certificate installed -->
+<decoder name="cisco-switch-ssl-cacert">
+  <prematch>%SSL-\w-CACERTINSTLD:</prematch>
+  <regex type="pcre2">%SSL-\w-CACERTINSTLD: Root CA Certificate type (\S+) owner \x{3C}(\S+)\x{3E} name \x{3C}(\S+)\x{3E} is installed</regex>
+  <order>extra_data, srcuser, event_id</order>
+</decoder>
+
+<!-- SSL: fallback -->
+<decoder name="cisco-switch-ssl-generic">
+  <prematch>%SSL-\w-</prematch>
+  <regex type="pcre2">%SSL-(\w)-(\w+): (.+)</regex>
+  <order>event_status, event_id, extra_data</order>
+</decoder>
+
+<!-- ########################## SYSLOG ########################## -->
+
+<!-- SYSLOG: new server added -->
+<decoder name="cisco-switch-syslog-newsrv">
+  <prematch>%SYSLOG-\w-NEWSYSLOGSERVER:</prematch>
+  <regex type="pcre2">%SYSLOG-\w-NEWSYSLOGSERVER: configure new syslog server (\S+)</regex>
+  <order>extra_data</order>
+</decoder>
+
+<!-- SYSLOG: server removed -->
+<decoder name="cisco-switch-syslog-nosrv">
+  <prematch>%SYSLOG-\w-NOSYSLOGSERVER:</prematch>
+  <regex type="pcre2">%SYSLOG-\w-NOSYSLOGSERVER: delete syslog server (\S+)</regex>
+  <order>extra_data</order>
+</decoder>
+
+<!-- SYSLOG: fallback -->
+<decoder name="cisco-switch-syslog-generic">
+  <prematch>%SYSLOG-\w-</prematch>
+  <regex type="pcre2">%SYSLOG-(\w)-(\w+): (.+)</regex>
+  <order>event_status, event_id, extra_data</order>
+</decoder>
+
+<!-- ########################## TIMEMANAGE ########################## -->
+
+<!-- TIMEMANAGE: clock updated -->
+<decoder name="cisco-switch-time-clockupdate">
+  <prematch>%TIMEMANAGE-\w-CLOCKUPDATE:</prematch>
+  <regex type="pcre2">%TIMEMANAGE-\w-CLOCKUPDATE: System clock has been updated from (.+) to (.+), Reason: (.+)</regex>
+  <order>extra_data, event_id, event_status</order>
+</decoder>
+
+<!-- TIMEMANAGE: time zone updated -->
+<decoder name="cisco-switch-time-tzoneupdate">
+  <prematch>%TIMEMANAGE-\w-TZONEUPDATE:</prematch>
+  <regex type="pcre2">%TIMEMANAGE-\w-TZONEUPDATE: Time zone updated: (.+)</regex>
+  <order>extra_data</order>
+</decoder>
+
+<!-- TIMEMANAGE: DST updated -->
+<decoder name="cisco-switch-time-smtime">
+  <prematch>%TIMEMANAGE-\w-SMTIMEUPDATE:</prematch>
+  <regex type="pcre2">%TIMEMANAGE-\w-SMTIMEUPDATE: (.+)</regex>
+  <order>extra_data</order>
+</decoder>
+
+<!-- TIMEMANAGE: active clock source changed -->
+<decoder name="cisco-switch-time-clocksrcupdate">
+  <prematch>%TIMEMANAGE-\w-CLOCKSRCUPDATE:</prematch>
+  <regex type="pcre2">%TIMEMANAGE-\w-CLOCKSRCUPDATE: Operational clock source changed from (\S+) to (\S+)</regex>
+  <order>extra_data, event_status</order>
+</decoder>
+
+<!-- TIMEMANAGE: clock source list updated -->
+<decoder name="cisco-switch-time-clocksrclst">
+  <prematch>%TIMEMANAGE-\w-CLOCKSRCLSTUPDATE:</prematch>
+  <regex type="pcre2">%TIMEMANAGE-\w-CLOCKSRCLSTUPDATE: (.+)</regex>
+  <order>extra_data</order>
+</decoder>
+
+<!-- TIMEMANAGE: RTC updated -->
+<decoder name="cisco-switch-time-rtc">
+  <prematch>%TIMEMANAGE-\w-RTCUPDATE:</prematch>
+  <regex type="pcre2">%TIMEMANAGE-\w-RTCUPDATE: (.+)</regex>
+  <order>extra_data</order>
+</decoder>
+
+<!-- TIMEMANAGE: fallback -->
+<decoder name="cisco-switch-time-generic">
+  <prematch>%TIMEMANAGE-\w-</prematch>
+  <regex type="pcre2">%TIMEMANAGE-(\w)-(\w+): (.+)</regex>
+  <order>event_status, event_id, extra_data</order>
+</decoder>
+
+<!-- ########################## QOS_CLI ########################## -->
+
+<!-- QOS: ACL modified -->
+<decoder name="cisco-switch-qos-acl">
+  <prematch>%QOS_CLI-\w-NETACLCHANGED:</prematch>
+  <regex type="pcre2">%QOS_CLI-\w-NETACLCHANGED: IP ACL '(\S+)' has been (\w+)</regex>
+  <order>event_id, event_action</order>
+</decoder>
+
+<!-- QOS: fallback -->
+<decoder name="cisco-switch-qos-generic">
+  <prematch>%QOS_CLI-\w-</prematch>
+  <regex type="pcre2">%QOS_CLI-(\w)-(\w+): (.+)</regex>
+  <order>event_status, event_id, extra_data</order>
+</decoder>
+
+<!-- ########################## SecureBoot ########################## -->
+
+<!-- SecureBoot: fallback -->
+<decoder name="cisco-switch-secureboot">
+  <prematch>%SecureBoot-\w-</prematch>
+  <regex type="pcre2">%SecureBoot-(\w)-(\w+): (.+)</regex>
+  <order>event_status, event_id, extra_data</order>
+</decoder>
+
+<!-- ########################## MLDP ########################## -->
+
+<!-- MLDP: fallback -->
+<decoder name="cisco-switch-mldp">
+  <prematch>%MLDP-\w-</prematch>
+  <regex type="pcre2">%MLDP-(\w)-(\w+): (.+)</regex>
+  <order>event_status, event_id, extra_data</order>
+</decoder>
+
+<!-- ########################## Entity ########################## -->
+
+<!-- Entity: fallback -->
+<decoder name="cisco-switch-entity">
+  <prematch>%Entity-\w-</prematch>
+  <regex type="pcre2">%Entity-(.+): (.+)</regex>
+  <order>event_id, extra_data</order>
+</decoder>

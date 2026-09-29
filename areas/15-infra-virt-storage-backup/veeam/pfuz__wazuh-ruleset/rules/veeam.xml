@@ -1,0 +1,11 @@
+<group name="veeam_mp,">
+        <rule id="100401" level="0">
+                <decoded_as>Veeam_MP</decoded_as>
+                <description>Veeam MP Rules.</description>
+        </rule>
+
+        <rule id="100402" level="3">
+                <if_sid>100401</if_sid>
+                <description>Veeam MP: $(description)</description>
+        </rule>
+</group>

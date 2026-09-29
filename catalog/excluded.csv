@@ -1,0 +1,207 @@
+repo,path,reason,rules,decoders
+MedNamouchi/SIEM-MikroTik-Wazuh-Graylog,phase1-eve-ng/wazuh/decoders/mikrotik-decoder.xml,versão de laboratório substituída pela de produção (phase2),0,6
+MedNamouchi/SIEM-MikroTik-Wazuh-Graylog,phase1-eve-ng/wazuh/rules/mikrotik-rules.xml,versão de laboratório substituída pela de produção (phase2),7,0
+MikhailKasimov/maltrail-wazuh-decoder-and-rules,0510-maltrail_decoders.xml,substituído pela variante pcre2 do mesmo autor,0,2
+adampielak/wazuh-scripts-resource,wazuh.blog/decoders/cross-platform/local_decoders_cross-platform.xml.tmp,ficheiro temporário duplicado do .xml homónimo,0,338
+adampielak/wazuh-scripts-resource,wazuh.blog/decoders/kubernetes/local_decoders_kubernetes.xml.tmp,ficheiro temporário duplicado do .xml homónimo,0,11
+adampielak/wazuh-scripts-resource,wazuh.blog/decoders/linux/local_decoders_linux.xml.tmp,ficheiro temporário duplicado do .xml homónimo,0,15
+adampielak/wazuh-scripts-resource,wazuh.blog/decoders/macos/local_decoders_macos.xml.tmp,ficheiro temporário duplicado do .xml homónimo,0,27
+adampielak/wazuh-scripts-resource,wazuh.blog/decoders/windows/local_decoders_windows.xml.tmp,ficheiro temporário duplicado do .xml homónimo,0,4
+adampielak/wazuh-scripts-resource,wazuh.blog/rules/cross-platform/local_rules_cross-platform.xml.tmp,ficheiro temporário duplicado do .xml homónimo,750,0
+adampielak/wazuh-scripts-resource,wazuh.blog/rules/dns/local_rules_dns.xml.tmp,ficheiro temporário duplicado do .xml homónimo,15,0
+adampielak/wazuh-scripts-resource,wazuh.blog/rules/kubernetes/local_rules_kubernetes.xml.tmp,ficheiro temporário duplicado do .xml homónimo,51,0
+adampielak/wazuh-scripts-resource,wazuh.blog/rules/linux/local_rules_linux.xml.tmp,ficheiro temporário duplicado do .xml homónimo,43,0
+adampielak/wazuh-scripts-resource,wazuh.blog/rules/macos/local_rules_macos.xml.tmp,ficheiro temporário duplicado do .xml homónimo,13,0
+adampielak/wazuh-scripts-resource,wazuh.blog/rules/windows/local_rules_windows.xml.tmp,ficheiro temporário duplicado do .xml homónimo,81,0
+bayusky/wazuh-custom-rules-and-decoders,sysmon/255000-sysmon_rules.xml,cópia de sametsazak/sysmon,63,0
+captainobvious1911/wazuh_windows_rules,100_logon_events_windows.xml,versão anterior de captainobvious-sec/wazuh-field-notes (mesmo autor),19,0
+captainobvious1911/wazuh_windows_rules,101-ps_events_windows.xml,versão anterior de captainobvious-sec/wazuh-field-notes (mesmo autor),33,0
+captainobvious1911/wazuh_windows_rules,102-registry_integrity_windows.xml,versão anterior de captainobvious-sec/wazuh-field-notes (mesmo autor),23,0
+captainobvious1911/wazuh_windows_rules,103-local_rules.xml,versão anterior de captainobvious-sec/wazuh-field-notes (mesmo autor),19,0
+captainobvious1911/wazuh_windows_rules,104-ad_correlation_rules.xml,versão anterior de captainobvious-sec/wazuh-field-notes (mesmo autor),9,0
+captainobvious1911/wazuh_windows_rules,105-additional_ad_detections.xml,versão anterior de captainobvious-sec/wazuh-field-notes (mesmo autor),9,0
+fusuyfusuy/wazuh_local_rules,parsed_rules.xml,derivado do sigWah (regras idênticas),696,0
+fusuyfusuy/wazuh_local_rules,wazuh-sample.xml,amostra de regras oficiais,39,0
+patt502090/CE-Group1-NetOps,wazuh/wazuh-docker/build-docker-images/wazuh-manager/config/local_rules.xml,cópia de configuração do wazuh-docker,4,0
+wazuh/integrations,integrations/caddy_integration_wazuh_v4.14.6/ruleset/decoders/caddy_decoders.xml,cópia de NucleiAv/caddy-detection-rules,0,2
+wazuh/integrations,integrations/caddy_integration_wazuh_v4.14.6/ruleset/rules/caddy_rules.xml,cópia de NucleiAv/caddy-detection-rules,29,0
+wazuh/integrations,integrations/wazuh_decoder_rule_tool/generated/decoders/local_myapp_decoder_20260307094544.xml,exemplos gerados por ferramenta,0,2
+wazuh/integrations,integrations/wazuh_decoder_rule_tool/generated/decoders/local_myapp_decoder_20260307094900.xml,exemplos gerados por ferramenta,0,2
+zz-security/wazuh-ruleset,rules/0010-rules_config.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),7,0
+zz-security/wazuh-ruleset,rules/0015-ossec_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),61,0
+zz-security/wazuh-ruleset,rules/0016-wazuh_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),23,0
+zz-security/wazuh-ruleset,rules/0017-wazuh-api_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),28,0
+zz-security/wazuh-ruleset,rules/0020-syslog_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),117,0
+zz-security/wazuh-ruleset,rules/0025-sendmail_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),19,0
+zz-security/wazuh-ruleset,rules/0030-postfix_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),27,0
+zz-security/wazuh-ruleset,rules/0035-spamd_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),3,0
+zz-security/wazuh-ruleset,rules/0040-imapd_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),5,0
+zz-security/wazuh-ruleset,rules/0045-mailscanner_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),5,0
+zz-security/wazuh-ruleset,rules/0050-ms-exchange_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),5,0
+zz-security/wazuh-ruleset,rules/0055-courier_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),7,0
+zz-security/wazuh-ruleset,rules/0065-pix_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),33,0
+zz-security/wazuh-ruleset,rules/0070-netscreenfw_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),16,0
+zz-security/wazuh-ruleset,rules/0075-cisco-ios_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),12,0
+zz-security/wazuh-ruleset,rules/0080-sonicwall_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),12,0
+zz-security/wazuh-ruleset,rules/0085-pam_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),15,0
+zz-security/wazuh-ruleset,rules/0090-telnetd_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),6,0
+zz-security/wazuh-ruleset,rules/0095-sshd_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),63,0
+zz-security/wazuh-ruleset,rules/0100-solaris_bsm_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),7,0
+zz-security/wazuh-ruleset,rules/0105-asterisk_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),15,0
+zz-security/wazuh-ruleset,rules/0110-ms_dhcp_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),49,0
+zz-security/wazuh-ruleset,rules/0115-arpwatch_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),10,0
+zz-security/wazuh-ruleset,rules/0120-symantec-av_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),4,0
+zz-security/wazuh-ruleset,rules/0125-symantec-ws_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),4,0
+zz-security/wazuh-ruleset,rules/0130-trend-osce_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),5,0
+zz-security/wazuh-ruleset,rules/0135-hordeimp_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),9,0
+zz-security/wazuh-ruleset,rules/0140-roundcube_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),4,0
+zz-security/wazuh-ruleset,rules/0145-wordpress_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),8,0
+zz-security/wazuh-ruleset,rules/0150-cimserver_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),3,0
+zz-security/wazuh-ruleset,rules/0155-dovecot_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),12,0
+zz-security/wazuh-ruleset,rules/0160-vmpop3d_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),3,0
+zz-security/wazuh-ruleset,rules/0165-vpopmail_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),8,0
+zz-security/wazuh-ruleset,rules/0170-ftpd_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),14,0
+zz-security/wazuh-ruleset,rules/0175-proftpd_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),26,0
+zz-security/wazuh-ruleset,rules/0180-pure-ftpd_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),12,0
+zz-security/wazuh-ruleset,rules/0185-vsftpd_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),7,0
+zz-security/wazuh-ruleset,rules/0190-ms_ftpd_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),8,0
+zz-security/wazuh-ruleset,rules/0195-named_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),49,0
+zz-security/wazuh-ruleset,rules/0200-smbd_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),12,0
+zz-security/wazuh-ruleset,rules/0205-racoon_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),10,0
+zz-security/wazuh-ruleset,rules/0210-vpn_concentrator_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),5,0
+zz-security/wazuh-ruleset,rules/0215-policy_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),2,0
+zz-security/wazuh-ruleset,rules/0220-msauth_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),124,0
+zz-security/wazuh-ruleset,rules/0225-mcafee_av_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),16,0
+zz-security/wazuh-ruleset,rules/0230-ms-se_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),20,0
+zz-security/wazuh-ruleset,rules/0235-vmware_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),20,0
+zz-security/wazuh-ruleset,rules/0240-ids_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),8,0
+zz-security/wazuh-ruleset,rules/0245-web_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),33,0
+zz-security/wazuh-ruleset,rules/0250-apache_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),40,0
+zz-security/wazuh-ruleset,rules/0255-zeus_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),8,0
+zz-security/wazuh-ruleset,rules/0260-nginx_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),17,0
+zz-security/wazuh-ruleset,rules/0265-php_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),13,0
+zz-security/wazuh-ruleset,rules/0270-web_appsec_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),20,0
+zz-security/wazuh-ruleset,rules/0275-squid_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),22,0
+zz-security/wazuh-ruleset,rules/0280-attack_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),13,0
+zz-security/wazuh-ruleset,rules/0285-systemd_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),6,0
+zz-security/wazuh-ruleset,rules/0290-firewalld_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),4,0
+zz-security/wazuh-ruleset,rules/0295-mysql_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),13,0
+zz-security/wazuh-ruleset,rules/0300-postgresql_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),13,0
+zz-security/wazuh-ruleset,rules/0305-dropbear_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),12,0
+zz-security/wazuh-ruleset,rules/0310-openbsd_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),44,0
+zz-security/wazuh-ruleset,rules/0315-apparmor_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),5,0
+zz-security/wazuh-ruleset,rules/0320-clam_av_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),12,0
+zz-security/wazuh-ruleset,rules/0325-opensmtpd_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),9,0
+zz-security/wazuh-ruleset,rules/0330-sysmon_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),39,0
+zz-security/wazuh-ruleset,rules/0335-unbound_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),6,0
+zz-security/wazuh-ruleset,rules/0340-puppet_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),28,0
+zz-security/wazuh-ruleset,rules/0345-netscaler_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),41,0
+zz-security/wazuh-ruleset,rules/0350-amazon_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),69,0
+zz-security/wazuh-ruleset,rules/0360-serv-u_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),25,0
+zz-security/wazuh-ruleset,rules/0365-auditd_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),44,0
+zz-security/wazuh-ruleset,rules/0375-usb_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),3,0
+zz-security/wazuh-ruleset,rules/0380-redis_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),6,0
+zz-security/wazuh-ruleset,rules/0385-oscap_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),38,0
+zz-security/wazuh-ruleset,rules/0390-fortiddos_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),104,0
+zz-security/wazuh-ruleset,rules/0391-fortigate_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),79,0
+zz-security/wazuh-ruleset,rules/0392-fortimail_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),82,0
+zz-security/wazuh-ruleset,rules/0393-fortiauth_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),6,0
+zz-security/wazuh-ruleset,rules/0395-hp_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),11,0
+zz-security/wazuh-ruleset,rules/0400-openvpn_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),7,0
+zz-security/wazuh-ruleset,rules/0405-rsa-auth-manager_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),5,0
+zz-security/wazuh-ruleset,rules/0410-imperva_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),2,0
+zz-security/wazuh-ruleset,rules/0415-sophos_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),12,0
+zz-security/wazuh-ruleset,rules/0420-freeipa_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),4,0
+zz-security/wazuh-ruleset,rules/0425-cisco-estreamer_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),6,0
+zz-security/wazuh-ruleset,rules/0430-ms_wdefender_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),3,0
+zz-security/wazuh-ruleset,rules/0435-ms_logs_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),3,0
+zz-security/wazuh-ruleset,rules/0440-ms_sqlserver_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),11,0
+zz-security/wazuh-ruleset,rules/0445-identity_guard_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),3,0
+zz-security/wazuh-ruleset,rules/0450-mongodb_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),12,0
+zz-security/wazuh-ruleset,rules/0455-docker_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),7,0
+zz-security/wazuh-ruleset,rules/0460-jenkins_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),6,0
+zz-security/wazuh-ruleset,rules/0470-vshell_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),8,0
+zz-security/wazuh-ruleset,rules/0475-suricata_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),5,0
+zz-security/wazuh-ruleset,rules/0480-qualysguard_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),7,0
+zz-security/wazuh-ruleset,rules/0485-cylance_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),10,0
+zz-security/wazuh-ruleset,rules/0490-virustotal_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),6,0
+zz-security/wazuh-ruleset,rules/0495-proxmox-ve_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),4,0
+zz-security/wazuh-ruleset,rules/0500-owncloud_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),10,0
+zz-security/wazuh-ruleset,rules/0505-vuls_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),7,0
+zz-security/wazuh-ruleset,rules/0510-ciscat_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),27,0
+zz-security/wazuh-ruleset,rules/0515-exim_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),9,0
+zz-security/wazuh-ruleset,rules/0520-vulnerability-detector_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),6,0
+zz-security/wazuh-ruleset,rules/0525-openvas_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),15,0
+zz-security/wazuh-ruleset,rules/0530-mysql_audit_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),16,0
+zz-security/wazuh-ruleset,rules/0535-mariadb_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),4,0
+zz-security/wazuh-ruleset,rules/0540-pfsense_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),3,0
+zz-security/wazuh-ruleset,rules/0545-osquery_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),174,0
+zz-security/wazuh-ruleset,rules/0550-kaspersky_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),1,0
+zz-security/wazuh-ruleset,rules/0555-azure_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),7,0
+zz-security/wazuh-ruleset,rules/0560-docker_integration_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),59,0
+zz-security/wazuh-ruleset,rules/0565-ms_ipsec_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),18,0
+zz-security/wazuh-ruleset,rules/0570-sca_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),16,0
+zz-security/wazuh-ruleset,rules/0575-win-base_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),19,0
+zz-security/wazuh-ruleset,rules/0580-win-security_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),124,0
+zz-security/wazuh-ruleset,rules/0585-win-application_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),473,0
+zz-security/wazuh-ruleset,rules/0590-win-system_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),39,0
+zz-security/wazuh-ruleset,rules/0595-win-sysmon_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),44,0
+zz-security/wazuh-ruleset,rules/0600-win-wdefender_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),113,0
+zz-security/wazuh-ruleset,rules/0601-win-vipre_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),67,0
+zz-security/wazuh-ruleset,rules/0602-win-wfirewall_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),10,0
+zz-security/wazuh-ruleset,rules/0605-win-mcafee_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),19,0
+zz-security/wazuh-ruleset,rules/0610-win-ms_logs_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),11,0
+zz-security/wazuh-ruleset,rules/0615-win-ms-se_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),19,0
+zz-security/wazuh-ruleset,rules/0620-win-generic_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),11,0
+zz-security/wazuh-ruleset,rules/0625-cisco-asa_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),34,0
+zz-security/wazuh-ruleset,rules/0625-mcafee_epo_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),2,0
+zz-security/wazuh-ruleset,rules/0630-nextcloud_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),17,0
+zz-security/wazuh-ruleset,rules/0635-owlh-zeek_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),4,0
+zz-security/wazuh-ruleset,rules/0640-junos_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),4,0
+zz-security/wazuh-ruleset,rules/0675-panda-paps_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),9,0
+zz-security/wazuh-ruleset,rules/0680-checkpoint-smart1_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),20,0
+zz-security/wazuh-ruleset,rules/0690-gcp_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),76,0
+zz-security/wazuh-ruleset,rules/0695-f5_bigip_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),43,0
+zz-security/wazuh-ruleset,rules/0700-paloalto_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),9,0
+zz-security/wazuh-ruleset,rules/0705-sophos_fw_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),11,0
+zz-security/wazuh-ruleset,rules/0715-freepbx_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),7,0
+zz-security/wazuh-ruleset,rules/0750-github_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),321,0
+zz-security/wazuh-ruleset,rules/0755-office365_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),128,0
+zz-security/wazuh-ruleset,rules/0770-gitlab_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),24,0
+zz-security/wazuh-ruleset,rules/0775-arbor_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),2,0
+zz-security/wazuh-ruleset,rules/0780-fireeye_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),5,0
+zz-security/wazuh-ruleset,rules/0785-huawei-usg_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),9,0
+zz-security/wazuh-ruleset,rules/0800-sysmon_id_1.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),26,0
+zz-security/wazuh-ruleset,rules/0810-sysmon_id_3.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),6,0
+zz-security/wazuh-ruleset,rules/0820-sysmon_id_7.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),3,0
+zz-security/wazuh-ruleset,rules/0830-sysmon_id_11.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),7,0
+zz-security/wazuh-ruleset,rules/0840-win_event_channel.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),7,0
+zz-security/wazuh-ruleset,rules/0850-audit_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),6,0
+zz-security/wazuh-ruleset,rules/0860-sysmon_id_13.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),3,0
+zz-security/wazuh-ruleset,rules/0870-sysmon_id_8.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),1,0
+zz-security/wazuh-ruleset,rules/0900-firewall_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),3,0
+zz-security/wazuh-ruleset,rules/0905-cisco-ftd_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),29,0
+zz-security/wazuh-ruleset,rules/0910-ms-exchange-proxylogon_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),8,0
+zz-security/wazuh-ruleset,rules/0915-win-powershell_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),5,0
+zz-security/wazuh-ruleset,rules/0920-oracledb_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),2,0
+zz-security/wazuh-ruleset,rules/0925-eset-remote_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),9,0
+zz-security/wazuh-ruleset,rules/0935-cloudflare-waf_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),17,0
+bayusky/wazuh-custom-rules-and-decoders,decoders/webshell_command_decoder.xml,duplicado byte-a-byte de TheMuntu/Wazuh-Detection:Vulnerabilities/Webshell detection/local_decoders.xml (introduzido 2023-01-19; este 2024-09-19),0,1
+bret99/wazuh_custom_rules,bitrix/local_decoder.xml,duplicado byte-a-byte de adampielak/wazuh_custom_rules:bitrix/local_decoder.xml (introduzido 2025-06-05; este 2025-06-05),0,12
+bret99/wazuh_custom_rules,bitrix/local_rules.xml,duplicado byte-a-byte de adampielak/wazuh_custom_rules:bitrix/local_rules.xml (introduzido 2025-06-05; este 2025-06-05),6,0
+bret99/wazuh_custom_rules,blocked_AD_users_connections/local_rules.xml,duplicado byte-a-byte de adampielak/wazuh_custom_rules:blocked_AD_users_connections/local_rules.xml (introduzido 2025-06-05; este 2025-06-05),1,0
+bret99/wazuh_custom_rules,confluence/local_rules.xml,duplicado byte-a-byte de adampielak/wazuh_custom_rules:confluence/local_rules.xml (introduzido 2025-06-05; este 2025-06-05),3,0
+bret99/wazuh_custom_rules,corp_code_leakage/local_rules.xml,duplicado byte-a-byte de adampielak/wazuh_custom_rules:corp_code_leakage/local_rules.xml (introduzido 2025-06-05; este 2025-06-05),4,0
+bret99/wazuh_custom_rules,directum/local_rules.xml,duplicado byte-a-byte de adampielak/wazuh_custom_rules:directum/local_rules.xml (introduzido 2025-06-09; este 2025-06-09),5,0
+bret99/wazuh_custom_rules,jira/local_rules.xml,duplicado byte-a-byte de adampielak/wazuh_custom_rules:jira/local_rules.xml (introduzido 2025-06-05; este 2025-06-05),3,0
+bret99/wazuh_custom_rules,kaspersky/local_decoder.xml,duplicado byte-a-byte de adampielak/wazuh_custom_rules:kaspersky/local_decoder.xml (introduzido 2025-06-05; este 2025-06-05),0,3
+bret99/wazuh_custom_rules,malware_IP/local_rules.xml,duplicado byte-a-byte de adampielak/wazuh_custom_rules:malware_IP/local_rules.xml (introduzido 2025-06-05; este 2025-06-05),6,0
+bret99/wazuh_custom_rules,mikrotik/local_decoder.xml,duplicado byte-a-byte de adampielak/wazuh_custom_rules:mikrotik/local_decoder.xml (introduzido 2025-06-05; este 2025-06-05),0,7
+bret99/wazuh_custom_rules,mikrotik/local_rules.xml,duplicado byte-a-byte de adampielak/wazuh_custom_rules:mikrotik/local_rules.xml (introduzido 2025-06-05; este 2025-06-05),5,0
+bret99/wazuh_custom_rules,not_corp_equip/local_rules.xml,duplicado byte-a-byte de adampielak/wazuh_custom_rules:not_corp_equip/local_rules.xml (introduzido 2025-06-05; este 2025-06-05),4,0
+bret99/wazuh_custom_rules,nuclei/local_rules.xml,duplicado byte-a-byte de adampielak/wazuh_custom_rules:nuclei/local_rules.xml (introduzido 2025-06-05; este 2025-06-05),7,0
+bret99/wazuh_custom_rules,proxmox/local_rules.xml,duplicado byte-a-byte de adampielak/wazuh_custom_rules:proxmox/local_rules.xml (introduzido 2025-06-05; este 2025-06-05),4,0
+bret99/wazuh_custom_rules,suspicious_processes/local_rules.xml,duplicado byte-a-byte de adampielak/wazuh_custom_rules:suspicious_processes/local_rules.xml (introduzido 2025-06-05; este 2025-06-05),1,0
+bret99/wazuh_custom_rules,vmware/local_rules.xml,duplicado byte-a-byte de adampielak/wazuh_custom_rules:vmware/local_rules.xml (introduzido 2025-06-05; este 2025-06-05),4,0
+hawkteam404/Wazuh,Wazuh-Rule-Custom/Mailtrail/maltrail_decoders.xml,duplicado byte-a-byte de socfortress/Wazuh-Rules:Maltrail/maltrail_decoders.xml (introduzido 2023-03-23; este 2025-09-30),0,2
+hawkteam404/Wazuh,Wazuh-Rule-Custom/OPNSense/opnsense_rules.xml,duplicado byte-a-byte de sanesecurityguy/opnsense-ruleset-for-wazuh:etc/rules/opnsense_rules.xml (introduzido 2023-09-03; este 2025-09-30),3,0

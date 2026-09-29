@@ -1,0 +1,27 @@
+name: Pack problem / Problema num pack
+description: A pack does not load, a decoder does not parse, a rule misfires. / Um pack não carrega, um decoder não descodifica, uma regra dispara mal.
+labels: [pack]
+body:
+  - type: input
+    id: folder
+    attributes:
+      label: Pack folder / Pasta do pack
+      description: As shown on the search page, e.g. areas/07-network-perimeter/fortigate/alextibor__wazuh-fortigate-rules-decoders
+    validations: {required: true}
+  - type: input
+    id: version
+    attributes:
+      label: Wazuh version / Versão do Wazuh
+      placeholder: 4.14.8
+    validations: {required: true}
+  - type: textarea
+    id: what
+    attributes:
+      label: What happens / O que acontece
+      description: Error from wazuh-analysisd, wazuh-logtest output, expected vs. actual. / Erro, saída do wazuh-logtest, esperado vs. obtido.
+    validations: {required: true}
+  - type: textarea
+    id: sample
+    attributes:
+      label: Log sample (redacted) / Amostra de log (anonimizada)
+      render: text

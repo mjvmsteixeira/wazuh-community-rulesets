@@ -1,0 +1,47 @@
+<group name="falco,">
+  <rule id="100200" level="0">
+    <decoded_as>falco-json</decoded_as>
+    <field name="source">syscall</field>
+    <description>Falco syscall event received</description>
+  </rule>
+
+  <rule id="100201" level="15">
+    <if_sid>100200</if_sid>
+    <field name="priority" type="pcre2">(?i)^critical$</field>
+    <description>Falco CRITICAL: $(rule) - $(output)</description>
+    <group>falco_critical,</group>
+  </rule>
+
+  <rule id="100202" level="14">
+    <if_sid>100200</if_sid>
+    <field name="priority" type="pcre2">(?i)^emergency$</field>
+    <description>Falco EMERGENCY: $(rule) - $(output)</description>
+  </rule>
+
+  <rule id="100203" level="13">
+    <if_sid>100200</if_sid>
+    <field name="priority" type="pcre2">(?i)^alert$</field>
+    <description>Falco ALERT: $(rule) - $(output)</description>
+  </rule>
+
+  <rule id="100204" level="10">
+    <if_sid>100200</if_sid>
+    <field name="priority" type="pcre2">(?i)^warning$</field>
+    <description>Falco WARNING: $(rule) - $(output)</description>
+  </rule>
+
+  <rule id="100205" level="8">
+    <if_sid>100200</if_sid>
+    <field name="priority" type="pcre2">(?i)^error$</field>
+    <description>Falco ERROR: $(rule) - $(output)</description>
+  </rule>
+
+  <rule id="100210" level="12">
+    <if_sid>100200</if_sid>
+    <field name="rule">Read sensitive file untrusted</field>
+    <description>Falco: Sensitive file read - $(output)</description>
+    <mitre>
+      <id>T1555</id>
+    </mitre>
+  </rule>
+</group>

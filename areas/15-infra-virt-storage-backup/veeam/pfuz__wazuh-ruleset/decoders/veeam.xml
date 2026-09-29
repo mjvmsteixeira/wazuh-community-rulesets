@@ -1,0 +1,113 @@
+<!-- Syslog Log Decoders Veeam Logs -->
+
+<decoder name="Veeam_MP">
+    <prematch>Veeam_MP - - [origin enterpriseId="(\d+)"] [categoryId=(\d) instanceId=(\d+) </prematch>
+</decoder>
+
+<decoder name="veeam_syslog">
+        <parent>Veeam_MP</parent>
+        <regex>JobSessionID="(\.+)" </regex>
+        <order>jobsession_id</order>
+</decoder>
+
+<decoder name="veeam_syslog">
+        <parent>Veeam_MP</parent>
+        <regex>JobID="(\.+)" </regex>
+        <order>job_id</order>
+</decoder>
+
+<decoder name="veeam_syslog">
+        <parent>Veeam_MP</parent>
+        <regex>JobType="(\d+)" </regex>
+        <order>job_type</order>
+</decoder>
+
+<decoder name="veeam_syslog">
+        <parent>Veeam_MP</parent>
+        <regex>Platform="(\d)" </regex>
+        <order>platform</order>
+</decoder>
+
+<decoder name="veeam_syslog">
+        <parent>Veeam_MP</parent>
+        <regex>Flags="(\d)" </regex>
+        <order>flags</order>
+</decoder>
+
+<decoder name="veeam_syslog">
+        <parent>Veeam_MP</parent>
+        <regex>VbrHostName="(\S+)" </regex>
+        <order>vbr_hostname</order>
+</decoder>
+
+<decoder name="veeam_syslog">
+        <parent>Veeam_MP</parent>
+        <regex>VbrVersion="(\.+)" </regex>
+        <order>vbr_version</order>
+</decoder>
+
+<decoder name="veeam_syslog">
+        <parent>Veeam_MP</parent>
+        <regex>Version="(\d)" </regex>
+        <order>version</order>
+</decoder>
+
+<decoder name="veeam_syslog">
+        <parent>Veeam_MP</parent>
+        <regex>Description="(\.+)"]$</regex>
+        <order>Description</order>
+</decoder>
+
+<decoder name="veeam_syslog">
+        <parent>Veeam_MP</parent>
+        <regex>OibID="(\.+)" </regex>
+        <order>oib_id</order>
+</decoder>
+
+<decoder name="veeam_syslog">
+        <parent>Veeam_MP</parent>
+        <regex>OriginalOibID="(\.+)" </regex>
+        <order>originaloib_id</order>
+</decoder>
+
+<decoder name="veeam_syslog">
+        <parent>Veeam_MP</parent>
+        <regex>VmRef="(\.+)" </regex>
+        <order>vmref</order>
+</decoder>
+
+<decoder name="veeam_syslog">
+        <parent>Veeam_MP</parent>
+        <regex>VmName="(\.+)" </regex>
+        <order>vm_name</order>
+</decoder>
+
+<decoder name="veeam_syslog">
+        <parent>Veeam_MP</parent>
+        <regex>ServerName="(\.+)" </regex>
+        <order>server_name</order>
+</decoder>
+
+<decoder name="veeam_syslog">
+        <parent>Veeam_MP</parent>
+        <regex>DateTime="(\.+)" </regex>
+        <order>date_time</order>
+</decoder>
+
+<decoder name="veeam_syslog">
+        <parent>Veeam_MP</parent>
+        <regex>IsCorrupted="(\S+)" </regex>
+        <order>is_corrupted</order>
+</decoder>
+
+<decoder name="veeam_syslog">
+        <parent>Veeam_MP</parent>
+        <regex>StorageSize="(\d+)" </regex>
+        <order>storage_size</order>
+</decoder>
+
+<decoder name="veeam_syslog">
+        <parent>Veeam_MP</parent>
+        <regex>RepositoryID="(\.+)" </regex>
+        <order>repository_id</order>
+</decoder>

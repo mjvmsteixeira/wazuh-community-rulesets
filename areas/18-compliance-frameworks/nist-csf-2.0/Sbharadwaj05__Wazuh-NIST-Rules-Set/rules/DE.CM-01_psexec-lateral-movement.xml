@@ -1,0 +1,43 @@
+<!--
+  Rule: PSExec Lateral Movement
+  NIST CSF: DE.CM-01 (The network is monitored to detect potential cybersecurity events)
+            DE.AE-02 (Detected events are analyzed to understand attack targets and methods)
+  MITRE ATT&CK: T1021.002 - Remote Services: SMB/Windows Admin Shares
+  Severity: High
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-21
+
+  Description:
+    Detects creation of the PSEXESVC service, a strong indicator of PSExec
+    lateral movement.
+
+  False Positives:
+    - Legitimate administrative use of PSExec
+
+  Tuning Guidance:
+    Allowlist known admin hosts or service accounts if PSExec is used by IT.
+
+  Assumptions:
+    - Windows Event Channel logs include Service Control Manager events.
+
+  Limitations:
+    - Alternate tools may not use PSEXESVC and will not be detected.
+
+  Test: tests/sample-logs/de-cm-01/psexec-lateral-movement/
+-->
+
+<group name="nist_csf,de.cm-01,windows,lateral_movement">
+
+  <rule id="100010" level="10">
+    <decoded_as>json</decoded_as>
+    <field name="win.system.eventID">7045</field>
+    <field name="win.system.providerName">Service Control Manager</field>
+    <field name="win.eventdata.serviceName">PSEXESVC</field>
+    <description>Possible PSExec lateral movement (PSEXESVC created)</description>
+    <mitre>
+      <id>T1021.002</id>
+    </mitre>
+    <group>lateral_movement,psexec,nist_de.cm-01,nist_de.ae-02</group>
+  </rule>
+
+</group>

@@ -1,0 +1,99 @@
+<!-- Stalwart Mail Server Decoders -->
+<decoder name="stalwart-mail">
+  <prematch>^\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\dZ</prematch>
+</decoder>
+
+<!-- Authentication Success Decoder -->
+<decoder name="stalwart-mail-auth-success">
+  <parent>stalwart-mail</parent>
+  <prematch>Authentication successful \(auth.success\)</prematch>
+  <regex offset="after_prematch">listenerId = "(\w+)", localPort = (\d+), remoteIp = (\S+), remotePort = (\d+), accountName = "(\S+)", accountId = (\d+)</regex>
+  <order>listener_id,local_port,srcip,remote_port,dstuser,account_id</order>
+</decoder>
+
+<!-- SMTP EHLO Command Decoder -->
+<decoder name="stalwart-mail-smtp-ehlo">
+  <parent>stalwart-mail</parent>
+  <prematch>SMTP EHLO command \(smtp.ehlo\)</prematch>
+  <regex offset="after_prematch">listenerId = "(\w+)", localPort = (\d+), remoteIp = (\S+), remotePort = (\d+), domain = "(\S+)"</regex>
+  <order>listener_id,local_port,srcip,remote_port,domain</order>
+</decoder>
+
+<!-- SPF EHLO Check Decoder -->
+<decoder name="stalwart-mail-spf-ehlo">
+  <parent>stalwart-mail</parent>
+  <prematch>SPF EHLO check passed \(smtp.spf-ehlo-pass\)</prematch>
+  <regex offset="after_prematch">listenerId = "(\w+)", localPort = (\d+), remoteIp = (\S+), remotePort = (\d+), domain = "(\S+)", result = (\S+)</regex>
+  <order>listener_id,local_port,srcip,remote_port,domain,result</order>
+</decoder>
+
+<!-- TLS Handshake Decoder -->
+<decoder name="stalwart-mail-tls-handshake">
+  <parent>stalwart-mail</parent>
+  <prematch>TLS handshake \(tls.handshake\)</prematch>
+  <regex offset="after_prematch">listenerId = "(\w+)", localPort = (\d+), remoteIp = (\S+), remotePort = (\d+), listenerId = "(\w+)", version = "(\S+)", details = "(\S+)"</regex>
+  <order>listener_id,local_port,srcip,remote_port,listener_id_2,tls_version,tls_details</order>
+</decoder>
+
+<!-- IPREV Check Decoder -->
+<decoder name="stalwart-mail-iprev">
+  <parent>stalwart-mail</parent>
+  <prematch>IPREV check passed \(smtp.iprev-pass\)</prematch>
+  <regex offset="after_prematch">listenerId = "(\w+)", localPort = (\d+), remoteIp = (\S+), remotePort = (\d+), domain = "(\S+)", result = (\S+)</regex>
+  <order>listener_id,local_port,srcip,remote_port,domain,result</order>
+</decoder>
+
+<!-- SPF From Check Decoder -->
+<decoder name="stalwart-mail-spf-from">
+  <parent>stalwart-mail</parent>
+  <prematch>SPF From check passed \(smtp.spf-from-pass\)</prematch>
+  <regex offset="after_prematch">listenerId = "(\w+)", localPort = (\d+), remoteIp = (\S+), remotePort = (\d+), domain = "(\S+)", from = "(\S+)", result = (\S+)</regex>
+  <order>listener_id,local_port,srcip,remote_port,domain,from_email,result</order>
+</decoder>
+
+<!-- SMTP MAIL FROM Command Decoder -->
+<decoder name="stalwart-mail-mail-from">
+  <parent>stalwart-mail</parent>
+  <prematch>SMTP MAIL FROM command \(smtp.mail-from\)</prematch>
+  <regex offset="after_prematch">listenerId = "(\w+)", localPort = (\d+), remoteIp = (\S+), remotePort = (\d+), from = "(\S+)"</regex>
+  <order>listener_id,local_port,srcip,remote_port,from_email</order>
+</decoder>
+
+<!-- Mailbox Does Not Exist Decoder -->
+<decoder name="stalwart-mail-mailbox-not-exist">
+  <parent>stalwart-mail</parent>
+  <prematch>Mailbox does not exist \(smtp.mailbox-does-not-exist\)</prematch>
+  <regex offset="after_prematch">listenerId = "(\w+)", localPort = (\d+), remoteIp = (\S+), remotePort = (\d+), to = "(\S+)"</regex>
+  <order>listener_id,local_port,srcip,remote_port,to_email</order>
+</decoder>
+
+<!-- Invalid EHLO Command Decoder -->
+<decoder name="stalwart-mail-invalid-ehlo">
+  <parent>stalwart-mail</parent>
+  <prematch>Invalid EHLO command \(smtp.invalid-ehlo\)</prematch>
+  <regex offset="after_prematch">listenerId = "(\w+)", localPort = (\d+), remoteIp = (\S+), remotePort = (\d+), domain = "(\S+)"</regex>
+  <order>listener_id,local_port,srcip,remote_port,domain</order>
+</decoder>
+
+<!-- Authentication Not Allowed Decoder -->
+<decoder name="stalwart-mail-auth-not-allowed">
+  <parent>stalwart-mail</parent>
+  <prematch>Authentication not allowed \(smtp.auth-not-allowed\)</prematch>
+  <regex offset="after_prematch">listenerId = "(\w+)", localPort = (\d+), remoteIp = (\S+), remotePort = (\d+)</regex>
+  <order>listener_id,local_port,srcip,remote_port</order>
+</decoder>
+
+<!-- Generic Stalwart Message Decoder -->
+<decoder name="stalwart-mail-generic">
+  <parent>stalwart-mail</parent>
+  <regex type="pcre2">^\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\dZ (\w+) (.+?) \((.+?)\)</regex>
+  <order>log_level,message,event_type</order>
+</decoder>
+
+<!-- DSN Permanent Failure Notification Decoder -->
+<decoder name="stalwart-mail-dsn-perm-fail">
+  <parent>stalwart-mail</parent>
+  <prematch>DSN permanent failure notification \(delivery.dsn-perm-fail\)</prematch>
+  <regex offset="after_prematch" type="pcre2">from = "(\S+)", to = \["(\S+)"\]</regex>
+  <order>from_email,to_email</order>
+</decoder>

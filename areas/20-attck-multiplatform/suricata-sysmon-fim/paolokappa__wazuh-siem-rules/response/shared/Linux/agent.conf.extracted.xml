@@ -1,0 +1,14 @@
+<!-- Blocos de resposta extraídos, sem alterações, de paolokappa/wazuh-siem-rules:shared/Linux/agent.conf @ ac6095c5b025 -->
+<active-response>
+      <disabled>no</disabled>
+      <command>yara_linux</command>
+      <location>local</location>
+      <rules_id>550,554</rules_id>
+    </active-response>
+
+<active-response>
+      <command>host-deny</command>
+      <location>local</location>
+      <rules_id>5712,5710,5706,5503,5505,5601,5720,100002</rules_id>
+      <timeout>3600</timeout>
+    </active-response>

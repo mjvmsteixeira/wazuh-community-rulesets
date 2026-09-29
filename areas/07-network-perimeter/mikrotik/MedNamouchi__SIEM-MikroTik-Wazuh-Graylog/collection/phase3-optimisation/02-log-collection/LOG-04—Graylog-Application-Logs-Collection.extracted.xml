@@ -1,0 +1,5 @@
+<!-- Blocos de configuração extraídos, sem alterações, de MedNamouchi/SIEM-MikroTik-Wazuh-Graylog:phase3-optimisation/02-log-collection/LOG-04—Graylog-Application-Logs-Collection @ e8dfa75059c7 -->
+<localfile>
+  <log_format>syslog</log_format>
+  <location>/var/log/graylog-server/server.log</location>
+</localfile>

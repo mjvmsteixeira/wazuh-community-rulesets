@@ -1,0 +1,1 @@
+{"win":{"system":{"eventID":"10","providerName":"Microsoft-Windows-Sysmon"},"eventdata":{"targetImage":"C:\\Windows\\System32\\lsass.exe","grantedAccess":"0x1010"}}}

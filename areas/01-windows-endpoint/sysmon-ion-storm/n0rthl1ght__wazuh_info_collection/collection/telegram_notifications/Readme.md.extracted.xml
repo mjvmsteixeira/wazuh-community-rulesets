@@ -1,0 +1,7 @@
+<!-- Blocos de configuração extraídos, sem alterações, de n0rthl1ght/wazuh_info_collection:telegram_notifications/Readme.md @ c24537630fba -->
+<integration>
+    <name>custom-telegram</name>
+    <level>8</level>
+    <hook_url>https://api.telegram.org/botXXXXXXXXXX:XXXXXXXXXXXXXXXXX/sendMessage</hook_url>
+    <alert_format>json</alert_format>
+  </integration>

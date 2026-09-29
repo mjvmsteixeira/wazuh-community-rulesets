@@ -1,0 +1,7 @@
+<!-- Blocos de resposta extraídos, sem alterações, de bret99/wazuh_custom_rules:telegram_integration/README.md @ 8783ac892999 -->
+<integration>
+  <name>custom-telegram</name>
+  <hook_url>>https://api.telegram.org/<bot_token>/sendMessage</hook_url> 
+  <level>11</level> 
+  <alert_format>json</alert_format>
+</integration>

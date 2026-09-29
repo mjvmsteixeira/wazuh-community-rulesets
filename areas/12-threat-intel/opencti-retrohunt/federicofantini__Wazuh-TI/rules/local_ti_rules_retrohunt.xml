@@ -1,0 +1,11 @@
+<group name="local,threat_intel,retrohunt,opencti,">
+
+  <rule id="1500" level="16">
+    <decoded_as>json</decoded_as>
+    <field name="retrohunt.source">^opencti$</field>
+    <field name="retrohunt.match_type">^historical_ioc_match$</field>
+    <description>TI retro-hunt hit: $(retrohunt.kind) $(retrohunt.value) matches newly imported OpenCTI IOC (agent: $(retrohunt.historical.agent.name), rule: $(retrohunt.historical.rule.id), time: $(retrohunt.historical.timestamp), fields: $(retrohunt.historical.matched_fields))</description>
+    <group>threat_intel,retrohunt,opencti,</group>
+  </rule>
+
+</group>

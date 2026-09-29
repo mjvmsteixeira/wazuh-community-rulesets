@@ -1,0 +1,10 @@
+<!-- Blocos de configuração extraídos, sem alterações, de wazuh/integrations:integrations/google_workspace/README.md @ 38efcaaa3272 -->
+<wodle name="command">
+     <disabled>no</disabled>
+     <tag>gworkspace</tag>
+     <command>/var/ossec/wodles/gworkspace/gworkspace -a all -o 2</command>
+     <interval>10m</interval>
+     <ignore_output>no</ignore_output>
+     <run_on_start>yes</run_on_start>
+     <timeout>0</timeout>
+   </wodle>

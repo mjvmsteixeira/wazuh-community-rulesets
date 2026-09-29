@@ -1,0 +1,39 @@
+<!-- suricata as part of F6 NTA system -->
+<decoder name="nta">
+    <program_name>nta</program_name>
+    <type>syslog</type>
+</decoder>
+
+
+<!--
+<decoder name="nta">
+    <program_name>nta</program_name>
+    <prematch type="pcre2">\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}\szdd3q3taqy7g94fq\snta:\s</prematch>
+    <plugin_decoder offset="after_prematch">JSON_Decoder</plugin_decoder>
+</decoder>
+-->
+<!--
+<decoder name="nta">
+    <prematch></prematch>
+    <regex type="pcre2" offset="after_prematch">(?'date'\d{4}-\d{2}-\d{2})T(?'time'\d{2}:\d{2}:\d{2})\+\d{2}:\d{2}</regex> 
+</decoder>
+<!-- working  decoder for  CEF+JSON
+<decoder name="nta">
+        <prematch type="pcre2">nta :: \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}\s(?:\w+)\sJSON:\s</prematch>
+	<plugin_decoder offset="after_prematch">JSON_Decoder</plugin_decoder>
+</decoder>
+-->
+
+
+<!--
+<decoder name="nta-fields">
+    <parent>nta</parent>
+    <prematch type="pcre2">\"payload\": \"</prematch>
+    <regex offset="after_prematch" type="pcre2">client: (?'client'\S*?)\\n</regex>
+    <order>extradata.network_info.payload.client</order>
+</decoder>
+-->
+<!--
+service: (?'service'\S*?)\\nsuccess: (?'success'\w+?)\\npass_type: (?'passtype'\w+?)"
+,extradata.network_info.payload.service, extradata.network_info.payload.success,extradata.network_info.payload.passtype
+-->

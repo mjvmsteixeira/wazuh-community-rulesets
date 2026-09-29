@@ -1,0 +1,7 @@
+<!-- Blocos de configuração extraídos, sem alterações, de bret99/wazuh_custom_rules:vkteams_integration/README.md @ 8783ac892999 -->
+<integration>
+  <name>custom-vkteams</name>
+  <hook_url>https://api.internal.myteam.mail.ru/bot/v1/messages/sendText</hook_url>
+  <level>11</level> <!-- Change the level to value one prefer -->
+  <alert_format>json</alert_format>
+</integration>

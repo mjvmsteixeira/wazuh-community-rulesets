@@ -1,0 +1,5 @@
+<!-- Blocos de configuração extraídos, sem alterações, de Halino/Wazuh-Unifi:README.md @ aac950be4432 -->
+<localfile>
+  <location>/var/log/unifi.log</location>
+  <log_format>syslog</log_format>
+</localfile>

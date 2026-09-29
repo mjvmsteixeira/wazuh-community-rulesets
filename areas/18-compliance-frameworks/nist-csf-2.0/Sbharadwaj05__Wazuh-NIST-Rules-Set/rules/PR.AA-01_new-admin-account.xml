@@ -1,0 +1,24 @@
+<!--
+  Rule: User added to privileged administrative group (Privilege Escalation)
+  NIST CSF: PR.AA-01, PR.AC-04
+  MITRE ATT&CK: T1078
+  Severity: High
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-23
+-->
+
+<group name="nist_csf, pr.aa-01, mitre_attack,">
+
+  <rule id="100032" level="10">
+      <decoded_as>json</decoded_as>
+      <field name="win.system.providerName">Microsoft-Windows-Security-Auditing</field>
+      <field name="win.system.eventID">^4732$|^4728$</field>
+      <field name="win.eventdata.targetUserName" type="pcre2">(?i)(Administrators|Domain\s+Admins|Enterprise\s+Admins)</field>
+      <description>User added to privileged administrative group (Privilege Escalation)</description>
+      <mitre>
+        <id>T1078</id>
+      </mitre>
+      <group>PR.AA-01, PR.AC-04</group>
+    </rule>
+
+</group>

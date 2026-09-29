@@ -1,0 +1,20 @@
+<!-- Blocos de configuração extraídos, sem alterações, de MedNamouchi/SIEM-MikroTik-Wazuh-Graylog:phase3-optimisation/02-log-collection/LOG-02-wazuh-manager-system-logs.md @ e8dfa75059c7 -->
+<localfile>
+    <log_format>journald</log_format>
+    <location>journald</location>
+  </localfile>
+
+<localfile>
+    <log_format>syslog</log_format>
+    <location>/var/ossec/logs/active-responses.log</location>
+  </localfile>
+
+<localfile>
+    <log_format>syslog</log_format>
+    <location>/var/log/dpkg.log</location>
+  </localfile>
+
+<localfile>
+    <log_format>syslog</log_format>
+    <location>/var/log/syslog</location>
+  </localfile>

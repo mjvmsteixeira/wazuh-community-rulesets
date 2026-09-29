@@ -1,0 +1,39 @@
+<!--
+  Rule: New User Account Created
+  NIST CSF: PR.AA-01 (Identities and credentials are managed)
+            DE.CM-03 (Personnel activity is monitored to detect potential events)
+  MITRE ATT&CK: T1136.001 - Create Account: Local Account
+  Severity: Medium
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-21
+
+  Description:
+    Detects local account creation via useradd in syslog.
+
+  False Positives:
+    - Legitimate onboarding or provisioning actions
+
+  Tuning Guidance:
+    Allowlist expected provisioning hosts or automation pipelines.
+
+  Assumptions:
+    - useradd messages are forwarded to syslog.
+
+  Limitations:
+    - Alternate account creation tools may not be detected.
+
+  Test: tests/sample-logs/pr-aa-01/new-user-account/
+-->
+
+<group name="nist_csf,pr.aa-01,account_management">
+
+  <rule id="100003" level="7">
+    <if_sid>5902</if_sid>
+    <description>New local user account created</description>
+    <mitre>
+      <id>T1136.001</id>
+    </mitre>
+    <group>account_management,nist_pr.aa-01,nist_de.cm-03</group>
+  </rule>
+
+</group>

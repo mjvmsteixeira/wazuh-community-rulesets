@@ -1,0 +1,24 @@
+<!--
+  Rule: Mimikatz execution footprint detected (Credential Access)
+  NIST CSF: DE.AE-02
+  MITRE ATT&CK: T1003.001
+  Severity: Critical
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-23
+-->
+
+<group name="nist_csf, de.ae-02, mitre_attack,">
+
+  <rule id="100036" level="14">
+      <decoded_as>json</decoded_as>
+      <field name="win.system.providerName">Microsoft-Windows-Sysmon</field>
+      <field name="win.system.eventID">^1$</field>
+      <field name="win.eventdata.commandLine" type="pcre2">(?i)(sekurlsa|lsadump|kerberos::|crypto::|privilege::debug|mimikatz)</field>
+      <description>Mimikatz execution footprint detected (Credential Access)</description>
+      <mitre>
+        <id>T1003.001</id>
+      </mitre>
+      <group>DE.AE-02</group>
+    </rule>
+
+</group>

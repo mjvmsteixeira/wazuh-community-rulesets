@@ -1,0 +1,75 @@
+<group name="macos,persistence,fim,">
+
+  <rule id="100800" level="12">
+    <if_group>syscheck</if_group>
+    <field name="file" type="pcre2">^(/System/Volumes/Data)?/Users/[^/]+/Library/LaunchAgents/.*\.plist$|^/Library/LaunchAgents/.*\.plist$</field>
+    <description>macOS persistence: LaunchAgent file changed: $(file)</description>
+    <mitre>
+      <id>T1547.001</id>
+    </mitre>
+  </rule>
+
+  <rule id="100801" level="13">
+    <if_group>syscheck</if_group>
+    <field name="file" type="pcre2">^/Library/LaunchDaemons/.*\.plist$|^/System/Library/LaunchDaemons/.*\.plist$</field>
+    <description>macOS persistence: LaunchDaemon file changed: $(file)</description>
+    <mitre>
+      <id>T1543.004</id>
+    </mitre>
+  </rule>
+
+  <rule id="100802" level="10">
+    <if_group>syscheck</if_group>
+    <field name="file" type="pcre2">^(/System/Volumes/Data)?/Users/[^/]+/\.(zshrc|zprofile|zlogin|bash_profile|bashrc|profile)$|^/etc/(zshrc|zprofile|bashrc|profile)$</field>
+    <description>macOS persistence: Shell initialization file changed: $(file)</description>
+    <mitre>
+      <id>T1546</id>
+    </mitre>
+  </rule>
+
+  <rule id="100803" level="10">
+    <if_group>syscheck</if_group>
+    <field name="file" type="pcre2">^/etc/crontab$|^/usr/lib/cron/tabs/.*$|^/private/var/at/tabs/.*$</field>
+    <description>macOS persistence: Scheduled task or cron file changed: $(file)</description>
+    <mitre>
+      <id>T1053.003</id>
+    </mitre>
+  </rule>
+
+  <rule id="100804" level="10">
+    <if_group>syscheck</if_group>
+    <field name="file" type="pcre2">^/etc/periodic/(daily|weekly|monthly)/.*$</field>
+    <description>macOS persistence: Periodic script changed: $(file)</description>
+    <mitre>
+      <id>T1053</id>
+    </mitre>
+  </rule>
+
+  <rule id="100805" level="11">
+    <if_group>syscheck</if_group>
+    <field name="file" type="pcre2">^(/System/Volumes/Data)?/Users/[^/]+/\.ssh/authorized_keys$</field>
+    <description>macOS persistence: SSH authorized_keys changed: $(file)</description>
+    <mitre>
+      <id>T1098.004</id>
+    </mitre>
+  </rule>
+
+  <rule id="100806" level="9">
+    <if_group>syscheck</if_group>
+    <field name="file" type="pcre2">^(/System/Volumes/Data)?/Users/[^/]+/Library/Preferences/com\.apple\.loginitems\.plist$</field>
+    <description>macOS persistence: Login items preferences changed: $(file)</description>
+    <mitre>
+      <id>T1547</id>
+    </mitre>
+  </rule>
+
+  <rule id="100807" level="9">
+    <if_group>syscheck</if_group>
+    <field name="file" type="pcre2">^/private/etc/sudoers$|^/private/etc/sudoers\.d/.*$</field>
+    <description>macOS privilege or persistence-related sudoers file changed: $(file)</description>
+    <mitre>
+      <id>T1548</id>
+    </mitre>
+  </rule>
+
+</group>

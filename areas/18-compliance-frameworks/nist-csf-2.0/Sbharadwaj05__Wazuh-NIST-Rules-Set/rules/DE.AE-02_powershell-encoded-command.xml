@@ -1,0 +1,24 @@
+<!--
+  Rule: PowerShell encoded command execution (Defense Evasion)
+  NIST CSF: DE.AE-02
+  MITRE ATT&CK: T1059.001
+  Severity: High
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-23
+-->
+
+<group name="nist_csf, de.ae-02, mitre_attack,">
+
+  <rule id="100027" level="10">
+      <decoded_as>json</decoded_as>
+      <field name="win.system.providerName">Microsoft-Windows-Sysmon</field>
+      <field name="win.system.eventID">^1$</field>
+      <field name="win.eventdata.commandLine" type="pcre2">(?i)(powershell|pwsh)\.exe.*(\-e(nc(oded(Command)?)?)?|\-e\s)</field>
+      <description>PowerShell encoded command execution (Defense Evasion)</description>
+      <mitre>
+        <id>T1059.001</id>
+      </mitre>
+      <group>DE.AE-02</group>
+    </rule>
+
+</group>

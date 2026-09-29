@@ -1,0 +1,397 @@
+<!-- Wazuh Rules for Unifi Network Devices -->
+<!-- Supports: Cloud Gateway Max, Switch Lite 8 PoE, U7 Lite Access Point -->
+
+<group name="unifi,network,">
+
+  <!-- Base Unifi Rule -->
+  <rule id="100100" level="0">
+    <decoded_as>unifi</decoded_as>
+    <description>Unifi network device events</description>
+  </rule>
+
+  <!-- Gateway Rules (100101-100199) -->
+  <rule id="100101" level="3">
+    <if_sid>100100</if_sid>
+    <decoded_as>unifi-gateway</decoded_as>
+    <description>Unifi Cloud Gateway Max event</description>
+    <group>unifi_gateway,</group>
+  </rule>
+
+  <!-- Gateway Authentication -->
+  <rule id="100102" level="5">
+    <if_sid>100101</if_sid>
+    <decoded_as>unifi-gateway-auth</decoded_as>
+    <match>login</match>
+    <description>Unifi Gateway: User $(user) logged in from $(srcip)</description>
+    <group>authentication_success,pci_dss_10.2.5,gpg13_7.1,gpg13_7.2,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="100103" level="3">
+    <if_sid>100101</if_sid>
+    <decoded_as>unifi-gateway-auth</decoded_as>
+    <match>logout</match>
+    <description>Unifi Gateway: User $(user) logged out</description>
+    <group>authentication_logout,pci_dss_10.2.5,gpg13_7.1,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.8,</group>
+  </rule>
+
+  <rule id="100104" level="8">
+    <if_sid>100101</if_sid>
+    <decoded_as>unifi-gateway-auth</decoded_as>
+    <match>authentication</match>
+    <match>failed|failure|denied</match>
+    <description>Unifi Gateway: Authentication failed for user $(user) from $(srcip)</description>
+    <group>authentication_failed,pci_dss_10.2.4,pci_dss_10.2.5,gpg13_7.1,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="100105" level="10" frequency="5" timeframe="300">
+    <if_matched_sid>100104</if_matched_sid>
+    <same_source_ip />
+    <description>Unifi Gateway: Multiple authentication failures from $(srcip)</description>
+    <group>authentication_failures,pci_dss_10.2.4,pci_dss_10.2.5,pci_dss_11.4,gpg13_7.1,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+    <mitre>
+      <id>T1110</id>
+    </mitre>
+  </rule>
+
+  <!-- Gateway Firewall Rules -->
+  <rule id="100110" level="3">
+    <if_sid>100101</if_sid>
+    <decoded_as>unifi-gateway-firewall</decoded_as>
+    <match>ACCEPT</match>
+    <description>Unifi Gateway: Firewall allowed connection from $(srcip) to $(dstip)</description>
+    <group>firewall_allow,</group>
+  </rule>
+
+  <rule id="100111" level="5">
+    <if_sid>100101</if_sid>
+    <decoded_as>unifi-gateway-firewall</decoded_as>
+    <match>DROP|REJECT|DENY</match>
+    <description>Unifi Gateway: Firewall blocked $(protocol) connection from $(srcip) to $(dstip):$(dstport)</description>
+    <group>firewall_block,pci_dss_10.6.1,gpg13_4.12,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="100112" level="8" frequency="10" timeframe="120">
+    <if_matched_sid>100111</if_matched_sid>
+    <same_source_ip />
+    <description>Unifi Gateway: Multiple firewall blocks from $(srcip) - Possible scan</description>
+    <group>firewall_block,recon,pci_dss_11.4,gdpr_IV_35.7.d,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+    <mitre>
+      <id>T1046</id>
+    </mitre>
+  </rule>
+
+  <!-- Gateway IDS/IPS Rules -->
+  <rule id="100115" level="7">
+    <if_sid>100101</if_sid>
+    <decoded_as>unifi-gateway-ids</decoded_as>
+    <description>Unifi Gateway: IDS alert - $(signature) from $(srcip) to $(dstip)</description>
+    <group>ids,intrusion_detection,pci_dss_11.4,gdpr_IV_35.7.d,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="100116" level="10">
+    <if_sid>100115</if_sid>
+    <match>DROP|BLOCK</match>
+    <description>Unifi Gateway: IDS blocked threat - $(signature) from $(srcip) to $(dstip)</description>
+    <group>ids,intrusion_prevention,pci_dss_11.4,gdpr_IV_35.7.d,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+    <mitre>
+      <id>T1190</id>
+    </mitre>
+  </rule>
+
+  <!-- Gateway VPN Rules -->
+  <rule id="100120" level="5">
+    <if_sid>100101</if_sid>
+    <decoded_as>unifi-gateway-vpn</decoded_as>
+    <match>connected|established</match>
+    <description>Unifi Gateway: VPN connection established for user $(user) from $(srcip)</description>
+    <group>vpn,connection_success,pci_dss_10.6.1,gpg13_7.1,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,tsc_CC6.8,tsc_CC7.2,</group>
+  </rule>
+
+  <rule id="100121" level="3">
+    <if_sid>100101</if_sid>
+    <decoded_as>unifi-gateway-vpn</decoded_as>
+    <match>disconnected|terminated</match>
+    <description>Unifi Gateway: VPN connection terminated for user $(user)</description>
+    <group>vpn,connection_closed,</group>
+  </rule>
+
+  <rule id="100122" level="7">
+    <if_sid>100101</if_sid>
+    <decoded_as>unifi-gateway-vpn</decoded_as>
+    <match>failed|denied|rejected</match>
+    <description>Unifi Gateway: VPN connection failed for user $(user) from $(srcip)</description>
+    <group>vpn,connection_failed,pci_dss_10.2.4,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.14,tsc_CC6.1,tsc_CC6.8,</group>
+  </rule>
+
+  <!-- Gateway DHCP Rules -->
+  <rule id="100125" level="3">
+    <if_sid>100101</if_sid>
+    <decoded_as>unifi-gateway-dhcp</decoded_as>
+    <match>ACK|OFFER</match>
+    <description>Unifi Gateway: DHCP lease assigned $(srcip) to MAC $(mac)</description>
+    <group>dhcp,</group>
+  </rule>
+
+  <rule id="100126" level="5">
+    <if_sid>100101</if_sid>
+    <decoded_as>unifi-gateway-dhcp</decoded_as>
+    <match>NAK|DECLINE</match>
+    <description>Unifi Gateway: DHCP request denied for MAC $(mac)</description>
+    <group>dhcp,</group>
+  </rule>
+
+  <!-- Switch Rules (100200-100299) -->
+  <rule id="100200" level="3">
+    <if_sid>100100</if_sid>
+    <decoded_as>unifi-switch</decoded_as>
+    <description>Unifi Switch Lite 8 PoE event</description>
+    <group>unifi_switch,</group>
+  </rule>
+
+  <!-- Switch Port Status -->
+  <rule id="100201" level="3">
+    <if_sid>100200</if_sid>
+    <decoded_as>unifi-switch-port</decoded_as>
+    <match>up|enabled</match>
+    <description>Unifi Switch: Port $(port) is up</description>
+    <group>switch_port,port_up,</group>
+  </rule>
+
+  <rule id="100202" level="5">
+    <if_sid>100200</if_sid>
+    <decoded_as>unifi-switch-port</decoded_as>
+    <match>down|disabled</match>
+    <description>Unifi Switch: Port $(port) is down</description>
+    <group>switch_port,port_down,pci_dss_10.6.1,gpg13_4.12,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,</group>
+  </rule>
+
+  <rule id="100203" level="7" frequency="3" timeframe="600">
+    <if_matched_sid>100202</if_matched_sid>
+    <same_field>port</same_field>
+    <description>Unifi Switch: Port $(port) flapping detected</description>
+    <group>switch_port,port_flapping,pci_dss_10.6.1,gdpr_IV_35.7.d,nist_800_53_AU.6,tsc_CC7.2,</group>
+  </rule>
+
+  <!-- Switch PoE Events -->
+  <rule id="100210" level="3">
+    <if_sid>100200</if_sid>
+    <decoded_as>unifi-switch-poe</decoded_as>
+    <match>enabled|delivering</match>
+    <description>Unifi Switch: PoE enabled on port $(port)</description>
+    <group>switch_poe,poe_enabled,</group>
+  </rule>
+
+  <rule id="100211" level="5">
+    <if_sid>100200</if_sid>
+    <decoded_as>unifi-switch-poe</decoded_as>
+    <match>disabled</match>
+    <description>Unifi Switch: PoE disabled on port $(port)</description>
+    <group>switch_poe,poe_disabled,</group>
+  </rule>
+
+  <rule id="100212" level="8">
+    <if_sid>100200</if_sid>
+    <decoded_as>unifi-switch-poe</decoded_as>
+    <match>overload|fault</match>
+    <description>Unifi Switch: PoE fault detected on port $(port)</description>
+    <group>switch_poe,poe_fault,pci_dss_10.6.1,gdpr_IV_35.7.d,nist_800_53_AU.6,tsc_CC7.2,</group>
+  </rule>
+
+  <!-- Switch MAC Learning -->
+  <rule id="100215" level="2">
+    <if_sid>100200</if_sid>
+    <decoded_as>unifi-switch-mac</decoded_as>
+    <match>learned</match>
+    <description>Unifi Switch: MAC $(mac) learned on port $(port)</description>
+    <group>switch_mac,mac_learned,</group>
+  </rule>
+
+  <rule id="100216" level="4">
+    <if_sid>100200</if_sid>
+    <decoded_as>unifi-switch-mac</decoded_as>
+    <match>moved</match>
+    <description>Unifi Switch: MAC $(mac) moved to port $(port)</description>
+    <group>switch_mac,mac_moved,</group>
+  </rule>
+
+  <rule id="100217" level="7" frequency="5" timeframe="300">
+    <if_matched_sid>100216</if_matched_sid>
+    <same_field>mac</same_field>
+    <description>Unifi Switch: MAC $(mac) flapping detected - Possible network loop</description>
+    <group>switch_mac,mac_flapping,pci_dss_10.6.1,gdpr_IV_35.7.d,nist_800_53_AU.6,tsc_CC7.2,</group>
+  </rule>
+
+  <!-- Switch STP Events -->
+  <rule id="100220" level="5">
+    <if_sid>100200</if_sid>
+    <decoded_as>unifi-switch-stp</decoded_as>
+    <match>blocking|disabled</match>
+    <description>Unifi Switch: STP port $(port) state changed to $(status)</description>
+    <group>switch_stp,stp_change,</group>
+  </rule>
+
+  <rule id="100221" level="8">
+    <if_sid>100200</if_sid>
+    <decoded_as>unifi-switch-stp</decoded_as>
+    <match>topology change</match>
+    <description>Unifi Switch: STP topology change detected</description>
+    <group>switch_stp,stp_topology_change,pci_dss_10.6.1,gdpr_IV_35.7.d,nist_800_53_AU.6,tsc_CC7.2,</group>
+  </rule>
+
+  <!-- Access Point Rules (100300-100399) -->
+  <rule id="100300" level="3">
+    <if_sid>100100</if_sid>
+    <decoded_as>unifi-ap</decoded_as>
+    <description>Unifi U7 Lite Access Point event</description>
+    <group>unifi_ap,wireless,</group>
+  </rule>
+
+  <!-- AP Client Connection -->
+  <rule id="100301" level="3">
+    <if_sid>100300</if_sid>
+    <decoded_as>unifi-ap-client</decoded_as>
+    <match>connected|associated</match>
+    <description>Unifi AP: Client $(mac) connected to SSID $(ssid)</description>
+    <group>wireless_client,client_connected,</group>
+  </rule>
+
+  <rule id="100302" level="3">
+    <if_sid>100300</if_sid>
+    <decoded_as>unifi-ap-client</decoded_as>
+    <match>disconnected|disassociated</match>
+    <description>Unifi AP: Client $(mac) disconnected from SSID $(ssid)</description>
+    <group>wireless_client,client_disconnected,</group>
+  </rule>
+
+  <rule id="100303" level="7" frequency="5" timeframe="300">
+    <if_matched_sid>100302</if_matched_sid>
+    <same_field>mac</same_field>
+    <description>Unifi AP: Client $(mac) repeatedly disconnecting - Possible connectivity issue</description>
+    <group>wireless_client,client_flapping,pci_dss_10.6.1,gdpr_IV_35.7.d,nist_800_53_AU.6,tsc_CC7.2,</group>
+  </rule>
+
+  <!-- AP Client Authentication -->
+  <rule id="100305" level="3">
+    <if_sid>100300</if_sid>
+    <decoded_as>unifi-ap-client-auth</decoded_as>
+    <match>success</match>
+    <description>Unifi AP: Client $(mac) authenticated successfully to SSID $(ssid)</description>
+    <group>wireless_auth,authentication_success,pci_dss_10.2.5,gpg13_7.1,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,tsc_CC6.8,</group>
+  </rule>
+
+  <rule id="100306" level="6">
+    <if_sid>100300</if_sid>
+    <decoded_as>unifi-ap-client-auth</decoded_as>
+    <match>failed|timeout</match>
+    <description>Unifi AP: Client $(mac) authentication failed for SSID $(ssid)</description>
+    <group>wireless_auth,authentication_failed,pci_dss_10.2.4,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.14,tsc_CC6.1,tsc_CC6.8,</group>
+  </rule>
+
+  <rule id="100307" level="9" frequency="5" timeframe="300">
+    <if_matched_sid>100306</if_matched_sid>
+    <same_field>mac</same_field>
+    <description>Unifi AP: Multiple authentication failures from client $(mac) - Possible attack</description>
+    <group>wireless_auth,authentication_failures,pci_dss_11.4,gdpr_IV_35.7.d,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,</group>
+    <mitre>
+      <id>T1110</id>
+    </mitre>
+  </rule>
+
+  <!-- AP Radio Events -->
+  <rule id="100310" level="3">
+    <if_sid>100300</if_sid>
+    <decoded_as>unifi-ap-radio</decoded_as>
+    <match>up</match>
+    <description>Unifi AP: Radio $(band) is up</description>
+    <group>wireless_radio,radio_up,</group>
+  </rule>
+
+  <rule id="100311" level="6">
+    <if_sid>100300</if_sid>
+    <decoded_as>unifi-ap-radio</decoded_as>
+    <match>down</match>
+    <description>Unifi AP: Radio $(band) is down</description>
+    <group>wireless_radio,radio_down,pci_dss_10.6.1,gdpr_IV_35.7.d,nist_800_53_AU.6,tsc_CC7.2,</group>
+  </rule>
+
+  <rule id="100312" level="4">
+    <if_sid>100300</if_sid>
+    <decoded_as>unifi-ap-radio</decoded_as>
+    <match>channel changed</match>
+    <description>Unifi AP: Radio $(band) channel changed to $(channel)</description>
+    <group>wireless_radio,channel_change,</group>
+  </rule>
+
+  <!-- AP Rogue Detection -->
+  <rule id="100315" level="8">
+    <if_sid>100300</if_sid>
+    <decoded_as>unifi-ap-rogue</decoded_as>
+    <description>Unifi AP: Rogue AP detected - BSSID $(mac), SSID $(ssid), Channel $(channel)</description>
+    <group>wireless_rogue,rogue_ap,pci_dss_11.1,pci_dss_11.4,gdpr_IV_35.7.d,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,</group>
+    <mitre>
+      <id>T1557</id>
+    </mitre>
+  </rule>
+
+  <!-- System Events (100400-100449) -->
+  <rule id="100400" level="5">
+    <if_sid>100100</if_sid>
+    <decoded_as>unifi-system</decoded_as>
+    <match>startup</match>
+    <description>Unifi Device: System startup detected</description>
+    <group>system_startup,pci_dss_10.6.1,gpg13_4.12,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,</group>
+  </rule>
+
+  <rule id="100401" level="5">
+    <if_sid>100100</if_sid>
+    <decoded_as>unifi-system</decoded_as>
+    <match>shutdown|reboot</match>
+    <description>Unifi Device: System $(action) initiated</description>
+    <group>system_shutdown,pci_dss_10.6.1,gpg13_4.12,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,</group>
+  </rule>
+
+  <rule id="100402" level="4">
+    <if_sid>100100</if_sid>
+    <decoded_as>unifi-system</decoded_as>
+    <match>upgrade</match>
+    <description>Unifi Device: Firmware upgrade detected</description>
+    <group>system_upgrade,pci_dss_10.6.1,gdpr_IV_35.7.d,nist_800_53_AU.6,tsc_CC7.2,</group>
+  </rule>
+
+  <rule id="100403" level="6">
+    <if_sid>100100</if_sid>
+    <decoded_as>unifi-system</decoded_as>
+    <match>config changed</match>
+    <description>Unifi Device: Configuration changed</description>
+    <group>config_change,pci_dss_10.6.1,pci_dss_10.2.7,gpg13_4.12,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,nist_800_53_CM.3,tsc_CC7.2,tsc_CC8.1,</group>
+  </rule>
+
+  <!-- Threat Detection (100450-100499) -->
+  <rule id="100450" level="9">
+    <if_sid>100100</if_sid>
+    <decoded_as>unifi-threat</decoded_as>
+    <description>Unifi Device: Threat detected - $(threat_type) from $(srcip) to $(dstip)</description>
+    <group>threat_detection,pci_dss_11.4,gdpr_IV_35.7.d,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,</group>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+  </rule>
+
+  <!-- DPI Events (100500-100549) -->
+  <rule id="100500" level="3">
+    <if_sid>100100</if_sid>
+    <decoded_as>unifi-dpi</decoded_as>
+    <match>ALLOW</match>
+    <description>Unifi DPI: Application $(application) allowed from $(srcip) to $(dstip)</description>
+    <group>dpi,application_control,</group>
+  </rule>
+
+  <rule id="100501" level="6">
+    <if_sid>100100</if_sid>
+    <decoded_as>unifi-dpi</decoded_as>
+    <match>BLOCK|DENY</match>
+    <description>Unifi DPI: Application $(application) blocked from $(srcip) to $(dstip)</description>
+    <group>dpi,application_control,pci_dss_10.6.1,gdpr_IV_35.7.d,nist_800_53_AU.6,tsc_CC7.2,</group>
+  </rule>
+
+</group>

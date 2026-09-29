@@ -1,0 +1,14 @@
+<!-- Blocos de resposta extraídos, sem alterações, de wazuh/integrations:integrations/silent_agent_monitoring/README.md @ 38efcaaa3272 -->
+<integration>
+  <name>custom-server-telegram</name>
+  <rule_id>100121,100122</rule_id>
+  <api_key>&lt;CHAT_ID&gt;:&lt;BOT_TOKEN&gt;</api_key>
+  <alert_format>json</alert_format>
+</integration>
+
+<integration>
+  <name>custom-server-telegram</name>
+  <rule_id>100121,100122</rule_id>
+  <api_key>123123123123:8454124324:niwefn76t5safuef8s76tg</api_key>
+  <alert_format>json</alert_format>
+</integration>

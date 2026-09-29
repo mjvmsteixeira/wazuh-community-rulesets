@@ -1,0 +1,8 @@
+<!-- Blocos de configuração extraídos, sem alterações, de wazuh/integrations:integrations/ChatGPT/README.md @ 38efcaaa3272 -->
+<integration>
+  <name>custom-chatgpt</name>
+  <level>15</level>  <!-- Replace this number with the desired limit for your alerts, current example is level 15 and above-->
+  <hook_url>https://api.openai.com/v1/chat/completions</hook_url>  <!--If needed, replace this url with the url of your implementation-->
+  <api_key>dummyKey</api_key>  <!-- Replace this with your key-->
+  <alert_format>json</alert_format>
+</integration>

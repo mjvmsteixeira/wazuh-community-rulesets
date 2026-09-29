@@ -1,0 +1,43 @@
+<!--
+  Rule: Web Shell Indicators in HTTP Requests
+  NIST CSF: DE.AE-02 (Detected events are analyzed to understand attack targets and methods)
+            RS.MA-02 (Notifications from detection systems are investigated)
+  MITRE ATT&CK: T1505.003 - Server Software Component: Web Shell
+  Severity: High
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-22
+
+  Description:
+    Detects common web shell parameters or filenames in HTTP requests.
+
+  False Positives:
+    - Pen test activity
+    - Benign parameters that match generic names like "cmd"
+
+  Tuning Guidance:
+    Add stricter URI allowlists or require additional indicators such as
+    uncommon user agents.
+
+  Assumptions:
+    - Web access logs include HTTP method and URI in the raw message.
+
+  Limitations:
+    - Case-sensitive matching may miss upper-case variants.
+    - Obfuscated or encrypted payloads may evade simple parameter matching.
+
+  Test: tests/sample-logs/de-ae-02/web-shell-indicators/
+-->
+
+<group name="nist_csf,de.ae-02,web,threat">
+
+  <rule id="100007" level="10">
+    <if_sid>31100</if_sid>
+    <regex type="pcre2">\b(GET|POST|PUT)\b.*\b(cmd=|shell=|exec=|system=|passthru=|base64_decode|/(shell|cmd|c99|r57)\.php)</regex>
+    <description>Possible web shell indicator in HTTP request</description>
+    <mitre>
+      <id>T1505.003</id>
+    </mitre>
+    <group>webshell,web_attack,nist_de.ae-02,nist_rs.ma-02</group>
+  </rule>
+
+</group>

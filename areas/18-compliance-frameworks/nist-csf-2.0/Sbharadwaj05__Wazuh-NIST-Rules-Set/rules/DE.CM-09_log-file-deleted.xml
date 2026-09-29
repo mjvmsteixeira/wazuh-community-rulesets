@@ -1,0 +1,40 @@
+<!--
+  Rule: Log File Deleted or Truncated
+  NIST CSF: DE.CM-09 (System configuration changes are monitored)
+            RS.MA-02 (Notifications from detection systems are investigated)
+  MITRE ATT&CK: T1070.002 - Indicator Removal on Host: Clear Linux or Mac System Logs
+  Severity: High
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-23
+
+  Description:
+    Detects the deletion or truncation of system log files. Attackers clear logs to cover their tracks and evade detection.
+
+  False Positives:
+    - Logrotate execution.
+
+  Tuning Guidance:
+    Exclude known paths or binaries used by logrotate (e.g., exe="/usr/sbin/logrotate").
+
+  Assumptions:
+    - auditd is configured to monitor unlink/truncate syscalls or execve for log directories.
+
+  Limitations:
+    - Attackers can echo empty strings to logs directly via built-in shell redirection if bash itself isn't audited.
+
+  Test: tests/sample-logs/de-cm-09/log-file-deleted/
+-->
+
+<group name="nist_csf,de.cm-09,rs.ma-02,defense_evasion,auditd">
+
+  <rule id="100024" level="9">
+    <if_sid>80700</if_sid>
+    <regex type="pcre2">(exe|comm)="(rm|truncate|shred|unlink)".*(path|name)="/var/log/.*"</regex>
+    <description>Log file deleted or truncated (Defense Evasion)</description>
+    <mitre>
+      <id>T1070.002</id>
+    </mitre>
+    <group>defense_evasion,log_clearing,nist_de.cm-09,nist_rs.ma-02</group>
+  </rule>
+
+</group>

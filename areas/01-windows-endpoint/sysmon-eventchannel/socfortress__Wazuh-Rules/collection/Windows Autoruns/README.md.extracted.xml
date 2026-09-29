@@ -1,0 +1,10 @@
+<!-- Blocos de configuração extraídos, sem alterações, de socfortress/Wazuh-Rules:Windows Autoruns/README.md @ 66b70d6a380b -->
+<wodle name="command">
+  <disabled>no</disabled>
+  <tag>autoruns</tag>
+  <command>Powershell.exe -executionpolicy bypass -File "C:\Program Files\Sysinternals\autoruns.ps1"</command>
+  <interval>1d</interval>
+  <ignore_output>yes</ignore_output>
+  <run_on_start>yes</run_on_start>
+  <timeout>0</timeout>
+</wodle>

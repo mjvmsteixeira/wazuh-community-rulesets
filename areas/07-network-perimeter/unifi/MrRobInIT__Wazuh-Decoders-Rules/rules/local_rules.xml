@@ -1,0 +1,70 @@
+<!-- Local rules -->
+
+<!-- Modify it at your will. -->
+<!-- Copyright (C) 2015, Wazuh Inc. -->
+
+<!-- Example -->
+<group name="local,syslog,sshd,">
+  <rule id="100001" level="5">
+    <if_sid>5716</if_sid>
+    <srcip>1.1.1.1</srcip>
+    <description>sshd: authentication failed from IP 1.1.1.1.</description>
+    <group>authentication_failed,pci_dss_10.2.4,pci_dss_10.2.5,</group>
+  </rule>
+
+</group>
+
+<!-- Wazuh Custom Rules for Ubiquiti UniFi -->
+<!-- Deploy to: /var/ossec/etc/rules/local_rules.xml -->
+<!-- Validated working with Wazuh v4.14.3 -->
+<!-- Rule ID range: 100010 - 100015 -->
+
+<group name="unifi,">
+
+  <!-- Base rule: catches all decoded UniFi events (Level 3 - informational) -->
+  <rule id="100010" level="3">
+    <decoded_as>unifi-custom</decoded_as>
+    <description>Unifi Network Event: $(unifi.event_name)</description>
+  </rule>
+
+  <!-- Test rule: confirms syslog pipeline is working end-to-end -->
+  <rule id="100011" level="3">
+    <if_sid>100010</if_sid>
+    <match>Test Syslog</match>
+    <description>Unifi Test Syslog received successfully.</description>
+  </rule>
+
+  <!-- Level 5: Successful admin login -->
+  <rule id="100012" level="5">
+    <if_sid>100010</if_sid>
+    <field name="unifi.event_name">(?i)login successful|logged in</field>
+    <description>Unifi: Administrator successfully logged in.</description>
+    <group>authentication_success,</group>
+  </rule>
+
+  <!-- Level 10: Failed admin login attempt -->
+  <rule id="100013" level="10">
+    <if_sid>100010</if_sid>
+    <field name="unifi.event_name">(?i)login failed|failed login|bad password</field>
+    <description>Unifi: Administrator login failed!</description>
+    <group>authentication_failed,</group>
+  </rule>
+
+  <!-- Level 6: Firewall blocked a connection -->
+  <!-- NOTE: Must enable "Log this rule" on your Unifi firewall drop rules for this to fire -->
+  <rule id="100014" level="6">
+    <if_sid>100010</if_sid>
+    <field name="unifi.event_name">(?i)Firewall Block|Drop|Deny</field>
+    <description>Unifi: Firewall blocked a connection.</description>
+    <group>firewall_drop,</group>
+  </rule>
+
+  <!-- Level 12: IDS/IPS threat detected (triggers email/active response by default) -->
+  <rule id="100015" level="12">
+    <if_sid>100010</if_sid>
+    <field name="unifi.event_name">(?i)IPS Alert|Threat Management|Intrusion</field>
+    <description>Unifi: IDS/IPS Threat Detected!</description>
+    <group>ids_alert,attack,</group>
+  </rule>
+
+</group>

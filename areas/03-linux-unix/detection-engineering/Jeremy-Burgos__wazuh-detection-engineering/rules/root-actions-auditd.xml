@@ -1,0 +1,10 @@
+<group name="linux,audit,root_actions,">
+
+  <rule id="100620" level="6">
+    <if_sid>80792</if_sid>
+    <field name="audit.euid">0</field>
+    <description>Audit: Root command execution: $(audit.exe) with loginuid user $(audit.auid)</description>
+    <group>audit_command,</group>
+  </rule>
+
+</group>

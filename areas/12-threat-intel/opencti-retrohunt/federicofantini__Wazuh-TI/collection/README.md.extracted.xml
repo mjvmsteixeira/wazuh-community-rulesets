@@ -1,0 +1,15 @@
+<!-- Blocos de configuração extraídos, sem alterações, de federicofantini/Wazuh-TI:README.md @ 0a50b207d739 -->
+<localfile>
+  <location>/var/ossec/logs/opencti_retrohunt_events.json</location>
+  <log_format>json</log_format>
+</localfile>
+
+<localfile>
+  <log_format>json</log_format>
+  <location>/var/log/suricata/eve.json</location>
+</localfile>
+
+<localfile>
+  <location>Microsoft-Windows-Sysmon/Operational</location>
+  <log_format>eventchannel</log_format>
+</localfile>

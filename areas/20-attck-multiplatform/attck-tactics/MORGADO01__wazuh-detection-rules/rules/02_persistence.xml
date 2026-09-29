@@ -1,0 +1,131 @@
+<!--
+  Categoria: Persistence
+  Táticas MITRE ATT&CK cobertas: SSH Authorized Keys (T1098.004), Account Manipulation (T1098),
+  Create Account (T1136), Hosts File Manipulation (T1565.001 / T1482)
+-->
+<group name="local,persistence,">
+
+  <rule id="100103" level="10">
+    <if_sid>550, 554</if_sid>
+    <field name="file" type="pcre2">\.ssh/authorized_keys$</field>
+    <description>ALERTA: Arquivo authorized_keys foi modificado ou criado.</description>
+    <mitre>
+      <id>T1098.004</id>
+      <id>T1098</id>
+    </mitre>
+    <group>persistence,pci_dss_10.5.5,nist_800_53_SI.7,</group>
+  </rule>
+
+  <rule id="100104" level="15">
+    <if_sid>100103</if_sid>
+    <field name="file" type="pcre2">^/root/.ssh/authorized_keys$</field>
+    <description>CRÍTICO: Chave SSH de persistência adicionada ao usuário ROOT.</description>
+    <mitre>
+      <id>T1098.004</id>
+      <id>T1078</id>
+    </mitre>
+    <info type="text">Investigar imediatamente. Se não foi mudança planejada, o servidor está comprometido.</info>
+  </rule>
+
+  <rule id="100105" level="12">
+    <if_sid>100103</if_sid>
+    <field name="audit.user.name" type="pcre2" negate="yes">.+</field>
+    <description>ALERTA: authorized_keys modificado por usuário auditado [$(audit.user.name)].</description>
+    <mitre>
+      <id>T1548</id>
+    </mitre>
+  </rule>
+
+  <rule id="100106" level="12">
+    <if_sid>550, 554, 553</if_sid>
+    <field name="file" type="pcre2">(?i)(/etc/hosts|\\Windows\\System32\\drivers\\etc\\hosts)</field>
+    <description>ALERTA: O arquivo de sistema HOSTS foi modificado no agente $(agent.name)</description>
+    <mitre>
+      <id>T1565.001</id>
+      <id>T1482</id>
+    </mitre>
+    <info type="text">Possível tentativa de DNS Poisoning local ou bloqueio de telemetria de segurança.</info>
+    <group>pci_dss_10.5.5,gdpr_IV_35,hipaa_164.312.b,nist_800_53_SI.7,</group>
+  </rule>
+
+  <rule id="100107" level="14">
+    <if_sid>100106</if_sid>
+    <field name="audit.user.name" type="pcre2">.+</field>
+    <description>CRÍTICO: Arquivo HOSTS alterado pelo usuário [$(audit.user.name)] no sistema $(agent.name)</description>
+    <mitre>
+      <id>T1078</id>
+    </mitre>
+    <group>authentication_success,audit_trail,</group>
+  </rule>
+
+  <rule id="100108" level="15" frequency="3" timeframe="60">
+    <if_matched_sid>100106</if_matched_sid>
+    <description>CRÍTICO: Múltiplas alterações no arquivo HOSTS detectadas em curto período. Possível script de ataque ativo.</description>
+    <mitre>
+      <id>T1496</id>
+    </mitre>
+  </rule>
+
+  <rule id="100201" level="12">
+    <if_sid>5902</if_sid>
+    <weekday>saturday,sunday</weekday>
+    <description>ALERTA: Usuário criado durante o Fim de Semana - Possível Persistência</description>
+    <mitre>
+      <id>T1136.001</id>
+      <id>T1098</id>
+    </mitre>
+    <group>pci_dss_10.2.5,pci_dss_8.1.2,gpg13_7.10,gdpr_IV_32.2,hipaa_164.312.a.2.I,nist_800_53_AC.2,tsc_CC6.1,</group>
+  </rule>
+
+  <rule id="100202" level="12">
+    <if_sid>5902</if_sid>
+    <time>20:00 - 06:00</time>
+    <description>ALERTA: Usuário criado fora do horário comercial - Possível Persistência</description>
+    <mitre>
+      <id>T1136.001</id>
+      <id>T1078</id>
+    </mitre>
+    <group>pci_dss_10.2.5,pci_dss_8.1.2,gpg13_7.10,gdpr_IV_32.2,hipaa_164.312.a.2.I,nist_800_53_AC.2,tsc_CC6.1,</group>
+  </rule>
+
+  <rule id="100301" level="12">
+    <if_sid>60109</if_sid>
+    <weekday>saturday,sunday</weekday>
+    <description>ALERTA: Usuário criado em final de semana.</description>
+    <mitre>
+      <id>T1136.001</id>
+      <id>T1136.002</id>
+      <id>T1098</id>
+    </mitre>
+    <group>pci_dss_8.1.2,gdpr_IV_32,nist_800_53_AC.2,</group>
+    <info type="text">Verifique se esta é uma manutenção programada (Change Management).</info>
+  </rule>
+
+  <rule id="100302" level="12">
+    <if_sid>60109</if_sid>
+    <time>20:00-06:00</time>
+    <weekday>monday,tuesday,wednesday,thursday,friday</weekday>
+    <description>ALERTA: Usuário criado fora do horário comercial (20h-06h).</description>
+    <mitre>
+      <id>T1136</id>
+    </mitre>
+    <group>pci_dss_8.1.2,gpg13_7.1,</group>
+  </rule>
+
+  <rule id="100303" level="14" frequency="3" timeframe="120">
+    <if_matched_sid>100902</if_matched_sid>
+    <same_srcip />
+    <description>CRÍTICO: Múltiplos usuários criados fora do horário padrão em curto período.</description>
+    <mitre>
+      <id>T1136</id>
+      <id>T1078</id>
+    </mitre>
+  </rule>
+
+  <!-- Regra auxiliar de agrupamento por janela de tempo (nível 0, não gera alerta próprio) -->
+  <rule id="100902" level="0">
+    <if_sid>100301, 100302</if_sid>
+    <description>Helper: Windows User Create Timeframe</description>
+  </rule>
+
+</group>

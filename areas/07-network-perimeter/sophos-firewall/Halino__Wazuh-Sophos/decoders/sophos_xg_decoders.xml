@@ -1,0 +1,643 @@
+<!--
+  Sophos XG / SFOS Firewall - Wazuh Decoders
+  Compatible with SFOS v18, v19, v20, v21+
+  
+  Sophos XG sends key=value formatted syslog messages.
+  Fields can be quoted ("value") or unquoted (value).
+  
+  Place this file in: /var/ossec/etc/decoders/sophos_xg_decoders.xml
+  Then restart Wazuh Manager: systemctl restart wazuh-manager
+-->
+
+<!-- ============================================================
+     PARENT DECODER - Identifies Sophos XG/SFOS log messages
+     Matches logs with or without the device="SFW" prefix.
+     ============================================================ -->
+<decoder name="sophos-xg">
+  <prematch type="pcre2">(?:device="SFW"\s+)?date=\d{4}-\d{2}-\d{2}\s+time=\d{2}:\d{2}:\d{2}\s+.*?device_name=</prematch>
+  <type>firewall</type>
+</decoder>
+
+<!-- ============================================================
+     CHILD DECODERS - Extract key=value fields
+     Each child decoder extracts a group of related fields.
+     All children are evaluated; extracted fields accumulate.
+     ============================================================ -->
+
+<!-- Date and Time -->
+<decoder name="sophos-xg-datetime">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bdate=(\d{4}-\d{2}-\d{2})\s+time=(\d{2}:\d{2}:\d{2})</regex>
+  <order>sophos_date, sophos_time</order>
+</decoder>
+
+<!-- Timezone -->
+<decoder name="sophos-xg-timezone">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\btimezone="([^"]+)"</regex>
+  <order>sophos_tz</order>
+</decoder>
+
+<!-- Device Identification -->
+<decoder name="sophos-xg-device-name">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bdevice_name="([^"]+)"</regex>
+  <order>system_name</order>
+</decoder>
+
+<decoder name="sophos-xg-device-id">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bdevice_id=(\S+)</regex>
+  <order>sophos_device_id</order>
+</decoder>
+
+<decoder name="sophos-xg-device-model">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bdevice_model="([^"]+)"</regex>
+  <order>sophos_device_model</order>
+</decoder>
+
+<decoder name="sophos-xg-device-serial">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bdevice_serial_id="([^"]+)"</regex>
+  <order>sophos_device_serial</order>
+</decoder>
+
+<!-- Log Identification -->
+<decoder name="sophos-xg-log-version">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\blog_version=(\S+)</regex>
+  <order>sophos_log_version</order>
+</decoder>
+
+<decoder name="sophos-xg-log-id">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\blog_id=(\S+)</regex>
+  <order>id</order>
+</decoder>
+
+<decoder name="sophos-xg-log-type">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\blog_type="([^"]+)"</regex>
+  <order>sophos_log_type</order>
+</decoder>
+
+<decoder name="sophos-xg-log-component">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\blog_component="([^"]+)"</regex>
+  <order>sophos_log_component</order>
+</decoder>
+
+<decoder name="sophos-xg-log-subtype">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\blog_subtype="([^"]+)"</regex>
+  <order>sophos_log_subtype</order>
+</decoder>
+
+<!-- Status and Priority -->
+<decoder name="sophos-xg-status">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bstatus="([^"]+)"</regex>
+  <order>action</order>
+</decoder>
+
+<decoder name="sophos-xg-priority">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bpriority=(\S+)</regex>
+  <order>sophos_priority</order>
+</decoder>
+
+<decoder name="sophos-xg-severity">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bseverity=(\S+)</regex>
+  <order>sophos_severity</order>
+</decoder>
+
+<!-- Source Network Fields -->
+<decoder name="sophos-xg-srcip">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bsrc_ip=(\S+)</regex>
+  <order>srcip</order>
+</decoder>
+
+<decoder name="sophos-xg-srcport">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bsrc_port=(\d+)</regex>
+  <order>srcport</order>
+</decoder>
+
+<decoder name="sophos-xg-srcmac">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bsrc_mac=(\S+)</regex>
+  <order>sophos_src_mac</order>
+</decoder>
+
+<!-- Destination Network Fields -->
+<decoder name="sophos-xg-dstip">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bdst_ip=(\S+)</regex>
+  <order>dstip</order>
+</decoder>
+
+<decoder name="sophos-xg-dstport">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bdst_port=(\d+)</regex>
+  <order>dstport</order>
+</decoder>
+
+<decoder name="sophos-xg-dstmac">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bdst_mac=(\S+)</regex>
+  <order>sophos_dst_mac</order>
+</decoder>
+
+<!-- Protocol -->
+<decoder name="sophos-xg-protocol">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bprotocol="?([^"\s]+)"?</regex>
+  <order>protocol</order>
+</decoder>
+
+<!-- NAT / Translation Fields -->
+<decoder name="sophos-xg-tran-src-ip">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\btran_src_ip="?([^"\s]+)"?</regex>
+  <order>sophos_tran_src_ip</order>
+</decoder>
+
+<decoder name="sophos-xg-tran-src-port">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\btran_src_port=(\d+)</regex>
+  <order>sophos_tran_src_port</order>
+</decoder>
+
+<decoder name="sophos-xg-tran-dst-ip">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\btran_dst_ip="?([^"\s]+)"?</regex>
+  <order>sophos_tran_dst_ip</order>
+</decoder>
+
+<decoder name="sophos-xg-tran-dst-port">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\btran_dst_port=(\d+)</regex>
+  <order>sophos_tran_dst_port</order>
+</decoder>
+
+<!-- Zones -->
+<decoder name="sophos-xg-srczone">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bsrczone="([^"]+)"</regex>
+  <order>sophos_srczone</order>
+</decoder>
+
+<decoder name="sophos-xg-dstzone">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bdstzone="([^"]+)"</regex>
+  <order>sophos_dstzone</order>
+</decoder>
+
+<decoder name="sophos-xg-srczonetype">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bsrczonetype="([^"]+)"</regex>
+  <order>sophos_srczonetype</order>
+</decoder>
+
+<decoder name="sophos-xg-dstzonetype">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bdstzonetype="([^"]+)"</regex>
+  <order>sophos_dstzonetype</order>
+</decoder>
+
+<!-- Interfaces -->
+<decoder name="sophos-xg-in-iface">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bin_interface="([^"]+)"</regex>
+  <order>sophos_in_interface</order>
+</decoder>
+
+<decoder name="sophos-xg-out-iface">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bout_interface="([^"]+)"</regex>
+  <order>sophos_out_interface</order>
+</decoder>
+
+<!-- Traffic Statistics -->
+<decoder name="sophos-xg-sent-bytes">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bsent_bytes=(\d+)</regex>
+  <order>sophos_sent_bytes</order>
+</decoder>
+
+<decoder name="sophos-xg-recv-bytes">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\brecv_bytes=(\d+)</regex>
+  <order>sophos_recv_bytes</order>
+</decoder>
+
+<decoder name="sophos-xg-sent-pkts">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bsent_pkts=(\d+)</regex>
+  <order>sophos_sent_pkts</order>
+</decoder>
+
+<decoder name="sophos-xg-recv-pkts">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\brecv_pkts=(\d+)</regex>
+  <order>sophos_recv_pkts</order>
+</decoder>
+
+<decoder name="sophos-xg-duration">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bduration=(\d+)</regex>
+  <order>sophos_duration</order>
+</decoder>
+
+<!-- Firewall Rule Fields -->
+<decoder name="sophos-xg-fwrule-id">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bfw_rule_id=(\S+)</regex>
+  <order>sophos_fw_rule_id</order>
+</decoder>
+
+<decoder name="sophos-xg-fwrule-name">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bfw_rule_name="([^"]+)"</regex>
+  <order>sophos_fw_rule_name</order>
+</decoder>
+
+<decoder name="sophos-xg-fwrule-section">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bfw_rule_section="([^"]+)"</regex>
+  <order>sophos_fw_rule_section</order>
+</decoder>
+
+<decoder name="sophos-xg-policy-type">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bpolicy_type=(\S+)</regex>
+  <order>sophos_policy_type</order>
+</decoder>
+
+<decoder name="sophos-xg-nat-rule-id">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bnat_rule_id=(\S+)</regex>
+  <order>sophos_nat_rule_id</order>
+</decoder>
+
+<!-- User / Authentication Fields -->
+<decoder name="sophos-xg-user">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\buser_name="([^"]+)"</regex>
+  <order>srcuser</order>
+</decoder>
+
+<decoder name="sophos-xg-user-gp">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\buser_gp="([^"]+)"</regex>
+  <order>sophos_user_group</order>
+</decoder>
+
+<decoder name="sophos-xg-auth-client">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bauth_client="([^"]+)"</regex>
+  <order>sophos_auth_client</order>
+</decoder>
+
+<decoder name="sophos-xg-auth-mechanism">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bauth_mechanism="([^"]+)"</regex>
+  <order>sophos_auth_mechanism</order>
+</decoder>
+
+<decoder name="sophos-xg-domain">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bdomain="([^"]+)"</regex>
+  <order>sophos_domain</order>
+</decoder>
+
+<!-- Web Filtering Fields -->
+<decoder name="sophos-xg-url">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\burl="([^"]+)"</regex>
+  <order>url</order>
+</decoder>
+
+<decoder name="sophos-xg-http-category">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bhttp_category="([^"]+)"</regex>
+  <order>sophos_http_category</order>
+</decoder>
+
+<decoder name="sophos-xg-http-category-type">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bhttp_category_type="([^"]+)"</regex>
+  <order>sophos_http_category_type</order>
+</decoder>
+
+<decoder name="sophos-xg-http-status">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bstatus_code="?(\d+)"?</regex>
+  <order>sophos_http_status</order>
+</decoder>
+
+<decoder name="sophos-xg-content-type">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bcontent_type="([^"]+)"</regex>
+  <order>sophos_content_type</order>
+</decoder>
+
+<decoder name="sophos-xg-referer">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\breferer="([^"]+)"</regex>
+  <order>sophos_referer</order>
+</decoder>
+
+<decoder name="sophos-xg-user-agent">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\buser_agent="([^"]+)"</regex>
+  <order>sophos_user_agent</order>
+</decoder>
+
+<decoder name="sophos-xg-web-policy-id">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bweb_policy_id=(\S+)</regex>
+  <order>sophos_web_policy_id</order>
+</decoder>
+
+<!-- Application Filtering Fields -->
+<decoder name="sophos-xg-app-name">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bapplication="([^"]+)"</regex>
+  <order>sophos_application</order>
+</decoder>
+
+<decoder name="sophos-xg-app-category">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bapplication_category="([^"]+)"</regex>
+  <order>sophos_app_category</order>
+</decoder>
+
+<decoder name="sophos-xg-app-risk">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bapplication_risk=(\S+)</regex>
+  <order>sophos_app_risk</order>
+</decoder>
+
+<decoder name="sophos-xg-app-technology">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bapplication_technology="([^"]+)"</regex>
+  <order>sophos_app_technology</order>
+</decoder>
+
+<decoder name="sophos-xg-app-filter-policy">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bappfilter_policy_id=(\S+)</regex>
+  <order>sophos_appfilter_policy_id</order>
+</decoder>
+
+<decoder name="sophos-xg-app-resolved-by">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bappresolvedby="([^"]+)"</regex>
+  <order>sophos_app_resolved_by</order>
+</decoder>
+
+<decoder name="sophos-xg-app-is-cloud">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bapp_is_cloud=(\S+)</regex>
+  <order>sophos_app_is_cloud</order>
+</decoder>
+
+<!-- IPS Fields -->
+<decoder name="sophos-xg-ips-policy">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bips_policy_id=(\S+)</regex>
+  <order>sophos_ips_policy_id</order>
+</decoder>
+
+<decoder name="sophos-xg-ips-activity">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bactivityname="([^"]+)"</regex>
+  <order>sophos_ips_activity</order>
+</decoder>
+
+<decoder name="sophos-xg-reason">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\breason="([^"]+)"</regex>
+  <order>sophos_reason</order>
+</decoder>
+
+<decoder name="sophos-xg-exceptions">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bexceptions="([^"]+)"</regex>
+  <order>sophos_exceptions</order>
+</decoder>
+
+<!-- Connection Tracking -->
+<decoder name="sophos-xg-connid">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bconnid="?([^"\s]+)"?</regex>
+  <order>sophos_connid</order>
+</decoder>
+
+<decoder name="sophos-xg-vconnid">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bvconnid="?([^"\s]+)"?</regex>
+  <order>sophos_vconnid</order>
+</decoder>
+
+<decoder name="sophos-xg-connevent">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bconnevent="([^"]+)"</regex>
+  <order>sophos_connevent</order>
+</decoder>
+
+<!-- GeoIP / Country Fields -->
+<decoder name="sophos-xg-src-country">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bsrc_country_code=(\S+)</regex>
+  <order>sophos_src_country</order>
+</decoder>
+
+<decoder name="sophos-xg-dst-country">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bdst_country_code=(\S+)</regex>
+  <order>sophos_dst_country</order>
+</decoder>
+
+<!-- VPN Fields -->
+<decoder name="sophos-xg-vpn-policy">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bvpn_policy_name="([^"]+)"</regex>
+  <order>sophos_vpn_policy</order>
+</decoder>
+
+<decoder name="sophos-xg-tunnel-type">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\btunnel_type="([^"]+)"</regex>
+  <order>sophos_tunnel_type</order>
+</decoder>
+
+<decoder name="sophos-xg-remote-ip">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bremote_ip=(\S+)</regex>
+  <order>sophos_remote_ip</order>
+</decoder>
+
+<decoder name="sophos-xg-local-ip">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\blocal_ip=(\S+)</regex>
+  <order>sophos_local_ip</order>
+</decoder>
+
+<!-- ATP (Advanced Threat Protection) Fields -->
+<decoder name="sophos-xg-threat">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bthreat="([^"]+)"</regex>
+  <order>sophos_threat</order>
+</decoder>
+
+<decoder name="sophos-xg-threat-url">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bthreaturl="([^"]+)"</regex>
+  <order>sophos_threat_url</order>
+</decoder>
+
+<decoder name="sophos-xg-ep-uuid">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bep_uuid="([^"]+)"</regex>
+  <order>sophos_ep_uuid</order>
+</decoder>
+
+<!-- Antivirus Fields -->
+<decoder name="sophos-xg-filename">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bfilename="([^"]+)"</regex>
+  <order>sophos_filename</order>
+</decoder>
+
+<decoder name="sophos-xg-filetype">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bfiletype="([^"]+)"</regex>
+  <order>sophos_filetype</order>
+</decoder>
+
+<decoder name="sophos-xg-filesize">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bfilesize=(\d+)</regex>
+  <order>sophos_filesize</order>
+</decoder>
+
+<decoder name="sophos-xg-sha1sum">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bsha1sum="([^"]+)"</regex>
+  <order>sophos_sha1sum</order>
+</decoder>
+
+<decoder name="sophos-xg-quarantine">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bquarantine="([^"]+)"</regex>
+  <order>sophos_quarantine</order>
+</decoder>
+
+<decoder name="sophos-xg-quarantine-reason">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bquarantine_reason="([^"]+)"</regex>
+  <order>sophos_quarantine_reason</order>
+</decoder>
+
+<!-- Email Fields -->
+<decoder name="sophos-xg-from-email">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bfrom_email_address="([^"]+)"</regex>
+  <order>sophos_from_email</order>
+</decoder>
+
+<decoder name="sophos-xg-to-email">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bto_email_address="([^"]+)"</regex>
+  <order>sophos_to_email</order>
+</decoder>
+
+<decoder name="sophos-xg-email-subject">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bsubject="([^"]+)"</regex>
+  <order>sophos_email_subject</order>
+</decoder>
+
+<decoder name="sophos-xg-mailid">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bmailid="([^"]+)"</regex>
+  <order>sophos_mailid</order>
+</decoder>
+
+<decoder name="sophos-xg-mail-size">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bmailsize=(\d+)</regex>
+  <order>sophos_mailsize</order>
+</decoder>
+
+<!-- Heartbeat / Endpoint Fields -->
+<decoder name="sophos-xg-hb-health">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bhb_health="([^"]+)"</regex>
+  <order>sophos_hb_health</order>
+</decoder>
+
+<decoder name="sophos-xg-hb-status">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bhb_status="([^"]+)"</regex>
+  <order>sophos_hb_status</order>
+</decoder>
+
+<!-- WAF Fields -->
+<decoder name="sophos-xg-waf-extra-info">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bextra_info="([^"]+)"</regex>
+  <order>sophos_waf_extra_info</order>
+</decoder>
+
+<!-- Sandbox Fields -->
+<decoder name="sophos-xg-sandbox-status">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bsandbox_status="([^"]+)"</regex>
+  <order>sophos_sandbox_status</order>
+</decoder>
+
+<!-- General Message -->
+<decoder name="sophos-xg-message">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bmessage="([^"]+)"</regex>
+  <order>sophos_message</order>
+</decoder>
+
+<!-- DHCP Fields -->
+<decoder name="sophos-xg-dhcp-hostname">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bclient_host_name="([^"]+)"</regex>
+  <order>sophos_dhcp_hostname</order>
+</decoder>
+
+<decoder name="sophos-xg-dhcp-mac">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bclient_physical_address="([^"]+)"</regex>
+  <order>sophos_dhcp_mac</order>
+</decoder>
+
+<decoder name="sophos-xg-ipaddress">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bipaddress="?([^"\s]+)"?</regex>
+  <order>sophos_ipaddress</order>
+</decoder>
+
+<!-- Ether Type -->
+<decoder name="sophos-xg-ethertype">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bether_type="?([^"\s]+)"?</regex>
+  <order>sophos_ether_type</order>
+</decoder>
+
+<!-- Used Quota -->
+<decoder name="sophos-xg-quota">
+  <parent>sophos-xg</parent>
+  <regex type="pcre2">\bused_quota=(\d+)</regex>
+  <order>sophos_used_quota</order>
+</decoder>

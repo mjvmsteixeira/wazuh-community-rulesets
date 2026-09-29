@@ -1,0 +1,24 @@
+<!--
+  Rule: Connection to known TOR exit node (Command and Control)
+  NIST CSF: DE.CM-01, DE.AE-03
+  MITRE ATT&CK: T1090.003
+  Severity: Critical
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-23
+-->
+
+<group name="nist_csf, de.cm-01, mitre_attack,">
+
+  <rule id="100045" level="12">
+      <!-- Relies on custom iptables or proxy decoders matching dest IP against a CDB list -->
+      <if_sid>4100</if_sid> <!-- Standard Wazuh firewall parent rule -->
+      <!-- Requires a CDB list in practice. Simulating with regex for testing -->
+      <regex type="pcre2">(?i)(tor_exit_node_detected|DST=known_tor_node)</regex>
+      <description>Connection to known TOR exit node (Command and Control)</description>
+      <mitre>
+        <id>T1090.003</id>
+      </mitre>
+      <group>DE.CM-01, DE.AE-03</group>
+    </rule>
+
+</group>

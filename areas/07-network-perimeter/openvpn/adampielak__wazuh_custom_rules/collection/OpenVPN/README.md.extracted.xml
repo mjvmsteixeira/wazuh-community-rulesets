@@ -1,0 +1,21 @@
+<!-- Blocos de configuração extraídos, sem alterações, de adampielak/wazuh_custom_rules:OpenVPN/README.md @ de502789e220 -->
+<agent_config>
+  <localfile>
+    <log_format>json</log_format>
+    <location>/var/log/openvpn/users_connections.json</location>
+  </localfile>
+</agent_config>
+
+<agent_config>
+  <localfile>
+    <log_format>json</log_format>
+    <location>/var/log/openvpn/users_connections.json</location>
+  </localfile>
+</agent_config>
+
+<agent_config>
+  <localfile>
+    <log_format>syslog</log_format>
+    <location>/var/log/openvpn/status.log</location>
+  </localfile>    
+</agent_config>

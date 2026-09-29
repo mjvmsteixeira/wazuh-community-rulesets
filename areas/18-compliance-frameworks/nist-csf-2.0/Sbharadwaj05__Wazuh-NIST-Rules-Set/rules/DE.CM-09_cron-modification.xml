@@ -1,0 +1,43 @@
+<!--
+  Rule: Cron Job Modification
+  NIST CSF: DE.CM-09 (Monitoring for unauthorized personnel, connections, devices, and software)
+            PR.DS-01 (Data-at-rest is protected)
+  MITRE ATT&CK: T1053.003 - Scheduled Task/Job: Cron
+  Severity: Medium
+  Author: Subhash Bharadwaj
+  Last Updated: 2026-05-21
+
+  Description:
+    Detects write or attribute changes to cron configuration files such as
+    /etc/crontab, /etc/cron.d, and user crontabs.
+
+  False Positives:
+    - Legitimate administrative changes
+    - Configuration management runs
+
+  Tuning Guidance:
+    Add allowlist rules for known maintenance windows or automation accounts.
+
+  Assumptions:
+    - auditd is enabled and logs PATH records with path=.
+
+  Limitations:
+    - Changes that bypass auditd or use non-standard paths may be missed.
+
+  Test: tests/sample-logs/de-cm-09/cron-modification/
+-->
+
+<group name="nist_csf,de.cm-09,cron,auditd">
+
+  <rule id="100004" level="7">
+    <if_sid>80700</if_sid>
+    <regex type="pcre2">path=/(etc/cron|var/spool/cron)</regex>
+    <match>perm=wa</match>
+    <description>Possible cron schedule modification detected</description>
+    <mitre>
+      <id>T1053.003</id>
+    </mitre>
+    <group>persistence,scheduled_task,nist_de.cm-09,nist_pr.ds-01</group>
+  </rule>
+
+</group>

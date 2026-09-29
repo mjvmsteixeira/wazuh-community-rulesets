@@ -1,0 +1,30 @@
+<!--
+Decoder for usermod
+
+Feb 16 17:04:40 Test usermod[8078]: change user 'testuser3' shell from '/bin/bash' to '/sbin/nologin'
+Feb 16 17:02:43 Test usermod[7556]: lock user 'testuser' password
+Feb 16 16:54:42 Test usermod[5519]: add 'debian' to group 'testgroup'
+-->
+
+<decoder name="usermod">
+  <program_name>^usermod</program_name>
+</decoder>
+
+<decoder name="usermod">
+    <parent>usermod</parent>
+    <regex>(add) '(\.*)' to group '(\.*)'</regex>
+    <order>event.action, user.name, user.group</order>
+</decoder>
+
+<decoder name="usermod">
+    <parent>usermod</parent>
+    <regex>(lock) user '(\.*)' password</regex>
+    <order>event.action, user.name</order>
+</decoder>
+
+<decoder name="usermod">
+    <parent>usermod</parent>
+    <regex>(change) user '(\.*)' shell from '(\.*)' to '(\.*)'</regex>
+    <order>event.action, user.name, fields.from_shell, fields.to_shell</order>
+</decoder>
+

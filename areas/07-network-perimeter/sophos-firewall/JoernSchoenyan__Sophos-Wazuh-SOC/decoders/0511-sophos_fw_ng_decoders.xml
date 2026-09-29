@@ -1,0 +1,681 @@
+<!--
+  -  Sophos "Standard syslog protocol" or "Central Reporting Format" decoders for Wazuh
+  -  Created by Jörn Schönyan
+  -  Reference used: https://docs.sophos.com/nsg/sophos-firewall/20.0/pdf/sf-syslog-guide-20.0.pdf
+  -  This program is a free software; you can redistribute it and/or modify it under the terms of GPLv2.
+-->
+
+<!--
+device_name="SFW" timestamp="2020-04-18T01:13:48+0200" device_model="SF01V" device_serial_id="SFDemo-ffef173" log_id="148532619012" log_type="SSL" log_component="SSL" log_subtype="Reject" log_version=1 severity="Information" src_ip="10.146.13.238" dst_ip="10.8.142.181" src_country="R1" dst_country="R1" src_port=56840 dst_port=443 con_id="1127601088" rule_id=4 profile_id=5 rule_name="TA: block" profile_name="BlockUsingTlsVersion" key_type="KEY_TYPE__RSA" fingerprint="c0:78:6d:b9:58:4d:f3:31:50:42:d8:b2:14:43:ff:be:d8:69:8a:4e" cert_chain_served="FALSE" cipher_suite="TLS_RSA_WITH_AES_128_CBC_SHA256" sni="skizzenbuch.thalia.de" tls_version="TLS1.2" reason="Blocked due to TLS protocol version" src_zone_type="LAN" src_zone="LAN" dst_zone_type="WAN" dst_zone="WAN" category="Online Shopping"
+-->
+
+<decoder name="sophos-fw-ng">
+  <prematch>^device_name="\S+"\s+timestamp=</prematch>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>timestamp="(\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d+\d\d\d\d)"</regex>
+  <order>log_timestamp</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>^device_name="(\.+)"\s+timestamp="</regex>
+  <order>device_name</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>device_model="(\.+)"</regex>
+  <order>device_model</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>device_serial_id="(\.+)"</regex>
+  <order>device_serial_id</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>priority="(\.+)"</regex>
+  <order>priority</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>log_id="(\.+)"</regex>
+  <order>log_id</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>log_type="(\.+)"</regex>
+  <order>log_type</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>log_component="(\.+)"</regex>
+  <order>log_component</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>log_subtype="(\.+)"</regex>
+  <order>log_subtype</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>log_version=(\d+)</regex>
+  <order>log_version</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>severity="(\.+)"</regex>
+  <order>severity</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>src_ip="(\.+)"</regex>
+  <order>srcip</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>src_mac="(\.+)"</regex>
+  <order>src_mac</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>reported_host="(\.+)"</regex>
+  <order>reported_host</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>src_host="(\.+)"</regex>
+  <order>src_host</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>dst_host="(\.+)"</regex>
+  <order>dst_host</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>lease_time="(\.+)"</regex>
+  <order>lease_time</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>dst_ip="(\.+)"</regex>
+  <order>dstip</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>src_country="(\.+)"</regex>
+  <order>src_country</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>dst_country="(\.+)"</regex>
+  <order>dst_country</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>src_port=(\d+)</regex>
+  <order>srcport</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>dst_port=(\d+)</regex>
+  <order>dstport</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>con_id="(\d+)"</regex>
+  <order>con_id</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>rule_id=(\d+)</regex>
+  <order>rule_id</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>rule_name="(\.+)"</regex>
+  <order>rule_name</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>profile_id=(\d+)</regex>
+  <order>profile_id</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>profile_name="(\.+)"</regex>
+  <order>profile_name</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>key_type="(\.+)"</regex>
+  <order>key_type</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>fingerprint="(\.+)"</regex>
+  <order>fingerprint</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>cert_chain_served="(\.+)"</regex>
+  <order>cert_chain_served</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>cipher_suite="(\.+)"</regex>
+  <order>cipher_suite</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>sni="(\.+)"</regex>
+  <order>sni</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>tls_version="(\.+)"</regex>
+  <order>tls_version</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>reason="(\.+)"</regex>
+  <order>reason</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>src_zone_type="(\.+)"</regex>
+  <order>src_zone_type</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>src_zone="(\.+)"</regex>
+  <order>src_zone</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>dst_zone_type="(\.+)"</regex>
+  <order>dst_zone_type</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>dst_zone="(\.+)"</regex>
+  <order>dst_zone</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>category="(\.+)"</regex>
+  <order>category</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>status="(\.+)"</regex>
+  <order>sophos_fw_status</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>user_name="(\.+)"</regex>
+  <order>user_name</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>user_group="(\.+)"</regex>
+  <order>user_group</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>message="(\.+)"</regex>
+  <order>message</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>protocol="(\.+)"</regex>
+  <order>protocol</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>url="(\.+)"</regex>
+  <order>url</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>malware="(\.+)"</regex>
+  <order>malware</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>event_id="(\.+)"</regex>
+  <order>event_id</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>event_type="(\.+)"</regex>
+  <order>event_type</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>reported_user="(\.+)"</regex>
+  <order>reported_user</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>proc_user="(\.+)"</regex>
+  <order>proc_user</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>reported_id="(\.+)"</regex>
+  <order>reported_id</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>file_path="(\.+)"</regex>
+  <order>file_path</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>file_type="(\.+)"</regex>
+  <order>file_type</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>file_hash="(\.+)"</regex>
+  <order>file_hash</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>threat="(\.+)"</regex>
+  <order>threat</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>type="(\.+)"</regex>
+  <order>type</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>host_login_user="(\.+)"</regex>
+  <order>host_login_user</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>host_process_user="(\.+)"</regex>
+  <order>host_process_user</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>endpoint_id="(\.+)"</regex>
+  <order>endpoint_id</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>execution_path="(\.+)"</regex>
+  <order>execution_path</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>threatfeed="(\.+)"</regex>
+  <order>threatfeed</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>threatscore="(\d+)"</regex>
+  <order>threatscore</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>sender="(\.+)"</regex>
+  <order>sender</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>recipient="(\.+)"</regex>
+  <order>recipient</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>subject="(\.+)"</regex>
+  <order>subject</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>action="(\.+)"</regex>
+  <order>antispam_action</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>red_endpoint_count=(\d+)</regex>
+  <order>red_endpoint_count</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>yellow_endpoint_count=(\d+)</regex>
+  <order>yellow_endpoint_count</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>green_endpoint_count=(\d+)</regex>
+  <order>green_endpoint_count</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>total="(\.+)"</regex>
+  <order>total</order>
+</decoder>
+
+<!-- these ep_* could be wrong, needs verification --> 
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>ep_name="(\.+)"</regex>
+  <order>ep_name</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>ep_uuid="(\.+)"</regex>
+  <order>ep_uuid</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>ep_ip="(\.+)"</regex>
+  <order>ep_ip</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>ep_health="(\.+)"</regex>
+  <order>ep_health</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>ep_event_time="(\.+)"</regex>
+  <order>ep_event_time</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>hb_status="(\.+)"</regex>
+  <order>hb_status</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>reported_host="(\.+)"</regex>
+  <order>reported_host</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>classification="(\.+)"</regex>
+  <order>classification</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>platform="(\.+)"</regex>
+  <order>platform</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>interface="(\.+)"</regex>
+  <order>interface</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>display_interface="(\.+)"</regex>
+  <order>display_interface</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>receivedkbits=(\d+\.\d\d)</regex>
+  <order>receivedkbits</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>transmittedkbits=(\d+\.\d\d)</regex>
+  <order>transmittedkbits</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>receivederrors=(\d+\.\d\d)</regex>
+  <order>receivederrors</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>transmitteddrops=(\d+\.\d\d)</regex>
+  <order>transmitteddrops</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>collisions=(\d+\.\d\d)</regex>
+  <order>collisions</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>transmittederrors=(\d+\.\d\d)</regex>
+  <order>transmittederrors</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>receiveddrops=(\d+\.\d\d)</regex>
+  <order>receiveddrops</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>Configuration=(\d+\.\d\d)%</regex>
+  <order>Configuration</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>Reports=(\d+\.\d\d)%</regex>
+  <order>Reports</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>Signature=(\d+\.\d\d)%</regex>
+  <order>Signature</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>Temp=(\d+\.\d\d)%</regex>
+  <order>Temp</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>system=(\d+\.\d\d)%</regex>
+  <order>cpu_system</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>user=(\d+\.\d\d)%</regex>
+  <order>cpu_user</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>idle=(\d+\.\d\d)%</regex>
+  <order>cpu_idle</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>non_ssl_count=(\d+)</regex>
+  <order>non_ssl_count</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>\sssl_count=(\d+)</regex>
+  <order>ssl_count</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>decrypted_count=(\d+)</regex>
+  <order>decrypted_count</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>users=(\d+)</regex>
+  <order>users</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>total_memory=(\d+)</regex>
+  <order>total_memory</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>free=(\d+)</regex>
+  <order>free</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>used=(\d+)</regex>
+  <order>used</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>connectionname="(\.+)"</regex>
+  <order>connectionname</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>connectionname="(\.+)"</regex>
+  <order>connectionname</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>remote_network="(\.+)"</regex>
+  <order>remote_network</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>local_network="(\.+)"</regex>
+  <order>local_network</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>filename="(\.+)"</regex>
+  <order>filename</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>source="(\.+)"</regex>
+  <order>source</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>destination="(\.+)"</regex>
+  <order>destination</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>local_ip="(\.+)"</regex>
+  <order>local_ip</order>
+</decoder>
+
+<decoder name="sophos-fw-ng">
+  <parent>sophos-fw-ng</parent>
+  <regex>virus="(\.+)"</regex>
+  <order>virus</order>
+</decoder>

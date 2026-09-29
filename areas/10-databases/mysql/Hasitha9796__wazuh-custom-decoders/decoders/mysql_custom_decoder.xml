@@ -1,0 +1,57 @@
+<decoder name="mysql">
+  <prematch>^\pAUDIT_RECORD\p</prematch>
+</decoder>
+
+<decoder name="mysql-nextfields">
+  <parent>mysql</parent>
+  <regex>\pNAME\p(\S+)\p</regex>
+  <order>NAME</order>
+</decoder>
+
+<decoder name="mysql-nextfields">
+  <parent>mysql</parent>
+  <regex>\pRECORD\p(\S+)\p</regex>
+  <order>RECORD</order>
+</decoder>
+
+<decoder name="mysql-nextfields">
+  <parent>mysql</parent>
+  <regex>\pTIMESTPAMP\p(\d+-\d+-\S+:\d+:\d+)\p</regex>
+  <order>timestamp</order>
+</decoder>
+
+<decoder name="mysql-nextfields">
+  <parent>mysql</parent>
+  <regex>\pCOMMAND_CLASS\p(\S+)\p</regex>
+  <order>COMMAND_CLASS</order>
+</decoder>
+
+<decoder name="mysql-nextfields">
+  <parent>mysql</parent>
+  <regex>\pSTATUS\p(\S+)\p</regex>
+  <order>STATUS</order>
+</decoder>
+
+<decoder name="mysql-nextfields">
+  <parent>mysql</parent>
+  <regex>\pSQLTEXT\p(\.+)\p</regex>
+  <order>SQLTEXT</order>
+</decoder>
+
+<decoder name="mysql-nextfields">
+  <parent>mysql</parent>
+  <regex>\pUSER\p(\.+)\p</regex>
+  <order>USER</order>
+</decoder>
+
+<decoder name="mysql-nextfields">
+  <parent>mysql</parent>
+  <regex>\pIP\p(\d+.\d+.\d+.\d+)\p</regex>
+  <order>srcip</order>
+</decoder>
+
+<decoder name="mysql-nextfields">
+  <parent>mysql</parent>
+  <regex>\pDB\p(\S+)\p</regex>
+  <order>DB</order>
+</decoder>

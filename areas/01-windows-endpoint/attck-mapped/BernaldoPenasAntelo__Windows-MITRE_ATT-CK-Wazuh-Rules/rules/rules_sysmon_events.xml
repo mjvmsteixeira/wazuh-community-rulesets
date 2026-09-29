@@ -1,0 +1,2430 @@
+<!--
+A robust detection can only begin once the data sources (process monitoring, file monitoring, etc.) within a specified environment are mapped to malicious activity.
+-->
+<group name="MITRE ATT&CK_sysmon">
+
+	<!-- GENERAL RULES 100100-->
+	<!--
+	<ProcessCreate onmatch="include">
+	   <Image condition="end with">rundll32.exe</Image>
+	</ProcessCreate>
+	-->
+	<rule id="100100" level="0">
+		<if_group>sysmon_event1</if_group>	   
+		<field name="win.eventdata.Image">\\rundll32.exe</field>
+		<description>Mitre ATT&CK T1218.011, Defense Evasion, Signed Binary Proxy Execution: Rundll32</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<ParentImage condition="end with">mshta.exe</ParentImage>
+	</ProcessCreate>
+	-->
+	<rule id="100101" level="0">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.parentImage">\\mshta.exe</field>
+		<description>Mitre ATT&CK T1218.005, Defense Evasion, Signed Binary Proxy Execution: Mshta, Microsoft HTML Application execution</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<ParentImage condition="end with">WINWORD.exe</ParentImage>
+		<ParentImage condition="end with">EXCEL.exe</ParentImage>
+		<ParentImage condition="end with">POWERPNT.exe</ParentImage>
+		<ParentImage condition="end with">MSPUB.exe</ParentImage>
+		<ParentImage condition="end with">VISIO.exe</ParentImage>
+	</ProcessCreate>
+	-->
+	<rule id="100102" level="0">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.ParentImage">\\WINWORD.EXE||\\EXCEL.EXE||\\POWERPNT.exe||\\MSPUB.exe||\\VISIO.exe</field>
+		<description>Mitre ATT&CK T1059, Command and Scripting Interpreter, MS Word - Ms EXCEL run</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<CreateRemoteThread onmatch="include">
+		<TargetImage condition="is">C:\Windows\system32\lsass.exe</TargetImage>
+	</CreateRemoteThread>
+	-->
+	<rule id="100103" level="0">
+		<if_group>sysmon_event8</if_group>
+		<field name="win.eventdata.TargetImage">lsass.exe</field>
+		<description>Mitre ATT&CK S0121, Credential Access</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<NetworkConnect onmatch="include">
+		<Image condition="end with">rundll32.exe</Image>
+	</NetworkConnect>
+	-->
+	<rule id="100104" level="0">
+		<if_group>sysmon_event3</if_group>
+		<field name="win.eventdata.image">rundll32.exe</field>
+		<description>Mitre ATT&CK T1218.011, Defense Evasion, Signed Binary Proxy Execution: Rundll32, Internet Connection from Rundll32</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<Image condition="end with">certutil.exe</Image>
+	</ProcessCreate>
+	-->
+	<rule id="100105" level="0">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.image">certutil.exe</field>
+		<description>Mitre ATT&CK S0160, Detetcs a suspicious Microsoft certutil execution with sub commands</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<ParentImage condition="contains">cscript.exe</Image>
+		<ParentImage condition="contains">wscript.exe</Image>
+	</ProcessCreate>
+	-->
+	<rule id="100106" level="0">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.parentImage">wscript.exe|cscript.exe</field>
+		<description>Mitre ATT&CK T1059, Execution , Command and Scripting Interpreter, wscript/cscript.exe</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<Image condition="end with">regsvr32.exe</Image>
+	</ProcessCreate>
+	-->
+	<rule id="100107" level="0">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.image">regsvr32.exe</field>
+		<description>Mitre ATT&CK T1218.010,  Defense Evasion, Signed Binary Proxy Execution: Regsvr32</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<Image condition="end with">wmic.exe</Image>
+	</ProcessCreate>
+	-->
+	<rule id="100108" level="0">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.image">wmic.exe</field>
+		<description>>Mitre ATT&CK T1047, Execution, Windows Management Instrumentation, Detects WMI execution</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<Image condition="end with">bitsadmin.exe</Image>
+	</ProcessCreate>
+	-->
+	<rule id="100109" level="0">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.image">bitsadmin.exe</field>
+		<description>Mitre ATT&CK S0190, BITSAdmin</description>
+		<options>no_full_log</options>
+	</rule>	
+	<!--
+	<ProcessCreate onmatch="include">
+		<ParentImage condition="end with">mmc.exe</ParentImage>
+	</ProcessCreate>
+	-->
+	<rule id="100110" level="0">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.parentImage">mmc.exe</field>
+		<description>Mitre ATT&CK T1559.001, Execution, Inter-Process Communication: Component Object Model</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<Image condition="end with">conhost.exe</Image>
+	</ProcessCreate>
+	-->
+	<rule id="100111" level="0">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.Image">conhost.exe</field>
+		<description>Mitre ATT&CK T1059, Execution, Command and Scripting Interpreter execution $(win.eventdata.parentimage)</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<Image condition="end with" name="T1082">appcmd.exe</Image>
+	</ProcessCreate>
+	-->
+	<rule id="100112" level="0">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.Image">appcmd.exe</field>
+		<description>Mitre ATT&CK T1082, Discovery, System Information Discovery, Appcmd command IIS password and configuration discovery</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<Image condition="end with">powershell.exe</Image>
+		<Image condition="contains">.ps1</Image>
+		<Image condition="contains">.ps2</Image>
+	</ProcessCreate>
+	-->
+	<rule id="100113" level="10">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.Image">\\powershell.exe||\\.ps1||\\.ps2</field>
+		<description>Mitre ATT&CK T1059.001, Execution, Command and Scripting Interpreter: PowerShell, Powershell or Script Execution: $(win.eventdata.CommandLine)</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<Image condition="image" name="T1112 -1a">reg.exe</Image>
+	</ProcessCreate>
+	-->
+	<rule id="100114" level="0">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.image">reg.exe</field>
+		<description>Mitre ATT&CK S0075, Reg</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<NetworkConnect onmatch="include">
+		<Image condition="image" name="T1112 -1b">reg.exe</Image>
+	</NetworkConnect>
+	-->
+	<rule id="100115" level="10">
+		<if_group>sysmon_event3</if_group>
+		<field name="win.eventdata.image">reg.exe</field>
+		<description>Mitre ATT&CK S0075, Reg, used in network</description>
+		<options>no_full_log</options>
+	</rule>
+	
+	<rule id="100116" level="3">
+		<if_group>sysmon_event3</if_group>
+		<field name="win.eventdata.DestinationPort">^3389$</field>
+		<description>Mitre ATT&CK T1076, Lateral Movement, Remote Desktop Protocol, RDP Connection</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<Image condition="end with">cmd.exe</Image>
+	</ProcessCreate>
+	-->
+	<rule id="100117" level="10">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.image">cmd.exe</field>
+		<description>Mitre ATT&CK T1059.003, Execution, Command and Scripting Interpreter: Windows Command Shell, Command-Line Interface Execution: $(win.eventdata.CommandLine)</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<Image condition="end with">adfind.exe.exe</ParentImage>
+	</ProcessCreate>
+	-->
+	<rule id="100118" level="0">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.Image">adfind.exe</field>
+		<description>Mitre ATT&CK T1087, Discovery, Account Discovery </description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100119" level="0">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.image">net.exe|net1.exe</field>
+		<description>Mitre ATT&CK S0039, Net</description>
+		<options>no_full_log</options>
+	</rule>
+	<!------------------------------------------------------------------------------------------------------------------------------->
+	<!-- NEW RULES FOR SYSMON 19,20,21 EVENTS (101600)-->
+	
+	<rule id="101601" level="0">
+		<if_sid>18100</if_sid>
+		<match>Microsoft-Windows-Sysmon/Operational: INFORMATION(19)</match>
+		<description>Sysmon - Event 19</description>
+		<group>sysmon_event_19,</group>
+	</rule>
+	<rule id="101602" level="0">
+		<if_sid>18100</if_sid>
+		<match>Microsoft-Windows-Sysmon/Operational: INFORMATION(20)</match>
+		<description>Sysmon - Event 20</description>
+		<group>sysmon_event_20,</group>
+	</rule>
+	<rule id="101603" level="0">
+		<if_sid>18100</if_sid>
+		<match>Microsoft-Windows-Sysmon/Operational: INFORMATION(21)</match>
+		<description>Sysmon - Event 21</description>
+		<group>sysmon_event_21,</group>
+	</rule>
+	<rule id="101604" level="0">
+		<if_sid>18100</if_sid>
+		<match>Microsoft-Windows-Sysmon/Operational: INFORMATION(22)</match>
+		<description>Sysmon - Event 22</description>
+		<group>sysmon_event_22,</group>
+	</rule>
+	<rule id="101605" level="0">
+		<if_sid>18100</if_sid>
+		<match>Microsoft-Windows-Sysmon/Operational: INFORMATION(16)</match>
+		<description>Sysmon - Event 16</description>
+		<group>sysmon_event_16,</group>
+	</rule>
+	<rule id="101606" level="0">
+		<if_sid>18100</if_sid>
+		<match>Microsoft-Windows-Sysmon/Operational: INFORMATION(4)</match>
+		<description>Sysmon - Event 4</description>
+		<group>sysmon_event_4,</group>
+	</rule>
+	<rule id="101607" level="0">
+		<if_sid>61600</if_sid>
+		<field name="win.system.eventID">^19$</field>
+		<description>Sysmon - Event 19: WmiEventFilter</description>
+		<options>no_full_log</options>
+		<group>sysmon_event_19,</group>
+	</rule>
+	<rule id="101608" level="0">
+		<if_sid>61600</if_sid>
+		<field name="win.system.eventID">^20$</field>
+		<description>Sysmon - Event 20: WmiEventConsumer</description>
+		<options>no_full_log</options>
+		<group>sysmon_event_20,</group>
+	</rule>
+	<rule id="101609" level="0">
+		<if_sid>61600</if_sid>
+		<field name="win.system.eventID">^21$</field>
+		<description>Sysmon - Event 21: WmiEventConsumerToFilter</description>
+		<options>no_full_log</options>
+		<group>sysmon_event_21,</group>
+	</rule>
+	<rule id="101610" level="0">
+		<if_sid>61600</if_sid>
+		<field name="win.system.eventID">^22$</field>
+		<description>Sysmon - Event 22: DNS Query</description>
+		<options>no_full_log</options>
+		<group>sysmon_event_22,</group>
+	</rule>
+	<rule id="101611" level="0">
+		<if_sid>61600</if_sid>
+		<field name="win.system.eventID">^16$</field>
+		<description>Sysmon - Event 16: Sysmon config state changed</description>
+		<options>no_full_log</options>
+		<group>sysmon_event_16,</group>
+	</rule>
+
+	<!------------------------------------------------------------------------------------------------------------------------------->
+	<!--
+	{"win":{"system":{"providerName":"Microsoft-Windows-Sysmon","providerGuid":"{54849625-5478-4994-a5ba-3e3b0328c30d}","eventID":"3","version":"2","level":"4","task":"11","opcode":"0","keywords":"0x8000000000000000","systemTime":"2019-05-08T02:10:43.487217000","eventRecordID":"202793","processID":"444","threadID":"463","channel":"Microsoft-Windows-Sysmon/Operational","computer":"DC1.insecurebank.local","severityValue":"INFORMATION","message":"Network connection detected."},"eventdata":{"subjectUserSid":"S-1-5-21-3461203602-4096304019-2269080069-1000","RuleName":"","UtcTime":"2019-05-14 01:29:00.318","ProcessGuid":"{365abb72-19e0-5cda-0000-001006711000}","ProcessId":"1932","Image":"C:\\Windows\\System32\\mshta.exe","User":"IEWIN7\\IEUser","Protocol":"tcp","Initiated":"false","SourceIsIpv6":"false","SourceIp":"10.0.2.16","SourceHostname":"IEWIN7","SourcePort":"49168","SourcePortName":"","DestinationIsIpv6":"false","DestinationIp":"10.0.2.17","DestinationHostname":"","DestinationPort":"55683","DestinationPortName":""}}}
+	-->
+	<!-- LATERAL MOVEMENT 100500-->
+
+	<!--
+	 <ProcessCreate onmatch="include">
+		<ParentImage condition="end with">wsmprovhost.exe</ParentImage>
+	 </ProcessCreate>
+	--> 
+	<rule id="100502" level="10">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.ParentImage">\\wsmprovhost.exe</field>
+		<description>Mitre ATT&CK T1028, Lateral Movement, Windows Remote Management, Powershell remoting wsmprovhost</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	 <ProcessCreate onmatch="include">
+		<ParentImage condition="contains">WinrsHost.exe</ParentImage>
+	 </ProcessCreate>
+	--> 
+	<rule id="100503" level="10">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.ParentImage">\.*WinrsHost.exe\.*</field>
+		<description>Mitre ATT&CK T1028, Lateral Movement, Windows Remote Management, Host Process for WinRM's Remote Shell plugin</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<CommandLine condition="contains">*transport=dt_socket,address=*</CommandLine>
+	</ProcessCreate>
+	-->
+	<rule id="100506" level="12">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.commandline">transport=dt_socket,address=</field>
+		<description>Mitre ATT&CK T1210, Lateral Movement , Exploitation of Remote Services, Detects a JAVA process running with remote debugging allowing more than just localhost to connect</description>
+		<options>no_full_log</options>
+	</rule>	
+	<rule id="100507" level="10">
+        <if_sid>100117</if_sid>
+        <field name="win.eventdata.commandLine">net use\.*\\d\$|net use\.*\\admin\$|net use\.*\\c\$|net use\.*\\C\$|net use\.*\\ipc\$|net use\.*\\IPC\$</field>
+        <description>Mitre ATT&CK T1077, Lateral movement, Windows admin shares using command line</description>
+        <options>no_full_log</options>
+	</rule>
+	<rule id="100508" level="10">
+        <if_sid>100113</if_sid>
+        <field name="win.eventdata.commandLine">New-PSDrive\.*\\d\$|New-PSDrive\.*\\admin\$|New-PSDrive\.*\\c\$|New-PSDrive\.*\\C\$|New-PSDrive\.*\\ipc\$|New-PSDrive\.*\\IPC\$</field>
+        <description>Mitre ATT&CK T1077, Lateral movement, Windows admin shares using powershell</description>
+        <options>no_full_log</options>
+	</rule>
+	<rule id="100509" timeframe="60" frequency="6" level="10">
+		<if_matched_sid>100116</if_matched_sid>
+		<same_field>win.eventdata.ProcessId</same_field>
+		<description>Mitre ATT&CK T1076, Lateral Movement, Remote Desktop Protocol, RDP Brute force from $(win.eventdata.SourceIp)</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<NetworkConnect onmatch="include">
+		<DestinationPort condition="is">5800</DestinationPort>
+		<DestinationPort condition="is">5900</DestinationPort>
+	</NetworkConnect>
+	-->
+	<rule id="100510" level="7">
+		<if_group>sysmon_event3</if_group>
+		<field name="win.eventdata.DestinationPort">^5800$|^5900$</field>   
+		<description>Mitre ATT&CK T1021.005,  Lateral Movement, Remote Services: VNC, VNC Traffic</description>
+		<options>no_full_log</options>
+	</rule>
+		<!--
+	<NetworkConnect onmatch="include">
+		<DestinationPort condition="is">22</DestinationPort>
+	</NetworkConnect>
+	-->
+	<rule id="100511" level="7">
+		<if_group>sysmon_event3</if_group>
+		<field name="win.eventdata.DestinationPort">^22$</field>   
+		<description>Mitre ATT&CK T1021.004, Lateral Movement, Remote Services: SSH </description>
+		<options>no_full_log</options>
+	</rule>
+	<!------------------------------------------------------------------------------------------------------------------------------->
+	<!-- PRIVILEGE ESCALATION 100600-->
+	
+	<!--
+	<RegistryEvent onmatch="include">
+	   <TargetObject condition="is">HKU\*\exefile\shell\runas\command\IsolatedCommand</TargetObject>
+	</RegistryEvent>
+	-->
+	<rule id="100601" level="12">
+		<if_group>sysmon_event_13</if_group>
+		<field name="win.eventdata.TargetObject">\\\\exefile\\\\shell\\\\runas\\\\command\\\\IsolatedCommand</field>
+		<description>Mitre ATT&CK T1548.002, Privilege Escalation, Abuse Elevation Control Mechanism, Bypass User Access Control,  Fileless UAC Bypass using sdclt.exe</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<RegistryEvent onmatch="include">
+	   <TargetObject condition="is">HKU\*\ms-settings\shell\open\command\DelegateExecute</TargetObject>
+	   <TargetObject condition="is">HKU\*\ms-settings\shell\open\command\(Default)</TargetObject>
+	   <TargetObject condition="is">HKU\*\ms-settings\shell\open\command</TargetObject>
+	</RegistryEvent>
+	-->
+	<rule id="100602" level="12">
+		<if_group>sysmon_event_13</if_group>
+		<field name="win.eventdata.TargetObject">\\\\ms-settings\\\\shell\\\\open\\\\command\\\\DelegateExecute|\\\\ms-settings\\\\shell\\\\open\\\\command\\\\(Default)|\\\\ms-settings\\\\shell\\\\open\\\\command</field>
+		<description>Mitre ATT&CK T1548.002, Privilege Escalation, Abuse Elevation Control Mechanism, Bypass User Access Control,  UAC Bypass – Fodhelper - UACME 33</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	 <ProcessCreate onmatch="include">
+		<ParentCommandLine condition="is">C:\Windows\System32\eventvwr.exe</ParentCommandLine>
+	 </ProcessCreate>
+	--> 
+	<rule id="100603" level="12">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.ParentCommandLine">C:\\Windows\\System32\\eventvwr.exe</field>
+		<description>Mitre ATT&CK T1548.002, Privilege Escalation, Abuse Elevation Control Mechanism, Bypass User Access Control, Fileless UAC Bypass Using eventvwr.exe</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<FileCreate onmatch="include">
+	   <TargetFilename condition="contains">*\AppData\Local\Temp\comctl32.dll</TargetFilename>
+	</FileCreate>
+	-->
+	<rule id="100604" level="12">
+		<if_group>sysmon_event_11</if_group>
+		<field name="win.eventdata.TargetFilename">\\\\AppData\\\\Local\\\\Temp\\\\comctl32.dll</field>
+		<description>Mitre ATT&CK T1548.002, Privilege Escalation, Abuse Elevation Control Mechanism, Bypass User Access Control, UACME (Defeating Windows User Account Control by abusing built-in Windows AutoElevate backdoor) technique 22</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<FileCreate onmatch="include">
+	   <TargetFilename condition="contains">*\AppData\Local\Temp\dismcore.dll</TargetFilename>
+	</FileCreate>
+	-->
+	<rule id="100605" level="12">
+		<if_group>sysmon_event_11</if_group>
+		<field name="win.eventdata.TargetFilename">\\\\AppData\\\\Local\\\\Temp\\\\dismcore.dll</field>
+		<description>Mitre ATT&CK T1548.002, Privilege Escalation, Abuse Elevation Control Mechanism, Bypass User Access Control, UACME (Defeating Windows User Account Control by abusing built-in Windows AutoElevate backdoor) technique 23</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<FileCreate onmatch="include">
+	   <TargetFilename condition="contains">*\AppData\Local\Temp\wow64log.dll</TargetFilename>
+	</FileCreate>
+	-->
+	<rule id="100606" level="12">
+		<if_group>sysmon_event_11</if_group>
+		<field name="win.eventdata.TargetFilename">\\\\AppData\\\\Local\\\\Temp\\\\wow64log.dll</field>
+		<description>Mitre ATT&CK T1548.002, Privilege Escalation, Abuse Elevation Control Mechanism, Bypass User Access Control, UACME (Defeating Windows User Account Control by abusing built-in Windows AutoElevate backdoor) technique 32</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<FileCreate onmatch="include">
+	   <TargetFilename condition="contains">*\AppData\Local\Temp\mscoree.dll</TargetFilename>
+	</FileCreate>
+	-->
+	<rule id="100607" level="12">
+		<if_group>sysmon_event_11</if_group>
+		<field name="win.eventdata.TargetFilename">\\\\AppData\\\\Local\\\\Temp\\\\mscoree.dll</field>
+		<description>Mitre ATT&CK T1548.002, Privilege Escalation, Abuse Elevation Control Mechanism, Bypass User Access Control, UACME (Defeating Windows User Account Control by abusing built-in Windows AutoElevate backdoor) technique 36</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<FileCreate onmatch="include">
+	   <TargetFilename condition="contains">*\AppData\Local\Temp\GdiPlus.dll</TargetFilename>
+	</FileCreate>
+	-->
+	<rule id="100608" level="12">
+		<if_group>sysmon_event_11</if_group>
+		<field name="win.eventdata.TargetFilename">\\\\AppData\\\\Local\\\\Temp\\\\GdiPlus.dll</field>
+		<description>Mitre ATT&CK T1548.002, Privilege Escalation, Abuse Elevation Control Mechanism, Bypass User Access Control, UACME (Defeating Windows User Account Control by abusing built-in Windows AutoElevate backdoor) technique 37</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	 <ProcessCreate onmatch="include">
+		<ParentCommandLine condition="contains">\\.\pipe</ParentCommandLine>
+	 </ProcessCreate>
+	--> 
+	<rule id="100609" level="12">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.CommandLine">\.*\\\\.\\pipe\.*</field>
+		<description>Mitre ATT&CK T1134.001, Privilege Escalation, Access Token Manipulation: Token Impersonation/Theft , NamedPipeImpersonation</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+	<CommandLine condition="contains">*cmstp.exe*/au*</CommandLine>
+	</ProcessCreate>
+	-->
+	<rule id="100610" level="12">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.CommandLine">cmstp.exe /au</field>
+		<description>Mitre ATT&CK T1548.002, Privilege Escalation, Abuse Elevation Control Mechanism, Bypass User Access Control, CMSTP bypass user account control</description>
+		<options>no_full_log</options>
+	</rule>
+	
+	<rule id="100611" level="12">
+		<if_sid>100117</if_sid>
+		<field name="win.eventdata.CommandLine">NOUACCHECK</field>
+		<description>Mitre ATT&CK T1548.002, Privilege Escalation, Abuse Elevation Control Mechanism, Bypass User Access Control, Manually turned off UAC</description>
+		<options>no_full_log</options>
+	</rule>	
+	<rule id="100612" level="12">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.ParentCommandLine">eventvwr.msc</field>
+		<description>Mitre ATT&CK T1548.002, Privilege Escalation, Abuse Elevation Control Mechanism, Bypass User Access Control, Fileless UAC Bypass Using eventvwr.exe</description>
+		<options>no_full_log</options>
+	</rule>
+	<!------------------------------------------------------------------------------------------------------------------------------->
+	<!--
+	{"win":{"system":{"providerName":"Microsoft-Windows-Sysmon","providerGuid":"{54849625-5478-4994-a5ba-3e3b0328c30d}","eventID":"3","version":"2","level":"4","task":"11","opcode":"0","keywords":"0x8000000000000000","systemTime":"2019-05-08T02:10:43.487217000","eventRecordID":"202793","processID":"444","threadID":"463","channel":"Microsoft-Windows-Sysmon/Operational","computer":"DC1.insecurebank.local","severityValue":"INFORMATION","message":"Network connection detected."},"eventdata":{"subjectUserSid":"S-1-5-21-3461203602-4096304019-2269080069-1000","RuleName":"","UtcTime":"2019-05-02 14:48:51.664","ProcessGuid":"{365abb72-0244-5ccb-0000-00109ae70b00}","ProcessId":"1508","Image":"C:\\Windows\\System32\\svchost.exe","User":"IEWIN7\\IEUser","Protocol":"tcp","Initiated":"true","SourceIsIpv6":"false","SourceIp":"10.0.2.15","SourceHostname":"IEWIN7.home","SourcePort":"3389","SourcePortName":"","DestinationIsIpv6":"false","DestinationIp":"127.0.0.1","DestinationHostname":"","DestinationPort":"443","DestinationPortName":"https"}}}
+	-->
+	<!-- COMMAND AND CONTROL 100700-->
+	
+	<!--
+	Must change sysmon configuration to include TargetObject in section
+	<NetworkConnect onmatch="include">
+		<DestinationIp condition="is">127.0.0.1</DestinationPort>
+		<DestinationIp condition="is">::1</DestinationPort>
+	</NetworkConnect>
+	-->
+	<rule id="100701" level="10">
+		<if_group>sysmon_event3</if_group>
+		<field name="win.eventdata.SourceIp">127.\.*|::1</field>
+		<field name="win.eventdata.DestinationIp">127.\.*|::1</field>
+		<field name="win.eventdata.DestinationPort">^3389$|^445$</field>
+		<description>Mitre ATT&CK T1090.001, Defense Evasion, Proxy: Internal Proxy, RDP Tunneling via SSH</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	Must change sysmon configuration to include TargetObject in section
+	<NetworkConnect onmatch="include">
+		<DestinationPort condition="is">3389</DestinationPort>
+		<DestinationPort condition="is">445</DestinationPort>
+	</NetworkConnect>
+	-->
+	<rule id="100702" level="12">
+		<if_group>sysmon_event3</if_group>
+		<field name="win.eventdata.Image">(\.*)\\w3wp.exe</field>
+		<field name="win.eventdata.DestinationPort">^3389$|^445$</field>
+		<field name="win.eventdata.DestinationIp">127.\.*|::1</field>   
+		<description>Mitre ATT&CK T1090.001, Defense Evasion, Proxy: Internal Proxy, RDP & SMB Tunneling using SECFORCE/Tunna</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<NetworkConnect onmatch="include">
+		<DestinationPort condition="is" name="T1090">1723</DestinationPort>
+		<DestinationPort condition="is" name="T1090">9001</DestinationPort> 
+		<DestinationPort condition="is" name="T1090">9030</DestinationPort> 
+	</NetworkConnect>
+	-->
+	<rule id="100703" level="12">
+		<if_group>sysmon_event3</if_group>
+		<field name="win.eventdata.DestinationPort">^1723$|^9001$|^9030$</field>   
+		<description>Mitre ATT&CK T1090.002, Defense Evasion, Proxy: External Proxy, traffic with destination to kwown TOR ports</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100704" level="7">
+		<if_sid>100113</if_sid>
+		<field name="win.eventdata.commandline">connectaddress=127\.0\.0\.1</field>   
+		<description>Mitre ATT&CK T1090.001, Defense Evasion, Proxy: Internal Proxy, Connection Proxy, RDP Tunneling via SSH</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<NetworkConnect onmatch="include">
+		<DestinationPort condition="is">4444</DestinationPort>
+	</NetworkConnect>
+	-->
+	<rule id="100706" level="7">
+		<if_group>sysmon_event3</if_group>
+		<field name="win.eventdata.DestinationPort">^4444$</field>   
+		<description>Mitre ATT&CK T1219, Command and Control, Remote Access Tools, Posible Metasploit traffic using port 4444</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<NetworkConnect onmatch="include">
+		<DestinationPort condition="is">23</DestinationPort>
+	</NetworkConnect>
+	-->
+	<rule id="100707" level="7">
+		<if_group>sysmon_event3</if_group>
+		<field name="win.eventdata.DestinationPort">^23$</field>   
+		<description>Mitre ATT&CK T1219, Command and Control, Remote Access Tools, Telnet conection detected (insecure protocol)</description>
+		<options>no_full_log</options>
+	</rule>	
+	<!--
+	<NetworkConnect onmatch="include">
+		<DestinationPort condition="is" name="T1043 -1">80</DestinationPort>
+		<DestinationPort condition="is" name="T1043 -2">443</DestinationPort>
+		<DestinationPort condition="is" name="T1043 -3">53</DestinationPort>
+		<DestinationPort condition="is" name="T1043 -3">135</DestinationPort>
+	</NetworkConnect>
+	-->
+	<rule id="100709" level="3">
+		<if_group>sysmon_event3</if_group>
+		<field name="win.eventdata.DestinationPort">^80$|^443$|^53$|^135$</field>   
+		<description>Mitre ATT&CK T1043, Command and Control, Commonly Used Port, connection to $(win.eventdata.DestinationPort)</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<RegistryEvent onmatch="include">
+		<TargetObject condition="contains" name="T1092 -1z">\REGISTRY\MACHINE\SYSTEM\CurrentControlSet\Enum\USB\</TargetObject>
+	</RegistryEvent>
+	-->
+	<rule id="100710" level="0">
+		<if_group>sysmon_event_13</if_group>
+		<field name="win.eventdata.TargetObject">SYSTEM\\\\CurrentControlSet\\\\Enum\\\\USB</field>
+		<description>Mitre ATT&CK T1092, Command And Control, Communication Through Removable Media, mounted USB</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100711" level="3">
+		<if_sid>100710</if_sid>
+		<field name="win.eventdata.TargetObject">\\\\Device Parameters\\\\Ceip\\\\DeviceInformation</field>
+		<description>Mitre ATT&CK T1092, Command And Control, Communication Through Removable Media, mounted USB</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<CommandLine condition="contains">*\certutil.exe *-urlcache* http*</CommandLine>
+		<CommandLine condition="contains">*\certutil.exe *-urlcache* ftp*</CommandLine>
+		<CommandLine condition="contains">*\certutil.exe *-URL*</CommandLine>
+		<CommandLine condition="contains">*\certutil.exe *-ping*</CommandLine>
+	</ProcessCreate>
+	-->
+	<rule id="100712" level="12">
+		<if_sid>100105</if_sid>
+		<field name="win.eventdata.commandline">URL||urlcache||ping</field>
+		<description>Mitre ATT&CK T1105, Command And Control , Ingress Tool Transfer, Detetcs a suspicious Microsoft certutil execution with sub commands</description>
+		<options>no_full_log</options>
+	</rule>
+	<!------------------------------------------------------------------------------------------------------------------------------->
+	<!-- DISCOVERY 100800-->
+	
+	<!--
+	<ProcessCreate onmatch="include">
+		<CommandLine condition="contains">net*group*</CommandLine>
+		<CommandLine condition="contains">net*localgroup*</CommandLine>
+		<CommandLine condition="contains">net*view*</CommandLine>
+		<CommandLine condition="contains">net*account*</CommandLine>
+		<CommandLine condition="contains">net*use*</CommandLine>
+	</ProcessCreate>
+	-->
+	<rule id="100801" level="7">
+		<if_sid>100119</if_sid>
+		<field name="win.eventdata.commandline">user|accounts|use</field>
+		<description>Mitre ATT&CK T1087.001, Discovery, Account Discovery, Local Account, Detects execution of Net.exe whether suspicious or benign</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<CommandLine condition="contains">net*share</CommandLine>
+	</ProcessCreate>
+	-->
+	<rule id="100802" level="7">
+		<if_sid>100119</if_sid>
+		<field name="win.eventdata.commandline">share</field>
+		<description>Mitre ATT&CK T1135, Discovery, Network Share Discovery, Detects execution of Net.exe whether suspicious or benign</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100803" level="7">
+		<if_sid>100108</if_sid>
+		<field name="win.eventdata.commandline">AntiVirusProduct get||FirewallProduct get</field>
+		<description>Mitre ATT&CK T1010, Discovery, Application Window Discovery , Discovery through Windows Management Instrumentation</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<DriverLoad onmatch="include">
+		<ImageLoaded condition="end with" name="T1082">RwDrv.sys</ImageLoaded>
+	</DriverLoad>
+	-->
+	<rule id="100804" level="12">
+		<if_group>sysmon_event6</if_group>
+		<field name="win.eventdata.imageLoaded">\\RwDrv.sys</field>
+		<description>Mitre ATT&CK T1082, Discovery, System Information Discovery, Discovery UEFI Settings rweverything</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<CommandLine condition="contains">\appcmd.exe  list</CommandLine>
+		<CommandLine condition="contains">AppCmd  list</CommandLine>
+	</ProcessCreate>
+	-->
+	<rule id="100805" level="7">
+		<if_sid>100112</if_sid>
+		<field name="win.eventdata.commandline">\.*\\appcmd.exe  list\.*|\.*AppCmd list\.*</field>
+		<description>Mitre ATT&CK T1082, Discovery, System Information Discovery, Appcmd command IIS password and configuration discovery</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100806" level="10">
+		<if_sid>100119</if_sid>
+		<field name="win.eventdata.commandline">share</field>
+		<description>Mitre ATT&CK T1135, Discovery, Network Share Discovery, use of net view or net share to enumerate shares</description>
+		<options>no_full_log</options>
+	</rule>
+	
+	<rule id="100807" level="3">
+		<if_sid>100113</if_sid>
+		<field name="win.eventdata.commandline">whoami</field>
+		<description>Mitre ATT&CK T1033, Discovery, System Owner/User Discovery, use of whoami via $(win.eventdata.image)</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100808" level="3">
+		<if_sid>100117</if_sid>
+		<field name="win.eventdata.commandline">whoami</field>
+		<description>Mitre ATT&CK T1033, Discovery, System Owner/User Discovery, use of whoami via $(win.eventdata.image)</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+	<Image name="T1057 -1" condition="image">tasklist.exe</Image>
+	<Image name="T1057 -2" condition="image">qprocess.exe</Image>
+	</ProcessCreate>
+	-->
+	<rule id="100809" level="5">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.Image">tasklist.exe|qprocess.exe</field>
+		<description>Mitre ATT&CK T1057, Discovery, Process Discovery, use of tasklist or gpprocess to enumerate process</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100810" level="7">
+		<if_sid>100118</if_sid>
+		<field name="win.eventdata.commandline">-f \(objectcategory=person\)</field>
+		<description>Mitre ATT&CK T1087.002, Discovery, Account Discovery: Domain Account, use of adfind to enumerate domain users</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100811" level="7">
+		<if_sid>100118</if_sid>
+		<field name="win.eventdata.commandline">-f \(objectcategory=computer\)</field>
+		<description>Mitre ATT&CK T1018, Discovery, Remote System Discovery, use of adfind to enumerate systems</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100812" level="7">
+		<if_sid>100119</if_sid>
+		<field name="win.eventdata.commandline">view</field>
+		<description>Mitre ATT&CK T1018, Discovery, Remote System Discovery, use of net to enumerate systems</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100813" level="7">
+		<if_sid>100118</if_sid>
+		<field name="win.eventdata.commandline">-f \(objectcategory=organizationalUnit\)</field>
+		<description>Mitre ATT&CK T1482, Discovery, Domain Trust Discovery, use of adfind to enumerate domain organizational units</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100814" level="7">
+		<if_sid>100118</if_sid>
+		<field name="win.eventdata.commandline">-gcb</field>
+		<description>Mitre ATT&CK T1482, Discovery, Domain Trust Discovery, use of adfind to enumerate domain organizational units</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100815" level="7">
+		<if_sid>100118</if_sid>
+		<field name="win.eventdata.commandline">-f \(objectcategory=subnet\)</field>
+		<description>Mitre ATT&CK T1016, Discovery, System Network Configuration Discovery, use of adfind to enumerate subnetworks</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100816" level="7">
+		<if_sid>100119</if_sid>
+		<field name="win.eventdata.commandline">group|localgroup</field>
+		<description>Mitre ATT&CK T1069.002, Discovery, Permission Groups Discovery: Domain Groups, use of binary net.exe to discover groups</description>
+		<options>no_full_log</options>
+	</rule>
+	
+	<!--
+	<ProcessCreate onmatch="include">
+		<CommandLine condition="contains" name="T1016">ipconfig</CommandLine>
+		<CommandLine condition="contains" name="T1016">arp -a</CommandLine>
+		<CommandLine condition="contains" name="T1016">netsh interface</CommandLine>
+		<CommandLine condition="contains" name="T1016">nbtstat -n</CommandLine>
+		<CommandLine condition="contains" name="T1016">net config</CommandLine>
+	</ProcessCreate>	
+	-->
+	<rule id="100817" level="3">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.commandline">ipconfig</field>
+		<description>Mitre ATT&CK T1016, Discovery, System Network Configuration Discovery, use of ipconfig to discover network configuration</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100818" level="3">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.Image">netsh.exe</field>
+		<field name="win.eventdata.CommandLine">interface show interface</field>
+		<description>Mitre ATT&CK T1016, Discovery, System Network Configuration Discovery, use netsh.exe to discover network configuration</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100819" level="3">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.Image">arp.exe</field>
+		<field name="win.eventdata.CommandLine">-a</field>
+		<description>Mitre ATT&CK T1016, Discovery, System Network Configuration Discovery, use arp.exe to discover network configuration</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100820" level="3">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.Image">nbtstat.exe</field>
+		<field name="win.eventdata.CommandLine">-n</field>
+		<description>Mitre ATT&CK T1016, Discovery, System Network Configuration Discovery, use nbtstat.exe to discover network configuration</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100821" level="3">
+		<if_sid>100119</if_sid>
+		<field name="win.eventdata.CommandLine">config</field>
+		<description>Mitre ATT&CK T1016, Discovery, System Network Configuration Discovery, use net.exe to discover network configuration</description>
+		<options>no_full_log</options>
+	</rule>
+	<!------------------------------------------------------------------------------------------------------------------------------->
+	<!--
+	{"win":{"system":{"providerName":"Microsoft-Windows-Sysmon","providerGuid":"{54849625-5478-4994-a5ba-3e3b0328c30d}","eventID":"12","version":"2","level":"4","task":"11","opcode":"0","keywords":"0x8000000000000000","systemTime":"2019-05-08T02:10:43.487217000","eventRecordID":"202793","processID":"444","threadID":"463","channel":"Microsoft-Windows-Sysmon/Operational","computer":"DC1.insecurebank.local","severityValue":"INFORMATION","message":"Registry object added or deleted."},"eventdata":{"subjectUserSid":"S-1-5-21-3461203602-4096304019-2269080069-1000","RuleName":"Defense Evasion - PowerShell CLM Setting Changed","EventType":"DeleteValue","UtcTime":"2019-05-16 13:10:13.759","ProcessGuid":"{dfae8213-5b49-5cdd-0000-0010ee520500}","ProcessId":"3580","Image":"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe","TargetObject":"HKLM\\System\\CurrentControlSet\\Control\\SESSION MANAGER\\Environment\\__PSLockdownPolicy"}}}
+
+	{"win":{"system":{"providerName":"Microsoft-Windows-Sysmon","providerGuid":"{54849625-5478-4994-a5ba-3e3b0328c30d}","eventID":"13","version":"2","level":"4","task":"11","opcode":"0","keywords":"0x8000000000000000","systemTime":"2019-05-08T02:10:43.487217000","eventRecordID":"202793","processID":"444","threadID":"463","channel":"Microsoft-Windows-Sysmon/Operational","computer":"DC1.insecurebank.local","severityValue":"INFORMATION","message":"Registry value set."},"eventdata":{"subjectUserSid":"S-1-5-21-3461203602-4096304019-2269080069-1000","RuleName":"technique_id=T1088,technique_name=Bypass User Account Control","EventType":"SetValue","UtcTime":"2019-05-16 14:17:15.758","ProcessGuid":"{dfae8213-70eb-5cdd-0000-0010f66d0a00}","ProcessId":"3788","Image":"C:\\Windows\\system32\\reg.exe","TargetObject":"HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\policies\\system\\EnableLUA","Details":"DWORD (0x00000000)"}}}
+
+	{"win":{"system":{"providerName":"Microsoft-Windows-Sysmon","providerGuid":"{54849625-5478-4994-a5ba-3e3b0328c30d}","eventID":"7","version":"2","level":"4","task":"11","opcode":"0","keywords":"0x8000000000000000","systemTime":"2019-05-08T02:10:43.487217000","eventRecordID":"202793","processID":"444","threadID":"463","channel":"Microsoft-Windows-Sysmon/Operational","computer":"DC1.insecurebank.local","severityValue":"INFORMATION","message":"Image loaded."},"eventdata":{"subjectUserSid":"S-1-5-21-3461203602-4096304019-2269080069-1000","RuleName":"dll side loading","UtcTime":"2019-04-27 15:57:53.509","ProcessGuid":"{365abb72-7c01-5cc4-0000-00102b3e0c00}","ProcessId":"2680","Image":"C:\\Users\\IEUser\\Downloads\\Flash_update.exe","ImageLoaded":"C:\\Windows\\System32\\winmm.dll","FileVersion":"6.1.7600.16385 (win7_rtm.090713-1255)","Description":"MCI API DLL","Product":"Microsoft® Windows® Operating System","Company":"Microsoft Corporation","Hashes":"SHA1=41905C387FA657D91DA8A743ABC04B6C11A38B52,MD5=D5AEFAD57C08349A4393D987DF7C715D,SHA256=C36A45BC2448DF30CD17BD2F8A17FC196FAFB685612CACCEB22DC7B58515C201,IMPHASH=1A7210F2C9930AF9B51025300C67DA77","Signed":"true","Signature":"Microsoft Windows","SignatureStatus":"Valid"}}}
+
+	{"win":{"system":{"providerName":"Microsoft-Windows-Sysmon","providerGuid":"{54849625-5478-4994-a5ba-3e3b0328c30d}","eventID":"1","version":"2","level":"4","task":"11","opcode":"0","keywords":"0x8000000000000000","systemTime":"2019-05-08T02:10:43.487217000","eventRecordID":"202793","processID":"444","threadID":"463","channel":"Microsoft-Windows-Sysmon/Operational","computer":"DC1.insecurebank.local","severityValue":"INFORMATION","message":"Process Create."},"eventdata":{"subjectUserSid":"S-1-5-21-3461203602-4096304019-2269080069-1000","RuleName":"technique_id=T1158,technique_name=Hidden Files and DirectoriesHidden Files and Directories","UtcTime":"2019-05-19 17:32:00.478","ProcessGuid":"{dfae8213-9310-5ce1-0000-0010eaba0a00}","ProcessId":"2728","Image":"C:\\Windows\\System32\\attrib.exe","FileVersion":"6.3.9600.16384 (winblue_rtm.130821-1623)","Description":"Attribute Utility","Product":"Microsoft® Windows® Operating System","Company":"Microsoft Corporation","CommandLine":"attrib +h nbtscan.exe","CurrentDirectory":"c:\\ProgramData\\","User":"insecurebank\\Administrator","LogonGuid":"{dfae8213-9133-5ce1-0000-0020cc660500}","LogonId":"0x566cc","TerminalSessionId":"2","IntegrityLevel":"High","Hashes":"SHA1=B71C1331AC5FA214076E5CD5C885712447057B96,MD5=116D463D2F5DBF76F7E2F5C6D8B5D3BB,SHA256=EBE94E294D86C714BED13EF018E70F75C37F8D8259144C0C847637EDC0222ECB,IMPHASH=461A33302E82ED68F1A74C083E27BD02","ParentProcessGuid":"{dfae8213-91cc-5ce1-0000-0010bef40600}","ParentProcessId":"3408","ParentImage":"C:\\Windows\\System32\\cmd.exe","ParentCommandLine":"C:\\Windows\\system32\\cmd.exe"}}}
+
+	{"win":{"system":{"providerName":"Microsoft-Windows-Sysmon","providerGuid":"{54849625-5478-4994-a5ba-3e3b0328c30d}","eventID":"1","version":"2","level":"4","task":"11","opcode":"0","keywords":"0x8000000000000000","systemTime":"2019-05-08T02:10:43.487217000","eventRecordID":"202793","processID":"444","threadID":"463","channel":"Microsoft-Windows-Sysmon/Operational","computer":"DC1.insecurebank.local","severityValue":"INFORMATION","message":"Process Create."},"eventdata":{"subjectUserSid":"S-1-5-21-3461203602-4096304019-2269080069-1000","RuleName":"","UtcTime":"2019-05-23 17:46:04.651","ProcessGuid":"{365abb72-dc5c-5ce6-0000-001066e27200}","ProcessId":"4088","Image":"C:\\Windows\\System32\\netsh.exe","FileVersion":"6.1.7600.16385 (win7_rtm.090713-1255)","Description":"Network Command Shell","Product":"Microsoft® Windows® Operating System","Company":"Microsoft Corporation","CommandLine":"netsh I p a v l=8001 listena=1.2.3.4 connectp=3389 c=1.2.3.5","CurrentDirectory":"c:\\","User":"IEWIN7\\IEUser","LogonGuid":"{365abb72-ce6c-5ce6-0000-002047f30000}","LogonId":"0xf347","TerminalSessionId":"1","IntegrityLevel":"High","Hashes":"SHA1=7DA1852DF83C58841AD35248AD2A20D7FFBB7FA0,MD5=784A50A6A09C25F011C3143DDD68E729,SHA256=661F5D4CE4F0A6CB32669A43CE5DEEC6D5A9E19B2387F22C5012405E92169943,IMPHASH=33B8120C37D7861778989FBFD16214E1","ParentProcessGuid":"{365abb72-dc3e-5ce6-0000-00102bc97200}","ParentProcessId":"712","ParentImage":"C:\\Windows\\System32\\cmd.exe","ParentCommandLine":"C:\\Windows\\system32\\cmd.exe"}}}
+
+	{"win":{"system":{"providerName":"Microsoft-Windows-Sysmon","providerGuid":"{54849625-5478-4994-a5ba-3e3b0328c30d}","eventID":"13","version":"2","level":"4","task":"11","opcode":"0","keywords":"0x8000000000000000","systemTime":"2019-05-08T02:10:43.487217000","eventRecordID":"202793","processID":"444","threadID":"463","channel":"Microsoft-Windows-Sysmon/Operational","computer":"DC1.insecurebank.local","severityValue":"INFORMATION","message":"Registry value set."},"eventdata":{"subjectUserSid":"S-1-5-21-3461203602-4096304019-2269080069-1000","RuleName":"technique_id=T1088,technique_name=Bypass User Account Control","EventType":"SetValue","UtcTime":"2019-05-16 14:17:15.758","ProcessGuid":"{dfae8213-70eb-5cdd-0000-0010f66d0a00}","ProcessId":"3788","Image":"C:\\Windows\\system32\\reg.exe","TargetObject":"HKLM\\SOFTWARE\\Microsoft\\PowerShell\\1\\ShellIds\\Microsoft.PowerShell\\ExecutionPolicy","Details":"DWORD (0x00000000)"}}}
+
+	{"win":{"system":{"providerName":"Microsoft-Windows-Sysmon","providerGuid":"{54849625-5478-4994-a5ba-3e3b0328c30d}","eventID":"13","version":"2","level":"4","task":"11","opcode":"0","keywords":"0x8000000000000000","systemTime":"2019-05-08T02:10:43.487217000","eventRecordID":"202793","processID":"444","threadID":"463","channel":"Microsoft-Windows-Sysmon/Operational","computer":"DC1.insecurebank.local","severityValue":"INFORMATION","message":"Registry value set."},"eventdata":{"subjectUserSid":"S-1-5-21-3461203602-4096304019-2269080069-1000","RuleName":"technique_id=T1088,technique_name=Bypass User Account Control","EventType":"SetValue","UtcTime":"2019-05-16 14:17:15.758","ProcessGuid":"{dfae8213-70eb-5cdd-0000-0010f66d0a00}","ProcessId":"3788","Image":"C:\\Windows\\system32\\reg.exe","TargetObject":"HKU\\Software\\Microsoft\\Office\\12.0\\PowerPoint\\Security\\AccessVBOM","Details":"DWORD (0x00000000)"}}}
+
+	{"win":{"system":{"providerName":"Microsoft-Windows-Sysmon","providerGuid":"{54849625-5478-4994-a5ba-3e3b0328c30d}","eventID":"1","version":"2","level":"4","task":"11","opcode":"0","keywords":"0x8000000000000000","systemTime":"2019-05-08T02:10:43.487217000","eventRecordID":"202793","processID":"444","threadID":"463","channel":"Microsoft-Windows-Sysmon/Operational","computer":"DC1.insecurebank.local","severityValue":"INFORMATION","message":"Process Create."},"eventdata":{"subjectUserSid":"S-1-5-21-3461203602-4096304019-2269080069-1000","RuleName":"","UtcTime":"2019-05-22 04:02:11.287","ProcessGuid":"{2B86A809-DAD0-5990-0000-0010CE3A9E02}","ProcessId":"3780","Image":"C:\\Windows\\System32\\forfiles.exe","FileVersion":"6.1.7601.17514 (win7sp1_rtm.101119-1850)","Description":"Windows Command Processor","Product":"Microsoft® Windows® Operating System","Company":"Microsoft Corporation","CommandLine":"C:\\Windows\\system32\\forfiles.exe /p c:\\windows\\system32 /m notepad.exe /c calc.exe","CurrentDirectory":"C:\\Windows\\system32\\","User":"domain.local\\windows_user","LogonGuid":"{2B86A809-DAA8-5990-0000-0020F0D19502}","LogonId":"0xf05d","TerminalSessionId":"1","IntegrityLevel":"High","Hashes":"SHA1=EE8CBF12D87C4D388F09B4F69BED2E91682920B5,MD5=AD7B9C14083B52BC532FBA5948342B98,SHA256=17F746D82695FA9B35493B41859D39D786D32B23A9D2E00F4011DEC7A02402AE,IMPHASH=CEEFB55F764020CC5C5F8F23349AB163","ParentProcessGuid":"{365abb72-c9c1-5ce4-0000-00100b222e00}","ParentProcessId":"3156","ParentImage":"C:\\Windows\\explorer.exe","ParentCommandLine":"C:\\Windows\\Explorer.EXE"}}}
+
+	{"win":{"system":{"providerName":"Microsoft-Windows-Sysmon","providerGuid":"{54849625-5478-4994-a5ba-3e3b0328c30d}","eventID":"255","version":"3","level":"4","task":"11","opcode":"0","keywords":"0x8000000000000000","systemTime":"2019-05-08T02:10:43.487217000","eventRecordID":"202793","processID":"444","threadID":"463","channel":"Microsoft-Windows-Sysmon/Operational","computer":"DC1.insecurebank.local","severityValue":"ERROR","message":"Error report"},"eventdata":{"subjectUserSid":"S-1-5-21-3461203602-4096304019-2269080069-1000","UtcTime":"2019-04-27 00:10:34.254","ID":"DriverCommunication","Description":"Failed to retrieve events - Last error: The i/O operation has been aborted because of either a thread exit or an application request."}}}
+
+	{"win":{"system":{"providerName":"Microsoft-Windows-Sysmon","providerGuid":"{54849625-5478-4994-a5ba-3e3b0328c30d}","eventID":"12","version":"2","level":"4","task":"11","opcode":"0","keywords":"0x8000000000000000","systemTime":"2019-05-08T02:10:43.487217000","eventRecordID":"202793","processID":"444","threadID":"463","channel":"Microsoft-Windows-Sysmon/Operational","computer":"DC1.insecurebank.local","severityValue":"INFORMATION","message":"Registry object added or deleted"},"eventdata":{"subjectUserSid":"S-1-5-21-3461203602-4096304019-2269080069-1000","RuleName":"technique_id=T1130,technique_name=Install Root Certificate","EventType":"CreateKey","UtcTime":"2019-04-18 16:55:51.245","ProcessGuid":"{365abb72-ac09-5cb8-0000-0010939a0700}","ProcessId":"3192","Image":"C:\\Windows\\Sysmon.exe","TargetObject":"HKLM\\SOFTWARE\\Policies\\Microsoft\\SystemCertificates\\Root\\Certificates"}}}
+	
+	{"win":{"system":{"providerName":"Microsoft-Windows-Sysmon","providerGuid":"{54849625-5478-4994-a5ba-3e3b0328c30d}","eventID":"1","version":"3","level":"4","task":"20","opcode":"0","keywords":"0x8000000000000000","systemTime":"2019-05-11T17:58:23.340659600Z","eventRecordID":"16111","processID":"2032","threadID":"4092","channel":"Microsoft-Windows-Sysmon/Operational","computer":"IEWIN7","severityValue":"INFORMATION","message":"Process created"},"eventdata":{"subjectUserSid":"S-1-5-18","RuleName":"Execution - jscript9 engine invoked via clsid","UtcTime":"2019-05-18 17:50:36.858","ProcessGuid":"{365abb72-45ec-5ce0-0000-00103a3e2400}","ProcessId":"1884","Image":"C:\\ProgramData\\winpm.exe","FileVersion":"5.8.7601.24288","Description":"Microsoft ® Console Based Script Host","Product":"Microsoft ® Windows Script Host","Company":"Microsoft Corporation","CommandLine":"winpm.exe //e:{16d51579-a30b-4c8b-a276-0ff4dc41e755} winpm_update.js","CurrentDirectory":"c:\\ProgramData\\","User":"IEWIN7\\IEUser","LogonGuid":"{365abb72-433d-5ce0-0000-002031350100}","LogonId":"0x13531","TerminalSessionId":"1","IntegrityLevel":"Medium","Hashes":"SHA1=C537FF2520215555B6E7B1B71C237F73D960BBED,MD5=41B81EF73218EC0EA0EC74F1C4C0F7B1,SHA256=D1B611E6D672AFC5A3D0F443FD8E2618B7416EFE2DD36593E971BF2F027A9AE3,IMPHASH=BFA8DFA346E250F59C0E2F57DAEFD14D","ParentProcessGuid":"{365abb72-43e7-5ce0-0000-0010c6d20b00}","ParentProcessId":"2940","ParentImage":"C:\\Windows\\System32\\cmd.exe","ParentCommandLine":"C:\\Windows\\system32\\cmd.exe"}}}
+	-->
+	<!-- DEFENSE EVASION 100900-->
+	<!--
+	Must change sysmon configuration to include TargetObject in section
+	<RegistryEvent onmatch="include" name="Mitre ATT&CK T1562.001, Defense Evasion, Disabling Security Tools, Powershell Constrained Language Mode disabled">
+	   <TargetObject condition="is">HKLM\System\CurrentControlSet\Control\SESSION MANAGER\Environment\__PSLockdownPolicy</TargetObject>
+	</RegistryEvent>
+	-->
+	<rule id="100901" level="12">
+		<if_group>sysmon_event_12</if_group>
+		<field name="win.eventdata.TargetObject">HKLM\\\\System\\\\CurrentControlSet\\\\Control\\\\SESSION MANAGER\\\\Environment\\\\__PSLockdownPolicy</field>
+		<description>Mitre ATT&CK T1562.001, Defense Evasion, Impair Defenses: Disable or Modify Tools, Powershell Constrained Language Mode disabled</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	Must change sysmon configuration to include TargetObject in section
+	<RegistryEvent onmatch="include">
+	   <TargetObject condition="is">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\policies\system\EnableLUA</TargetObject>
+	</RegistryEvent>
+	-->
+	<rule id="100902" level="12">
+		<if_group>sysmon_event_13</if_group>
+		<field name="win.eventdata.TargetObject">HKLM\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\policies\\\\system\\\\EnableLUA</field>
+	<!--  YOU CANNOT FILTER ON THE "Details" ATTRIBUTE, DUE TO PERFORMANCE ISSUES 
+		<field name="win.eventdata.Details">DWORD (0x00000000)</field>
+	-->   
+		<description>Mitre ATT&CK T1548.002, Privilege Escalation, Abuse Elevation Control Mechanism, Bypass User Access Control,  Disabled UAC if Details field has value 0x00000000D</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ImageLoad onmatch="include">
+		<Signed condition="is">false</Signed>
+	</ImageLoad>
+	-->
+	<rule id="100903" level="10">
+		<if_group>sysmon_event7</if_group>
+		<field name="win.eventdata.Signed">false</field>
+		<field name="win.eventdata.ImageLoaded">\.*\.dll$</field>
+		<description>Mitre ATT&CK T1574.002, Defense Evasion, Hijack Execution Flow: DLL Side-Loading, DLL not signed loaded</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	Must change sysmon configuration to include TargetObject in section
+	<RegistryEvent onmatch="include">
+		<TargetObject condition="is">HKLM\SOFTWARE\Wow6432Node\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging\EnableScriptBlockLogging</TargetObject>
+	</RegistryEvent>
+	-->
+	<rule id="100904" level="12">
+		<if_group>sysmon_event_13</if_group>
+		<field name="win.eventdata.TargetObject">HKLM\\\\SOFTWARE\\\\Wow6432Node\\\\Policies\\\\Microsoft\\\\Windows\\\\PowerShell\\\\ScriptBlockLogging\\\\EnableScriptBlockLogging</field>
+	<!--  YOU CANNOT FILTER ON THE "Details" ATTRIBUTE, DUE TO PERFORMANCE ISSUES 
+		<field name="win.eventdata.Details">DWORD (0x00000000)</field>
+	-->   
+		<description>Mitre ATT&CK T1562.001, Defense Evasion, Impair Defenses: Disable or Modify Tools, disabled PowerShell Audit Settings if Details field has value 0x00000000</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	Must change sysmon configuration to include CommandLine in section
+	<ProcessCreate onmatch="include">
+		<CommandLine condition="contains">attrib +h</CommandLine>
+	</ProcessCreate>
+	-->
+	<rule id="100905" level="10">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.CommandLine">attrib +h|attrib +s|attrib.exe +s|attrib.exe +h</field>
+		<description>Mitre ATT&CK T1564.001, Defense Evasion, Hide Artifacts: Hidden Files and Directories, hiding files via attrib cmdlet</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	Must change sysmon configuration to include CommandLine in section
+	<ProcessCreate onmatch="include">
+		<CommandLine condition="contains">*netsh*connectp=3389*</CommandLine>
+	</ProcessCreate>
+	-->
+	<rule id="100906" level="12">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.CommandLine">\.*netsh\.*connectp=3389\.*</field>
+		<description>Mitre ATT&CK T1090.001, Defense Evasion, Proxy: Internal Proxy, RDP Port fordwarding via netsh</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	Must change sysmon configuration to include TargetObject in section
+	<RegistryEvent onmatch="include">
+		<TargetObject condition="is">HKLM\SOFTWARE\Microsoft\PowerShell\1\ShellIds\Microsoft.PowerShell\ExecutionPolicy</TargetObject>
+	</RegistryEvent>
+	-->
+	<rule id="100907" level="10">
+		<if_group>sysmon_event_13</if_group>
+		<field name="win.eventdata.TargetObject">HKLM\\\\SOFTWARE\\\\Microsoft\\\\PowerShell\\\\1\\\\ShellIds\\\\Microsoft.PowerShell\\\\ExecutionPolicy</field>
+		<description>Mitre ATT&CK T1562.001, Defense Evasion, Impair Defenses: Disable or Modify Tools, Change in Powershell execution policy</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	Must change sysmon configuration to include TargetObject in section
+	<RegistryEvent onmatch="include">
+		<TargetObject condition="is">HKU\*\Software\Microsoft\Office\*\Excel\Security\AccessVBOM</TargetObject>
+		<TargetObject condition="is">HKU\*\Software\Microsoft\Office\*\PowerPoint\Security\AccessVBOM</TargetObject>
+		<TargetObject condition="is">HKU\*\Software\Microsoft\Office\*\Word\Security\AccessVBOM</TargetObject>
+		<TargetObject condition="is">HKU\*\Software\Microsoft\Office\*\Access\Security\AccessVBOM</TargetObject>
+		<TargetObject condition="is">HKU\*\Software\Microsoft\Office\*\Outlook\Security\AccessVBOM</TargetObject>
+	</RegistryEvent>
+	-->
+	<rule id="100908" level="12">
+		<if_group>sysmon_event_13</if_group>
+		<field name="win.eventdata.TargetObject">\\\\Software\\\\Microsoft\\\\Office\\\\\.*\\\\Excel\\\\Security\\\\AccessVBOM|\\\\Software\\\\Microsoft\\\\Office\\\\\.*\\\\PowerPoint\\\\Security\\\\AccessVBOM|\\\\Software\\\\Microsoft\\\\Office\\\\\.*\\\\Word\\\\Security\\\\AccessVBOM|\\\\Software\\\\Microsoft\\\\Office\\\\\.*\\\\Access\\\\Security\\\\AccessVBOM|\\\\Software\\\\Microsoft\\\\Office\\\\\.*\\\\Outlook\\\\Security\\\\AccessVBOM</field>
+		<description>Mitre ATT&CK T1562.001, Defense Evasion, Impair Defenses: Disable or Modify Tools, Disable Trust access for VBA into Office</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<Image condition="end with">forfiles.exe</Image>
+	</ProcessCreate>
+	-->
+	<rule id="100909" level="12">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.Image">\\forfiles.exe</field>
+		<description>Mitre ATT&CK T1202,  Defense Evasion, Indirect Command Execution, Forfiles Indirect Command Execution</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	Must change sysmon configuration to include CommandLine in section
+	<ProcessCreate onmatch="include">
+		<CommandLine condition="contains">*unload*sysmon*</CommandLine>
+	</ProcessCreate>
+	-->
+	<rule id="100910" level="12">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.Image">\\fltmc.exe</field>
+		<field name="win.eventdata.CommandLine">\.*unload\.*sysmon\.*</field>
+		<description>Mitre ATT&CK T1562.001, Defense Evasion, Impair Defenses: Disable or Modify Tools, Sysmon driver unloaded via Filter Manager Control Program</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100911" level="12">
+		<field name="win.system.eventID">^255$</field>
+		<field name="win.eventdata.ID">DriverCommunication</field>
+		<description>Mitre ATT&CK T1562.001, Defense Evasion, Impair Defenses: Disable or Modify Tools, Posible sysmon driver unloading</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<RegistryEvent onmatch="include">
+		<TargetObject condition="is">HKLM\SOFTWARE\Policies\Microsoft\SystemCertificates\Root\Certificates</TargetObject>    
+	</RegistryEvent>
+	-->
+	<rule id="100912" level="5">
+		<if_group>sysmon_event_12</if_group>
+		<field name="win.eventdata.TargetObject">HKLM\\\\SOFTWARE\\\\Policies\\\\Microsoft\\\\SystemCertificates\\\\Root\\\\Certificates</field>
+		<description>Mitre ATT&CK T1553.004, Defense Evasion, Subvert Trust Controls: Install Root Certificate</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100913" level="12">
+		<if_sid>100100</if_sid>
+		<field name="win.eventdata.ImageLoaded">\\vaultcli.dll</field>
+		<description>Mitre ATT&CK T1064, Defense Evasion, Scripting, Possible Mimikatz Running In-Memory Detection</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100914" level="12">
+		<if_sid>100100</if_sid>
+		<field name="win.eventdata.ImageLoaded">\\wlanapi.dll</field>
+		<description>Mitre ATT&CK T1064, Defense Evasion, Scripting, Possible Mimikatz In-Memory Detection</description>
+		<options>no_full_log</options>
+	</rule>
+
+	<!-- You can define your own local networks setting vars like local_net_x and creating OR in rule -->
+	<var name="local_net_1">192.168.1</var>
+
+	<rule id="100915" level="10">
+		<if_sid>100104</if_sid>
+		<match>!"DestinationIp":"$local_net_1</match>
+		<description>Mitre ATT&CK T1218.011, Defense Evasion, Signed Binary Proxy Execution: Rundll32, Detects a rundll32 that communicates with public IP addresses</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<CommandLine condition="contains">*\certutil.exe * -decode *</CommandLine>
+		<CommandLine condition="contains">*\certutil.exe * -decodehex *</CommandLine>
+	</ProcessCreate>
+	-->
+	<rule id="100916" level="10">
+		<if_sid>100105</if_sid>
+		<field name="win.eventdata.commandline">decode||decodehex</field>
+		<description>Mitre ATT&CK T1140, Defense Evasion, Deobfuscate/Decode Files or Information, Detetcs a suspicious Microsoft certutil execution with sub commands</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<DriverLoad onmatch="include">
+		<ImageLoaded condition="contains">\Temp</ImageLoaded>
+	</DriverLoad>
+	-->
+	<rule id="100917" level="12">
+		<if_group>sysmon_event6</if_group>
+		<field name="win.eventdata.imageLoaded">\\Temp</field>
+		<description>Mitre ATT&CK T1014, Defense Evasion, Rootkit, Detects a driver load from a temporary directory</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<Image condition="contains">*\PerfLogs\*</Image>
+		<Image condition="contains">*\$Recycle.bin\*</Image>
+		<Image condition="contains">*\Intel\Logs\*</Image>
+		<Image condition="contains">*\Users\All Users\*</Image>
+		<Image condition="contains">*\Users\Default\*</Image>
+		<Image condition="contains">*\Users\Public\*</Image>
+		<Image condition="contains">*\Users\NetworkService\*</Image>
+		<Image condition="contains">*\Windows\Fonts\*</Image>
+		<Image condition="contains">*\Windows\Debug\*</Image>
+		<Image condition="contains">*\Windows\Media\*</Image>
+		<Image condition="contains">*\Windows\IME\*</Image>
+		<Image condition="contains">*\Windows\Help\*</Image>
+		<Image condition="contains">*\Windows\addins\*</Image>
+		<Image condition="contains">*\Windows\repair\*</Image>
+		<Image condition="contains">*\Windows\security\*</Image>
+		<Image condition="contains">*\RSA\MachineKeys\*</Image>
+		<Image condition="contains">*\wwwroot\*</Image>
+		<Image condition="contains">*\wmpub\*</Image>
+		<Image condition="contains">*\htdocs\*</Image>
+		<Image condition="contains">*\Windows\system32\config\systemprofile\*</Image>
+	</ProcessCreate>
+	-->
+
+	<rule id="100918" level="10">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.image">C:\\PerfLogs\\||C:\\Intel\\Logs\\||C:\\Users\\Default\\||C:\\Users\\Public\\||C:\\Users\\NetworkService\\||C:\\Windows\\Fonts\\C:\\Windows\\Debug\\||C:\\Windows\\Media\\||C:\\Windows\\Help\\||C:\\Windows\\addins\\||C:\\Windows\\repair\\||C:\\Windows\\security\\||\\RSA\\MachineKeys\\||C:\\Windows\\system32\\config\\systemprofile||Recycle.bin</field>
+		<description>Mitre ATT&CK T1036, Defense Evasion, Masquerading, Detects process starts of binaries from a suspicious folder</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100919" level="10">
+		<if_sid>100109</if_sid>
+		<field name="win.eventdata.commandline">/transfer</field>
+		<description>Mitre ATT&CK T1197, Defense Evasion, BITS Jobs, Detects usage of bitsadmin downloading a file</description>
+		<options>no_full_log</options>
+	</rule>
+	
+	<rule id="100920" level="10">
+		<if_group>sysmon_event_10</if_group>
+		<field name="win.eventdata.GrantedAccess">0x800</field>
+		<description>Mitre ATT&CK T1093, Defense Evasion, Process Hollowing, Proccess accessed with suspend access from $(win.eventdata.SourceImage)</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<CommandLine condition="contains">//e:{16d51579-a30b-4c8b-a276-0ff4dc41e755}</ParentCommandLine>
+	<ProcessCreate
+	-->
+	<rule id="100921" level="12">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.CommandLine">\.*winpm.exe|cscript.exe|wscript.exe\.*//e:{16d51579-a30b-4c8b-a276-0ff4dc41e755}</field>
+		<description>Mitre ATT&CK T1562.001, Defense Evasion, Impair Defenses: Disable or Modify Tools, jscript9.dll AMSI bypass</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100922" level="10">
+		<if_group>sysmon_event_16</if_group>
+		<field name="win.system.eventID">^16$</field>
+		<description>Mitre ATT&CK T1562.001, Defense Evasion, Impair Defenses: Disable or Modify Tools, Change in Sysmon configuration</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100923" level="10">
+		<if_sid>61606</if_sid>
+		<field name="win.eventdata.State">Stopped</field>
+		<description>Mitre ATT&CK T1562.001, Defense Evasion, Impair Defenses: Disable or Modify Tools, Sysmon Status Changed To $(win.eventdata.State)</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<FileCreateStreamHash onmatch="exclude">
+	</FileCreateStreamHash>
+	-->
+	<rule id="100924" level="12">
+		<if_group>sysmon_event_15</if_group>
+		<description>Mitre ATT&CK T1564.004,  Defense Evasion, Hide Artifacts: NTFS File Attributes , Creation of ADS (alternate data stream) $(win.eventdata.targetFilename)</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101925" level="12">
+		<if_sid>100113</if_sid>
+		<field name="win.eventdata.commandline">Start-BitsTransfer</field>
+		<description>Mitre ATT&CK T1197, Defense Evasion, BITS Jobs, Detects usage of bitsadmin downloading a file</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<NetworkConnect onmatch="include">
+	<DestinationPort condition="is" name="T1090 Metasploit">4444</DestinationPort>
+	</NetworkConnect>
+	-->	
+	<rule id="101926" level="7">
+		<if_sid>100114</if_sid>
+		<field name="win.eventdata.commandline">\sadd\s|\sdelete\s|\sADD\s|\sDELETE\s</field>
+		<description>Mitre ATT&CK T1112, Defense Evasion, Modify Registry, manually added or deleted registry keys</description>
+		<options>no_full_log</options>
+	</rule>
+		<!--
+	<ProcessCreate onmatch="include">
+		<ParentImage condition="end with">msiexec.exe</ParentImage>
+	<ProcessCreate
+	-->
+	<rule id="100927" level="6">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.ParentImage">msiexec.exe</field>
+		<description>Mitre ATT&CK T1218.007, Defense Evasion, Signed Binary Proxy Execution: Msiexec, Msiexec.exe has executed $(win.eventdata.CommandLine)</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100928" level="7">
+		<if_group>sysmon_event3</if_group>
+		<field name="win.eventdata.SourcePort">^4444$</field>
+		<description>Mitre ATT&CK T1064, Defense Evasion, Scripting, Default Metasploit Reverse shell port</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100929" level="10">
+		<if_sid>100113</if_sid>
+		<field name="win.eventdata.commandline">Set-Acl</field>
+		<description>Mitre ATT&CK T1222.001, Defense Evasion, File and Directory Permissions Modification: Windows File and Directory Permissions Modification  with Set-Acl powershell cmdlet</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100930" level="10">
+		<if_sid>100113</if_sid>
+		<field name="win.eventdata.commandline">-ExecutionPolicy Bypass</field>
+		<description>Mitre ATT&CK T1562.001, Defense Evasion, Impair Defenses: Disable or Modify Tools,powershell command to bypass execution policy</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100931" level="10">
+		<if_sid>100117</if_sid>
+		<field name="win.eventdata.commandline">wevtutil cl\s|wevtutil.exe cl\s</field>
+		<description>Mitre ATT&CK T1070.001, Defense Evasion, Indicator Removal on Host: Clear Windows Event Logs , Clearing Windows Event Logs with wevtutil</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100932" level="10">
+		<if_sid>100117</if_sid>
+		<field name="win.eventdata.commandline">fsutil usn deletejournal</field>
+		<description>Mitre ATT&CK T1070.001, Defense Evasion, Indicator Removal on Host: Clear Windows Event Logs , Clearing Windows Event Logs with FSutil</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<RegistryEvent onmatch="include">
+		<TargetObject condition="contains" name="T1122 -1">\InprocServer32\scrobj</TargetObject>
+	</RegistryEvent>
+	-->
+	<rule id="100933" level="10">
+		<if_group>sysmon_event_13</if_group>
+		<field name="win.eventdata.TargetObject">\\\\InprocServer32\\\\scrobj</field>
+		<description>Mitre ATT&CK T1546.015, Defense Evasion, Event Triggered Execution: Component Object Model Hijacking </description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100934" level="7">
+		<if_sid>100119</if_sid>
+		<field name="win.eventdata.commandline">/d\s</field>
+		<description>Mitre ATT&CK T1070.005, Defense Evasion, Indicator Removal on Host: Network Share Connection Removal, Network Share Connection Removal via net.exe</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<RegistryEvent onmatch="include">
+		<TargetObject condition="contains" name="T1574.007 -1">\Environment\Path</TargetObject>
+	</RegistryEvent>
+	-->
+	<rule id="100937" level="7">
+		<if_group>sysmon_event_13</if_group>
+		<field name="win.eventdata.TargetObject">\\\\Environment\\\\Path</field>
+		<description>Mitre ATT&CK T1574.007, Defense Evasion, Hijack Execution Flow: Path Interception by PATH Environment Variable</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<RegistryEvent onmatch="include">
+		<TargetObject condition="contains" name="T1574.012 -1">\Environment\COR_PROFILER</TargetObject>
+	</RegistryEvent>
+	-->
+	<rule id="100938" level="7">
+		<if_group>sysmon_event_13</if_group>
+		<field name="win.eventdata.TargetObject">\\\\Environment\\\\COR_PROFILER</field>
+		<description>Mitre ATT&CK T1574.012, Defense Evasion, Hijack Execution Flow: COR_PROFILER </description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<Image condition="image">odbcconf.exe</Image>
+	</ProcessCreate>
+	-->
+	<rule id="100939" level="7">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.Image">odbcconf.exe</field>
+		<field name="win.eventdata.CommandLine">-f</field>
+		<description>Mitre ATT&CK T1218.008, Defense Evasion, Signed Binary Proxy Execution: Odbcconf, Load DLL specified in target .RSP file</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100940" level="7">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.Image">odbcconf.exe</field>
+		<field name="win.eventdata.CommandLine">/A -encodedCommand</field>
+		<description>Mitre ATT&CK T1218.008, Defense Evasion, Signed Binary Proxy Execution: Odbcconf, Execute DllREgisterServer from DLL</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<Image condition="image">regasm.exe</Image>
+	</ProcessCreate>
+	-->
+	<rule id="100941" level="7">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.Image">regasm.exe</field>
+		<field name="win.eventdata.CommandLine">/U</field>
+		<description>Mitre ATT&CK T1218.009, Defense Evasion, Signed Binary Proxy Execution: Regsvcs/Regasm, Loads the target .DLL</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<Image condition="image">regsvcs.exe</Image>
+	</ProcessCreate>
+	-->
+	<rule id="100942" level="7">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.Image">regsvcs.exe</field>
+		<field name="win.eventdata.CommandLine">/U</field>
+		<description>Mitre ATT&CK T1218.009, Defense Evasion, Signed Binary Proxy Execution: Regsvcs/Regasm, Loads the target .DLL</description>
+		<options>no_full_log</options>
+	</rule>
+		<!--
+	<ProcessCreate onmatch="include">
+		<Image condition="end with">regsvr32.exe</Image>
+	</ProcessCreate>
+	--> 
+	<rule id="100943" level="12">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.Image">\\regsvr32.exe</field>
+		<field name="win.eventdata.CommandLine">scrobj.dll</field>
+		<description>Mitre ATT&CK T1218.010,  Defense Evasion, Signed Binary Proxy Execution: Regsvr32, Squiblydoo technique</description>
+		<options>no_full_log</options>
+	</rule>
+		<!--
+	<NetworkConnect onmatch="include">
+		<Image condition="image">regsvr32.exe</Image>
+	</NetworkConnect>
+	-->
+	<rule id="100944" level="12">
+		<if_group>sysmon_event3</if_group>
+		<field name="win.eventdata.Image">\\regsvr32.exe</field>
+		<description>Mitre ATT&CK T1218.010, Defense Evasion, Signed Binary Proxy Execution: Regsvr32, Executing Regsvr32 Living off the Land Binaries</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<ParentCommandLine condition="contains">ftp -s:</ParentCommandLine>
+	<ProcessCreate
+	-->
+	<rule id="100945" level="10">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.ParentCommandLine">\.*ftp -s:\.*|\.*ftp.exe -s:\.*</field>
+		<field name="win.eventdata.commandline">\.*cmd.exe /C\.*</field>
+		<description>Mitre ATT&CK T1202, Defense Evasion, Indirect Command Execution, ftp.exe has executed $(win.eventdata.CommandLine)</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<ParentCommandLine condition="contains">pcalua.exe  -a</ParentCommandLine>
+	<ProcessCreate
+	-->
+	<rule id="100946" level="12">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.ParentCommandLine">\.*pcalua.exe -a\.*</field>
+		<description>Mitre ATT&CK T1202, Defense Evasion, Indirect Command Execution, Program Compatibility Assistant (pcalua.exe) has executed $(win.eventdata.CommandLine)</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100947" level="10">
+		<if_sid>100117</if_sid>
+		<field name="win.eventdata.commandline">control.exe\.*.cpl</field>
+		<description>Mitre ATT&CK T1218.002, Defense Evasion, Control Panel, control panel items</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<CommandLine condition="contains">*cmstp.exe*/s*</CommandLine>
+	</ProcessCreate>
+	-->
+	<rule id="100948" level="12">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.CommandLine">cmstp.exe /s</field>
+		<description>Mitre ATT&CK T1218.003, Defense Evasion, Signed Binary Proxy Execution: CMSTP , CMSTP code execution - bypass application whitelisting</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100949" level="12">
+		<if_sid>100107</if_sid>
+		<field name="win.eventdata.commandline">\\Temp</field>
+		<description>Mitre ATT&CK T1218.010, Defense Evasion, Signed Binary Proxy Execution: Regsvr32, Execution of regsvr32.exe from a temporal folder</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100950" level="12">
+		<if_sid>100107</if_sid>
+		<field name="win.eventdata.parentImage">powershell.exe</field>
+		<description>Mitre ATT&CK T1218.010, Defense Evasion, Signed Binary Proxy Execution: Regsvr32, Execution of powershel through rundll32</description>
+		<options>no_full_log</options>
+	</rule>
+		<!--
+	<NetworkConnect onmatch="include">
+		<Image condition="image">mshta.exe</Image>
+	</NetworkConnect>
+	-->
+	<rule id="100951" level="10">
+		<if_group>sysmon_event3</if_group>
+		<field name="win.eventdata.Image">\\mshta.exe</field>
+		<description>Mitre ATT&CK T1218.005, Defense Evasion, Signed Binary Proxy Execution: Mshta, Mshta</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100952" level="12">
+		<if_sid>100117</if_sid>
+		<field name="win.eventdata.CommandLine">mshta.exe</field>
+		<description>Mitre ATT&CK T1218.005, Defense Evasion, Signed Binary Proxy Execution: Mshta, Microsoft HTML Application execution via $(win.eventdata.Image)</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100953" level="12">
+		<if_sid>100117</if_sid>
+		<field name="win.eventdata.CommandLine">regsvr32.exe</field>
+		<description>Mitre ATT&CK T1218.010,  Defense Evasion, Signed Binary Proxy Execution: Regsvr32, Regsvr32 execution via $(win.eventdata.Image)</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100954" level="12">
+		<if_sid>100117</if_sid>
+		<field name="win.eventdata.CommandLine">rundll32.exe</field>
+		<description>Mitre ATT&CK T1218.011, Defense Evasion, Signed Binary Proxy Execution: Rundll32, Rundll32 execution via $(win.eventdata.Image)</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100955" level="12">
+		<if_group>sysmon_event1</if_group>
+		<if_sid>100100</if_sid>
+		<field name="win.eventdata.CommandLine">\.*rundll32.exe\.*ieframe.dll|url.dll|shdocvw.dll,OpenURL\.*</field>
+		<description>Mitre ATT&CK T1218.011, Defense Evasion, Signed Binary Proxy Execution: Rundll32, Execution of Rundll32 Living off the Land Endpoint Detection and Response (EDR) evasion </description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100956" level="12">
+		<if_group>sysmon_event1</if_group>
+		<if_sid>100100</if_sid>
+		<field name="win.eventdata.CommandLine">\.*rundll32.exe\.*url.dll, OpenURLA\.*</field>
+		<description>Mitre ATT&CK T1218.011, Defense Evasion, Signed Binary Proxy Execution: Rundll32, Execution of Rundll32 Living off the Land Endpoint Detection and Response (EDR) evasion </description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100957" level="12">
+		<if_sid>100100</if_sid>
+		<field name="win.eventdata.Image">\\rundll32.exe</field>
+		<field name="win.eventdata.CommandLine">\.*rundll32.exe\.*url.dll, FileProtocolHandler\.*</field>
+		<description>Mitre ATT&CK T1218.011, Defense Evasion, Signed Binary Proxy Execution: Rundll32, Execution of Rundll32 Living off the Land Endpoint Detection and Response (EDR) evasion </description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100958" level="12">
+		<if_group>sysmon_event1</if_group>
+		<if_sid>100100</if_sid>
+		<field name="win.eventdata.CommandLine">\.*rundll32.exe\.*zipfldr.dll, RouteTheCall\.*</field>
+		<description>Mitre ATT&CK T1218.011, Defense Evasion, Signed Binary Proxy Execution: Rundll32, Execution of Rundll32 Living off the Land Endpoint Detection and Response (EDR) evasion </description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100959" level="12">
+		<if_group>sysmon_event1</if_group>
+		<if_sid>100100</if_sid>
+		<field name="win.eventdata.CommandLine">\.*rundll32.exe\.*advpack.dll,RegisterOCX \.*</field>
+		<description>Mitre ATT&CK T1218.011, Defense Evasion, Signed Binary Proxy Execution: Rundll32, Execution of Rundll32 Living off the Land Endpoint Detection and Response (EDR) evasion </description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100960" level="12">
+		<if_group>sysmon_event1</if_group>
+		<if_sid>100100</if_sid>
+		<field name="win.eventdata.CommandLine">\.*rundll32.exe\.*pcwutl.dll,LaunchApplication  \.*</field>
+		<description>Mitre ATT&CK T1218.011, Defense Evasion, Signed Binary Proxy Execution: Rundll32, Execution of Rundll32 Living off the Land Endpoint Detection and Response (EDR) evasion </description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100961" level="12">
+		<if_group>sysmon_event1</if_group>
+		<if_sid>100100</if_sid>
+		<field name="win.eventdata.CommandLine">\.*rundll32.exe\.*Shell32.dll,Control_RunDLL\.*</field>
+		<description>Mitre ATT&CK T1218.011, Defense Evasion, Signed Binary Proxy Execution: Rundll32, Execution of Rundll32 Living off the Land Endpoint Detection and Response (EDR) evasion </description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="100962" level="12">
+		<if_group>sysmon_event1</if_group>
+		<if_sid>100100</if_sid>
+		<field name="win.eventdata.CommandLine">\.*rundll32.exe\.*PowerShdll.dll,main\.*</field>
+		<description>Mitre ATT&CK T1218.011, Defense Evasion, Signed Binary Proxy Execution: Rundll32, Execution of Powershell Without Powershell.exe</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<Image condition="end with">rundll32.exe</Image>
+	</ProcessCreate>
+	--> 
+	<rule id="100963" level="12">
+		<if_group>sysmon_event1</if_group>
+		<if_sid>100100</if_sid>
+		<field name="win.eventdata.CommandLine">\.*rundll32.exe\.*{00020812-0000-0000-C000-000000000046}\.*|\.*rundll32.exe\.*{00020906-0000-0000-C000-000000000046}\.*|\.*rundll32.exe\.*{048EB43E-2059-422F-95E0-557DA96038AF}\.*|\.*rundll32.exe\.*{0006F04A-0000-0000-C000-000000000046}\.*|\.*rundll32.exe\.*{00021A20-0000-0000-C000-000000000046}\.*|\.*rundll32.exe\.*{9BA05972-F6A8-11CF-A42-00A0C90A8F39}\.*|\.*rundll32.exe\.*{c08afd90-f2a1-11d1-8455-00a0c91f3880}\.*|\.*rundll32.exe\.*{7e0423cd-11198-0928-900c-e6d4a52a0715}\.*|\.*rundll32.exe\.*{40AEEAB6-8FDA-41e3-9A5F-8350D4CFCA91}\.*|\.*rundll32.exe\.*{72C24DD5-D70A-438B-8A42-98424B88AFB8}\.*|\.*rundll32.exe\.*{13709620-C279-11CE-A49E-444553540000}\.*</field>
+		<description>Mitre ATT&CKT1218.011, Defense Evasion, Signed Binary Proxy Execution: Rundll32, Component Object Model and Distributed COM, </description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<Image condition="end with">dllhost.exe</Image>
+	</ProcessCreate>
+	--> 
+	<rule id="100964" level="12">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.Image">\\dllhost.exe</field>
+		<field name="win.eventdata.CommandLine">\.*dllhost.exe\.*{00020812-0000-0000-C000-000000000046}\.*|\.*dllhost.exe\.*{00020906-0000-0000-C000-000000000046}\.*|\.*dllhost.exe\.*{048EB43E-2059-422F-95E0-557DA96038AF}\.*|\.*dllhost.exe\.*{0006F04A-0000-0000-C000-000000000046}\.*|\.*dllhost.exe\.*{00021A20-0000-0000-C000-000000000046}\.*|\.*dllhost.exe\.*{9BA05972-F6A8-11CF-A42-00A0C90A8F39}\.*|\.*dllhost.exe\.*{c08afd90-f2a1-11d1-8455-00a0c91f3880}\.*|\.*dllhost.exe\.*{7e0423cd-11198-0928-900c-e6d4a52a0715}\.*|\.*dllhost.exe\.*{40AEEAB6-8FDA-41e3-9A5F-8350D4CFCA91}\.*|\.*dllhost.exe\.*{72C24DD5-D70A-438B-8A42-98424B88AFB8}\.*|\.*dllhost.exe\.*{13709620-C279-11CE-A49E-444553540000}\.*</field>
+		<description>Mitre ATT&CK T1218.011, Defense Evasion, Signed Binary Proxy Execution: Rundll32, Component Object Model and Distributed COM, </description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<ParentImage condition="end with">control.exe</ParentImage>
+	<ProcessCreate
+	-->
+	<rule id="100965" level="12">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.parentImage">\\System32\\control.exe</field>
+		<field name="win.eventdata.commandline">\\rundll32.exe</field>
+		<description>Mitre ATT&CK T1218.011, Defense Evasion, Signed Binary Proxy Execution: Rundll32, Detects suspicious Rundll32 execution from control.exe as used by Equation Group and Exploit Kits</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<FileCreate onmatch="include">
+		<TargetFilename condition="end with" name="T1574 -2">\system32\fveapi.dll</TargetFilename>
+	</FileCreate>
+	-->
+	<rule id="100966" level="10">
+		<if_group>sysmon_event_11</if_group>
+		<field name="win.eventdata.TargetFilename">\\\\fveapi.dll</field>
+		<description>Mitre ATT&CK T1574, Defense Evasion, Hijack Execution Flow, Distributed Transaction Coordinator (MSDTC) Hijack by fveapi.dll crateation </description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<FileCreate onmatch="include">
+		<TargetFilename condition="end with" name="T1574 -1">\system32\oci.dll</TargetFilename>
+	</FileCreate>
+	-->
+	<rule id="100967" level="10">
+		<if_group>sysmon_event_11</if_group>
+		<field name="win.eventdata.TargetFilename">\\\\oci.dll</field>
+		<description>Mitre ATT&CK T1574, Defense Evasion, Hijack Execution Flow, MSINFO Hijack by oci.dll creation</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+	<Image name="T1027.002 -1" condition="image">upx.exe</Image>
+	</ProcessCreate>
+	--> 
+	<rule id="100968" level="7">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.Image">upx.exe</field>
+		<description>Mitre ATT&CK T1027.002, Defense Evasion, Obfuscated Files or Information: Software Packing, use of Ultimate packer for eXecutables</description>
+		<options>no_full_log</options>
+	</rule>
+	<!------------------------------------------------------------------------------------------------------------------------------->
+	<!--
+	{"win":{"system":{"providerName":"Microsoft-Windows-Sysmon","providerGuid":"{54849625-5478-4994-a5ba-3e3b0328c30d}","eventID":"11","version":"2","level":"4","task":"11","opcode":"0","keywords":"0x8000000000000000","systemTime":"2019-05-08T02:10:43.487217000","eventRecordID":"202793","processID":"444","threadID":"463","channel":"Microsoft-Windows-Sysmon/Operational","computer":"DC1.insecurebank.local","severityValue":"INFORMATION","message":"File Created."},"eventdata":{"subjectUserSid":"S-1-5-21-3461203602-4096304019-2269080069-1000","RuleName":"","UtcTime":"2019-03-17 19:10:02.058","ProcessGuid":"{365abb72-9b85-5c8e-0000-0010c4cc1200}","ProcessId":"3576","Image":"C:\\Windows\\system32\\cmd.exe","TargetFilename":"C:\\Windows\\system32\\wermgr.exe","CreationUtcTime":"2019-03-17 19:10:02.058"}}}
+	 
+	{"win":{"system":{"providerName":"Microsoft-Windows-Sysmon","providerGuid":"{54849625-5478-4994-a5ba-3e3b0328c30d}","eventID":"11","version":"2","level":"4","task":"11","opcode":"0","keywords":"0x8000000000000000","systemTime":"2019-05-11T17:58:23.340659600Z","eventRecordID":"16111","processID":"2032","threadID":"4092","channel":"Microsoft-Windows-Sysmon/Operational","computer":"IEWIN7","severityValue":"INFORMATION","message":"File created"},"eventdata":{"subjectUserSid":"S-1-5-18","RuleName":"","UtcTime":"2019-03-19 20:58:20.974","ProcessGuid":"{365abb72-57ec-5c91-0000-001097810900}","ProcessId":"2848","Image":"C:\\Windows\\system32\\sdbinst.exe","TargetFilename":"C:\\Windows\\AppPatch\\Custom\\{3ad6ed23-adf8-4bc1-a898-4d695f482c64}.sdb","CreationUtcTime":"2019-03-19 20:58:20.974"}}}
+ 
+	{"win":{"system":{"providerName":"Microsoft-Windows-Sysmon","providerGuid":"{54849625-5478-4994-a5ba-3e3b0328c30d}","eventID":"13","version":"2","level":"4","task":"11","opcode":"0","keywords":"0x8000000000000000","systemTime":"2019-05-11T17:58:23.340659600Z","eventRecordID":"16111","processID":"2032","threadID":"4092","channel":"Microsoft-Windows-Sysmon/Operational","computer":"IEWIN7","severityValue":"INFORMATION","message":"Registry value set"},"eventdata":{"subjectUserSid":"S-1-5-18","RuleName":"","EventType":"SetValue","UtcTime":"2019-03-19 20:58:20.984","ProcessGuid":"{365abb72-57ec-5c91-0000-001097810900}","ProcessId":"2848","Image":"C:\\Windows\\system32\\sdbinst.exe","TargetObject":"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\InstalledSDB\\{3ad6ed23-adf8-4bc1-a898-4d695f482c64}\\DatabasePath","Details":"C:\\Windows\\AppPatch\\Custom\\{3ad6ed23-adf8-4bc1-a898-4d695f482c64}.sdb"}}}
+	
+	{"win":{"system":{"providerName":"Microsoft-Windows-Sysmon","providerGuid":"{54849625-5478-4994-a5ba-3e3b0328c30d}","eventID":"13","version":"2","level":"4","task":"11","opcode":"0","keywords":"0x8000000000000000","systemTime":"2019-05-08T02:10:43.487217000","eventRecordID":"202793","processID":"444","threadID":"463","channel":"Microsoft-Windows-Sysmon/Operational","computer":"DC1.insecurebank.local","severityValue":"INFORMATION","message":"Registry value set."},"eventdata":{"subjectUserSid":"S-1-5-21-3461203602-4096304019-2269080069-1000","RuleName":"technique_id=T1088,technique_name=Bypass User Account Control","EventType":"SetValue","UtcTime":"2019-05-16 14:17:15.758","ProcessGuid":"{dfae8213-70eb-5cdd-0000-0010f66d0a00}","ProcessId":"3788","Image":"C:\\Windows\\system32\\reg.exe","TargetObject":"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\DisplaySwitch.exe\\Debugger","Details":"DWORD (0x00000000)"}}}
+
+	-->
+	<!-- PERSISTENCE 101000-->
+	<!--
+	<FileCreate onmatch="include">
+<TargetFilename condition="contains" name="T1053 -4">\System32\aitagent.exe</TargetFilename>
+				<TargetFilename condition="contains" name="T1053 -5">\compattel\DiagTrackRunner.exe</TargetFilename>
+				<TargetFilename condition="contains" name="T1053 -6">\system32\CompatTelRunner.exe</TargetFilename>
+				<TargetFilename condition="contains" name="T1053 -7">\System32\acproxy.dl</TargetFilename>
+				<TargetFilename condition="contains" name="T1053 -8">\system32\wsqmcons.exe</TargetFilename>
+				<TargetFilename condition="contains" name="T1053 -9">lpremove.exe</TargetFilename>
+				<TargetFilename condition="contains" name="T1053 -10">srrstr.dll</TargetFilename>
+				<TargetFilename condition="contains" name="T1053 -11">\system32\wermgr.exe</TargetFilename>
+				<TargetFilename condition="contains" name="T1053 -12">\System32\sdclt.exe</TargetFilename>
+				<TargetFilename condition="contains" name="T1053 -13">\system32\appidcertstorecheck.exe</TargetFilename>
+				<TargetFilename condition="contains" name="T1053 -14">\system32\AppHostRegistrationVerifier.exe</TargetFilename>
+				<TargetFilename condition="contains" name="T1053 -15">\System32\MicTray64.exe</TargetFilename>
+				<TargetFilename condition="contains" name="T1053 -16">\system32\usoclient.exe</TargetFilename>
+				<TargetFilename condition="contains" name="T1053 -17">\System32\dsregcmd.exe</TargetFilename>
+				<TargetFilename condition="contains" name="T1053 -18">\System32\sihclient.exe</TargetFilename>
+				<TargetFilename condition="contains" name="T1053 -19">dimsjob.dll</TargetFilename>
+				<TargetFilename condition="contains" name="T1053 -20">Lracengn.dll</TargetFilename>
+				<TargetFilename condition="contains" name="T1053 -21">HotstartUserAgent.dll</TargetFilename>
+				<TargetFilename condition="contains" name="T1053 -22">MsCtfMonitor.dll</TargetFilename>
+				<TargetFilename condition="contains" name="T1053 -23">PlaySndSrv.dll</TargetFilename>
+				<TargetFilename condition="contains" name="T1053 -24">\Adobe\ARM\*\AdobeARM.exe</TargetFilename>
+				<TargetFilename condition="contains" name="T1053 -25">\Google\Update\GoogleUpdate.exe</TargetFilename>
+				<TargetFilename condition="end with" name="T1129 -26">\UsageLogs\cscript.exe.log</TargetFilename>
+	</FileCreate>
+	-->
+	<!---
+	<rule id="101001" level="12">
+		<if_group>sysmon_event_11</if_group>
+		<field name="win.eventdata.TargetFilename">(\.*)aitagent.exe|DiagTrackRunner.exe|CompatTelRunner.exe|acproxy.dl|wsqmcons.exe|lpremove.exe|srrstr.dll|wermgr.exe|sdclt.exe|appidcertstorecheck.exe|AppHostRegistrationVerifier.exe|MicTray64.exe|usoclient.exe|dsregcmd.exe|sihclient.exe|dimsjob.dll|Lracengn.dll|HotstartUserAgent.dll|MsCtfMonitor.dll|PlaySndSrv.dll|AdobeARM.exe|GoogleUpdate.exe(\.*)</field>
+		<description>Mitre ATT&CK T1053, Persistence, Scheduled Task, Modification of the program run by a Windows Default Scheduled Task</description>
+		<options>no_full_log</options>
+	</rule>
+	-->
+	<!--
+	<RegistryEvent onmatch="include">
+		<TargetObject condition="contains">Windows\CurrentVersion\Run</TargetObject>
+		<TargetObject condition="contains">Windows\CurrentVersion\RunOnce</TargetObject>
+	</RegistryEvent>
+	-->
+	<rule id="101002" level="6">
+		<if_group>sysmon_event_12</if_group>
+		<field name="win.eventdata.TargetObject">\\\\Windows\\\\CurrentVersion\\\\Run</field>
+		<description>Mitre ATT&CK T1547.001, Persistence, Boot or Logon Autostart Execution: Registry Run Keys / Startup Folder</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<FileCreate onmatch="include">
+		<TargetFilename condition="begin with">C:\Windows\AppPatch\Custom</TargetFilename> 
+	</FileCreate>
+	-->
+	<rule id="101003" level="12">
+		<if_group>sysmon_event_11</if_group>
+		<field name="win.eventdata.TargetFilename">C:\\\\Windows\\\\AppPatch\\\\Custom</field>
+		<description>Mitre ATT&CK T1546.011, Persistence, Event Triggered Execution: Application Shimming, Installed Shim</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<RegistryEvent onmatch="include">
+		<TargetObject name="T1138,AppCompatShim" condition="begin with">HKLM\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Custom</TargetObject> 
+		<TargetObject name="T1138,AppCompatShim" condition="begin with">HKLM\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\InstalledSDB</TargetObject>
+	</RegistryEvent>
+	-->
+	<rule id="101004" level="12">
+		<if_group>sysmon_event_13</if_group>
+		<field name="win.eventdata.TargetObject">\\\\Software\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\AppCompatFlags\\\\Custom||\\\\Software\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\AppCompatFlags\\\\InstalledSDB</field>
+		<description>Mitre ATT&CK T1546.011, Persistence, Event Triggered Execution: Application Shimming, Installed Shim</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<RegistryEvent onmatch="include">	
+		<TargetObject condition="contains" name="T1015">\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\sethc.exe\Debugger</TargetObject>
+		<TargetObject condition="contains" name="T1015">\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\sethc.exe\Debugger</TargetObject>
+		<TargetObject condition="contains" name="T1015">\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\osk.exe\Debugger</TargetObject>
+		<TargetObject condition="contains" name="T1015">\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\Magnify.exe\Debugger</TargetObject>
+		<TargetObject condition="contains" name="T1015">\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\Narrator.exe\Debugger</TargetObject>
+		<TargetObject condition="contains" name="T1015">\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\DisplaySwitch.exe\Debugger</TargetObject>
+	</RegistryEvent>
+	-->	
+	<rule id="101005" level="7">
+		<if_group>sysmon_event_13</if_group>
+		<field name="win.eventdata.TargetObject">\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Image File Execution Options\\\\sethc.exe\\\\Debugger||\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Image File Execution Options\\\\sethc.exe\\\\Debugger||\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Image File Execution Options\\\\osk.exe\\\\Debugger||\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Image File Execution Options\\\\Magnify.exe\\\\Debugger||\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Image File Execution Options\\\\Narrator.exe\\\\Debugger||\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Image File Execution Options\\\\DisplaySwitch.exe\\\\Debugger</field>
+		<description>Mitre ATT&CK T1015, Persistence, Accessibility Features, Modify the way program $(win.eventdata.image) is launched</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<RegistryEvent onmatch="include">
+		<TargetObject condition="contains">\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\startup</TargetObject>
+		<TargetObject condition="contains">\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders\startup</TargetObject>
+	</RegistryEvent>
+	-->
+	<rule id="101006" level="12">
+		<if_group>sysmon_event_13</if_group>
+		<field name="win.eventdata.TargetObject">\\\\Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Explorer\\\\User Shell Folders\\\\startup||\\\\Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Explorer\\\\Shell Folders\\\\startup</field>
+		<description>Mitre ATT&CK T1547.001, Persistence, Boot or Logon Autostart Execution: Registry Run Keys / Startup Folder</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<FileCreate onmatch="include">
+		<TargetFilename condition="contains">\Start Menu</TargetFilename>
+	</FileCreate>
+	-->
+	<rule id="101007" level="12">
+		<if_group>sysmon_event_11</if_group>
+		<field name="win.eventdata.TargetFilename">\\Start Menu</field>
+		<description>Mitre ATT&CK T1023, Persistence, Shortcut Modification, Modification of system startup shorcuts folder</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<FileCreate onmatch="include">
+		<TargetFilename condition="begin with">C:\Windows\Tasks\</TargetFilename>
+		<TargetFilename condition="begin with">C:\Windows\system32\Tasks</TargetFilename>
+	</FileCreate>
+	-->
+	<rule id="101008" level="6">
+		<if_group>sysmon_event_11</if_group>
+		<field name="win.eventdata.TargetFilename">C:\\\\Windows\\\\Tasks\\\\|^C:\\\\Windows\\\\system32\\\\Tasks</field>
+		<description>Mitre ATT&CK T1053.005, Persistence, Scheduled Task/Job: Scheduled Task , Folders related with scheduled tasks were modified</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<RegistryEvent onmatch="include">
+		<TargetObject condition="contains">\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\Shell</TargetObject>
+	</RegistryEvent>
+	-->
+	<rule id="101009" level="12">
+		<if_group>sysmon_event_13</if_group>
+		<field name="win.eventdata.TargetObject">\\\\Software\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Winlogon\\\\Shell</field>
+		<description>Mitre ATT&CK T1547.001, Persistence, Boot or Logon Autostart Execution: Registry Run Keys / Startup Folder</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101010" level="12">
+		<if_sid>100113</if_sid>
+		<field name="win.eventdata.commandLine">New-Service</field>
+		<description>Mitre ATT&CK T1543.003, Persistence, Create or Modify System Process: Windows Service, A service was installed in the system with powershell cmdlet New-Service</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101011" level="12">
+		<if_group>sysmon_event_13</if_group>
+		<field name="win.eventdata.TargetObject">*ControlSet\\\\Control\\\\Print\\\\Monitors</field>
+		<description>Mitre ATT&CK T1013, Persistence, Port Monitors, Creation of a Local Port Monitor has detected</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<RegistryEvent onmatch="include">
+		<TargetObject condition="contains">*CurrentControlSet\Services\W32Time\TimeProviders\*</TargetObject>
+	</RegistryEvent>
+	-->
+	<rule id="101012" level="7">
+		<if_group>sysmon_event_13</if_group>
+		<field name="win.eventdata.TargetObject">CurrentControlSet\\\\Services\\\\W32Time\\\\TimeProviders</field>
+		<description>Mitre ATT&CK T1547.003, Persistence, Boot or Logon Autostart Execution: Time Providers</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+	<ParentImage name="T1015 -1" condition="image">sethc.exe</ParentImage>
+				<ParentImage name="T1015 -2" condition="image">utilman.exe</ParentImage>
+				<ParentImage name="T1015 -3" condition="image">osk.exe</ParentImage>
+				<ParentImage name="T1015 -4" condition="image">Magnify.exe</ParentImage>
+				<ParentImage name="T1015 -5" condition="image">DisplaySwitch.exe</ParentImage>
+				<ParentImage name="T1015 -6" condition="image">Narrator.exe</ParentImage>
+				<ParentImage name="T1015 -7" condition="image">AtBroker.exe</ParentImage>				
+	</ProcessCreate>
+	-->
+	<rule id="101013" level="7">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.ParentImage">sethc.exe|utilman.exe|osk.exe|Magnify.exe|DisplaySwitch.exe|Narrator.exe|AtBroker.exe</field>
+		<description>Mitre ATT&CK T1546.008, Persistence, Event Triggered Execution: Accessibility Features</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101014" level="7">
+		<if_sid>100113</if_sid>
+		<field name="win.eventdata.commandLine">assoc\s</field>
+		<description>Mitre ATT&CK T1546.001, Persistence, Event Triggered Execution: Change Default File Association via $(win.eventdata.Image)</description>
+		<options>no_full_log</options>		
+	</rule>
+	<rule id="101015" level="7">
+		<if_sid>100117</if_sid>
+		<field name="win.eventdata.commandLine">assoc\s</field>
+		<description>Mitre ATT&CK T1546.001, Persistence, Event Triggered Execution: Change Default File Association via $(win.eventdata.Image)</description>
+		<options>no_full_log</options>		
+	</rule>
+	<!--
+	<RegistryEvent onmatch="include">
+			<TargetObject condition="contains">\Control Panel\Desktop\ScreenSaveActive</TargetObject>
+			<TargetObject condition="contains">\Control Panel\Desktop\ScreenSaverIsSecure</TargetObject>
+			<TargetObject condition="contains">\Control Panel\Desktop\ScreenSaveTimeout</TargetObject>
+	</RegistryEvent>
+	-->
+	<rule id="101016" level="5">
+		<if_group>sysmon_event_13</if_group>
+		<field name="win.eventdata.TargetObject">\\\\Control Panel\\\\Desktop\\\\ScreenSaveActive|\\\\Control Panel\\\\Desktop\\\\ScreenSaverIsSecure|\\\\Control Panel\\\\Desktop\\\\ScreenSaveTimeout</field>
+		<description>Mitre ATT&CK T1546.002, Persistence, Event Triggered Execution: Screensaver, Modified screensaver parameters</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<RegistryEvent onmatch="include">
+		<TargetObject condition="contains" name="T1182 -1">\Control\Session Manager\AppCertDLLs\</TargetObject>
+	</RegistryEvent>
+	-->
+	<rule id="101017" level="3">
+		<if_group>sysmon_event_13</if_group>
+		<field name="win.eventdata.TargetObject">\\\\Control\\\\Session Manager\\\\AppCertDLLs</field>
+		<description>Mitre ATT&CK T1546.009, Persistence, Event Triggered Execution: AppCert DLLs </description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101018" level="12">
+		<if_group>sysmon_event_13</if_group>
+		<field name="win.eventdata.TargetObject">\\\\CurrentControlSet\\\\Control\\\\Lsa\\\\OSConfig\\\\Security Packages</field>
+		<description>Mitre ATT&CK T1547.005, Persistence, Boot or Logon Autostart Execution: Security Support Provider I</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101019" level="12">
+		<if_group>sysmon_event_13</if_group>
+		<field name="win.eventdata.TargetObject">\\\\CurrentControlSet\\\\Control\\\\Lsa\\\\Security Package</field>
+		<description>Mitre ATT&CK T1547.005, Persistence, Boot or Logon Autostart Execution: Security Support Provider II</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101020" level="7">
+		<if_group>sysmon_event_13</if_group>
+		<field name="win.eventdata.TargetObject">\\\\Environment\\\\UserInitMprLogonScript</field>
+		<description>Mitre ATT&CK T1037.001, Persistence, Boot or Logon Initialization Scripts: Logon Script</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<RegistryEvent onmatch="include">
+		<TargetObject condition="contains" name="T1546.010 -1">\Windows NT\CurrentVersion\Windows\AppInit_DLLs</TargetObject>
+	</RegistryEvent>
+	-->
+	<rule id="101021" level="3">
+		<if_group>sysmon_event_13</if_group>
+		<field name="win.eventdata.TargetObject">\\\\Windows NT\\\\CurrentVersion\\\\Windows\\\\AppInit_DLLs</field>
+		<description>Mitre ATT&CK T1546.010, Persistence, Event Triggered Execution: AppInit DLLs </description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<RegistryEvent onmatch="include">
+		<TargetObject condition="contains" name="T1547.004 -3">\CurrentVersion\Winlogon\Notify</TargetObject>
+	</RegistryEvent>
+	-->
+	
+	<rule id="101022" level="7">
+		<if_group>sysmon_event_13</if_group>
+		<field name="win.eventdata.TargetObject">\\\\CurrentVersion\\\\Winlogon\\\\Notify</field>
+		<description>Mitre ATT&CK T1547.004, Persistence, Boot or Logon Autostart Execution: Winlogon Helper DLL, hive \CurrentVersion\Winlogon\Notify changed</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<RegistryEvent onmatch="include">
+		<TargetObject condition="contains" name="T1547.004 -2">\CurrentVersion\Winlogon\Userinit</TargetObject>
+	</RegistryEvent>
+	-->
+	<rule id="101023" level="7">
+		<if_group>sysmon_event_13</if_group>
+		<field name="win.eventdata.TargetObject">\\\\CurrentVersion\\\\Winlogon\\\\Userinit</field>
+		<description>Mitre ATT&CK T1547.004, Persistence, Boot or Logon Autostart Execution: Winlogon Helper DLL, hive \CurrentVersion\Winlogon\Userinit changed</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<RegistryEvent onmatch="include">
+		<TargetObject condition="contains">Windows\CurrentVersion\Run</TargetObject>
+		<TargetObject condition="contains">Windows\CurrentVersion\RunOnce</TargetObject>
+	</RegistryEvent>
+	-->
+	<rule id="101024" level="6">
+		<if_group>sysmon_event_13</if_group>
+		<field name="win.eventdata.TargetObject">\\\\Windows\\\\CurrentVersion\\\\Run</field>
+		<description>Mitre ATT&CK T1547.001, Persistence, Boot or Logon Autostart Execution: Registry Run Keys / Startup Folder</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101025" level="12">
+		<if_group>sysmon_event_12</if_group>
+		<field name="win.eventdata.TargetObject">\\\\CurrentControlSet\\\\Control\\\\Lsa\\\\OSConfig\\\\Security Packages</field>
+		<description>Mitre ATT&CK T1547.005, Persistence, Boot or Logon Autostart Execution: Security Support Provider III</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101026" level="12">
+		<if_group>sysmon_event_12</if_group>
+		<field name="win.eventdata.TargetObject">\\\\CurrentControlSet\\\\Control\\\\Lsa\\\\Security Package</field>
+		<description>Mitre ATT&CK T1547.005, Persistence, Boot or Logon Autostart Execution: Security Support Provider IV</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<FileCreate>
+		<TargetFilename condition="end with" name="T1547.005">\system32\mimilsa.log</TargetFilename>
+	</FileCreate>
+	-->
+	<rule id="101027" level="12">
+		<if_group>sysmon_event_11</if_group>
+		<field name="win.eventdata.TargetFilename">mimilsa.log</field>
+		<description>Mitre ATT&CK T1547.005, Persistence, Boot or Logon Autostart Execution: Security Support Provider, Creation of mimilsa.log that indicates usage of mimikatz to gather credentials</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<RegistryEvent>
+		<TargetObject condition="contains" name="T1546.010">\Windows NT\CurrentVersion\WindowsAppInit_DLLs</TargetObject>
+	</RegistryEvent>
+	-->		
+	<rule id="101028" level="7">
+		<if_group>sysmon_event_12</if_group>
+		<field name="win.eventdata.TargetObject">\\\\Windows NT\\\\CurrentVersion\\\\WindowsAppInit_DLLs</field>
+		<description>Mitre ATT&CK T1546.010, Persistence, Event Triggered Execution: AppInit DLLs, modification of WindowsAppInit_DLLs I </description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101029" level="7">
+		<if_group>sysmon_event_13</if_group>
+		<field name="win.eventdata.TargetObject">\\\\Windows NT\\\\CurrentVersion\\\\WindowsAppInit_DLLs</field>
+		<description>Mitre ATT&CK T1546.010, Persistence, Event Triggered Execution: AppInit DLLs, modification of WindowsAppInit_DLLs II </description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<RegistryEvent>
+		<TargetObject condition="contains" name="T1546.010">\Windows NT\CurrentVersion\Windows\LoadAppInit_DLLs</TargetObject>
+	</RegistryEvent>
+	-->
+	<rule id="101030" level="7">
+		<if_group>sysmon_event_13</if_group>
+		<field name="win.eventdata.TargetObject">\\\\Windows NT\\\\CurrentVersion\\\\Windows\\\\LoadAppInit_DLLs</field>
+		<description>Mitre ATT&CK T1546.010, Persistence, Event Triggered Execution: AppInit DLLs </description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<FileCreate>
+		<TargetFilename condition="contains">\Roaming\Microsoft\Word\STARTUP</TargetFilename>
+	</FileCreate>
+	-->
+    <rule id="101031" level="1">
+        <if_group>sysmon_event_11</if_group>
+        <field name="win.eventdata.TargetFilename">\\\\Roaming\\\\Microsoft\\\\Word\\\\STARTUP</field>
+        <description>Mitre ATT&CK T1137.006, Persistence, Office Application Startup: Add-ins, new .wll or .xll created in word startup folder</description>
+        <options>no_full_log</options>
+    </rule>
+    <rule id="101032" level="5">
+        <if_sid>101031</if_sid>
+        <field name="win.eventdata.TargetFilename">.wll|.xll</field>
+        <description>Mitre ATT&CK T1137.006, Persistence, Office Application Startup: Add-ins, new .wll or .xll created in word startup folder</description>
+        <options>no_full_log</options>
+    </rule>
+	<rule id="101033" level="12">
+		<if_group>sysmon_event_12</if_group>
+		<field name="win.eventdata.TargetObject">\\\\Microsoft\\\\Office test\\\\Special\\\\Perf</field>
+		<description>Mitre ATT&CK T1137.002, Persistence, Office Application Startup: Office Test, creation of test dll used for performance evaluations in Office</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<Image condition="image">sdbinst.exe</Image>
+	</ProcessCreate>
+	-->
+	<rule id="101034" level="5">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.Image">sdbinst.exe</field>
+		<description>Mitre ATT&CK T1546.011, Persistence, Event Triggered Execution: Application Shimming, use of sdbinst to install a shim</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<RegistryEvent onmatch="include">
+			<TargetObject condition="contains">\Control Panel\Desktop\SCRNSAVE.EXE</TargetObject>
+	</RegistryEvent>
+	-->
+	<rule id="101035" level="7">
+		<if_group>sysmon_event_13</if_group>
+		<field name="win.eventdata.TargetObject">\\\\Control Panel\\\\Desktop\\\\SCRNSAVE.EXE</field>
+		<description>Mitre ATT&CK T1546.002, Persistence, Event Triggered Execution: Screensaver, Modification of screensaver executable</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<RegistryEvent>
+		<TargetObject condition="contains">\Windows NT\CurrentVersion\Image File Execution Options</TargetObject>
+	</RegistryEvent>
+	-->
+	<rule id="101036" level="7">
+		<if_group>sysmon_event_12</if_group>
+		<field name="win.eventdata.TargetObject">\\\\Windows NT\\\\CurrentVersion\\\\Image File Execution Options</field>
+		<description>Mitre ATT&CK T1546.012, Persistence, Event Triggered Execution: Image File Execution Options Injection, modification of registry Image File Execution Options</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<RegistryEvent>
+		<TargetObject condition="contains">\Windows NT\CurrentVersion\SilentProcessExit</TargetObject>
+	</RegistryEvent>
+	-->
+	<rule id="101037" level="7">
+		<if_group>sysmon_event_12</if_group>
+		<field name="win.eventdata.TargetObject">\\\\Windows NT\\\\CurrentVersion\\\\SilentProcessExit</field>
+		<description>Mitre ATT&CK T1546.012, Persistence, Event Triggered Execution: Image File Execution Options Injection, modification of registry SilentProcessExit</description>
+		<options>no_full_log</options>
+	</rule>	
+	<rule id="101038" level="7">
+		<if_sid>100109</if_sid>
+		<field name="win.eventdata.commandLine">/create|/addfile|/SetNotifyCmdLine|/SetMinRetryDelay|/resume</field>
+		<description>Mitre ATT&CK T1197, Persistence, BITS Jobs , Usual bitsadmin commands to achieve persistence</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<FileCreate onmatch="include">
+		<TargetFilename condition="contains">\Documents\WindowsPowerShell</TargetFilename>
+	</FileCreate>
+	-->
+	<rule id="101039" level="7">
+		<if_group>sysmon_event_11</if_group>
+		<field name="win.eventdata.TargetFilename">\\\\Documents\\\\WindowsPowerShell</field>
+		<description>Mitre ATT&CK T1546.013, Persistence, Event Triggered Execution: PowerShell Profile, Creation of Powershell profile</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<RegistryEvent>
+		<TargetObject condition="contains">\SAM\SAM\Domains\Account\Users\000001F5\F</TargetObject>
+	</RegistryEvent>
+	-->
+	<rule id="101040" level="10">
+		<if_group>sysmon_event_13</if_group>
+		<field name="win.eventdata.TargetObject">\\\\SAM\\\\SAM\\\\Domains\\\\Account\\\\Users\\\\000001F5\\\\F</field>
+		<description>Mitre ATT&CK T1078.001, Persistence, Valid Accounts: Default Accounts, Guest RID Hijacking</description>
+		<options>no_full_log</options>
+	</rule>
+	
+	<!------------------------------------------------------------------------------------------------------------------------------->	
+	<!-- INITIAL ACCESS 101100-->	
+	<!--
+	{"win":{"system":{"providerName":"Microsoft-Windows-Sysmon","providerGuid":"{54849625-5478-4994-a5ba-3e3b0328c30d}","eventID":"10","version":"3","level":"4","task":"20","opcode":"0","keywords":"0x8000000000000000","systemTime":"2019-05-11T17:58:23.340659600Z","eventRecordID":"16111","processID":"2032","threadID":"4092","channel":"Microsoft-Windows-Sysmon/Operational","computer":"IEWIN7","severityValue":"INFORMATION","message":"Process accessed"},"eventdata":{"subjectUserSid":"S-1-5-18","RuleName":"","UtcTime":"2019-05-22 04:02:11.287","SourceProcessGUID":"{365abb72-c9c1-5ce4-0000-00100b222e00}","SourceProcessId":"3156","SourceThreadId":"828","SourceImage":"C:\\Windows\\system32\\lsass.exe","TargetProcessGUID":"{365abb72-c9c3-5ce4-0000-00101f422e00}","TargetProcessId":"2888","TargetImage":"C:\\Windows\\system32\\taskmgr.exe","GrantedAccess":"0x1010","CallTrace":"C:\\Windows\\system32\\iertutil.dll"}}}
+	-->
+	<!------------------------------------------------------------------------------------------------------------------------------->
+	<!-- CREDENTIAL ACCESS 101200-->
+
+	<!--
+	<ProcessAccess onmatch="include">
+		<CallTrace condition="contains">dbghelp.dll</CallTrace>
+		<CallTrace condition="contains">dbgcore.dll</CallTrace>
+	</ProcessAccess>
+	-->
+	<rule id="101201" level="12">
+		<if_group>sysmon_event_10</if_group>
+		<if_sid>100103</if_sid>
+		<field name="win.eventdata.CallTrace">\.*dbghelp.dll|dbgcore.dll\.*|</field>
+		<description>Mitre ATT&CK T1003.001, Credential Access, OS Credential Dumping: LSASS Memory, Procdump or Taskmgr - memory dump</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessAccess onmatch="include">
+	  <CallTrace condition="contains">mimikatz</CallTrace>
+	</ProcessAccess>
+	-->
+	<rule id="101202" level="12">
+		<if_group>sysmon_event_10</if_group>
+		<if_sid>100103</if_sid>
+		<field name="win.eventdata.CallTrace">\.*mimikatz\.*</field>
+		<description>Mitre ATT&CK T1003.001, Credential Access, OS Credential Dumping: LSASS Memory, Sekursla mimikatz module memory dump</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101203" level="12">
+		<if_sid>100103</if_sid>
+		<field name="win.eventdata.startModule">null</field>
+		<description>Mitre ATT&CK T1003.001, Credential Access, OS Credential Dumping: LSASS Memory,Password Dumper Remote Thread in LSASS</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessAccess onmatch="exclude">
+		<SourceImage condition="end with">wmiprvse.exe</SourceImage>
+		<SourceImage condition="end with">GoogleUpdate.exe</SourceImage>
+		<SourceImage condition="end with">LTSVC.exe</SourceImage>
+		<SourceImage condition="end with">VBoxService.exe</SourceImage> 
+		<SourceImage condition="end with">vmtoolsd.exe</SourceImage>
+		<SourceImage condition="end with">\Citrix\System32\wfshell.exe</SourceImage> 
+		<SourceImage condition="is">C:\Windows\System32\lsm.exe</SourceImage> 
+		<SourceImage condition="end with">Microsoft.Identity.AadConnect.Health.AadSync.Host.exe</SourceImage> 
+		<SourceImage condition="begin with">C:\Program Files (x86)\Symantec\Symantec Endpoint Protection</SourceImage> 
+	</ProcessAccess>
+	<ProcessAccess onmatch="include">
+		<TargetImage condition="contains">lsass.exe</TargetImage>
+	</ProcessAccess>
+	-->
+	<!-- Generates too many false positives
+	<rule id="101204" level="8">
+		<if_group>sysmon_event_10</if_group>
+		<field name="win.eventdata.GrantedAccess">^0x1010$|^0x1410$|^0x1438$|^0x143a$|^0x1418$</field>
+		<field name="win.eventdata.TargetImage">lsass.exe</field>
+		<field name="win.eventdata.CallTrace">C:\\\\windows\\\\SYSTEM32\\\\ntdll.dll</field>
+		<description>Mitre ATT&CK T1003.001, Credential Access, OS Credential Dumping: LSASS Memory, Posible password dump using mimikatz (sekurlsa::logonpasswords)</description>
+		<options>no_full_log</options>
+	</rule>
+	-->
+	<!--
+	<ProcessCreate onmatch="include">
+		<Image condition="image" name="T1003 -event1">vaultcmd.exe</Image>
+	</ProcessCreate>
+	-->
+	<rule id="101205" level="10">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.Image">\\vaultcmd.exe</field>
+		<field name="win.eventdata.CommandLine">/list</field>
+		<description>Mitre ATT&CK T1555, Credential Access, Credentials from Password Stores, Credential Vault command line interface to enumerate a user’s saved credentials</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101206" level="10">
+		<if_sid>100113</if_sid>
+		<field name="win.eventdata.CommandLine">vaultcmd.exe*/list</field>
+		<description>Mitre ATT&CK T1555, Credential Access, Credentials from Password Stores, Credential Vault command line interface to enumerate a user’s saved credentials via powershell</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101207" level="10">
+		<if_sid>100117</if_sid>
+		<field name="win.eventdata.CommandLine">vaultcmd.exe*/list</field>
+		<description>Mitre ATT&CK T1555, Credential Access, Credentials from Password Stores, Credential Vault command line interface to enumerate a user’s saved credentials via cmd</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<NetworkConnect onmatch="include">
+		<DestinationPort condition="is" name="T1557.001 -1">5355</DestinationPort>
+	</NetworkConnect>
+	-->
+	<rule id="101208" level="2">
+		<if_group>sysmon_event3</if_group>
+		<field name="win.eventdata.DestinationPort">5355</field>
+		<field name="win.eventdata.DestinationIp">224.0.0.252|ff01:0:0:0:0|ff02:0:0:0:0</field>
+		<description>Mitre ATT&CK T1557.001, Credential Access, Man-in-the-Middle: LLMNR/NBT-NS Poisoning and SMB Relay, LLMNR Multicast traffic</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<NetworkConnect onmatch="include">
+		<DestinationPort condition="is" name="T1557.001 -2">137</DestinationPort>
+	</NetworkConnect>
+	-->
+	<rule id="101209" level="2">
+		<if_group>sysmon_event3</if_group>
+		<field name="win.eventdata.DestinationPort">137</field>
+		<field name="win.eventdata.DestinationIp">.255$</field>
+		<description>Mitre ATT&CK T1557.001, Credential Access, Man-in-the-Middle: LLMNR/NBT-NS Poisoning and SMB Relay, NBNS Broadcast</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--				
+	<NetworkConnect onmatch="include">
+		<DestinationPort condition="is" name="T1557.001 -3">5353</DestinationPort>
+	</NetworkConnect>
+	-->
+	<rule id="101210" level="2">
+		<if_group>sysmon_event3</if_group>
+		<field name="win.eventdata.DestinationPort">5353</field>
+		<field name="win.eventdata.DestinationIp">224.0.0.251</field>
+		<description>Mitre ATT&CK T1557.001, Credential Access, Man-in-the-Middle: LLMNR/NBT-NS Poisoning and SMB Relay, mDNS traffic</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101211" level="10">
+		<if_sid>100114</if_sid>
+		<field name="win.eventdata.CommandLine">password</field>
+		<description>Mitre ATT&CK T1552.002, Credential Access, Unsecured Credentials: Credentials in Registry, reg.exe query for passwords in registry</description>
+		<options>no_full_log</options>
+	</rule>
+
+	<!------------------------------------------------------------------------------------------------------------------------------->	
+	<!--
+	{"win":{"system":{"providerName":"Microsoft-Windows-Sysmon","providerGuid":"{54849625-5478-4994-a5ba-3e3b0328c30d}","eventID":"11","version":"2","level":"4","task":"11","opcode":"0","keywords":"0x8000000000000000","systemTime":"2019-05-08T02:10:43.487217000","eventRecordID":"202793","processID":"444","threadID":"463","channel":"Microsoft-Windows-Sysmon/Operational","computer":"DC1.insecurebank.local","severityValue":"INFORMATION","message":"File Created."},"eventdata":{"subjectUserSid":"S-1-5-21-3461203602-4096304019-2269080069-1000","RuleName":"","UtcTime":"2019-03-17 19:10:02.058","ProcessGuid":"{365abb72-9b85-5c8e-0000-0010c4cc1200}","ProcessId":"3576","Image":"C:\\Windows\\system32\\taskmgr.exe","TargetFilename":"C:\\UsageLogs\\cscript.exe.log","CreationUtcTime":"2019-03-17 19:10:02.058"}}}
+
+	{"win":{"system":{"providerName":"Microsoft-Windows-Sysmon","providerGuid":"{54849625-5478-4994-a5ba-3e3b0328c30d}","eventID":"1","version":"2","level":"4","task":"11","opcode":"0","keywords":"0x8000000000000000","systemTime":"2019-05-08T02:10:43.487217000","eventRecordID":"202793","processID":"444","threadID":"463","channel":"Microsoft-Windows-Sysmon/Operational","computer":"DC1.insecurebank.local","severityValue":"INFORMATION","message":"Process Create."},"eventdata":{"subjectUserSid":"S-1-5-21-3461203602-4096304019-2269080069-1000","RuleName":"", "UtcTime":"2019-05-12 13:30:46.213","ProcessGuid":"{365abb72-2006-5cd8-0000-0010a2862300}","ProcessId":"2960","Image":"C:\\Windows\\System32\\rundll32.exe","FileVersion":"6.1.7600.16385 (win7_rtm.090713-1255)","Description":"Windows host process (Rundll32)","Product":"Microsoft® Windows® Operating System","Company":"Microsoft Corporation","CommandLine":"C:\\Windows\\System32\\rundll32.exe ieframe.dll,OpenURL c:\\users\\ieuser\\local\\temp\\ieframe.url","CurrentDirectory":"c:\\Users\\IEUser\\Downloads\\WinPwnage-master\\WinPwnage-master\\","User":"IEWIN7\\IEUser","LogonGuid":"{365abb72-1596-5cd8-0000-0020103a0100}","LogonId":"0x13a10","TerminalSessionId":"1","IntegrityLevel":"High","Hashes":"SHA1=892503B20247B341CFD20DDA5FDACFA41527A087,MD5=C648901695E275C8F2AD04B687A68CE2,SHA256=3FA4912EB43FC304652D7B01F118589259861E2D628FA7C86193E54D5F987670,IMPHASH=239D911DFA7551A8B735680BC39B2238","ParentProcessGuid":"{365abb72-1ff8-5cd8-0000-00102a342000}","ParentProcessId":"1332","ParentImage":"C:\\Python27\\python.exe","ParentCommandLine":"python winpwnage.py -u execute -i 9 -p c:\\Windows\\system32\\cmd.exe"}}}
+
+	{"win":{"system":{"providerName":"Microsoft-Windows-Sysmon","providerGuid":"{54849625-5478-4994-a5ba-3e3b0328c30d}","eventID":"1","version":"2","level":"4","task":"11","opcode":"0","keywords":"0x8000000000000000","systemTime":"2019-05-08T02:10:43.487217000","eventRecordID":"202793","processID":"444","threadID":"463","channel":"Microsoft-Windows-Sysmon/Operational","computer":"DC1.insecurebank.local","severityValue":"INFORMATION","message":"Process Create."},"eventdata":{"subjectUserSid":"S-1-5-21-3461203602-4096304019-2269080069-1000","RuleName":"","UtcTime":"2019-05-28 02:13:52.155","ProcessGuid":"{365abb72-9960-5cec-0000-0010b6981600}","ProcessId":"2432","Image":"C:\\ProgramData\\vshadow.exe","FileVersion":"?","Description":"?","Product":"?","Company":"?","CommandLine":"vshadow.exe -nw -exec=c:\\windows\\System32\\osk.exe c:\\","CurrentDirectory":"c:\\ProgramData\\","User":"IEWIN7\\IEUser","LogonGuid":"{365abb72-82ec-5cec-0000-0020734a0100}","LogonId":"0x14a73","TerminalSessionId":"1","IntegrityLevel":"High","Hashes":"SHA1=D2C61632741A3364487FF9B7522F1A78A9D42401,MD5=B8EF7058D546B78884D469D8B710F1DF,SHA256=1D6C38894DFC5BBF8EFF3FDB11DC91722994C5294A6F576B9449AB3444A8E952,IMPHASH=DFCA9A022C377F6802C040154483A3DC","ParentProcessGuid":"{365abb72-97e9-5cec-0000-0010095b1200}","ParentProcessId":"2364","ParentImage":"C:\\Windows\\System32\\cmd.exe","ParentCommandLine":"C:\\Windows\\system32\\cmd.exe"}}}
+
+	{"win":{"system":{"providerName":"Microsoft-Windows-Sysmon","providerGuid":"{54849625-5478-4994-a5ba-3e3b0328c30d}","eventID":"3","version":"2","level":"4","task":"11","opcode":"0","keywords":"0x8000000000000000","systemTime":"2019-05-08T02:10:43.487217000","eventRecordID":"202793","processID":"444","threadID":"463","channel":"Microsoft-Windows-Sysmon/Operational","computer":"DC1.insecurebank.local","severityValue":"INFORMATION","message":"Network connection detected."},"eventdata":{"subjectUserSid":"S-1-5-21-3461203602-4096304019-2269080069-1000","RuleName":"","UtcTime":"2019-05-02 14:48:51.664","ProcessGuid":"{365abb72-0244-5ccb-0000-00109ae70b00}","ProcessId":"1508","Image":"C:\\Windows\\System32\\regsvr32.exe","User":"IEWIN7\\IEUser","Protocol":"tcp","Initiated":"true","SourceIsIpv6":"false","SourceIp":"10.0.2.15","SourceHostname":"IEWIN7.home","SourcePort":"100150","SourcePortName":"","DestinationIsIpv6":"false","DestinationIp":"192.168.103.121","DestinationHostname":"","DestinationPort":"443","DestinationPortName":"https"}}}
+
+	{"win":{"system":{"providerName":"Microsoft-Windows-Sysmon","providerGuid":"{54849625-5478-4994-a5ba-3e3b0328c30d}","eventID":"1","version":"3","level":"4","task":"11","opcode":"0","keywords":"0x8000000000000000","systemTime":"2019-05-08T02:10:43.487217000","eventRecordID":"202793","processID":"444","threadID":"463","channel":"Microsoft-Windows-Sysmon/Operational","computer":"DC1.insecurebank.local","severityValue":"INFORMATION","message":"Process create"},"eventdata":{"subjectUserSid":"S-1-5-21-3461203602-4096304019-2269080069-1000","RuleName":"","UtcTime":"2019-05-22 04:02:11.287","ProcessGuid":"{2B86A809-DAD0-5990-0000-0010CE3A9E02}","ProcessId":"3780","Image":"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe","CommandLine":"C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\powershell.exe\\","CurrentDirectory":"C:\\Users\\Administrator\\", "User":"WIN-VIHPK3T86T7\\Administrator","LogonGuid":"{9ADBFDD8-0C3C-5967-0300-20108FC61600}","LogonId":"0x1403ea","TerminalSessionId":"3","IntegrityLevel":"High","Hashes":"MD5=F6C714F1020F9BBF6A8534AC8AD7662F","ParentProcessGuid":"{9ADAFDC8-0B2A-5927-0000-00106F1E1400}","ParentProcessId":"788","ParentImage":"C:\\Windows\\explorer.exe","ParentCommandLine":"C:\\Windows\\Explorer.EXE"}}}
+	
+	{"win":{"system":{"providerName":"Microsoft-Windows-Sysmon","providerGuid":"{54849625-5478-4994-a5ba-3e3b0328c30d}","eventID":"3","version":"2","level":"4","task":"11","opcode":"0","keywords":"0x8000000000000000","systemTime":"2019-05-08T02:10:43.487217000","eventRecordID":"202793","processID":"444","threadID":"463","channel":"Microsoft-Windows-Sysmon/Operational","computer":"DC1.insecurebank.local","severityValue":"INFORMATION","message":"Network connection detected."},"eventdata":{"subjectUserSid":"S-1-5-21-3461203602-4096304019-2269080069-1000","RuleName":"","UtcTime":"2019-05-14 01:29:00.318","ProcessGuid":"{365abb72-19e0-5cda-0000-001006711000}","ProcessId":"1932","Image":"C:\\Windows\\System32\\rundll32.exe","User":"IEWIN7\\IEUser","Protocol":"tcp","Initiated":"false","SourceIsIpv6":"false","SourceIp":"192.168.1.122","SourceHostname":"IEWIN7","SourcePort":"49168","SourcePortName":"","DestinationIsIpv6":"false","DestinationIp":"8.8.8.8","DestinationHostname":"","DestinationPort":"55683","DestinationPortName":""}}}
+
+	{"win":{"system":{"providerName":"Microsoft-Windows-Sysmon","providerGuid":"{54849625-5478-4994-a5ba-3e3b0328c30d}","eventID":"1","version":"3","level":"4","task":"20","opcode":"0","keywords":"0x8000000000000000","systemTime":"2019-05-11T17:58:23.340659600Z","eventRecordID":"16111","processID":"2032","threadID":"4092","channel":"Microsoft-Windows-Sysmon/Operational","computer":"IEWIN7","severityValue":"INFORMATION","message":"Process created"},"eventdata":{"subjectUserSid":"S-1-5-18","RuleName":"","UtcTime":"2019-05-12 17:20:49.261","ProcessGuid":"{365abb72-55f1-5cd8-0000-0010781c3300}","ProcessId":"2392","Image":"C:\\Windows\\System32\\ttt.exe","FileVersion":"6.1.7601.17514 (win7sp1_rtm.101119-1850)","Description":"Windows Command Processor","Product":"Microsoft® Windows® Operating System","Company":"Microsoft Corporation","CommandLine":"C:\\Windows\\system32\\cmd.exe /C c:\\Windows\\system32\\calc.exe","CurrentDirectory":"C:\\Users\\IEUser\\Downloads\\WinPwnage-master\\WinPwnage-master\\","User":"IEWIN7\\IEUser","LogonGuid":"{365abb72-4fb5-5cd8-0000-0020f2350100}","LogonId":"0x135f2","TerminalSessionId":"1","IntegrityLevel":"Medium","Hashes":"SHA1=EE8CBF12D87C4D388F09B4F69BED2E91682920B5,MD5=AD7B9C14083B52BC532FBA5948342B98,SHA256=17F746D82695FA9B35493B41859D39D786D32B23A9D2E00F4011DEC7A02402AE,IMPHASH=CEEFB55F764020CC5C5F8F23349AB163","ParentProcessGuid":"{365abb72-55f1-5cd8-0000-00108a153300}","ParentProcessId":"3668","ParentImage":"C:\\Windows\\System32\\ftp.exe","ParentCommandLine":"C:\\Windows\\System32\\ftp.exe -s:c:\\users\\ieuser\\appdata\\local\\temp\\ftp.txt"}}}
+	-->
+	<!-- EXECUTION 101300-->
+	<!--
+	<FileCreate onmatch="include">
+		<TargetFilename condition="contains">\UsageLogs\cscript.exe.log</TargetFilename>
+		<TargetFilename condition="contains">\UsageLogs\wscript.exe.log</TargetFilename>
+		<TargetFilename condition="contains">\UsageLogs\mshta.log</TargetFilename>
+		<TargetFilename condition="contains">\UsageLogs\wmic.log</TargetFilename>
+		<TargetFilename condition="contains">\UsageLogs\regsvr32.exe.log</TargetFilename>
+		<TargetFilename condition="contains">\UsageLogs\svchost.log</TargetFilename>
+	</FileCreate>
+	-->
+	<rule id="101301" level="12">
+		<if_group>sysmon_event_11</if_group>
+		<field name="win.eventdata.TargetFilename">\\\\UsageLogs\\\\cscript.exe.log|wscript.exe.log|mshta.log|wmic.log|regsvr32.exe.log|svchost.log(\.*)</field>
+		<description>Mitre ATT&CK T1129, Execution, Shared Modules, .NET CLR Usage</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<Image condition="end with">vshadow.exe</Image>
+	 </ProcessCreate>
+	-->
+	<rule id="101302" level="12">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.Image">\\vshadow.exe</field>
+		<field name="win.eventdata.CommandLine">\.*vshadow.exe -nw -exec\.*</field>
+		<description>Mitre ATT&CK T1059, Execution, Command and Scripting Interpreter, Living off the land Abusing the Volume Shadow for execution</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101303" level="12">
+		<if_sid>100101</if_sid>
+		<field name="win.eventdata.Image">\\cmd.exe||\\powershell.exe||\\wscript.exe||\\cscript.exe||\\sh.exe||\\bash.exe||\\reg.exe||\\regsvr32.exe||\\BITSADMIN*</field>
+		<description>Mitre ATT&CK T1059, Execution, Command and Scripting Interpreter, Living off the land Microsoft HTML Application command line execution </description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<NetworkConnect onmatch="include">
+		<Image condition="image">certutil.exe</Image>
+	</NetworkConnect>
+	-->
+	<rule id="101304" level="12">
+		<if_group>sysmon_event3</if_group>
+		<field name="win.eventdata.Image">\\certutil.exe</field>
+		<description>Mitre ATT&CK T1059, Execution, Command and Scripting Interpreter, Living off the land possible misuse of certutil downloading capabilities</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<NetworkConnect onmatch="include">
+		<Image condition="image">powershell.exe</Image>
+	</NetworkConnect>
+	-->
+	<rule id="101305" level="12">
+		<if_group>sysmon_event3</if_group>
+		<field name="win.eventdata.Image">\\powershell.exe</field>
+		<description>Mitre ATT&CK T1059.001, Execution, Command and Scripting Interpreter: PowerShell, Powershell Net Execution</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<CommandLine condition="contains">*schtasks.exe*/create*c:\users\*</CommandLine>
+		<CommandLine condition="contains">*schtasks.exe*/create*c:\programdata\*</CommandLine>
+		<CommandLine condition="contains">*schtasks.exe*/create*c:\windows\temp\*</CommandLine>
+	</ProcessCreate>
+	-->
+	<rule id="101306" level="12">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.CommandLine">\.*schtasks.exe\.*/create\.*c:\\users\.*|\.*schtasks.exe\.*/create\.* c:\\programdata\.*|\.*schtasks.exe\.*/create\.* c:\\windows\\temp\.*</field>
+		<description>Mitre ATT&CK T1053.005, Execution, Scheduled Task/Job: Scheduled Task, Scheduled Task running programs from suspicious locations or scripting utilities</description>
+		<options>no_full_log</options>
+	</rule>
+	<!-- Excel.Application (AppId = {00020812-0000-0000-C000-000000000046})
+	Word.Application (AppId = {00020906-0000-0000-C000-000000000046})
+	Poewrpoint.Application (AppId = {048EB43E-2059-422F-95E0-557DA96038AF})
+	Outlook.Application (AppId = {0006F04A-0000-0000-C000-000000000046})
+	Visio.Application (AppId = {00021A20-0000-0000-C000-000000000046})
+	ShellWindows (AppId = {9BA05972-F6A8-11CF-A42-00A0C90A8F39})
+	ShellbrowserWindows (AppId = {c08afd90-f2a1-11d1-8455-00a0c91f3880})
+	MMC20.Application (AppId = {7e0423cd-11198-0928-900c-e6d4a52a0715})
+	HTML Application (AppId = {40AEEAB6-8FDA-41e3-9A5F-8350D4CFCA91})
+	WScript.Shell.1(Clsid = {72C24DD5-D70A-438B-8A42-98424B88AFB8})
+	Shell.Application.1 (Clsid = {13709620-C279-11CE-A49E-444553540000})
+	-->
+	<!--
+	<WmiEvent onmatch="include">
+		<Operation condition="is">Created</Operation>
+	</WmiEvent>
+	-->
+	<rule id="101307" level="12">
+		<if_group>sysmon_event_19</if_group>
+		<field name="win.eventdata.Operation">Created</field>
+		<description>Mitre ATT&CK T1047, Execution, Windows Management Instrumentation, </description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101308" level="12">
+		<if_group>sysmon_event_20</if_group>
+		<field name="win.eventdata.Operation">Created</field>
+		<description>Mitre ATT&CK T1047, Execution, Windows Management Instrumentation, </description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101309" level="12">
+		<if_group>sysmon_event_21</if_group>
+		<field name="win.eventdata.Operation">Created</field>
+		<description>Mitre ATT&CK T1047, Execution, Windows Management Instrumentation, </description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101310" level="12">
+		<if_sid>100102</if_sid>
+		<field name="win.eventdata.Image">\\cmd.exe||\\powershell.exe||\\wscript.exe||\\cscript.exe||\\sh.exe||\\bash.exe||\\scrcons.exe||\\schtasks.exe||\\regsvr32.exe||\\hh.exe||\\csc.exe</field>
+		<description>Mitre ATT&CK T1059, Execution, Command and Scripting Interpreter, Microsoft Office Product Spawning Windows Shell</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<CommandLine condition="contains">*new-object system.net.webclient).downloadstring(*</CommandLine>
+		<CommandLine condition="contains">*new-object system.net.webclient).downloadfile(*</CommandLine>
+	</ProcessCreate>
+	-->
+	<rule id="101311" level="12">
+		<if_sid>100113</if_sid>
+		<field name="win.eventdata.commandline">DownloadString||downloadfile</field>
+		<description>Mitre ATT&CK T1059.001, Execution, Command and Scripting Interpreter: PowerShell, PowerShell scripts that download content from the Internet</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<CommandLine condition="contains"> -enc </CommandLine>
+		<CommandLine condition="contains"> -EncodedCommand </CommandLine>
+		<CommandLine condition="contains"> -w hidden </CommandLine>
+		<CommandLine condition="contains"> -window hidden </CommandLine>
+		<CommandLine condition="contains"> -windowstyle hidden </CommandLine>
+		<CommandLine condition="contains"> -noni </CommandLine>
+		<CommandLine condition="contains"> -noninteractive </CommandLine>
+	</ProcessCreate>
+	-->
+	<rule id="101312" level="12">
+		<if_sid>100113</if_sid>
+		<field name="win.eventdata.commandline">EncodedCommand||-w hidden||-window hidden||-windowstyle hidden||-enc||-noni||noninteractive</field>
+		<description>Mitre ATT&CK T1059.001, Execution, Command and Scripting Interpreter: PowerShell, Detects suspicious PowerShell invocation command parameters</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101313" level="10">
+		<if_sid>100106</if_sid>
+		<field name="win.eventdata.Image">\\powershell.exe||\\cmd.exe</field>
+		<description>Mitre ATT&CK T1059, Execution , Command and Scripting Interpreter, Detects suspicious command invocations from interpreters or unusual programs</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<CommandLine condition="contains">vssadmin.exe Delete Shadows</CommandLine>
+		<CommandLine condition="contains">vssadmin create shadow /for=*:</CommandLine>
+		<CommandLine condition="contains">vssadmin delete shadows /for=*:</CommandLine>
+		<CommandLine condition="contains">copy \\?\GLOBALROOT\Device\*\windows\ntds\ntds.dit</CommandLine>
+		<CommandLine condition="contains">copy \\?\GLOBALROOT\Device\*\config\SAM</CommandLine>
+		<CommandLine condition="contains">reg SAVE HKLM\SYSTEM </CommandLine>
+	</ProcessCreate>
+	-->
+	<rule id="101314" level="10">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.commandline">vssadmin create shadow||GLOBALROOT||vssadmin delete shadows||reg SAVE HKLM\\SYSTEM||\\windows\\ntds\\ntds.dit</field>
+		<description>Mitre ATT&CK T1059, Execution, Command and Scripting Interpreter, Detects suspicious commands that could be related to activity that uses volume shadow copy</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101315" level="10">
+		<if_sid>100108</if_sid>
+		<field name="win.eventdata.commandline">process call create</field>
+		<description>Mitre ATT&CK T1047, Execution, Windows Management Instrumentation, $(win.eventdata.Image) has executed $(win.eventdata.commandline)</description>
+		<options>no_full_log</options>
+	</rule>	
+	<rule id="101316" level="12">
+        <if_sid>100111</if_sid>
+        <field name="win.eventdata.ParentImage">mimikatz.exe</field>
+        <description>Mitre ATT&CK T1059, Execution, Command and Scripting Interpreter, Mimikatz Detection Image: $(win.eventdata.parentimage)</description>
+		<options>no_full_log</options>
+    </rule>
+	<rule id="101317" level="12">
+		<if_sid>100117</if_sid>
+		<field name="win.eventdata.CommandLine">SCHTASKS|schtasks</field>
+		<description>Mitre ATT&CK T1053.005, Execution, Scheduled Task/Job: Scheduled Task , Creation of scheduled task</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101318" level="12">
+		<if_sid>100117</if_sid>
+		<field name="win.eventdata.CommandLine">AT\s\d\d:\d\d|\sat\s\d\d:\d\d</field>
+		<description>Mitre ATT&CK T1053.002, Execution, Scheduled Task/Job: At (Windows), Creation of scheduled task</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101319" level="12">
+		<if_sid>100117</if_sid>
+		<field name="win.eventdata.CommandLine">C:\\Windows\\TEMP|C:\\Windows\\temp</field>
+		<description>Mitre ATT&CK T1059.003, Execution, Command and Scripting Interpreter: Windows Command Shell, execution from temporary folder</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101320" level="12">
+        <if_group>sysmon_event1</if_group>
+        <field name="win.eventdata.commandline">mimikatz.exe</field>
+        <description>Mitre ATT&CK T1059, Execution, Command-Line Interface, Mimikatz execution</description>
+		<options>no_full_log</options>
+    </rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<ParentImage condition="end with">mmc.exe</ParentImage>
+	</ProcessCreate>
+	-->
+	<rule id="101321" level="12">
+		<if_sid>100110</if_sid>
+		<field name="win.eventdata.image">\\cmd.exe||\\powershell.exe</field>
+		<description>Mitre ATT&CK T1559.001, Execution, Inter-Process Communication: Component Object Model, Processes started by MMC could by a sign of lateral movement using MMC application COM object</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101322" level="7">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.Image">sc.exe</field>
+		<field name="win.eventdata.CommandLine">create|start</field>
+		<description>Mitre ATT&CK T1569.002, Execution, System Services: Service Execution, Creation or Start of a service manually with sc.exe binary</description>
+		<options>no_full_log</options>
+	</rule>	
+	<rule id="101323" level="7">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.Image">sc.exe</field>
+		<field name="win.eventdata.CommandLine">binPath</field>
+		<description>Mitre ATT&CK T1569.002, Execution, System Services: Service Execution, Modification of binary path</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101324" level="7">
+		<if_group>sysmon_event_13</if_group>
+		<field name="win.eventdata.TargetObject">\\\\Services\\\\W32Time\\\\FailureCommand</field>
+		<description>Mitre ATT&CK T1569.002, Execution, System Services: Service Execution, Creation of FailureCommand registry hive</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101325" level="12">
+		<if_sid>100113</if_sid>
+		<field name="win.eventdata.commandline">IEX</field>
+		<description>Mitre ATT&CK T1059.001, Execution, Command and Scripting Interpreter: PowerShell, Invoke execution call</description>
+		<options>no_full_log</options>
+	</rule>
+	<!------------------------------------------------------------------------------------------------------------------------------->
+	<!--
+	{"win":{"system":{"providerName":"Microsoft-Windows-Sysmon","providerGuid":"{54849625-5478-4994-a5ba-3e3b0328c30d}","eventID":"1","version":"3","level":"4","task":"11","opcode":"0","keywords":"0x8000000000000000","systemTime":"2019-05-11T17:58:23.340659600Z","eventRecordID":"16111","processID":"2032","threadID":"4092","channel":"Microsoft-Windows-Sysmon/Operational","computer":"IEWIN7","severityValue":"INFORMATION","message":"Process created"},"eventdata":{"subjectUserSid":"S-1-5-21-832578100-2197499271-3753655264-181285","RuleName":"T1562.001","UtcTime":"2020-03-09 13:24:16.460","ProcessGuid":"{3ffeba4e-4380-5e66-0000-00105469dd00}","ProcessId":"62516","Image":"C:\\Windows\\explorer.exe", "FileVersion":"10.0.17763.831 (WinBuild.160101.0800)","Description":"Windows Explorer","Product":"Microsoft® Windows® Operating System","Company":"Microsoft Corporation","OriginalFileName":"EXPLORER.EXE","CommandLine":"C:\\WINDOWS\\explorer.exe shell:appsFolder\\Microsoft.WindowsSoundRecorder_8wekyb3d8bbwe!App","CurrentDirectory":"C:\\Users\ue05762\\","User":"XUNTA\\ue05762","LogonGuid":"3ffeba4e-1fb3-5e66-0000-002075700c00}","LogonId":"0xc7075","TerminalSessionId":"1", "IntegrityLevel":"Medium","Hashes":"MD5=C25CF941EE6C7927C0A2AB0CB7FABE0B,SHA256=F246E1D1CD5C935C5182CD7F1E0C9FC2C8C08A991F505FCD18BD2027BB4506A4","ParentProcessGuid":"{3ffeba4e-4266-5e66-0000-00109a42d800}","ParentProcessId":"56968","ParentImage":"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe","ParentCommandLine":"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"}}}
+
+	{"win":{"system":{"providerName":"Microsoft-Windows-Sysmon","providerGuid":"{54849625-5478-4994-a5ba-3e3b0328c30d}","eventID":"1","version":"3","level":"4","task":"11","opcode":"0","keywords":"0x8000000000000000","systemTime":"2019-05-11T17:58:23.340659600Z","eventRecordID":"16111","processID":"2032","threadID":"4092","channel":"Microsoft-Windows-Sysmon/Operational","computer":"IEWIN7","severityValue":"INFORMATION","message":"Process created"},"eventdata":{"subjectUserSid":"S-1-5-21-832578100-2197499271-3753655264-181285","RuleName":"T1562.001","UtcTime":"2020-03-09 13:24:16.460","ProcessGuid":"{3ffeba4e-4380-5e66-0000-00105469dd00}","ProcessId":"62516","Image":"C:\\Windows\\explorer.exe", "FileVersion":"10.0.17763.831 (WinBuild.160101.0800)","Description":"Windows Explorer","Product":"Microsoft® Windows® Operating System","Company":"Microsoft Corporation","OriginalFileName":"EXPLORER.EXE","CommandLine":"C:\\WINDOWS\\explorer.exe shell:appsFolder\\Microsoft.WindowsSoundRecorder_8wekyb3d8bbwe!App","CurrentDirectory":"C:\\Users\ue05762\\","User":"XUNTA\\ue05762","LogonGuid":"3ffeba4e-1fb3-5e66-0000-002075700c00}","LogonId":"0xc7075","TerminalSessionId":"1", "IntegrityLevel":"Medium","Hashes":"MD5=C25CF941EE6C7927C0A2AB0CB7FABE0B,SHA256=F246E1D1CD5C935C5182CD7F1E0C9FC2C8C08A991F505FCD18BD2027BB4506A4","ParentProcessGuid":"{3ffeba4e-4266-5e66-0000-00109a42d800}","ParentProcessId":"56968","ParentImage":"C:\\Windows\\System32\\cmd.exe","ParentCommandLine":"C:\\Windows\\System32\\cmd.exe"}}}
+	-->
+	<!-- COLLECTION 101400-->
+	<!--
+	<ProcessCreate onmatch="include">
+		<CommandLine condition="contains">*/stext*</CommandLine>
+		<CommandLine condition="contains">*/scomma*</CommandLine>
+	</ProcessCreate>
+	-->
+	<rule id="101401" level="12">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.CommandLine">\.*/stext|/scomma\.*</field>
+		<description>Mitre ATT&CK T1056.001, Collection, Input Capture: Keylogging, Keylogger abusing NirSoft Tools</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101402" level="12">
+		<if_sid>100117</if_sid>
+		<field name="win.eventdata.commandline">\.*.ost\.*|\.*.pst\.*</field>
+		<description>Mitre ATT&CK T1114.001, Collection, Email Collection: Local Email Collection , Creation of storage or cache files .pst or .ost from $(win.eventdata.Image)</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101403" level="12">
+		<if_sid>100113</if_sid>
+		<field name="win.eventdata.commandline">\.*.ost\.*|\.*.pst\.*</field>
+		<description>Mitre ATT&CK T1114.001, Collection, Email Collection: Local Email Collection , Creation of storage or cache files .pst or .ost from $(win.eventdata.Image)</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101404" level="12">
+		<if_sid>100113</if_sid>
+		<field name="win.eventdata.commandline">\.*WindowsAudioDevice-Powershell-Cmdlet\.*</field>
+		<description>Mitre ATT&CK T1123, Collection, Audio Capture, Powershell Audio Capture cmdlet execution</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<CommandLine condition="contains" name="T1562.001">WindowsSoundRecorder</CommandLine>
+	</ProcessCreate>
+	--> 
+  	<rule id="101405" level="6">
+		<if_sid>61640</if_sid>
+		<field name="win.eventdata.commandline">\.*WindowsSoundRecorder\.*</field>
+		<description>Mitre ATT&CK T1123, Collection, Audio Capture, Powershell Sound Recorder launched</description>
+		<options>no_full_log</options>
+	</rule>
+ 	<rule id="101406" level="6">
+		<if_sid>61640</if_sid>
+		<field name="win.eventdata.commandline">\.*WindowsSoundRecorder\.*</field>
+		<description>Mitre ATT&CK T1123, Collection, Audio Capture, Command Line Audio Sound Recorder launched</description>
+		<options>no_full_log</options>
+	</rule> 
+	<rule id="101407" level="10">
+		<if_sid>100113</if_sid>
+		<field name="win.eventdata.commandline">Rar.exe|rar.exe|Compress-Archive</field>
+		<description>Mitre ATT&CK T1560.001, Collection, Archive Collected Data: Archive via Utility, data compressed using powershell</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101408" level="10">
+		<if_sid>100117</if_sid>
+		<field name="win.eventdata.commandline">Rar.exe|rar.exe|Compress-Archive</field>
+		<description>Mitre ATT&CK T1560.001, Collection, Archive Collected Data: Archive via Utility, data compressed using command line</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101409" level="12">
+		<if_sid>100114</if_sid>
+		<field name="win.eventdata.commandline">save HKLM\\SAM|SAVE HKLM\\SAM|save HKLM\\SYSTEM|SAVE HKLM\\SYSTEM</field>
+		<description>Mitre ATT&CK T1005, Collection, Data from Local System, manual copy of important registry hives</description>
+		<options>no_full_log</options>
+	</rule>
+	<!-- 101315 EMPTY -->
+	<!------------------------------------------------------------------------------------------------------------------------------->
+	<!-- IMPACT 101500-->
+
+	<rule id="101501" level="12">
+		<if_sid>100108</if_sid>
+		<field name="win.eventdata.commandline">shadowcopy delete</field>
+		<description>Mitre ATT&CK T1490, Impact, Inhibit System Recovery, Windows Management Instrumentation deleting shadowcopies</description>
+		<options>no_full_log</options>
+    </rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<CommandLine condition="contains">*vssadmin.exe Delete Shadows*</CommandLine>
+	</ProcessCreate>
+	-->
+	<rule id="101502" level="12">
+		<if_group>sysmon_event1</if_group>
+		<field name="win.eventdata.commandline">vssadmin.exe Delete Shadows</field>
+		<description>Mitre ATT&CK T1490, Impact, Inhibit System Recovery, Windows Management Instrumentation deleting shadowcopies</description>
+		<options>no_full_log</options>
+	</rule>
+	<!--
+	<ProcessCreate onmatch="include">
+		<Image condition="end with" name="T1489">sc.exe</Image>
+	</ProcessCreate>
+	-->
+	<rule id="101503" level="10">
+		<if_sid>61603</if_sid>
+		<field name="win.eventdata.commandline">\.*sc.exe\.* stop\.*|\.*sc\.* stop\.*|\.*sc.exe\.*config *disabled\.*|\.*sc\.*config *disabled\.*</field>
+		<description>Mitre ATT&CK T1489, Impact, Service Stop, Service stopped with SC.EXE</description>
+		<options>no_full_log</options>
+	</rule>	
+	<!-- EXFILTRATION -->	
+
+	<rule id="101800" level="7">
+		<if_group>sysmon_event3</if_group>
+		<field name="win.eventdata.DestinationPort">^21$</field>   
+		<description>Mitre ATT&CK T1048.003, Exfiltration, Exfiltration Over Alternative Protocol: Exfiltration Over Unencrypted/Obfuscated Non-C2 Protocol , outbound insecure ftp detected to $(win.eventdata.DestinationIp)</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101801" level="7">
+		<if_group>sysmon_event3</if_group>
+		<field name="win.eventdata.SourcePort">^21$</field>   
+		<description>Mitre ATT&CK T1048.003, Exfiltration, Exfiltration Over Alternative Protocol: Exfiltration Over Unencrypted/Obfuscated Non-C2 Protocol , inbound insecure ftp detected from $(win.eventdata.SourceIp) </description>
+		<options>no_full_log</options>
+	</rule>
+	<!-- OTHER RULES -->
+	<!--
+	<RegistryEvent onmatch="include">
+		<TargetObject condition="contains" name="Change of keyboard layout -28">\Keyboard Layout\Preload</TargetObject> 
+		<TargetObject condition="contains" name="Change of keyboard layout -29">\Keyboard Layout\Substitutes</TargetObject>
+	</RegistryEvent>
+	-->
+	<rule id="101701" level="7">
+		<if_group>sysmon_event_13</if_group>
+		<field name="win.eventdata.TargetObject">\\\\Keyboard Layout\\\\Preload|\\\\Keyboard Layout\\\\Substitutes</field>
+		<field name="win.eventdata.Description">00000804|00000c04|00000404|00001004|00001404|00001049|00002073</field>
+		<description>Change in keyboard layout to chinesse or Russian https://twitter.com/cyb3rops/status/1183431685402234880</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101702" level="12">
+		<if_sid>100117</if_sid>
+		<field name="win.eventdata.commandline">vssadmin\.*delete shadows</field>
+		<description>Mitre ATT&CK T1490, Impact, Inhibit System Recovery, CMD deleting shadowcopies</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101703" level="10">
+		<if_sid>100119</if_sid>
+		<field name="win.eventdata.commandline">stop</field>
+		<description>Mitre ATT&CK T1489, Impact, Service Stop, Stop service using net.exe</description>
+		<options>no_full_log</options>
+	</rule>
+	<rule id="101704" level="12">
+		<if_sid>100117</if_sid>
+		<field name="win.eventdata.commandline">taskkill.exe</field>
+		<description>Mitre ATT&CK T1489, Impact, Service Stop,  Stop service by killing process</description>
+		<options>no_full_log</options>
+	</rule>
+</group>

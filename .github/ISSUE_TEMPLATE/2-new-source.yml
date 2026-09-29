@@ -1,0 +1,19 @@
+name: New source / Nova fonte
+description: Propose a repository with Wazuh rules or decoders. / Propor um repositório com regras ou decoders Wazuh.
+labels: [source]
+body:
+  - type: input
+    id: repo
+    attributes:
+      label: Repository / Repositório
+      placeholder: https://github.com/owner/repo
+    validations: {required: true}
+  - type: input
+    id: products
+    attributes:
+      label: Products or log sources covered / Produtos ou fontes de log cobertos
+    validations: {required: true}
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes (license, tests, sample logs) / Notas (licença, testes, amostras)

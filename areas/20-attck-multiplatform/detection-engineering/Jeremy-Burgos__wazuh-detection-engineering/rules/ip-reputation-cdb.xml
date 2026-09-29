@@ -1,0 +1,9 @@
+<group name="threat_intel,ip_reputation_cdb,">
+
+  <rule id="100500" level="10">
+    <if_group>web|attack|attacks</if_group>
+    <list field="srcip" lookup="address_match_key">etc/lists/blacklist-alienvault</list>
+    <description>Source IP matched blacklist-alienvault CDB list</description>
+  </rule>
+
+</group>

@@ -1,0 +1,25 @@
+<!-- 
+  Custom Wazuh decoders for Cisco Switches.
+  This file contains decoders for parsing logs from Cisco switch devices.
+-->
+<decoder name="cisco-switch2">
+  <prematch>\w+ - \w+ - </prematch>
+  <regex>\d (\d+-\d+-\d+T\d+:\d+:\d+.\d+:\d+) (\w+) (\w+) - \w+ - </regex>
+  <order>timestamp,hostname,program_name</order>
+</decoder>
+
+<!--
+Log samples:
+1 2019-02-14T11:23:38+01:00 SWC3 AAA - CONNECT - %AAA-I-CONNECT: New https connection for user sb_bazot, source 172.16.10.54 destination 172.16.19.53 ACCEPTED
+1 2019-02-14T11:23:38+01:00 SWC3 AAA - CONNECT - %AAA-W-REJECT: New https connection, source 172.16.10.54 destination 172.16.19.53  REJECTED
+1 2019-02-14T11:23:38+01:00 SWC3 AAA - CONNECT - %AAA-W-REJECT: New https connection for user, source 172.16.10.54 destination 172.16.19.53  REJECTED
+1 2019-02-14T02:12:24+01:00 ASMSWC2 AAA - REJECT - %AAA-W-REJECT: New ssh connection, source 172.16.0.32 destination 172.16.19.53  REJECTED
+-->
+
+<!-- Decoder for Cisco Switch WUI/SSH access rejected messages. -->
+<decoder name="cisco-switch-wui-access-rejected2">
+  <parent>cisco-switch2</parent>
+  <prematch offset="after_parent">%AAA-\w-</prematch>
+  <regex offset="after_prematch">(\w+): New (\w+) connection\.+source (\d+.\d+.\d+.\d+) destination (\d+.\d+.\d+.\d+)</regex>
+  <order>status,protocol,srcip,dstip</order>
+</decoder>

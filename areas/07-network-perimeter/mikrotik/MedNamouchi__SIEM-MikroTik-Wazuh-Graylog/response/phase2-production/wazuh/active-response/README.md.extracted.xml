@@ -1,0 +1,60 @@
+<!-- Blocos de resposta extraídos, sem alterações, de MedNamouchi/SIEM-MikroTik-Wazuh-Graylog:phase2-production/wazuh/active-response/README.md @ e8dfa75059c7 -->
+<command>
+  <name>mattermost-brute-alert</name>
+  <executable>new_script_wazuh_mail_mattermost.sh</executable>
+  <timeout_allowed>no</timeout_allowed>
+</command>
+
+<active-response>
+  <command>mattermost-brute-alert</command>
+  <location>local</location>
+  <rules_id>100302</rules_id>
+</active-response>
+
+<command>
+  <name>mattermost-auth-alert</name>
+  <executable>mattermost-auth-alert.sh</executable>
+  <timeout_allowed>no</timeout_allowed>
+</command>
+
+<active-response>
+  <command>mattermost-auth-alert</command>
+  <location>local</location>
+  <rules_id>100300,100303</rules_id>
+</active-response>
+
+<command>
+  <name>mattermost-config-alert</name>
+  <executable>mattermost-config-alert.sh</executable>
+  <timeout_allowed>no</timeout_allowed>
+</command>
+
+<active-response>
+  <command>mattermost-config-alert</command>
+  <location>local</location>
+  <rules_id>100403</rules_id>
+</active-response>
+
+<command>
+  <name>mattermost-reboot-alert</name>
+  <executable>mattermost-reboot-alert.sh</executable>
+  <timeout_allowed>no</timeout_allowed>
+</command>
+
+<active-response>
+  <command>mattermost-reboot-alert</command>
+  <location>local</location>
+  <rules_id>100400,100401,100402</rules_id>
+</active-response>
+
+<command>
+  <name>mattermost-resource-alert</name>
+  <executable>mattermost-resource-alert.sh</executable>
+  <timeout_allowed>no</timeout_allowed>
+</command>
+
+<active-response>
+  <command>mattermost-resource-alert</command>
+  <location>local</location>
+  <rules_id>100500,100501</rules_id>
+</active-response>

@@ -1,0 +1,5 @@
+<!-- Blocos de configuração extraídos, sem alterações, de Lordkaly/wazuh-collection:Zimbra/README-en.md @ f8696cba1096 -->
+<localfile>
+     <log_format>syslog</log_format>
+     <location>/opt/zimbra/log/audit.log</location>
+   </localfile>

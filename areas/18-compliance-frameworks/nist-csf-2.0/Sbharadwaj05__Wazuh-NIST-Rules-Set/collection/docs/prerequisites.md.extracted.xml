@@ -1,0 +1,45 @@
+<!-- Blocos de configuração extraídos, sem alterações, de Sbharadwaj05/Wazuh-NIST-Rules-Set:docs/prerequisites.md @ b152735c243a -->
+<localfile>` Configuration
+The Wazuh agent must be instructed to read the Windows Event Channels as JSON. Add the following to your agent's `ossec.conf` (or via central agent configuration):
+
+```xml
+<!-- Read Windows Security Event Log as JSON -->
+<localfile>
+  <location>Security</location>
+  <log_format>eventchannel</log_format>
+</localfile>
+
+<localfile>
+  <location>Microsoft-Windows-Sysmon/Operational</location>
+  <log_format>eventchannel</log_format>
+</localfile>
+
+<localfile>` Configuration
+The Wazuh agent needs to monitor standard Linux log paths. Ensure the following paths are configured in the agent's `ossec.conf`:
+
+```xml
+<!-- System Logs (includes iptables and sudo) -->
+<localfile>
+  <location>/var/log/syslog</location>
+  <log_format>syslog</log_format>
+</localfile>
+
+<localfile>
+  <location>/var/log/auth.log</location>
+  <log_format>syslog</log_format>
+</localfile>
+
+<localfile>
+  <location>/var/log/audit/audit.log</location>
+  <log_format>audit</log_format>
+</localfile>
+
+<localfile>
+  <location>/var/log/nginx/access.log</location>
+  <log_format>apache</log_format> <!-- wazuh treats both apache and nginx as 'apache' log format -->
+</localfile>
+
+<localfile>
+  <location>/var/log/squid/access.log</location>
+  <log_format>syslog</log_format>
+</localfile>
