@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/using-wazuh-to-monitor-sysmon-events/",
+ "title": "Using Wazuh to monitor Sysmon events",
+ "published": "2017-05-30",
+ "modified": "2024-03-04",
+ "files": {
+  "01-config.xml": "23e6e0a98f0d6b12",
+  "02-rules.xml": "da4540e7aa8f2f75"
+ }
+}

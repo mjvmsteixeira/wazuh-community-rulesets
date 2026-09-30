@@ -1,0 +1,5 @@
+<integration>
+  <name>custom-sns-integration.py</name>
+  <alert_format>json</alert_format>
+  <level>10</level>
+</integration>

@@ -1,0 +1,40 @@
+<rule id="100002" level="0">
+  <if_sid>18101</if_sid>
+  <id>2003</id>
+  <description>Firewall configuration changed</description>
+</rule>
+<rule id="100003" level="3">
+  <if_sid>100002</if_sid>
+  <regex>Type: Enable \.* Value: Yes</regex>
+  <description>Firewall enabled for private/domain profile</description>
+</rule>
+<rule id="100004" level="3">
+  <if_sid>100003</if_sid>
+  <regex>Public profile</regex>
+  <description>Firewall enabled for public profile</description>
+</rule>
+<rule id="100005" level="3">
+  <if_sid>100002</if_sid>
+  <regex>Type: Enable \.* Value: No</regex>
+  <description>Firewall disabled for private/domain profile</description>
+</rule>
+<rule id="100006" level="4">
+  <if_sid>100005</if_sid>
+  <regex>Public profile</regex>
+  <description>Firewall disabled for public profile</description>
+</rule>
+<rule id="100007" level="3">
+  <if_sid>18101</if_sid>
+  <id>2004</id>
+  <description>Firewall rule created</description>
+</rule>
+<rule id="100008" level="3">
+  <if_sid>18101</if_sid>
+  <id>2005</id>
+  <description>Firewall rule modified</description>
+</rule>
+<rule id="100009" level="3">
+  <if_sid>18101</if_sid>
+  <id>2006</id>
+  <description>Firewall rule deleted</description>
+</rule>

@@ -1,0 +1,9 @@
+<group name="gke,k8s,">
+  <rule id="400003" level="10">
+    <if_group>gke</if_group>
+    <list field="gcp.protoPayload.requestMetadata.callerIp" lookup="address_match_key">etc/lists/blacklist-alienvault</list>
+    <description>GKE request originated from malicious actor.</description>
+    <options>no_full_log</options>
+    <group>attack</group>
+  </rule>
+</group>

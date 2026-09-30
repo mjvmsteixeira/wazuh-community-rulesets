@@ -1,0 +1,19 @@
+<group name="syscheck,opa_syscheck,">
+  <rule id="100110" level="7">
+    <if_sid>550</if_sid>
+    <field name="file">/opt/opa/policies/</field>
+    <description>OPA policy modified. Review and validate.</description>
+  </rule>
+  
+  <rule id="100111" level="7">
+    <if_sid>553</if_sid>
+    <field name="file">/opt/opa/policies/</field>
+    <description>OPA policy deleted. Review and validate.</description>
+  </rule>  
+
+  <rule id="100112" level="7">
+    <if_sid>554</if_sid>
+    <field name="file">/opt/opa/policies/</field>
+    <description>OPA policy created. Review and validate.</description>
+  </rule>
+</group>

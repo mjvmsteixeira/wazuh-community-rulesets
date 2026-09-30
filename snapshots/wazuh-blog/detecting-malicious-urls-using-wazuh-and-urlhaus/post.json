@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/detecting-malicious-urls-using-wazuh-and-urlhaus/",
+ "title": "Detecting malicious URLs using Wazuh and URLhaus",
+ "published": "2024-10-31",
+ "modified": "2025-05-21",
+ "files": {
+  "01-config.xml": "97e7ccbf55dbe3ff",
+  "02-config.xml": "bcf6d1655d79eac8",
+  "03-rules.xml": "da768e437fa1e51d"
+ }
+}

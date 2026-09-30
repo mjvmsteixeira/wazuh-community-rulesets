@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/monitoring-usb-drives-in-windows-using-wazuh/",
+ "title": "Monitoring USB drives in Windows using Wazuh",
+ "published": "2023-03-02",
+ "modified": "2023-03-14",
+ "files": {
+  "01-rules.xml": "9593df1e7f13e5e2",
+  "02-config.xml": "4b9ca5ed552413f1",
+  "03-rules.xml": "3c4e174f0cbb19e0"
+ }
+}

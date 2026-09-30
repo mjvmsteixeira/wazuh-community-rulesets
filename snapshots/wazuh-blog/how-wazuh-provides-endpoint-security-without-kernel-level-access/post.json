@@ -1,0 +1,12 @@
+{
+ "url": "https://wazuh.com/blog/how-wazuh-provides-endpoint-security-without-kernel-level-access/",
+ "title": "How Wazuh provides endpoint security without kernel-level access",
+ "published": "2024-12-05",
+ "modified": "2024-12-05",
+ "files": {
+  "01-config.xml": "9e4d7b70c7c16ade",
+  "02-config.xml": "720502f1f31cda9b",
+  "03-config.xml": "6a05d3a6af8d077e",
+  "04-config.xml": "9e8b86f1df9c7760"
+ }
+}

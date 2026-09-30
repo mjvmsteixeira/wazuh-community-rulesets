@@ -1,0 +1,9 @@
+{
+ "url": "https://wazuh.com/blog/integrating-cisco-secure-endpoint/",
+ "title": "Integrating Cisco Secure Endpoint with Wazuh",
+ "published": "2023-11-08",
+ "modified": "2024-07-08",
+ "files": {
+  "01-rules.xml": "180cba478cdd2bd9"
+ }
+}

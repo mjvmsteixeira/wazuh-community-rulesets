@@ -1,0 +1,9 @@
+<rule id="92205" level="6">
+  <if_group>sysmon_event_11</if_group>
+  <field name="win.eventdata.image" type="pcre2">^System$</field>
+  <field name="win.eventdata.targetFilename" type="pcre2">(?i)[c-z]:\\\\Windows\\\\.+(.exe$|\.dll)$</field>
+  <description>Binary dropped in Windows root folder by System process. Possible abuse of Windows admin shares.</description>
+  <mitre>
+    <id>T1570</id>
+  </mitre>
+</rule>

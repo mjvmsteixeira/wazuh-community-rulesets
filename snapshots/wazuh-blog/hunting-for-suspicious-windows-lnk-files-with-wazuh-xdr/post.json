@@ -1,0 +1,13 @@
+{
+ "url": "https://wazuh.com/blog/hunting-for-suspicious-windows-lnk-files-with-wazuh-xdr/",
+ "title": "Hunting for suspicious Windows LNK files with Wazuh XDR",
+ "published": "2023-04-14",
+ "modified": "2024-06-14",
+ "files": {
+  "01-config.xml": "d8f55ef4ea331c33",
+  "02-rules.xml": "7d5cd182abde4554",
+  "03-config.xml": "b612eb12b1a65b70",
+  "04-decoders.xml": "1b636000905da947",
+  "05-rules.xml": "a470de9fe02a13af"
+ }
+}

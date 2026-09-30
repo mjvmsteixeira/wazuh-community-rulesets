@@ -1,0 +1,88 @@
+<group name="syscheck,rapid_scada,">
+
+  <rule id="110051" level="0">
+    <if_sid>550</if_sid>
+    <field name="file">:\\Program Files\\SCADA\\\w+</field>
+    <description>Rapid SCADA: File modified.</description>
+  </rule>
+
+  <!-- Alert only when file content changes, not just metadata -->
+  <rule id="110052" level="7">
+    <if_sid>110051</if_sid>
+    <field name="file">:\\Program Files\\SCADA\\\w+</field>
+    <field name="changed_content" negate="yes">^No content changes were found for this file\.$</field>
+    <description>Rapid SCADA: File modified - $(file).</description>
+    <mitre>
+      <id>T1565.001</id>
+    </mitre>
+  </rule>
+
+  <rule id="110053" level="7">
+    <if_sid>553</if_sid>
+    <field name="file">:\\Program Files\\SCADA\\\w+</field>
+    <description>Rapid SCADA: File deleted - $(file).</description>
+    <mitre>
+      <id>T1070.004</id>
+      <id>T1485</id>
+    </mitre>
+  </rule>
+
+  <rule id="110054" level="7">
+    <if_sid>554</if_sid>
+    <field name="file">:\\Program Files\\SCADA\\\w+</field>
+    <description>Rapid SCADA: File added - $(file).</description>
+  </rule>
+
+  <rule id="110055" level="10">
+    <if_sid>110052</if_sid>
+    <field name="file">config\.xml$</field>
+    <description>Rapid SCADA: Configuration file modified - $(file).</description>
+    <mitre>
+      <id>T1565.001</id>
+    </mitre>
+  </rule>
+
+  <rule id="110056" level="10">
+    <if_sid>110053</if_sid>
+    <field name="file">config\.xml$</field>
+    <description>Rapid SCADA: Configuration file deleted - $(file).</description>
+    <mitre>
+      <id>T1070.004</id>
+      <id>T1485</id>
+    </mitre>
+  </rule>
+
+  <rule id="110057" level="10">
+    <if_sid>110054</if_sid>
+    <field name="file">config\.xml$</field>
+    <description>Rapid SCADA: Configuration file added - $(file).</description>
+  </rule>
+
+  <rule id="110058" level="10">
+    <if_sid>110052</if_sid>
+    <field name="file">user\.dat$|role\.dat$|roleref\.dat$</field>
+    <description>Rapid SCADA: User account manipulation - $(file) modified.</description>
+    <mitre>
+      <id>T1098</id>
+    </mitre>
+  </rule>
+
+  <rule id="110059" level="10">
+    <if_sid>110053</if_sid>
+    <field name="file">user\.dat$|role\.dat$|roleref\.dat$</field>
+    <description>Rapid SCADA: User account manipulation - $(file) deleted.</description>
+    <mitre>
+      <id>T1098</id>
+    </mitre>
+  </rule>
+
+  <rule id="110060" level="10">
+    <if_sid>110054</if_sid>
+    <field name="file">user\.dat$|role\.dat$|roleref\.dat$</field>
+    <description>Rapid SCADA: User account manipulation - $(file) created.</description>
+    <mitre>
+      <id>T1098</id>
+    </mitre>
+  </rule>
+
+</group>

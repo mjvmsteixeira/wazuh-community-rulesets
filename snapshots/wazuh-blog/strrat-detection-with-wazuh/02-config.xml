@@ -1,0 +1,6 @@
+<localfile>
+  <log_format>full_command</log_format>
+  <command>schtasks /query /nh | findstr /c:"Skype"</command>
+  <alias>finding_skype</alias>
+  <frequency>300</frequency>
+</localfile>

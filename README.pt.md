@@ -4,35 +4,35 @@
 
 Registo organizado por áreas das coleções comunitárias de regras e decoders Wazuh (formato XML 4.x) espalhadas pelo GitHub. O objetivo desta fase é **inventariar e arrumar**, preservando os ficheiros originais sem alterações. A normalização de IDs e a conversão para o motor do Wazuh 5.0 (YAML/ECS) são fases seguintes.
 
-> ⚠️ **Não carregar tudo de uma vez num manager.** Há 1867 IDs de regra em conflito entre fontes (ver [`catalog/id_conflicts.csv`](catalog/id_conflicts.csv)); combinar fontes exige renumeração prévia. Nem todas as pastas funcionam sozinhas: só **255 de 299** são autónomas por análise estática (sem IDs repetidos, dependências externas, listas CDB em falta nem colisões com IDs oficiais) — ver [`catalog/folders.csv`](catalog/folders.csv) e o resultado real em [`catalog/validation.csv`](catalog/validation.csv).
+> ⚠️ **Não carregar tudo de uma vez num manager.** Há 1884 IDs de regra em conflito entre fontes (ver [`catalog/id_conflicts.csv`](catalog/id_conflicts.csv)); combinar fontes exige renumeração prévia. Nem todas as pastas funcionam sozinhas: só **405 de 479** são autónomas por análise estática (sem IDs repetidos, dependências externas, listas CDB em falta nem colisões com IDs oficiais) — ver [`catalog/folders.csv`](catalog/folders.csv) e o resultado real em [`catalog/validation.csv`](catalog/validation.csv).
 
 ## Números (2026-09-29)
 
 | | |
 |---|---:|
-| Fontes listadas / clonadas | 126 / 124 |
+| Fontes listadas / clonadas | 126 / 125 |
 | Fontes incluídas | 115 |
-| Ficheiros XML registados | 1343 |
-| Regras (entradas) | 16373 (das quais 716 repetem um ID já presente na mesma pasta) |
-| Decoders | 5298 |
-| IDs de regra distintos | 9114 |
-| IDs em conflito | 1867: 1854 entre fontes da comunidade, 10 colisões com IDs oficiais sem `overwrite`, 3 IDs oficiais reescritos por várias fontes |
-| Dependências em falta (`if_sid`, `decoded_as`, `parent`) | 23 |
-| Dependências noutra pasta da mesma fonte | 74 |
-| Dependências noutra fonte do pack | 57 |
-| Listas CDB referidas | 67: 31 copiadas da fonte, 3 oficiais, 33 em falta |
-| Pastas autónomas (análise estática) | 255 de 299 |
-| Pastas que carregam em `wazuh-analysisd -t` (v4.14.8) | 261 de 299 (228 sem avisos) |
+| Ficheiros XML registados | 1688 |
+| Regras (entradas) | 16586 (das quais 719 repetem um ID já presente na mesma pasta) |
+| Decoders | 5344 |
+| IDs de regra distintos | 8321 |
+| IDs em conflito | 1884: 1862 entre fontes da comunidade, 19 colisões com IDs oficiais sem `overwrite`, 3 IDs oficiais reescritos por várias fontes |
+| Dependências em falta (`if_sid`, `decoded_as`, `parent`) | 8 |
+| Dependências noutra pasta da mesma fonte | 102 |
+| Dependências noutra fonte do pack | 6 |
+| Listas CDB referidas | 82: 31 copiadas da fonte, 4 oficiais, 47 em falta |
+| Pastas autónomas (análise estática) | 405 de 479 |
+| Pastas que carregam em `wazuh-analysisd -t` (v4.14.8) | 409 de 479 (291 sem avisos) |
 | Ficheiros de teste copiados | 134 |
-| Decoders raiz / filhos | 639 / 4659 (43 nomes de raiz em colisão entre fontes; 17 com nome oficial) |
-| Campos produzidos pelos decoders | 2918 nomes distintos; 305 com correspondência ECS (35% dos usos) |
+| Decoders raiz / filhos | 660 / 4684 (42 nomes de raiz em colisão entre fontes; 17 com nome oficial) |
+| Campos produzidos pelos decoders | 2932 nomes distintos; 305 com correspondência ECS (35% dos usos) |
 | Amostras de log no wazuh-logtest | 372 em 27 pastas: 256 ok, 27 sombreadas por outro decoder, 18 não descodificadas, 7 sem a regra esperada, 2 falsos positivos |
-| Configuração de recolha das fontes | 313 ficheiros, 638 entradas (38 ficheiros sem pasta atribuída) |
-| Regras com técnica MITRE válida | 8079 (2842 só depois de normalizar etiquetas Sigma/grupos; 118 com técnicas descontinuadas sem sucessor) |
-| Respostas das fontes (active response + integrações) | 109: 83 ok, 24 partidas, 2 ignoradas pelo Wazuh; 14 destrutivas (12 sem allowlist) |
-| Técnicas com regras de nível ≥ 12 | 335: 151 sem playbook, 78 sem contramedida CISA, 324 sem contenção automática a funcionar |
-| Grupos de agentes-modelo | 67 (67 válidos em `verify-agent-conf`) |
-| Ficheiros excluídos (cópias, temporários, duplicados) | 206 |
+| Configuração de recolha das fontes | 364 ficheiros, 701 entradas (60 ficheiros sem pasta atribuída) |
+| Regras com técnica MITRE válida | 8197 (2845 só depois de normalizar etiquetas Sigma/grupos; 122 com técnicas descontinuadas sem sucessor) |
+| Respostas das fontes (active response + integrações) | 149: 91 ok, 56 partidas, 2 ignoradas pelo Wazuh; 19 destrutivas (17 sem allowlist) |
+| Técnicas com regras de nível ≥ 12 | 336: 151 sem playbook, 78 sem contramedida CISA, 300 sem contenção automática a funcionar |
+| Grupos de agentes-modelo | 129 (129 válidos em `verify-agent-conf`) |
+| Ficheiros excluídos (cópias, temporários, duplicados) | 255 |
 
 Referência para comparação: **wazuh/wazuh v4.14.8 ruleset**.
 
@@ -40,37 +40,37 @@ Referência para comparação: **wazuh/wazuh v4.14.8 ruleset**.
 
 | Área | Âmbito | Regras | Decoders | Fontes |
 |---|---|---:|---:|---:|
-| [`01-windows-endpoint`](areas/01-windows-endpoint/) | Windows: Sysmon, EventChannel, PowerShell, regras geradas a partir de Sigma | 5273 | 3 | 11 |
-| [`02-identity-access`](areas/02-identity-access/) | Active Directory, Entra ID, Okta, Duo, Auth0, Authentik, cofres de passwords | 267 | 183 | 16 |
-| [`03-linux-unix`](areas/03-linux-unix/) | Linux/BSD: auditd, Sysmon for Linux, LKRG, journald, LPE, reverse shells | 477 | 328 | 13 |
-| [`04-macos`](areas/04-macos/) | macOS e Jamf | 89 | 65 | 3 |
-| [`05-cloud-saas`](areas/05-cloud-saas/) | AWS, Azure, Google Workspace, Microsoft 365, Yandex, OCI, SaaS empresariais | 757 | 60 | 8 |
-| [`06-containers-k8s`](areas/06-containers-k8s/) | Falco, Docker, Kubernetes, Tetragon | 384 | 33 | 8 |
-| [`07-network-perimeter`](areas/07-network-perimeter/) | Firewalls, routers, switches, VPN, NAC (FortiGate, Sophos, MikroTik, UniFi, Meraki, Cisco...) | 4086 | 3605 | 50 |
-| [`08-ndr-ids`](areas/08-ndr-ids/) | Suricata, Zeek, Maltrail, Packetbeat, NDR comerciais, honeypots, scans | 144 | 62 | 7 |
-| [`09-web-apps-waf`](areas/09-web-apps-waf/) | Ataques web, WAF, proxies/LB, aplicações web e de colaboração | 314 | 88 | 17 |
-| [`10-databases`](areas/10-databases/) | MySQL, MSSQL, PostgreSQL, MongoDB (auditoria/DAM) | 57 | 26 | 3 |
-| [`11-endpoint-security-edr`](areas/11-endpoint-security-edr/) | EDR/AV/XDR comerciais, YARA, Osquery, EPM | 1536 | 165 | 12 |
-| [`12-threat-intel`](areas/12-threat-intel/) | MISP, OpenCTI, AbuseIPDB, VirusTotal, OTX, SOCRadar, GTI, reputação de domínios | 189 | 5 | 10 |
-| [`13-vulnerability-mgmt`](areas/13-vulnerability-mgmt/) | Nessus, OpenVAS/Greenbone, Snyk, Nuclei, Lynis, inventário de ativos | 52 | 9 | 4 |
-| [`14-ot-ics-iot`](areas/14-ot-ics-iot/) | Modbus, DNP3, IEC-104, MQTT, OPC-UA, domótica | 46 | 25 | 2 |
-| [`15-infra-virt-storage-backup`](areas/15-infra-virt-storage-backup/) | Proxmox/PBS, VMware, Synology, QNAP, Veeam | 580 | 223 | 11 |
-| [`16-dns-email`](areas/16-dns-email/) | DNS (Pi-hole, Technitium), email e phishing (Mimecast, Zimbra, Abnormal, Sublime) | 70 | 112 | 9 |
-| [`17-ai-llm`](areas/17-ai-llm/) | Serviços de IA: Azure OpenAI/AI Foundry, AWS Bedrock, ChatGPT, Whisper | 36 | 1 | 3 |
-| [`18-compliance-frameworks`](areas/18-compliance-frameworks/) | Packs mapeados a frameworks: NIST CSF 2.0, CJIS, ENS (RD 311/2022) | 212 | 6 | 3 |
-| [`19-threats-campaigns-cves`](areas/19-threats-campaigns-cves/) | Malware, APTs e CVEs específicos | 64 | 0 | 6 |
-| [`20-attck-multiplatform`](areas/20-attck-multiplatform/) | Packs genéricos organizados por táticas ATT&CK / multi-plataforma | 1423 | 285 | 8 |
-| [`21-wazuh-platform-ops`](areas/21-wazuh-platform-ops/) | Saúde do manager, exclusões/afinação, active response, inventário, agentes | 287 | 10 | 5 |
+| [`01-windows-endpoint`](areas/01-windows-endpoint/) | Windows: Sysmon, EventChannel, PowerShell, regras geradas a partir de Sigma | 5264 | 3 | 11 |
+| [`02-identity-access`](areas/02-identity-access/) | Active Directory, Entra ID, Okta, Duo, Auth0, Authentik, cofres de passwords | 310 | 191 | 17 |
+| [`03-linux-unix`](areas/03-linux-unix/) | Linux/BSD: auditd, Sysmon for Linux, LKRG, journald, LPE, reverse shells | 498 | 322 | 13 |
+| [`04-macos`](areas/04-macos/) | macOS e Jamf | 90 | 53 | 3 |
+| [`05-cloud-saas`](areas/05-cloud-saas/) | AWS, Azure, Google Workspace, Microsoft 365, Yandex, OCI, SaaS empresariais | 767 | 58 | 8 |
+| [`06-containers-k8s`](areas/06-containers-k8s/) | Falco, Docker, Kubernetes, Tetragon | 408 | 42 | 8 |
+| [`07-network-perimeter`](areas/07-network-perimeter/) | Firewalls, routers, switches, VPN, NAC (FortiGate, Sophos, MikroTik, UniFi, Meraki, Cisco...) | 4094 | 3605 | 50 |
+| [`08-ndr-ids`](areas/08-ndr-ids/) | Suricata, Zeek, Maltrail, Packetbeat, NDR comerciais, honeypots, scans | 155 | 112 | 8 |
+| [`09-web-apps-waf`](areas/09-web-apps-waf/) | Ataques web, WAF, proxies/LB, aplicações web e de colaboração | 334 | 88 | 18 |
+| [`10-databases`](areas/10-databases/) | MySQL, MSSQL, PostgreSQL, MongoDB (auditoria/DAM) | 82 | 41 | 3 |
+| [`11-endpoint-security-edr`](areas/11-endpoint-security-edr/) | EDR/AV/XDR comerciais, YARA, Osquery, EPM | 1553 | 176 | 13 |
+| [`12-threat-intel`](areas/12-threat-intel/) | MISP, OpenCTI, AbuseIPDB, VirusTotal, OTX, SOCRadar, GTI, reputação de domínios | 229 | 10 | 11 |
+| [`13-vulnerability-mgmt`](areas/13-vulnerability-mgmt/) | Nessus, OpenVAS/Greenbone, Snyk, Nuclei, Lynis, inventário de ativos | 72 | 10 | 5 |
+| [`14-ot-ics-iot`](areas/14-ot-ics-iot/) | Modbus, DNP3, IEC-104, MQTT, OPC-UA, domótica | 62 | 27 | 3 |
+| [`15-infra-virt-storage-backup`](areas/15-infra-virt-storage-backup/) | Proxmox/PBS, VMware, Synology, QNAP, Veeam | 611 | 247 | 12 |
+| [`16-dns-email`](areas/16-dns-email/) | DNS (Pi-hole, Technitium), email e phishing (Mimecast, Zimbra, Abnormal, Sublime) | 94 | 181 | 9 |
+| [`17-ai-llm`](areas/17-ai-llm/) | Serviços de IA: Azure OpenAI/AI Foundry, AWS Bedrock, ChatGPT, Whisper | 44 | 1 | 4 |
+| [`18-compliance-frameworks`](areas/18-compliance-frameworks/) | Packs mapeados a frameworks: NIST CSF 2.0, CJIS, ENS (RD 311/2022) | 214 | 6 | 4 |
+| [`19-threats-campaigns-cves`](areas/19-threats-campaigns-cves/) | Malware, APTs e CVEs específicos | 654 | 107 | 7 |
+| [`20-attck-multiplatform`](areas/20-attck-multiplatform/) | Packs genéricos organizados por táticas ATT&CK / multi-plataforma | 690 | 28 | 8 |
+| [`21-wazuh-platform-ops`](areas/21-wazuh-platform-ops/) | Saúde do manager, exclusões/afinação, active response, inventário, agentes | 331 | 32 | 6 |
 | [`90-misc`](areas/90-misc/) | Casos muito específicos (jogos, ERPs locais, políticas internas) | 30 | 4 | 3 |
 
 ## Colisões com o ruleset oficial (v4.14.8)
 
-- **10** regras reutilizam um ID oficial sem `overwrite="yes"` (gera aviso no arranque e só uma das definições fica ativa).
+- **19** regras reutilizam um ID oficial sem `overwrite="yes"` (gera aviso no arranque e só uma das definições fica ativa).
 - **3** IDs oficiais são reescritos com `overwrite` por mais do que uma fonte, com conteúdo diferente: carregar essas fontes em conjunto faz valer a última carregada (coluna `other_overwriters`).
-- **154** regras fazem `overwrite` intencional de regras oficiais (4 alteram a cadeia `if_sid`/`if_group`/`decoded_as`, 54 só o nível).
-- **5** regras declaram `overwrite` sobre IDs que não existem no oficial.
-- **13** ficheiros de decoders têm o nome de um ficheiro oficial ou redefinem nomes de decoders oficiais. Testado em `validation.csv` (coluna `decoder_exclude`): indiferente (falha) em 2, necessário em 2, não usar em 6, opcional em 3 pastas — decoders com o nome de um oficial somam-se ao oficial, pelo que excluir o ficheiro oficial pode partir o carregamento.
-- **6362** regras usam IDs fora do intervalo recomendado para regras custom (100000–120000); o oficial já ocupa blocos em 150xxx, 184xxx–185xxx e 500xxx.
+- **155** regras fazem `overwrite` intencional de regras oficiais (4 alteram a cadeia `if_sid`/`if_group`/`decoded_as`, 55 só o nível).
+- **4** regras declaram `overwrite` sobre IDs que não existem no oficial.
+- **14** ficheiros de decoders têm o nome de um ficheiro oficial ou redefinem nomes de decoders oficiais. Testado em `validation.csv` (coluna `decoder_exclude`): indiferente (falha) em 3, necessário em 2, não usar em 6, opcional em 3 pastas — decoders com o nome de um oficial somam-se ao oficial, pelo que excluir o ficheiro oficial pode partir o carregamento.
+- **5417** regras usam IDs fora do intervalo recomendado para regras custom (100000–120000); o oficial já ocupa blocos em 150xxx, 184xxx–185xxx e 500xxx.
 
 Detalhe em [`catalog/official_overlap.csv`](catalog/official_overlap.csv) e [`catalog/decoder_replacements.csv`](catalog/decoder_replacements.csv); este último traz as linhas `<decoder_exclude>` candidatas para `ossec.conf` — usar só onde `validation.csv` indica *necessário* ou *opcional*.
 
@@ -79,9 +79,9 @@ Detalhe em [`catalog/official_overlap.csv`](catalog/official_overlap.csv) e [`ca
 As regras correm no manager e aplicam-se a todos os agentes; os grupos de agentes não filtram regras. O que um grupo decide é **que eventos chegam** (`<localfile>`, wodles), e uma pasta só dispara se os eventos de que depende forem recolhidos. Por isso cada pasta tem em [`catalog/collection.csv`](catalog/collection.csv) o que exige:
 
 - **por omissão**: já recolhido pelo `ossec.conf` de um agente (canais Security/System/Application, syslog/journald do sistema);
-- **grupos de agente**: recolha extra no agente, em [`groups/`](groups/) — 104 pastas;
-- **manager**: wodles de cloud (`aws-s3`, `azure-logs`, `gcp-pubsub`), módulos (`office365`, `github`, `ms-graph`), integrações e `<remote>` syslog para equipamentos de rede — 116 pastas;
-- **por definir**: eventos JSON ou de texto cuja origem a fonte não documenta — 112 pastas.
+- **grupos de agente**: recolha extra no agente, em [`groups/`](groups/) — 248 pastas;
+- **manager**: wodles de cloud (`aws-s3`, `azure-logs`, `gcp-pubsub`), módulos (`office365`, `github`, `ms-graph`), integrações e `<remote>` syslog para equipamentos de rede — 150 pastas;
+- **por definir**: eventos JSON ou de texto cuja origem a fonte não documenta — 129 pastas.
 
 Os requisitos vêm de duas origens: **inferidos** (a pasta encadeia em regras oficiais de uma família, p.ex. `win-sysmon` → canal Sysmon, ou filtra `win.system.channel`) e **declarados** (blocos `<localfile>`/`<wodle>`/`<agent_config>` que a fonte traz em `agent.conf`, `ossec.conf` ou nos READMEs; copiados ou extraídos para `collection/` na pasta). Detalhe por entrada em [`catalog/collection_entries.csv`](catalog/collection_entries.csv).
 
@@ -106,27 +106,27 @@ Um playbook de uma técnica-mãe cobre as sub-técnicas (T1059 cobre T1059.001).
 
 ### Sigma como referência de cobertura
 
-A [SigmaHQ](https://github.com/SigmaHQ/sigma) (fixada no `sources.lock`, commit `07ec293a5169`) é usada só como referência: 3760 regras, 381 técnicas. Nenhuma regra Sigma é copiada ou convertida (licença DRL 1.1). Face ao registo: 313 técnicas ambos, 25 técnicas registo sem regras de nível ≥ 12, 43 técnicas só Sigma, 80 técnicas só registo; 20 das que só a Sigma cobre têm regras de nível alto ou crítico. Detalhe em [`catalog/sigma_coverage.csv`](catalog/sigma_coverage.csv), com exemplos e links para cada regra Sigma.
+A [SigmaHQ](https://github.com/SigmaHQ/sigma) (fixada no `sources.lock`, commit `07ec293a5169`) é usada só como referência: 3760 regras, 381 técnicas. Nenhuma regra Sigma é copiada ou convertida (licença DRL 1.1). Face ao registo: 316 técnicas ambos, 26 técnicas registo sem regras de nível ≥ 12, 39 técnicas só Sigma, 84 técnicas só registo; 18 das que só a Sigma cobre têm regras de nível alto ou crítico. Detalhe em [`catalog/sigma_coverage.csv`](catalog/sigma_coverage.csv), com exemplos e links para cada regra Sigma.
 
 ### Lacunas prioritárias: técnicas com mais regras de nível ≥ 12 e sem playbook
 
 | Técnica | Nome | Táticas | Regras nível ≥ 12 | Pastas | Contramedidas CISA | Contenção automática | Outras automações (enriquecimento, notificação, caso) |
 |---|---|---|---:|---:|---:|---:|---:|
-| [T1112](https://attack.mitre.org/techniques/T1112/) | Modify Registry | defense-evasion | 135 | 10 | 2 | 0 | 2 |
-| [T1105](https://attack.mitre.org/techniques/T1105/) | Ingress Tool Transfer | command-and-control | 106 | 24 | 3 | 1 | 4 |
-| [T1036](https://attack.mitre.org/techniques/T1036/) | Masquerading | defense-evasion | 89 | 16 | 3 | 0 | 2 |
-| [T1047](https://attack.mitre.org/techniques/T1047/) | Windows Management Instrumentation | execution | 77 | 12 | 5 | 0 | 2 |
-| [T1190](https://attack.mitre.org/techniques/T1190/) | Exploit Public-Facing Application | initial-access | 75 | 26 | 8 | 1 | 2 |
-| [T1021.002](https://attack.mitre.org/techniques/T1021/002/) | SMB/Windows Admin Shares | lateral-movement | 64 | 12 | 7 | 0 | 0 |
+| [T1112](https://attack.mitre.org/techniques/T1112/) | Modify Registry | defense-evasion | 135 | 12 | 2 | 0 | 2 |
+| [T1105](https://attack.mitre.org/techniques/T1105/) | Ingress Tool Transfer | command-and-control | 108 | 33 | 3 | 2 | 6 |
+| [T1036](https://attack.mitre.org/techniques/T1036/) | Masquerading | defense-evasion | 93 | 28 | 3 | 1 | 4 |
+| [T1047](https://attack.mitre.org/techniques/T1047/) | Windows Management Instrumentation | execution | 78 | 16 | 5 | 1 | 3 |
+| [T1190](https://attack.mitre.org/techniques/T1190/) | Exploit Public-Facing Application | initial-access | 76 | 31 | 8 | 2 | 3 |
+| [T1021.002](https://attack.mitre.org/techniques/T1021/002/) | SMB/Windows Admin Shares | lateral-movement | 65 | 13 | 7 | 0 | 0 |
 | [T1218.011](https://attack.mitre.org/techniques/T1218/011/) | Rundll32 | defense-evasion | 58 | 8 | 1 | 0 | 0 |
-| [T1569.002](https://attack.mitre.org/techniques/T1569/002/) | Service Execution | execution | 57 | 8 | 5 | 0 | 0 |
-| [T1087](https://attack.mitre.org/techniques/T1087/) | Account Discovery | discovery | 46 | 15 | 0 | 0 | 2 |
-| [T1021.001](https://attack.mitre.org/techniques/T1021/001/) | Remote Desktop Protocol | lateral-movement | 40 | 9 | 7 | 0 | 0 |
+| [T1569.002](https://attack.mitre.org/techniques/T1569/002/) | Service Execution | execution | 58 | 9 | 5 | 0 | 0 |
+| [T1087](https://attack.mitre.org/techniques/T1087/) | Account Discovery | discovery | 46 | 19 | 0 | 0 | 3 |
+| [T1021.001](https://attack.mitre.org/techniques/T1021/001/) | Remote Desktop Protocol | lateral-movement | 40 | 10 | 7 | 0 | 0 |
 | [T1070](https://attack.mitre.org/techniques/T1070/) | Indicator Removal | defense-evasion | 38 | 13 | 1 | 0 | 2 |
-| [T1218](https://attack.mitre.org/techniques/T1218/) | System Binary Proxy Execution | defense-evasion | 37 | 10 | 1 | 0 | 2 |
-| [T1218.010](https://attack.mitre.org/techniques/T1218/010/) | Regsvr32 | defense-evasion | 33 | 10 | 1 | 0 | 2 |
+| [T1218](https://attack.mitre.org/techniques/T1218/) | System Binary Proxy Execution | defense-evasion | 37 | 11 | 1 | 0 | 2 |
+| [T1218.010](https://attack.mitre.org/techniques/T1218/010/) | Regsvr32 | defense-evasion | 33 | 11 | 1 | 0 | 2 |
 | [T1033](https://attack.mitre.org/techniques/T1033/) | System Owner/User Discovery | discovery | 27 | 13 | 0 | 0 | 2 |
-| [T1070.001](https://attack.mitre.org/techniques/T1070/001/) | Clear Windows Event Logs | defense-evasion | 27 | 12 | 2 | 0 | 2 |
+| [T1070.001](https://attack.mitre.org/techniques/T1070/001/) | Clear Windows Event Logs | defense-evasion | 27 | 16 | 2 | 0 | 2 |
 
 ## Estrutura
 
@@ -228,7 +228,7 @@ Para acrescentar uma fonte: adicionar a `tools/sources.txt`, classificá-la em `
 
 ## Licenças
 
-67 das 115 fontes incluídas **não têm ficheiro de licença**: sem licença, o autor mantém todos os direitos. Cada ficheiro é publicado sem alterações, com a origem, o autor e o commit exato no `SOURCE.md` da pasta. **É autor de uma fonte e quer que seja retirada? [Abra uma issue](https://github.com/mjvmsteixeira/wazuh-community-rulesets/issues/new/choose) e é removida.** Ver [`NOTICE.pt.md`](NOTICE.pt.md).
+66 das 115 fontes incluídas **não têm ficheiro de licença**: sem licença, o autor mantém todos os direitos. Cada ficheiro é publicado sem alterações, com a origem, o autor e o commit exato no `SOURCE.md` da pasta. **É autor de uma fonte e quer que seja retirada? [Abra uma issue](https://github.com/mjvmsteixeira/wazuh-community-rulesets/issues/new/choose) e é removida.** Ver [`NOTICE.pt.md`](NOTICE.pt.md).
 
 ## Indicadores de qualidade
 

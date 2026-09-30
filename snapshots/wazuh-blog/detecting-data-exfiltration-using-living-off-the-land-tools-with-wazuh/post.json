@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/detecting-data-exfiltration-using-living-off-the-land-tools-with-wazuh/",
+ "title": "Detecting data exfiltration using Living Off the Land tools with Wazuh",
+ "published": "2025-03-13",
+ "modified": "2025-03-19",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-config.xml": "212eafd83a42254e",
+  "03-rules.xml": "912bf7963845cba4"
+ }
+}

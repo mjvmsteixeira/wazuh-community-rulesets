@@ -1,0 +1,14 @@
+{
+ "url": "https://wazuh.com/blog/detecting-and-responding-to-phobos-ransomware-using-wazuh/",
+ "title": "Detecting and responding to Phobos ransomware using Wazuh",
+ "published": "2024-03-27",
+ "modified": "2024-06-25",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-rules.xml": "c01cdd150b3cd704",
+  "03-config.xml": "bc81dcf92834a2ac",
+  "04-config.xml": "5690c6f542dd9e0a",
+  "05-config.xml": "431412557c0f8521",
+  "06-rules.xml": "3ff0f747035bd265"
+ }
+}

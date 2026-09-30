@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/wazuh-integration-with-shuffle/",
+ "title": "Wazuh integration with Shuffle",
+ "published": "2026-05-06",
+ "modified": "2026-05-11",
+ "files": {
+  "01-config.xml": "c61ee9952222cd58",
+  "02-config.xml": "d80ee3d824277254",
+  "03-config.xml": "375f47fd10f4205c"
+ }
+}

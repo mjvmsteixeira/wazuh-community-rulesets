@@ -1,0 +1,24 @@
+<group name="gcp,">
+
+  <!-- Misconfiguration detection -->
+    <rule id="100200" level="10">
+        <if_sid>65000</if_sid>
+        <field name="gcp.finding.findingClass">MISCONFIGURATION</field>
+        <description>A $(gcp.finding.findingClass) with $(gcp.finding.severity) severity has been discovered on the GCP project $(gcp.resource.projectDisplayName). $(gcp.finding.description)</description>
+        <mitre>
+          <id>T1562</id>
+        </mitre>
+    </rule>
+    
+
+  <!-- Threat detection -->
+    <rule id="100201" level="10">
+        <if_sid>65000</if_sid>
+        <field name="gcp.finding.findingClass">THREAT</field>
+        <description>A $(gcp.finding.findingClass) with $(gcp.finding.severity) severity has been discovered on the GCP project $(gcp.resource.projectDisplayName). $(gcp.finding.category).</description>
+        <mitre>
+          <id>T1562</id>
+        </mitre>
+    </rule>
+   
+</group>

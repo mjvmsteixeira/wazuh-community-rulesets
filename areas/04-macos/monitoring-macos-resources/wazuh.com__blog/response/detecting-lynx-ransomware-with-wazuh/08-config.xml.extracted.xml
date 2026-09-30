@@ -1,0 +1,12 @@
+<!-- Blocos de resposta extraídos, sem alterações, de wazuh.com/blog:detecting-lynx-ransomware-with-wazuh/08-config.xml @ b4b3f986b301 -->
+<command>
+  <name>rollback_windows</name>
+  <executable>rollback.bat</executable>
+  <timeout_allowed>no</timeout_allowed>
+</command>
+
+<active-response>
+  <command>rollback_windows</command>
+  <location>local</location>
+  <rules_id>100104</rules_id>
+</active-response>

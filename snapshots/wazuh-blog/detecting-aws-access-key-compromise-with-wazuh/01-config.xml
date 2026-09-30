@@ -1,0 +1,4 @@
+ <ruleset>
+    <list>etc/lists/trusted_aws_ips</list>
+    <list>etc/lists/aws_service_identities</list>
+  </ruleset>

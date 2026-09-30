@@ -1,0 +1,8 @@
+<decoder name="grype-decoder">
+  <prematch>^Grype:</prematch>
+</decoder>
+<decoder name="grype-decoder-fields">
+  <parent>grype-decoder</parent>
+  <regex offset="after_parent">"(\.+)","(\.+)","(\.+)","(\.+)","(\.+)"</regex>
+  <order>image, package, version, vulnerability_id, severity</order>
+</decoder>

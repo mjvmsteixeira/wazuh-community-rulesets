@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/monitoring-mongodb-atlas-with-wazuh/",
+ "title": "Monitoring MongoDB Atlas with Wazuh",
+ "published": "2026-05-28",
+ "modified": "2026-05-28",
+ "files": {
+  "01-config.xml": "96ce3c1c4be2ca84",
+  "02-rules.xml": "fa0a7bb5185d1ce0"
+ }
+}

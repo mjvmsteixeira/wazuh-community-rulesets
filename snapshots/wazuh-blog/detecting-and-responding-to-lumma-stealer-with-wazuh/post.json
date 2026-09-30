@@ -1,0 +1,14 @@
+{
+ "url": "https://wazuh.com/blog/detecting-and-responding-to-lumma-stealer-with-wazuh/",
+ "title": "Detecting and responding to Lumma Stealer with Wazuh",
+ "published": "2024-10-23",
+ "modified": "2024-10-23",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-rules.xml": "acdc4bd33696f2a2",
+  "03-config.xml": "c926f3ba5c8423c6",
+  "04-config.xml": "5690c6f542dd9e0a",
+  "05-config.xml": "57bb39932b0704be",
+  "06-rules.xml": "75eb452a8cb38bbc"
+ }
+}

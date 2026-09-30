@@ -1,0 +1,12 @@
+{
+ "url": "https://wazuh.com/blog/monitoring-root-actions-on-linux-using-auditd-and-wazuh/",
+ "title": "Monitoring root actions on Linux using Auditd and Wazuh",
+ "published": "2019-11-29",
+ "modified": "2024-07-25",
+ "files": {
+  "01-config.xml": "b3e70734007e3df7",
+  "02-rules.xml": "07af896a49a584bf",
+  "03-rules.xml": "bbb7930315d1a300",
+  "04-rules.xml": "0d12d2b43a859740"
+ }
+}

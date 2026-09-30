@@ -1,0 +1,7 @@
+<integration>
+  <name>custom-abuseipdb.py</name>
+  <hook_url>https://api.abuseipdb.com/api/v2/check</hook_url>
+  <api_key><YOUR_ABUSEIPDB_API_KEY></api_key>
+  <rule_id>100002,100003</rule_id>
+  <alert_format>json</alert_format>
+</integration>

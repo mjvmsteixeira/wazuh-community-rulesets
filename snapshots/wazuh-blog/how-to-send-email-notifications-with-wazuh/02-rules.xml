@@ -1,0 +1,5 @@
+<rule id="9800" level="8">
+  <match>illegal user|invalid user</match>
+  <description>sshd: Attempt to login using a non-existent user</description>
+  <options>alert_by_email</options>
+</rule>

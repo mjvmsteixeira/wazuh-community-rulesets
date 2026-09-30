@@ -1,0 +1,135 @@
+<group name="mongodb,">
+
+<!-- This rule detects when a user authenticates to a database -->
+  <rule id="100091" level="1">
+    <field name="atype" type="pcre2">authenticate</field>
+    <field name="result" type="pcre2">^0$</field>
+    <description>The user $(param.user) has successfully authenticated into the $(param.db) database.</description>
+  </rule>
+
+  <rule id="100092" level="9" frequency="3" timeframe="60">
+    <if_matched_sid>100091</if_matched_sid>
+    <description>The user $(param.user) has successfully authenticated to the $(param.db) database.</description>
+    <mitre>
+      <id>T1556</id>
+    </mitre>
+  </rule>
+
+<!-- This rule will detect when a user authentication failure occurs -->
+  <rule id="100093" level="9">
+    <field name="atype" type="pcre2">authenticate</field>
+    <field name="result" type="pcre2">(?!0\b)\d+</field>
+    <description>Authentication attempt failure from a user named $(param.user) to the $(param.db) database.</description>
+    <mitre>
+      <id>T1110</id>
+    </mitre>
+  </rule>
+
+<!-- This rule detects when a database is created.-->
+  <rule id="100094" level="4">
+    <field name="atype" type="pcre2">authCheck</field>
+    <field name="param.command" type="pcre2">listCollections</field>
+    <field name="result" type="pcre2">^0$</field>
+    <description>A database name $(param.args.$db) has been created.</description>
+    <mitre>
+      <id>T1565.001</id>
+    </mitre>
+  </rule>
+
+<!-- This rule detects when a collection is created.-->
+  <rule id="100095" level="4">
+    <field name="atype" type="pcre2">authCheck</field>
+    <field name="param.command" type="pcre2">^create$</field>
+    <field name="result" type="pcre2">^0$</field>
+    <description>A collection name $(param.args.create), has been created in the $(param.args.$db) database.</description>
+    <mitre>
+      <id>T1485</id>
+    </mitre>
+   </rule>
+
+<!-- This rule detects when a document is being added to a
+collection "C" in the CRUD framework -->
+   <rule id="100096" level="4">
+     <field name="atype" type="pcre2">authCheck</field>
+     <field name="param.command" type="pcre2">^insert$</field>
+     <field name="result" type="pcre2">^0$</field>
+     <description>A document has been added to the $(param.args.insert) collection in the $(param.args.$db)
+database.</description>
+     <mitre>
+       <id>T1565</id>
+     </mitre>
+   </rule>
+
+<!-- This rule detects when a document is being read from your collection. "R" in the CRUD framework -->
+    <rule id="100097" level="4">
+      <field name="atype" type="pcre2">authCheck</field>
+      <field name="param.command" type="pcre2">^find$</field>
+      <field name="result" type="pcre2">^0$</field>
+      <description>A document has been read from the $(param.args.find) collection in the $(param.args.$db)
+database.</description>
+    </rule>
+
+
+<!-- This rule detects when an update is being made to the
+collection of the database or a database. "U" in the CRUD
+framework -->
+    <rule id="100098" level="4">
+      <field name="atype" type="pcre2">authCheck</field>
+      <field name="param.command" type="pcre2">^update$</field>
+      <field name="result" type="pcre2">^0$</field>
+      <description>A document has been updated from the $(param.args.update) collection in the $(param.args.$db)
+database.</description>
+      <mitre>
+        <id>T1485</id>
+        <id>T1565</id>
+      </mitre>
+    </rule>
+
+<!-- This rule detects when a delete action is being made to
+the collection of the database. "D" in the CRUD framework -->
+    <rule id="100099" level="7">
+      <field name="atype" type="pcre2">authCheck</field>
+      <field name="param.command" type="pcre2">^delete$</field>
+      <field name="result" type="pcre2">^0$</field>
+      <description>A document has been deleted from the $(param.args.delete) collection in the $(param.args.$db)
+database.</description>
+      <mitre>
+        <id>T1485</id>
+      </mitre>
+    </rule>
+
+<!-- This rule detects when a collection is dropped from a
+database -->
+    <rule id="100100" level="7">
+      <field name="atype" type="pcre2">authCheck</field>
+     <field name="param.command" type="pcre2">^drop$</field>
+     <field name="result" type="pcre2">^0$</field>
+      <description>A collection name $(param.args.drop), has been dropped from the $(param.args.$db) database.</description>
+      <mitre>
+        <id>T1485</id>
+      </mitre>
+    </rule>
+
+<!-- This rule detects when a database is dropped or deleted -->
+    <rule id="100101" level="7">
+      <field name="atype" type="pcre2">authCheck</field>
+      <field name="param.command" type="pcre2">^dropDatabase$</field>
+      <field name="result" type="pcre2">^0$</field>
+      <description>A database name $(param.args.$db) has been deleted.</description>
+      <mitre>
+        <id>T1485</id>
+      </mitre>
+    </rule>
+
+<!-- This rule will detect when a user performs unauthorized CRUD  action -->
+  <rule id="100102" level="9">
+    <field name="atype" type="pcre2">authCheck</field>
+    <field name="param.command" type="pcre2">(listCollections|create|insert|find|update|delete|drop|dropDatabase|createUser)</field>
+    <field name="result" type="pcre2">(?!0\b)\d+</field>
+    <description>An unauthorized user with details $(users) performed a $(param.command) command on the $(param.args.$db) database</description>
+    <mitre>
+      <id>T1565</id>
+    </mitre>
+  </rule>
+
+</group>

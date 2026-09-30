@@ -1,0 +1,15 @@
+{
+ "url": "https://wazuh.com/blog/detecting-doge-big-balls-ransomware-with-wazuh/",
+ "title": "Detecting DOGE Big Balls ransomware with Wazuh",
+ "published": "2025-06-26",
+ "modified": "2025-06-26",
+ "files": {
+  "01-config.xml": "c37fa3962541bfec",
+  "02-config.xml": "85a60f6d988f379e",
+  "03-rules.xml": "f4c91834f29d1f4b",
+  "04-rules.xml": "c5614491008ed28d",
+  "05-config.xml": "21baa9b32630dbab",
+  "06-decoders.xml": "13193c3c92948d98",
+  "07-rules.xml": "7d9e3fc2d58e8741"
+ }
+}

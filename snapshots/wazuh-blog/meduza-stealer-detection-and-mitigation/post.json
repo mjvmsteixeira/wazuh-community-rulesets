@@ -1,0 +1,14 @@
+{
+ "url": "https://wazuh.com/blog/meduza-stealer-detection-and-mitigation/",
+ "title": "Meduza Stealer detection and mitigation with Wazuh",
+ "published": "2024-01-11",
+ "modified": "2024-07-08",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-rules.xml": "4e337e108291ebee",
+  "03-rules.xml": "b91c80fa6308ea65",
+  "04-config.xml": "7fd44cd59211b10b",
+  "05-decoders.xml": "8493094f61602cc6",
+  "06-rules.xml": "97e4831394fa24ff"
+ }
+}

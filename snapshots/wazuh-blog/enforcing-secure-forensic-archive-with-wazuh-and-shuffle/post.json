@@ -1,0 +1,9 @@
+{
+ "url": "https://wazuh.com/blog/enforcing-secure-forensic-archive-with-wazuh-and-shuffle/",
+ "title": "Enforcing secure forensic archive with Wazuh and Shuffle",
+ "published": "2026-05-14",
+ "modified": "2026-05-14",
+ "files": {
+  "01-config.xml": "bc7c834b72af68f1"
+ }
+}

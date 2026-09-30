@@ -1,0 +1,6 @@
+<integration>
+  <name>custom-urlhaus.py</name>
+  <hook_url>https://urlhaus-api.abuse.ch/v1/url/</hook_url>
+  <rule_id>86601</rule_id>
+  <alert_format>json</alert_format>
+</integration>

@@ -1,0 +1,13 @@
+<group name= "syscheck,">
+  <rule id="100029" level="7">
+    <if_sid>550</if_sid>
+    <field name="file" type="pcre2">(?i)C:\\Users.+Downloads</field>
+    <description>File modified in the Downloads folder.</description>
+  </rule>
+
+  <rule id="100030" level="7">
+    <if_sid>554</if_sid>
+    <field name="file" type="pcre2">(?i)C:\\Users.+Downloads</field>
+    <description>File added to the Downloads folder.</description>
+  </rule>
+</group>

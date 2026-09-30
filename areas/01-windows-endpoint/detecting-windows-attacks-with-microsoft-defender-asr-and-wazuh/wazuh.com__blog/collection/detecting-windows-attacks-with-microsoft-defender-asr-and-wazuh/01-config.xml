@@ -1,0 +1,5 @@
+  <localfile>
+    <location>Microsoft-Windows-Windows Defender/Operational</location>
+    <log_format>eventchannel</log_format>
+    <query>Event/System[EventID=1121 or EventID=5007]</query>
+  </localfile>

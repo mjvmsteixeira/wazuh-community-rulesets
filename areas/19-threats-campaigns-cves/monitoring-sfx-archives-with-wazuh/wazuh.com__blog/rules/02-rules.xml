@@ -1,0 +1,61 @@
+<group name="sfx_archives">
+
+  <rule id="100102" level="10">
+    <if_sid>61603</if_sid>
+    <field name="win.eventdata.CommandLine" type="pcre2">(?i)[C-Z]:.*.\\[7ZipRar_].*sfx.*\\*|.*\\7z.*</field>
+    <description>SFX archive command, $(win.eventdata.CommandLine) invoked the application $(win.eventdata.OriginalFileName).</description>
+    <mitre>
+      <id>T1490</id>
+    </mitre>
+  </rule>
+  
+  <rule id="100103" level="10">
+    <if_sid>61603</if_sid>
+    <field name="win.eventdata.CurrentDirectory" type="pcre2">(?i)[C-Z]:.*.\\[7ZipRar_].*sfx.*\\*|.*\\7z.*</field>
+    <description>SFX archive command, $(win.eventdata.CommandLine) executed from $(win.eventdata.CurrentDirectory).</description>
+    <mitre>
+      <id>T1490</id>
+    </mitre>
+  </rule>
+
+  <rule id="100104" level="10">
+    <if_sid>61613</if_sid>
+    <field name="win.eventdata.targetFilename" type="pcre2">(?i)[C-Z]:.*.\\[7ZipRar_].*sfx.*\\*|.*\\7z.*</field>
+    <description>The file $(win.eventdata.targetFilename) has been created by $(win.eventdata.image). SFX archive activity detected.</description>
+    <mitre>
+      <id>T1486</id>
+    </mitre>
+  </rule>
+
+  <rule id="100105" level="10">
+    <if_sid>92213</if_sid>
+    <field name="win.eventdata.targetFilename" type="pcre2">(?i)[C-Z]:.*.\\[7ZipRar_].*sfx.*\\*|.*\\7z.*</field>
+    <description>The file $(win.eventdata.targetFilename) has been created by $(win.eventdata.image). SFX archive activity detected.</description>
+    <mitre>
+      <id>T1486</id>
+    </mitre>
+  </rule>
+  
+  <rule id="100106" level="10">
+    <if_sid>61615</if_sid>
+    <field name="win.eventdata.eventType" type="pcre2" >^SetValue$</field>
+    <field name="win.eventdata.Image" type="pcre2">(?i)[C-Z]:.*.\\[7ZipRar].*sfx.*\\.*</field>
+    <description>The image, $(win.eventdata.image) made a change to the registry at $(win.eventdata.targetObject). SFX archive activity.</description>   
+    <mitre>
+      <id>T1543</id>
+    </mitre>
+  </rule>
+  
+  <rule id="100107" level="10">
+    <if_sid>61609</if_sid>
+    <field name="win.eventdata.ImageLoaded" type="pcre2">(?i)[C-Z]:.*.\\[7ZipRar].*sfx.*exe</field>
+    <description>The image $(win.eventdata.image) loaded a file $(win.eventdata.imageLoaded). SFX archive activity detected.</description>
+  </rule>
+  
+  <rule id="100108" level="10">
+    <if_sid>61609</if_sid>
+    <field name="win.eventdata.Image" type="pcre2">(?i)[C-Z]:.*.\\[7ZipRar].*sfx.*exe</field>
+    <description>The suspicious image, $(win.eventdata.image), loaded the executable $(win.eventdata.imageLoaded). SFX archive activity detected.</description>
+  </rule>
+
+</group>

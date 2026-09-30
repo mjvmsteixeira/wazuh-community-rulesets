@@ -1,0 +1,5 @@
+<decoder name="dependency_track">
+  <program_name>dependency_track</program_name>
+  <prematch>dependency_track: </prematch>
+  <plugin_decoder offset="after_prematch">JSON_Decoder</plugin_decoder>
+</decoder>

@@ -1,0 +1,11 @@
+<ossec_config>
+  <wodle name="command">
+    <disabled>no</disabled>
+    <tag>suid-check</tag>
+    <command>/var/ossec/bin/suid-check.sh</command>
+    <interval>1d</interval>
+    <run_on_start>yes</run_on_start>
+    <timeout>300</timeout>
+    <verify_sha256><SHA256_HASH></verify_sha256>
+  </wodle>
+</ossec_config>

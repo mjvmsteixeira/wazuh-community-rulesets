@@ -1,0 +1,32 @@
+<group name="local,monitor,stats">
+
+  <rule id="100001" level="0">
+    <decoded_as>disk-usage</decoded_as>
+    <description>Disk-usage monitoring rules.</description>
+  </rule>
+
+  <rule id="100002" level="3">
+    <if_sid>100001</if_sid>
+    <field name="usage">^6\d|^5\d</field>
+    <description>Filesystem $(filesystem) over 50% ($(usage)%).</description>
+  </rule>
+
+  <rule id="100003" level="5">
+    <if_sid>100001</if_sid>
+    <field name="usage">^7\d</field>
+    <description>Filesystem $(filesystem) over 70% ($(usage)%).</description>
+  </rule>
+
+  <rule id="100004" level="7">
+    <if_sid>100001</if_sid>
+    <field name="usage">^9\d|^8\d</field>
+    <description>Filesystem $(filesystem) over 80% ($(usage)%).</description>
+  </rule>
+
+  <rule id="100005" level="9">
+    <if_sid>100001</if_sid>
+    <field name="usage">100</field>
+    <description>No space left at filesystem $(filesystem).</description>
+  </rule>
+
+</group>

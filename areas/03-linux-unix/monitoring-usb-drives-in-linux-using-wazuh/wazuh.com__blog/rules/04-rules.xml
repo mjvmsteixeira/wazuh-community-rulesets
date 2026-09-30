@@ -1,0 +1,14 @@
+<!-- Rule for USB monitoring in Linux-->
+<group name="Linux, usb,">
+  <rule id="111010" level="7">
+    <field name="serial">\w+</field>
+    <field name="type">usb_device</field>
+    <description>A PNP device $(vendor) $(model) was connected to $(hostname).</description>
+  </rule>
+
+  <rule id="111011" level="8">
+    <if_sid>111010</if_sid>
+    <list field="serial" lookup="not_match_key">etc/lists/usb-drives</list>
+  <description>Unauthorized PNP device $(vendor) $(model) was connected to $(hostname).</description>
+  </rule>
+</group>

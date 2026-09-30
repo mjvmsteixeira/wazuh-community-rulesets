@@ -1,0 +1,12 @@
+{
+ "url": "https://wazuh.com/blog/detecting-xll-files-used-for-dropping-fin7-jssloader-with-wazuh/",
+ "title": "Detecting XLL files used for dropping FIN7 JSSLoader with Wazuh",
+ "published": "2022-05-24",
+ "modified": "2026-09-30",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-rules.xml": "138dc6153ef1f138",
+  "03-rules.xml": "81fe52569f768f42",
+  "04-rules.xml": "b1d8df984b92520f"
+ }
+}

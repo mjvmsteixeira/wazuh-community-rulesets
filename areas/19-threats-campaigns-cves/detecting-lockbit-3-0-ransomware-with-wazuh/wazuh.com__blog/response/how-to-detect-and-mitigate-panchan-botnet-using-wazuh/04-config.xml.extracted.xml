@@ -1,0 +1,13 @@
+<!-- Blocos de resposta extraídos, sem alterações, de wazuh.com/blog:how-to-detect-and-mitigate-panchan-botnet-using-wazuh/04-config.xml @ b4b3f986b301 -->
+<command>
+        <name>yara_remove_threat</name>
+    	  <executable>yara_remove_threat.sh</executable>
+    	  <extra_args>-yara_path /usr/local/bin -yara_rules /tmp/yara/rules/yara_rules.yar</extra_args>
+        <timeout_allowed>no</timeout_allowed>
+    </command>
+
+<active-response>
+        <command>yara_remove_threat</command>
+        <location>local</location>
+        <rules_id>100030,100031</rules_id>
+    </active-response>

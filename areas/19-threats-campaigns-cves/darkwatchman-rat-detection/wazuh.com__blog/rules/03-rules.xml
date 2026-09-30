@@ -1,0 +1,72 @@
+<group name="darkwatchman_rat,">
+
+  <!-- C Drive Defender Exclusion -->
+  <rule id="100801" level="12">
+    	<if_sid>61603</if_sid>
+    	<field name="win.eventdata.image" type="pcre2">powershell.exe</field>
+    	<field name="win.eventdata.parentImage" type="pcre2">cmd.exe</field>
+    	<field name="win.eventdata.commandLine" type="pcre2">-ExclusionPath</field>
+    	<field name="win.eventdata.commandLine" type="pcre2">C:</field>
+    	<description>Suspicious activity detected. The 'C' drive was added to the Windows Defender exclusion list.</description>
+    	<mitre>
+    	<id>T1562.001</id>
+  	<id>T1059.001</id>
+    	</mitre>
+  </rule>
+
+  <!-- wscript.exe spawned from command shell -->
+  <rule id="100802" level="12">
+    	<if_sid>61603</if_sid>
+    	<field name="win.eventdata.parentImage" type="pcre2">cmd.exe</field>
+    	<field name="win.eventdata.image" type="pcre2">wscript.exe</field>
+    	<field name="win.eventdata.commandLine" type="pcre2">jscript</field>
+    	<description>Possible DarkWatchman RAT activity detected. wscript.exe spawned from command shell (cmd.exe).</description>
+    	<mitre>
+    	<id>T1059.007 </id>
+    	</mitre>
+  </rule>
+
+  <!-- js file created -->
+  <rule id="100803" level="12">
+    	<if_group>sysmon_event_11</if_group>
+    	<field name="win.eventdata.image" type="pcre2">(?i)\\wscript\.exe</field>
+    	<field name="win.eventdata.targetFilename" type="pcre2">(?i)[c-z]:\\\\(Windows\\\\Temp|Users).+\.js</field>
+    	<description>Possible DarkWatchman RAT activity detected. A suspicious .js file $(win.eventdata.targetFilename) was created in Windows Temp or Users folder by wsript.exe.</description>
+    	<mitre>
+    	<id>T1059.007</id>
+    	</mitre>
+  </rule>
+
+  <!-- DLL side-loading through the execution of "regsvr32.exe" as a child process of "wscript.exe. -->
+  <rule id="100804" level="12">
+    	<if_group>sysmon_event1</if_group>
+    	<field name="win.eventdata.parentImage" type="pcre2">(?i)\\wscript\.exe</field>
+    	<field name="win.eventdata.image" type="pcre2">(?i)\\regsvr32\.exe</field>
+    	<field name="win.eventdata.commandLine" type="pcre2">.dll</field>
+    	<field name="win.eventdata.parentCommandLine" type="pcre2">jscript</field>
+    	<description>Possible DarkWatchman RAT activity detected. DLL side-loading with regsvr32.exe</description>
+    	<mitre>
+    	<id>T1059.005</id>
+    	</mitre>
+  </rule>
+
+  <!-- js file execution-->
+  <rule id="100805" level="4">
+    	<if_group>sysmon_event1</if_group>
+    	<if_sid>92069</if_sid>
+    	<field name="win.eventdata.image" type="pcre2">(?i)\\wscript\.exe</field>
+    	<field name="win.eventdata.commandLine" type="pcre2">.js</field>
+    	<description>Possible DarkWatchman RAT activity detected. Suspicious .js file executed.</description>
+    	<mitre>
+    	<id>T1059.001</id>
+    	</mitre>
+  </rule>
+
+  <!-- data written to DWM registry-->
+  <rule id="100806" level="15" ignore="120">
+    	<if_sid>61615</if_sid>
+    	<field name="win.eventdata.targetObject" type="pcre2">Microsoft\\\\Windows\\\\DWM</field>
+    	<description>DarkWatchman RAT activity detected. Data written to DWM registry path</description>
+  </rule>
+
+</group>

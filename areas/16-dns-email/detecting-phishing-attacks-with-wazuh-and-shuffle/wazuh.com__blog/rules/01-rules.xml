@@ -1,0 +1,40 @@
+<group name="phishing,">
+  <rule id="110700" level="0">
+    <decoded_as>json</decoded_as>
+    <field name="integration">shuffle-office365</field>
+    <if_sid>91531</if_sid>
+    <description>Shuffle-Office365 integration</description>
+  </rule>
+  <rule id="110701" level="10">
+    <decoded_as>json</decoded_as>
+    <if_sid>110700</if_sid>
+    <field name="data_type">url</field>
+    <list field="data" lookup="address_match_key">etc/lists/phishing_urls</list>
+    <description>Blacklisted URL in email from $(sender_email): $(data)</description>
+  </rule>
+
+  <rule id="110702" level="10">
+    <decoded_as>json</decoded_as>
+    <if_sid>110700</if_sid>
+    <field name="data_type">domain</field>
+    <list field="data" lookup="address_match_key">etc/lists/phishing_domains</list>
+    <description>Blacklisted domain in email from $(sender_email): $(data)</description>
+  </rule>
+
+  <rule id="110703" level="10">
+    <decoded_as>json</decoded_as>
+    <if_sid>110700</if_sid>
+    <field name="data_type">ip</field>
+    <list field="data" lookup="address_match_key">etc/lists/phishing_ips</list>
+    <description>Blacklisted IP in email from $(sender_email): $(data)</description>
+  </rule>
+
+  <rule id="110704" level="10">
+    <decoded_as>json</decoded_as>
+    <if_sid>110700</if_sid>
+    <field name="data_type">md5</field>
+    <list field="data" lookup="address_match_key">etc/lists/phishing_md5s</list>
+    <description>Blacklisted file hash in email from $(sender_email): $(data)</description>
+  </rule>
+
+</group>

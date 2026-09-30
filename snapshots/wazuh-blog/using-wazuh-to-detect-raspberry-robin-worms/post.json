@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/using-wazuh-to-detect-raspberry-robin-worms/",
+ "title": "Using Wazuh to detect Raspberry Robin worms",
+ "published": "2022-11-17",
+ "modified": "2024-06-10",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-rules.xml": "72b4aa851c94c01d"
+ }
+}

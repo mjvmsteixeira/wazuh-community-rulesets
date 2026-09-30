@@ -1,0 +1,29 @@
+<!-- T1098.007 — Additional Local or Domain Groups -->
+
+  <rule id="100204" level="10">
+    <if_sid>80700</if_sid>
+    <field name="audit.key">priv_esc_group</field>
+    <description>Possible privilege escalation: privileged group or sudoers file write detected</description>
+    <mitre>
+      <id>T1098.007</id>
+    </mitre>
+  </rule>
+
+  <rule id="100205" level="14">
+    <if_sid>80700</if_sid>
+    <match type="pcre2">a0="(?:usermod|groupmod)"</match>
+    <field name="audit.execve.a2" type="pcre2">^(sudo|wheel|adm|root|shadow|disk)$</field>
+    <description>Possible privilege escalation: privileged group referenced in user management command — "$(audit.execve.a2)"</description>
+    <mitre>
+      <id>T1098.007</id>
+    </mitre>
+  </rule>
+
+  <rule id="100206" level="12">
+    <if_sid>550</if_sid>
+    <field name="file" type="pcre2">^\/etc\/(?:group|gshadow|sudoers(?:\.d\/.+)?)$</field>
+    <description>Possible privilege escalation: FIM detected a change to a group membership or sudoers file — $(file)</description>
+    <mitre>
+      <id>T1098.007</id>
+    </mitre>
+  </rule>

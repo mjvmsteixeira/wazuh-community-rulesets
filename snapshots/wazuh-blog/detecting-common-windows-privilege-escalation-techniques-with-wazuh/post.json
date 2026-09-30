@@ -1,0 +1,14 @@
+{
+ "url": "https://wazuh.com/blog/detecting-common-windows-privilege-escalation-techniques-with-wazuh/",
+ "title": "Detecting common Windows privilege escalation techniques with Wazuh",
+ "published": "2026-09-24",
+ "modified": "2026-09-24",
+ "files": {
+  "01-config.xml": "2e76aad747ee8df3",
+  "02-rules.xml": "a9b80bdf6b79ec10",
+  "03-rules.xml": "549644c6437703bc",
+  "04-rules.xml": "650b7b24ab6e5bcb",
+  "05-rules.xml": "5eb720e04804561f",
+  "06-rules.xml": "239c26970d674b88"
+ }
+}

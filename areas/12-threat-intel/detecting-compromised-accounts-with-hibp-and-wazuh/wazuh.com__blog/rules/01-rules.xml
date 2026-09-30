@@ -1,0 +1,7 @@
+<group name="hibp, compromised_accounts, security">
+  <rule id="100100" level="10">
+      <decoded_as>json</decoded_as>
+      <match>hibpwned</match>
+      <description>Potential data breach detected for monitored email</description>
+  </rule>
+</group>

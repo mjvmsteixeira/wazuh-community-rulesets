@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/integrating-dependency-track-with-wazuh/",
+ "title": "Integrating Dependency-Track with  Wazuh",
+ "published": "2025-07-24",
+ "modified": "2025-11-28",
+ "files": {
+  "01-config.xml": "991361347dcaf21c",
+  "02-decoders.xml": "49632a8179279260",
+  "03-rules.xml": "00a5f3b8cdbc1f47"
+ }
+}

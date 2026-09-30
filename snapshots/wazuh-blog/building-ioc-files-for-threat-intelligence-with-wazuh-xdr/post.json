@@ -1,0 +1,14 @@
+{
+ "url": "https://wazuh.com/blog/building-ioc-files-for-threat-intelligence-with-wazuh-xdr/",
+ "title": "Building IoC files for threat intelligence with Wazuh XDR",
+ "published": "2023-05-24",
+ "modified": "2024-06-27",
+ "files": {
+  "01-config.xml": "3483d7bf64f8a42b",
+  "02-decoders.xml": "442a42eb42d42366",
+  "03-rules.xml": "6dec12a121042fa6",
+  "04-config.xml": "10fd8cb03e3934de",
+  "05-config.xml": "5e81992dbb2b7f4c",
+  "06-config.xml": "af7fb39c6599973e"
+ }
+}

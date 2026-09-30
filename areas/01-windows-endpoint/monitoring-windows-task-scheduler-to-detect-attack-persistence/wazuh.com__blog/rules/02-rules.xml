@@ -1,0 +1,19 @@
+<group name="windows,sysmon,">
+ 
+  <rule id="115006" level="6">
+    <if_group>windows</if_group>
+    <field name="win.eventdata.ruleName" type="pcre2">^technique_id=T1053,technique_name=Scheduled Task$</field>
+    <field name="win.eventdata.eventType" type="pcre2">^CreateKey$</field>
+    <description>A Newly Scheduled Task has been Detected on $(win.system.computer)</description>
+    <mitre>
+        <id>T1053</id>
+    </mitre>
+  </rule>
+
+  <rule id="115007" level="0">
+    <if_sid>115006</if_sid>
+    <field name="win.eventdata.targetObject" type="pcre2">^HKLM\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Schedule\\\\TaskCache\\\\Tree\\\\Microsoft\\\\Windows\\\\UpdateOrchestrator$</field>
+    <description>Suppression rule for scheduled task created by update orchestrator</description>
+  </rule>
+
+</group>

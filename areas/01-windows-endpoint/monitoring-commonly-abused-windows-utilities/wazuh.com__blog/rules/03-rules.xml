@@ -1,0 +1,28 @@
+<group name="bcdedit">
+  <rule id="100621" level="7">
+    <if_sid>61603</if_sid>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)BCDEdit\s+/set|BCDEdit.exe\s+/set</field>
+    <description>BCDEdit set an entry option.</description>
+    <mitre>
+      <id>T1490</id>
+    </mitre>
+  </rule>
+ 
+  <rule id="100622" level="7">
+    <if_sid>61603</if_sid>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)BCDEdit\s+/f\s+/delete|BCDEdit\s+/delete|BCDEdit.exe\s+/f\s+/delete|BCDEdit.exe\s+/delete</field>
+    <description>BCDEdit deleted an element from a specified entry.</description>
+    <mitre>
+      <id>T1490</id>
+    </mitre>
+  </rule>
+ 
+  <rule id="100623" level="7">
+    <if_sid>61603</if_sid>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)BCDEdit.exe\s+/import|BCDEdit\s+/import</field>
+    <description>BCDEdit imported a file to restore the state of the system store.</description>
+    <mitre>
+      <id>T1490</id>
+    </mitre>
+  </rule>
+</group>

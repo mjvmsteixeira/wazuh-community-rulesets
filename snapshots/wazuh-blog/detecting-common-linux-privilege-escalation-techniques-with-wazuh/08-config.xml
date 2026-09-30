@@ -1,0 +1,6 @@
+<ossec_config>
+  <syscheck>
+    <directories check_all="yes" realtime="yes" restrict="ld.so">/etc</directories>
+    <directories check_all="yes" realtime="yes" report_changes="yes">/etc/ld.so.conf.d</directories>
+  </syscheck>
+</ossec_config>

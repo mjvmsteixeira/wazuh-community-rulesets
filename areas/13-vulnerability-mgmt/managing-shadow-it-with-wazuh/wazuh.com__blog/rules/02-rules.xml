@@ -1,0 +1,16 @@
+<group name="syscollector,">
+  <!-- packages -->
+  <rule id="100310" level="3" >
+      <if_sid>221</if_sid>
+      <field name="type">dbsync_packages</field>
+      <description>Syscollector packages event.</description>
+  </rule>
+
+  <!-- Unauthorized software detection -->  
+  <rule id="100311" level="12" >
+      <if_sid>100310</if_sid>
+      <field name="operation_type">INSERTED</field>
+	  <field name="program.name" type="pcre2">(?i)(teamviewer|ChatGPT)</field>
+      <description>Unauthorized application: $(program.name) detected.</description>
+  </rule>
+</group>

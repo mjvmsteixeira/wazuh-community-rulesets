@@ -1,0 +1,8 @@
+<!-- Rule for USB monitoring in Linux-->
+<group name="Linux, usb,">
+  <rule id="111010" level="7">
+    <field name="serial">\w+</field>
+    <field name="type">usb_device</field>
+    <description>A PNP device $(vendor) $(model) was connected to $(hostname).</description>
+  </rule>
+</group>

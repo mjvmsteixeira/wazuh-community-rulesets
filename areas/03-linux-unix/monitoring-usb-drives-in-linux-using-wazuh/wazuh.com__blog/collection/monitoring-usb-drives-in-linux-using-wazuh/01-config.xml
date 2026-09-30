@@ -1,0 +1,7 @@
+<ossec_config>
+  <!-- Logcollector for udev USB detected Logs -->
+  <localfile>   
+    <log_format>json</log_format>
+    <location>/var/log/usb_detect.json</location>
+  </localfile>
+</ossec_config>

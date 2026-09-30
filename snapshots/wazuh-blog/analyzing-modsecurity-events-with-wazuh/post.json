@@ -1,0 +1,9 @@
+{
+ "url": "https://wazuh.com/blog/analyzing-modsecurity-events-with-wazuh/",
+ "title": "Analyzing ModSecurity events with Wazuh",
+ "published": "2022-02-11",
+ "modified": "2026-09-30",
+ "files": {
+  "01-config.xml": "5f4181cddbc3848b"
+ }
+}

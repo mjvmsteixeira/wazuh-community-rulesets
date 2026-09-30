@@ -2,17 +2,32 @@ repo,path,reason,rules,decoders
 MedNamouchi/SIEM-MikroTik-Wazuh-Graylog,phase1-eve-ng/wazuh/decoders/mikrotik-decoder.xml,versão de laboratório substituída pela de produção (phase2),0,6
 MedNamouchi/SIEM-MikroTik-Wazuh-Graylog,phase1-eve-ng/wazuh/rules/mikrotik-rules.xml,versão de laboratório substituída pela de produção (phase2),7,0
 MikhailKasimov/maltrail-wazuh-decoder-and-rules,0510-maltrail_decoders.xml,substituído pela variante pcre2 do mesmo autor,0,2
-adampielak/wazuh-scripts-resource,wazuh.blog/decoders/cross-platform/local_decoders_cross-platform.xml.tmp,ficheiro temporário duplicado do .xml homónimo,0,338
-adampielak/wazuh-scripts-resource,wazuh.blog/decoders/kubernetes/local_decoders_kubernetes.xml.tmp,ficheiro temporário duplicado do .xml homónimo,0,11
-adampielak/wazuh-scripts-resource,wazuh.blog/decoders/linux/local_decoders_linux.xml.tmp,ficheiro temporário duplicado do .xml homónimo,0,15
-adampielak/wazuh-scripts-resource,wazuh.blog/decoders/macos/local_decoders_macos.xml.tmp,ficheiro temporário duplicado do .xml homónimo,0,27
-adampielak/wazuh-scripts-resource,wazuh.blog/decoders/windows/local_decoders_windows.xml.tmp,ficheiro temporário duplicado do .xml homónimo,0,4
-adampielak/wazuh-scripts-resource,wazuh.blog/rules/cross-platform/local_rules_cross-platform.xml.tmp,ficheiro temporário duplicado do .xml homónimo,750,0
-adampielak/wazuh-scripts-resource,wazuh.blog/rules/dns/local_rules_dns.xml.tmp,ficheiro temporário duplicado do .xml homónimo,15,0
-adampielak/wazuh-scripts-resource,wazuh.blog/rules/kubernetes/local_rules_kubernetes.xml.tmp,ficheiro temporário duplicado do .xml homónimo,51,0
-adampielak/wazuh-scripts-resource,wazuh.blog/rules/linux/local_rules_linux.xml.tmp,ficheiro temporário duplicado do .xml homónimo,43,0
-adampielak/wazuh-scripts-resource,wazuh.blog/rules/macos/local_rules_macos.xml.tmp,ficheiro temporário duplicado do .xml homónimo,13,0
-adampielak/wazuh-scripts-resource,wazuh.blog/rules/windows/local_rules_windows.xml.tmp,ficheiro temporário duplicado do .xml homónimo,81,0
+adampielak/wazuh-scripts-resource,wazuh.blog/decoders/cloud/local_decoders_cloud.xml,"substituído pela captura direta do blog da Wazuh (snapshots/wazuh-blog): um artigo por pasta, IDs originais e link para o artigo",0,41
+adampielak/wazuh-scripts-resource,wazuh.blog/decoders/cross-platform/local_decoders_cross-platform.xml,"substituído pela captura direta do blog da Wazuh (snapshots/wazuh-blog): um artigo por pasta, IDs originais e link para o artigo",0,257
+adampielak/wazuh-scripts-resource,wazuh.blog/decoders/cross-platform/local_decoders_cross-platform.xml.tmp,"substituído pela captura direta do blog da Wazuh (snapshots/wazuh-blog): um artigo por pasta, IDs originais e link para o artigo",0,338
+adampielak/wazuh-scripts-resource,wazuh.blog/decoders/dns/local_decoders_dns.xml,"substituído pela captura direta do blog da Wazuh (snapshots/wazuh-blog): um artigo por pasta, IDs originais e link para o artigo",0,53
+adampielak/wazuh-scripts-resource,wazuh.blog/decoders/kubernetes/local_decoders_kubernetes.xml,"substituído pela captura direta do blog da Wazuh (snapshots/wazuh-blog): um artigo por pasta, IDs originais e link para o artigo",0,11
+adampielak/wazuh-scripts-resource,wazuh.blog/decoders/kubernetes/local_decoders_kubernetes.xml.tmp,"substituído pela captura direta do blog da Wazuh (snapshots/wazuh-blog): um artigo por pasta, IDs originais e link para o artigo",0,11
+adampielak/wazuh-scripts-resource,wazuh.blog/decoders/linux/local_decoders_linux.xml,"substituído pela captura direta do blog da Wazuh (snapshots/wazuh-blog): um artigo por pasta, IDs originais e link para o artigo",0,15
+adampielak/wazuh-scripts-resource,wazuh.blog/decoders/linux/local_decoders_linux.xml.tmp,"substituído pela captura direta do blog da Wazuh (snapshots/wazuh-blog): um artigo por pasta, IDs originais e link para o artigo",0,15
+adampielak/wazuh-scripts-resource,wazuh.blog/decoders/macos/local_decoders_macos.xml,"substituído pela captura direta do blog da Wazuh (snapshots/wazuh-blog): um artigo por pasta, IDs originais e link para o artigo",0,28
+adampielak/wazuh-scripts-resource,wazuh.blog/decoders/macos/local_decoders_macos.xml.tmp,"substituído pela captura direta do blog da Wazuh (snapshots/wazuh-blog): um artigo por pasta, IDs originais e link para o artigo",0,27
+adampielak/wazuh-scripts-resource,wazuh.blog/decoders/windows/local_decoders_windows.xml,"substituído pela captura direta do blog da Wazuh (snapshots/wazuh-blog): um artigo por pasta, IDs originais e link para o artigo",0,3
+adampielak/wazuh-scripts-resource,wazuh.blog/decoders/windows/local_decoders_windows.xml.tmp,"substituído pela captura direta do blog da Wazuh (snapshots/wazuh-blog): um artigo por pasta, IDs originais e link para o artigo",0,4
+adampielak/wazuh-scripts-resource,wazuh.blog/rules/cloud/local_rules_cloud.xml,"substituído pela captura direta do blog da Wazuh (snapshots/wazuh-blog): um artigo por pasta, IDs originais e link para o artigo",36,0
+adampielak/wazuh-scripts-resource,wazuh.blog/rules/cross-platform/local_rules_cross-platform.xml,"substituído pela captura direta do blog da Wazuh (snapshots/wazuh-blog): um artigo por pasta, IDs originais e link para o artigo",751,0
+adampielak/wazuh-scripts-resource,wazuh.blog/rules/cross-platform/local_rules_cross-platform.xml.tmp,"substituído pela captura direta do blog da Wazuh (snapshots/wazuh-blog): um artigo por pasta, IDs originais e link para o artigo",750,0
+adampielak/wazuh-scripts-resource,wazuh.blog/rules/dns/local_rules_dns.xml,"substituído pela captura direta do blog da Wazuh (snapshots/wazuh-blog): um artigo por pasta, IDs originais e link para o artigo",15,0
+adampielak/wazuh-scripts-resource,wazuh.blog/rules/dns/local_rules_dns.xml.tmp,"substituído pela captura direta do blog da Wazuh (snapshots/wazuh-blog): um artigo por pasta, IDs originais e link para o artigo",15,0
+adampielak/wazuh-scripts-resource,wazuh.blog/rules/kubernetes/local_rules_kubernetes.xml,"substituído pela captura direta do blog da Wazuh (snapshots/wazuh-blog): um artigo por pasta, IDs originais e link para o artigo",51,0
+adampielak/wazuh-scripts-resource,wazuh.blog/rules/kubernetes/local_rules_kubernetes.xml.tmp,"substituído pela captura direta do blog da Wazuh (snapshots/wazuh-blog): um artigo por pasta, IDs originais e link para o artigo",51,0
+adampielak/wazuh-scripts-resource,wazuh.blog/rules/linux/local_rules_linux.xml,"substituído pela captura direta do blog da Wazuh (snapshots/wazuh-blog): um artigo por pasta, IDs originais e link para o artigo",43,0
+adampielak/wazuh-scripts-resource,wazuh.blog/rules/linux/local_rules_linux.xml.tmp,"substituído pela captura direta do blog da Wazuh (snapshots/wazuh-blog): um artigo por pasta, IDs originais e link para o artigo",43,0
+adampielak/wazuh-scripts-resource,wazuh.blog/rules/macos/local_rules_macos.xml,"substituído pela captura direta do blog da Wazuh (snapshots/wazuh-blog): um artigo por pasta, IDs originais e link para o artigo",13,0
+adampielak/wazuh-scripts-resource,wazuh.blog/rules/macos/local_rules_macos.xml.tmp,"substituído pela captura direta do blog da Wazuh (snapshots/wazuh-blog): um artigo por pasta, IDs originais e link para o artigo",13,0
+adampielak/wazuh-scripts-resource,wazuh.blog/rules/mongodb/local_rules_mongodb.xml,"substituído pela captura direta do blog da Wazuh (snapshots/wazuh-blog): um artigo por pasta, IDs originais e link para o artigo",20,0
+adampielak/wazuh-scripts-resource,wazuh.blog/rules/windows/local_rules_windows.xml,"substituído pela captura direta do blog da Wazuh (snapshots/wazuh-blog): um artigo por pasta, IDs originais e link para o artigo",81,0
+adampielak/wazuh-scripts-resource,wazuh.blog/rules/windows/local_rules_windows.xml.tmp,"substituído pela captura direta do blog da Wazuh (snapshots/wazuh-blog): um artigo por pasta, IDs originais e link para o artigo",81,0
 bayusky/wazuh-custom-rules-and-decoders,sysmon/255000-sysmon_rules.xml,cópia de sametsazak/sysmon,63,0
 captainobvious1911/wazuh_windows_rules,100_logon_events_windows.xml,versão anterior de captainobvious-sec/wazuh-field-notes (mesmo autor),19,0
 captainobvious1911/wazuh_windows_rules,101-ps_events_windows.xml,versão anterior de captainobvious-sec/wazuh-field-notes (mesmo autor),33,0
@@ -186,7 +201,13 @@ zz-security/wazuh-ruleset,rules/0915-win-powershell_rules.xml,cópia de um rules
 zz-security/wazuh-ruleset,rules/0920-oracledb_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),2,0
 zz-security/wazuh-ruleset,rules/0925-eset-remote_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),9,0
 zz-security/wazuh-ruleset,rules/0935-cloudflare-waf_rules.xml,cópia de um ruleset oficial antigo (4050 IDs oficiais),17,0
-bayusky/wazuh-custom-rules-and-decoders,decoders/webshell_command_decoder.xml,duplicado byte-a-byte de TheMuntu/Wazuh-Detection:Vulnerabilities/Webshell detection/local_decoders.xml (introduzido 2023-01-19; este 2024-09-19),0,1
+TheMuntu/Wazuh-Detection,Adversary emulation/Monitoring remote OpenVPN connections with GeoIP and Wazuh/decoders/local_decoder.xml,duplicado byte-a-byte de wazuh.com/blog:monitoring-remote-openvpn-connections-with-geoip-and-wazuh-xdr/02-decoders.xml (introduzido 2023-01-26; este 2023-02-14),0,4
+TheMuntu/Wazuh-Detection,Adversary emulation/Monitoring remote OpenVPN connections with GeoIP and Wazuh/rules/local_rules.xml,duplicado byte-a-byte de wazuh.com/blog:monitoring-remote-openvpn-connections-with-geoip-and-wazuh-xdr/03-rules.xml (introduzido 2023-01-26; este 2023-02-14),2,0
+TheMuntu/Wazuh-Detection,Malware/Raspberry Robin worms/raspberry_robin.xml,duplicado byte-a-byte de wazuh.com/blog:using-wazuh-to-detect-raspberry-robin-worms/02-rules.xml (introduzido 2022-11-17; este 2023-01-19),6,0
+TheMuntu/Wazuh-Detection,Malware/RedLine Infostealer/redline_infostealer.xml,duplicado byte-a-byte de wazuh.com/blog:how-to-detect-redline-infostealer-with-wazuh/02-rules.xml (introduzido 2023-02-16; este 2023-02-18),5,0
+TheMuntu/Wazuh-Detection,Vulnerabilities/Apache text4shell/text4shell.xml,duplicado byte-a-byte de wazuh.com/blog:detecting-apache-text4shell-cve-2022-42889-with-wazuh/02-rules.xml (introduzido 2022-12-28; este 2023-01-19),1,0
+TheMuntu/Wazuh-Detection,Vulnerabilities/Webshell detection/local_decoders.xml,duplicado byte-a-byte de wazuh.com/blog:web-shell-attack-detection-with-wazuh/06-decoders.xml (introduzido 2023-01-05; este 2023-01-19),0,1
+bayusky/wazuh-custom-rules-and-decoders,decoders/webshell_command_decoder.xml,duplicado byte-a-byte de wazuh.com/blog:web-shell-attack-detection-with-wazuh/06-decoders.xml (introduzido 2023-01-05; este 2024-09-19),0,1
 bret99/wazuh_custom_rules,bitrix/local_decoder.xml,duplicado byte-a-byte de adampielak/wazuh_custom_rules:bitrix/local_decoder.xml (introduzido 2025-06-05; este 2025-06-05),0,12
 bret99/wazuh_custom_rules,bitrix/local_rules.xml,duplicado byte-a-byte de adampielak/wazuh_custom_rules:bitrix/local_rules.xml (introduzido 2025-06-05; este 2025-06-05),6,0
 bret99/wazuh_custom_rules,blocked_AD_users_connections/local_rules.xml,duplicado byte-a-byte de adampielak/wazuh_custom_rules:blocked_AD_users_connections/local_rules.xml (introduzido 2025-06-05; este 2025-06-05),1,0
@@ -205,3 +226,31 @@ bret99/wazuh_custom_rules,suspicious_processes/local_rules.xml,duplicado byte-a-
 bret99/wazuh_custom_rules,vmware/local_rules.xml,duplicado byte-a-byte de adampielak/wazuh_custom_rules:vmware/local_rules.xml (introduzido 2025-06-05; este 2025-06-05),4,0
 hawkteam404/Wazuh,Wazuh-Rule-Custom/Mailtrail/maltrail_decoders.xml,duplicado byte-a-byte de socfortress/Wazuh-Rules:Maltrail/maltrail_decoders.xml (introduzido 2023-03-23; este 2025-09-30),0,2
 hawkteam404/Wazuh,Wazuh-Rule-Custom/OPNSense/opnsense_rules.xml,duplicado byte-a-byte de sanesecurityguy/opnsense-ruleset-for-wazuh:etc/rules/opnsense_rules.xml (introduzido 2023-09-03; este 2025-09-30),3,0
+wazuh.com/blog,adversary-emulation-on-aws-with-stratus-red-team-and-wazuh/02-rules.xml,duplicado byte-a-byte de TheMuntu/Wazuh-Detection:Adversary emulation/Adversary emulation on AWS with Stratus Red Team and Wazuh/amazon_rules.xml (introduzido 2023-02-09; este 2023-02-09),5,0
+wazuh.com/blog,blackbit-ransomware-detection-with-wazuh/03-rules.xml,duplicado byte-a-byte de wazuh.com/blog:limerat-detection/03-rules.xml (introduzido 2023-06-15; este 2023-11-15),2,0
+wazuh.com/blog,blackbit-ransomware-detection-with-wazuh/05-decoders.xml,duplicado byte-a-byte de wazuh.com/blog:limerat-detection/05-decoders.xml (introduzido 2023-06-15; este 2023-11-15),0,4
+wazuh.com/blog,blackbit-ransomware-detection-with-wazuh/06-rules.xml,duplicado byte-a-byte de wazuh.com/blog:detecting-njrat-malware/06-rules.xml (introduzido 2023-08-17; este 2023-11-15),4,0
+wazuh.com/blog,crosslock-ransomware-detection/06-rules.xml,duplicado byte-a-byte de wazuh.com/blog:detecting-and-removing-whispergate-malware/05-rules.xml (introduzido 2022-07-29; este 2023-07-28),2,0
+wazuh.com/blog,detect-and-respond-to-blacksuit-ransomware-with-wazuh/03-rules.xml,duplicado byte-a-byte de wazuh.com/blog:kuiper-ransomware-detection-and-response/03-rules.xml (introduzido 2024-04-11; este 2024-11-13),2,0
+wazuh.com/blog,detect-and-respond-to-blacksuit-ransomware-with-wazuh/05-decoders.xml,duplicado byte-a-byte de wazuh.com/blog:limerat-detection/05-decoders.xml (introduzido 2023-06-15; este 2024-11-13),0,4
+wazuh.com/blog,detect-and-respond-to-blacksuit-ransomware-with-wazuh/06-rules.xml,duplicado byte-a-byte de wazuh.com/blog:kuiper-ransomware-detection-and-response/06-rules.xml (introduzido 2024-04-11; este 2024-11-13),4,0
+wazuh.com/blog,detecting-and-responding-mamona-ransomware-with-wazuh/04-decoders.xml,duplicado byte-a-byte de wazuh.com/blog:detecting-medusa-ransomware-with-wazuh/05-decoders.xml (introduzido 2025-04-24; este 2025-07-01),0,4
+wazuh.com/blog,detecting-and-responding-to-apos-malware-with-wazuh/04-decoders.xml,duplicado byte-a-byte de wazuh.com/blog:detecting-medusa-ransomware-with-wazuh/05-decoders.xml (introduzido 2025-04-24; este 2025-09-09),0,4
+wazuh.com/blog,detecting-and-responding-to-cephalus-ransomware-with-wazuh/03-decoders.xml,duplicado byte-a-byte de wazuh.com/blog:detecting-medusa-ransomware-with-wazuh/05-decoders.xml (introduzido 2025-04-24; este 2025-12-26),0,4
+wazuh.com/blog,detecting-and-responding-to-funklocker-ransomware-with-wazuh/03-decoders.xml,duplicado byte-a-byte de wazuh.com/blog:detecting-medusa-ransomware-with-wazuh/05-decoders.xml (introduzido 2025-04-24; este 2025-11-20),0,4
+wazuh.com/blog,detecting-and-responding-to-greenblood-ransomware-with-wazuh/03-decoders.xml,duplicado byte-a-byte de wazuh.com/blog:detecting-medusa-ransomware-with-wazuh/05-decoders.xml (introduzido 2025-04-24; este 2026-03-12),0,4
+wazuh.com/blog,detecting-and-responding-to-salat-stealer-with-wazuh/05-rules.xml,duplicado byte-a-byte de wazuh.com/blog:detecting-gunra-ransomware-with-wazuh/05-rules.xml (introduzido 2025-10-07; este 2026-02-26),2,0
+wazuh.com/blog,detecting-asyncrat-with-wazuh/06-rules.xml,duplicado byte-a-byte de wazuh.com/blog:detecting-and-removing-whispergate-malware/05-rules.xml (introduzido 2022-07-29; este 2024-02-08),2,0
+wazuh.com/blog,detecting-brain-cipher-ransomware-with-wazuh/05-decoders.xml,duplicado byte-a-byte de wazuh.com/blog:limerat-detection/05-decoders.xml (introduzido 2023-06-15; este 2025-02-04),0,4
+wazuh.com/blog,detecting-doge-big-balls-ransomware-with-wazuh/06-decoders.xml,duplicado byte-a-byte de wazuh.com/blog:detecting-medusa-ransomware-with-wazuh/05-decoders.xml (introduzido 2025-04-24; este 2025-06-26),0,4
+wazuh.com/blog,detecting-lynx-ransomware-with-wazuh/06-decoders.xml,duplicado byte-a-byte de wazuh.com/blog:ransomware-protection-on-windows-with-wazuh/07-decoders.xml (introduzido 2024-10-17; este 2025-02-24),0,2
+wazuh.com/blog,detecting-medusa-ransomware-with-wazuh/03-rules.xml,duplicado byte-a-byte de wazuh.com/blog:detecting-brain-cipher-ransomware-with-wazuh/03-rules.xml (introduzido 2025-02-04; este 2025-04-24),2,0
+wazuh.com/blog,detecting-medusa-ransomware-with-wazuh/06-rules.xml,duplicado byte-a-byte de wazuh.com/blog:detecting-brain-cipher-ransomware-with-wazuh/06-rules.xml (introduzido 2025-02-04; este 2025-04-24),4,0
+wazuh.com/blog,detecting-njrat-malware/03-rules.xml,duplicado byte-a-byte de wazuh.com/blog:limerat-detection/03-rules.xml (introduzido 2023-06-15; este 2023-08-17),2,0
+wazuh.com/blog,detecting-njrat-malware/05-decoders.xml,duplicado byte-a-byte de wazuh.com/blog:limerat-detection/05-decoders.xml (introduzido 2023-06-15; este 2023-08-17),0,4
+wazuh.com/blog,detecting-peaklight-malware-with-wazuh/03-decoders.xml,duplicado byte-a-byte de wazuh.com/blog:limerat-detection/05-decoders.xml (introduzido 2023-06-15; este 2025-03-06),0,4
+wazuh.com/blog,kuiper-ransomware-detection-and-response/05-decoders.xml,duplicado byte-a-byte de wazuh.com/blog:limerat-detection/05-decoders.xml (introduzido 2023-06-15; este 2024-04-11),0,4
+wazuh.com/blog,meduza-stealer-detection-and-mitigation/03-rules.xml,duplicado byte-a-byte de wazuh.com/blog:limerat-detection/03-rules.xml (introduzido 2023-06-15; este 2024-01-11),2,0
+wazuh.com/blog,meduza-stealer-detection-and-mitigation/05-decoders.xml,duplicado byte-a-byte de wazuh.com/blog:limerat-detection/05-decoders.xml (introduzido 2023-06-15; este 2024-01-11),0,4
+wazuh.com/blog,meduza-stealer-detection-and-mitigation/06-rules.xml,duplicado byte-a-byte de wazuh.com/blog:limerat-detection/06-rules.xml (introduzido 2023-06-15; este 2024-01-11),4,0
+wazuh.com/blog,monitoring-vmware-esxi-with-wazuh/05-decoders.xml,duplicado byte-a-byte de wazuh.com/blog:detecting-sliver-c2-framework-with-wazuh/03-decoders.xml (introduzido 2023-04-05; este 2023-05-18),0,2

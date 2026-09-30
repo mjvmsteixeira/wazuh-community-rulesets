@@ -1,0 +1,15 @@
+{
+ "url": "https://wazuh.com/blog/creating-decoders-and-rules-from-scratch/",
+ "title": "Creating decoders and rules from scratch",
+ "published": "2020-04-30",
+ "modified": "2026-09-30",
+ "files": {
+  "01-decoders.xml": "290abe10ad3e2766",
+  "02-decoders.xml": "8499747e9431eee6",
+  "03-decoders.xml": "e37f1c9df45018b9",
+  "04-decoders.xml": "72c51d76a06a0e17",
+  "05-rules.xml": "f64a1cd58ffd80df",
+  "06-rules.xml": "e89944b7254db33d",
+  "07-config.xml": "b61f5197ff84f7fe"
+ }
+}

@@ -1,0 +1,9 @@
+<decoder name="Wazuh_Ransomware">
+  <prematch>Wazuh_Ransomware_Protection:</prematch>
+</decoder>
+
+<decoder name="Wazuh_Ransomware_child">
+  <parent>Wazuh_Ransomware</parent>
+  <regex type="pcre2">Wazuh_Ransomware_Protection: (.*)</regex>
+  <order>rollback_status</order>
+</decoder>

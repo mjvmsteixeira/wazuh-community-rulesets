@@ -1,0 +1,7 @@
+<!-- Sliver mtls listening on port 8888 -->
+  <localfile>
+    <log_format>full_command</log_format>
+    <command>netstat -ano | findstr :8888 </command>
+    <alias>Detecting possible Sliver communication</alias>
+    <frequency>300</frequency>
+  </localfile>

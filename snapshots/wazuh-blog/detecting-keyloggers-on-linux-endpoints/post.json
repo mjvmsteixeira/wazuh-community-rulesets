@@ -1,0 +1,9 @@
+{
+ "url": "https://wazuh.com/blog/detecting-keyloggers-on-linux-endpoints/",
+ "title": "Detecting keyloggers (T1056.001) on Linux endpoints",
+ "published": "2023-12-28",
+ "modified": "2025-05-21",
+ "files": {
+  "01-config.xml": "a05f323f32b2100c"
+ }
+}

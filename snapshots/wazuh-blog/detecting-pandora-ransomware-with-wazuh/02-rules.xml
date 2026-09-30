@@ -1,0 +1,9 @@
+<group name="syscheck,malware,">
+
+  <rule id="100008" level="10">
+    <if_sid>554</if_sid>
+    <field name="sha256">5b56c5d86347e164c6e571c86dbf5b1535eae6b979fede6ed66b01e79ea33b7b</field>
+    <description>Malware Hash Match: Pandora Ransomware Executable Detected</description>
+  </rule>
+
+</group>

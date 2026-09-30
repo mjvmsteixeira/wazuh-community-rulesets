@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/integrating-mimecast-with-wazuh/",
+ "title": "Integrating Mimecast with Wazuh",
+ "published": "2024-05-02",
+ "modified": "2024-06-24",
+ "files": {
+  "01-config.xml": "b3387d41bc18cfbb",
+  "02-decoders.xml": "c713400fce875c51",
+  "03-rules.xml": "8cbce064fe65bfbd"
+ }
+}

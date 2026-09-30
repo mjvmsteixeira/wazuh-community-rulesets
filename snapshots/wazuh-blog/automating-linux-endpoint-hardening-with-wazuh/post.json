@@ -1,0 +1,9 @@
+{
+ "url": "https://wazuh.com/blog/automating-linux-endpoint-hardening-with-wazuh/",
+ "title": "Automating Linux endpoint hardening with Wazuh",
+ "published": "2026-04-09",
+ "modified": "2026-04-09",
+ "files": {
+  "01-config.xml": "2430be00a30e6452"
+ }
+}

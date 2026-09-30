@@ -1,0 +1,9 @@
+{
+ "url": "https://wazuh.com/blog/detection-with-opensearch-integration/",
+ "title": "Extending Wazuh detection with OpenSearch integration",
+ "published": "2023-10-05",
+ "modified": "2024-07-08",
+ "files": {
+  "01-config.xml": "7113a17aa8fa5735"
+ }
+}

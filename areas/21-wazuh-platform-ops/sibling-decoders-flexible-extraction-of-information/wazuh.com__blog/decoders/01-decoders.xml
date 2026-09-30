@@ -1,0 +1,5 @@
+<decoder name="securityapp">
+  <program_name>securityapp</program_name>
+  <regex>(\w+): srcuser="(\.+)" action="(\.+)" dstusr="(\.+)"</regex>
+  <order>type,srcuser,action,dstuser</order>
+</decoder>

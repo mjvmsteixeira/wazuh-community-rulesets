@@ -1,0 +1,41 @@
+<ossec_config>
+  <wodle name="azure-logs">
+    <disabled>no</disabled>
+    <run_on_start>yes</run_on_start>
+    <interval>5m</interval>
+
+    <log_analytics>
+      <auth_path>/var/ossec/wodles/credentials/log_analytics_credentials</auth_path>
+      <tenantdomain><PRIMARY_DOMAIN></tenantdomain>
+
+      <request>
+        <tag>azure-activity</tag>
+        <query>AzureActivity</query>
+        <workspace><LOG_ANALYTICS_WORKSPACE_ID></workspace>
+        <time_offset>1d</time_offset>
+      </request>
+
+      <request>
+        <tag>entra-audit</tag>
+        <query>AuditLogs</query>
+        <workspace><LOG_ANALYTICS_WORKSPACE_ID></workspace>
+        <time_offset>1d</time_offset>
+      </request>
+
+      <request>
+        <tag>entra-signin</tag>
+        <query>SigninLogs</query>
+        <workspace><LOG_ANALYTICS_WORKSPACE_ID></workspace>
+        <time_offset>1d</time_offset>
+      </request>
+
+      <request>
+        <tag>azure-storage</tag>
+        <query>StorageBlobLogs</query>
+        <workspace><LOG_ANALYTICS_WORKSPACE_ID></workspace>
+        <time_offset>1d</time_offset>
+      </request>
+
+    </log_analytics>
+  </wodle>
+</ossec_config>

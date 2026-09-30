@@ -1,0 +1,48 @@
+<group name="venom_rat,syscheck">
+
+  <!-- Rogue svchost.exe creation -->
+  <rule id="100950" level="12">
+    <if_sid>61613</if_sid>
+    <field name="win.eventdata.image" type="pcre2">\.exe</field>
+    <field name="win.eventdata.targetFilename" type="pcre2">(?i)[c-z]:\\\\Users\\\\.+\\\\AppData\\\\Roaming\\\\svchost\.exe</field>
+    <description>Potential Venom RAT activity detected: svchost.exe created at $(win.eventdata.targetFilename) by $(win.eventdata.image).</description>
+    <mitre>
+      <id>T1036</id>
+    </mitre>
+  </rule>
+
+  <!-- Registry key creation for persistence -->
+  <rule id="100951" level="12">
+    <if_sid>92300</if_sid>
+    <field name="win.eventdata.image" type="pcre2">(?i)[c-z]:(\\\\Users\\\\.+\\\\)</field>
+    <field name="win.eventdata.details" type="pcre2">(?i)[c-z]:\\\\Users\\\\.+\\\\AppData\\\\Roaming\\\\svchost\.exe</field>
+    <description>Potential Venom RAT activity detected:  $(win.eventdata.details) added itself to the Registry as a startup program to establish persistence.</description>
+    <mitre>
+      <id>T1547.001</id>
+    </mitre>
+  </rule>
+
+<!-- Suspicious .tmp.bat file creation -->
+  <rule id="100952" level="12">
+    <if_sid>92204</if_sid>
+    <field name="win.eventdata.image" type="pcre2">\.exe</field>
+    <field name="win.eventdata.targetFilename" type="pcre2">(?i)[c-z]:\\\\Users\\\\.+\\\\AppData\\\\Local\\\\Temp\\\\.+\.tmp\.bat</field>
+    <description>Potential Venom RAT activity detected: Suspicious .tmp.bat file $(win.eventdata.targetFilename) added to Temp folder by $(win.eventdata.image).</description>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+  </rule>
+
+<!-- Suspicious .tmp.bat file run in command line-->
+  <rule id="100953" level="15">
+    <if_sid>61603</if_sid>
+    <field name="win.eventdata.parentImage" type="pcre2">(?i)cmd\.exe</field>
+    <field name="win.eventdata.parentCommandLine" type="pcre2">(?i)\s\/C\s.*\.tmp\.bat</field>
+    <description>Venom RAT activity detected: Suspicious .tmp.bat file executed by cmd.</description>
+    <mitre>
+      <id>T1087</id>
+      <id>T1059.003</id>
+    </mitre>
+  </rule>
+
+</group>

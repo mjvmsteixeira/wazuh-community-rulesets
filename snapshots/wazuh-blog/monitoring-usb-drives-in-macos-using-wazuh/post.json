@@ -1,0 +1,12 @@
+{
+ "url": "https://wazuh.com/blog/monitoring-usb-drives-in-macos-using-wazuh/",
+ "title": "Monitoring USB drives in macOS using Wazuh",
+ "published": "2024-02-02",
+ "modified": "2024-07-04",
+ "files": {
+  "01-config.xml": "b672e451e7b341ad",
+  "02-rules.xml": "f271bf8e509c73cd",
+  "03-config.xml": "4b9ca5ed552413f1",
+  "04-rules.xml": "b78e89d74dc40c33"
+ }
+}

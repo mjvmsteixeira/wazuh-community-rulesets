@@ -1,0 +1,13 @@
+{
+ "url": "https://wazuh.com/blog/integrating-sentinelone-xdr-with-wazuh/",
+ "title": "Integrating SentinelOne XDR with Wazuh",
+ "published": "2024-02-15",
+ "modified": "2024-07-04",
+ "files": {
+  "01-config.xml": "40550fd1c06c53fd",
+  "02-decoders.xml": "f045f41baad26c89",
+  "03-rules.xml": "b44dc0afafea8e17",
+  "04-config.xml": "f6977cd06758220b",
+  "05-rules.xml": "9000ae0ab0f8d706"
+ }
+}

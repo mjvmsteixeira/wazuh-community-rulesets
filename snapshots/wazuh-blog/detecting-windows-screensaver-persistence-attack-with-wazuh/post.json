@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/detecting-windows-screensaver-persistence-attack-with-wazuh/",
+ "title": "Detecting Windows Screensaver persistence attack with Wazuh",
+ "published": "2022-09-01",
+ "modified": "2024-06-07",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-rules.xml": "2fa9816b3bd45e26"
+ }
+}

@@ -1,0 +1,5 @@
+<ossec_config>
+  <syscheck>
+    <directories realtime="yes">C:\Users\*\Downloads</directories>
+  </syscheck>
+</ossec_config>

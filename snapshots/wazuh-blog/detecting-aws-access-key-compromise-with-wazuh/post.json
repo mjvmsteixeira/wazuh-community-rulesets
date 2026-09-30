@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/detecting-aws-access-key-compromise-with-wazuh/",
+ "title": "Detecting AWS access key compromise with Wazuh",
+ "published": "2026-09-03",
+ "modified": "2026-09-03",
+ "files": {
+  "01-config.xml": "48a02bcf6af8710d",
+  "02-config.xml": "37a1b896106d733a",
+  "03-rules.xml": "93a38e52100dfe8a"
+ }
+}

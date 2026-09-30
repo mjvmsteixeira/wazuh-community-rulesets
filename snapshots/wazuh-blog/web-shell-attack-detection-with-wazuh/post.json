@@ -1,0 +1,15 @@
+{
+ "url": "https://wazuh.com/blog/web-shell-attack-detection-with-wazuh/",
+ "title": "Web shell attack detection with Wazuh",
+ "published": "2023-01-05",
+ "modified": "2025-08-07",
+ "files": {
+  "01-rules.xml": "4ac74b1947f9eea1",
+  "02-config.xml": "19679bc1223c7516",
+  "03-config.xml": "d80ee3d824277254",
+  "04-rules.xml": "ea0b1f522c4bf3d1",
+  "05-config.xml": "8580472c9b5b0443",
+  "06-decoders.xml": "ed676ca495239120",
+  "07-rules.xml": "54cee75ef502e925"
+ }
+}

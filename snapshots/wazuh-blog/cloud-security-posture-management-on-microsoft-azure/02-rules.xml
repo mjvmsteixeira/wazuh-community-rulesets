@@ -1,0 +1,59 @@
+<group name="azure,">
+
+  <rule id="100200" level="10">
+    <if_sid>87801</if_sid>
+    <field name="Type">SecurityRecommendation</field>
+    <description>Azure Security Posture: $(RecommendationName).</description>
+  </rule>
+  
+  <rule id="100201" level="10">
+    <if_sid>87801</if_sid>
+    <field name="Type">SecurityAlert</field>
+    <field name="ResourceId">Microsoft.Compute</field>
+    <description>Azure Security Posture: $(DisplayName).</description>
+    <mitre>
+      <id>T1651</id>
+    </mitre>
+  </rule>
+
+  <rule id="100202" level="10">
+    <if_sid>87801</if_sid>
+    <field name="Type">SecurityAlert</field>
+    <field name="ResourceId">microsoft.keyvault</field>
+    <description>Azure Security Posture: $(DisplayName).</description>
+    <mitre>
+      <id>T1098.004</id>
+    </mitre>
+  </rule>
+
+  <rule id="100203" level="10">
+    <if_sid>87801</if_sid>
+    <field name="Type">SecurityAlert</field>
+    <field name="ResourceId">Microsoft.Web</field>
+    <description>Azure Security Posture: $(DisplayName).</description>
+    <mitre>
+      <id>T1648</id>
+    </mitre>
+  </rule>
+  
+  <rule id="100204" level="10">
+    <if_sid>87801</if_sid>
+    <field name="Type">SecurityAlert</field>
+    <field name="ResourceId">Microsoft.ApiManagement</field>
+    <description>Azure Security Posture: $(DisplayName).</description>
+    <mitre>
+      <id>T1059.009</id>
+    </mitre>
+  </rule> 
+  
+  <rule id="100205" level="10">
+    <if_sid>87801</if_sid>
+    <field name="Type">SecurityAlert</field>
+    <field name="ResourceId">Microsoft.ContainerService|cluster</field>
+    <description>Azure Security Posture: $(DisplayName).</description>
+    <mitre>
+      <id>T1609</id>
+    </mitre>
+  </rule> 
+
+</group>

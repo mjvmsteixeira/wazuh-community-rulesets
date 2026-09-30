@@ -1,0 +1,19 @@
+<group name="vssadmin">
+  <rule id="100631" level="7">
+    <if_sid>61603</if_sid>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)VSSADMIN\s+delete\s+shadows|VSSADMIN.exe\s+delete\s+shadows</field>
+    <description>vssadmin deleted shadow copies.</description>
+    <mitre>
+      <id>T1490</id>
+    </mitre>
+  </rule>
+ 
+  <rule id="100632" level="7">
+    <if_sid>61603</if_sid>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)VSSADMIN\s+resize\s+shadowstorage|VSSADMIN.exe\s+resize\s+shadowstorage</field>
+    <description>vssadmin resized a shadow copy storage.</description>
+    <mitre>
+      <id>T1490</id>
+    </mitre>
+  </rule>
+</group>

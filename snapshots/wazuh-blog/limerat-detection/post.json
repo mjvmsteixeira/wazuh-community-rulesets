@@ -1,0 +1,14 @@
+{
+ "url": "https://wazuh.com/blog/limerat-detection/",
+ "title": "LimeRAT detection and response with Wazuh",
+ "published": "2023-06-15",
+ "modified": "2024-06-27",
+ "files": {
+  "01-config.xml": "3d0c0283aa5dfb67",
+  "02-rules.xml": "e9f4ecc03e171dda",
+  "03-rules.xml": "b91c80fa6308ea65",
+  "04-config.xml": "7fd44cd59211b10b",
+  "05-decoders.xml": "8493094f61602cc6",
+  "06-rules.xml": "97e4831394fa24ff"
+ }
+}

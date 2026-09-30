@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/detecting-impacket-with-wazuh/",
+ "title": "Detecting Impacket with Wazuh",
+ "published": "2025-04-10",
+ "modified": "2025-05-21",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-rules.xml": "8ce836f09e943e9b"
+ }
+}

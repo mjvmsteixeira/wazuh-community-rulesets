@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/docker-container-security-monitoring-with-wazuh/",
+ "title": "Docker container security monitoring with Wazuh",
+ "published": "2022-11-24",
+ "modified": "2024-06-13",
+ "files": {
+  "01-config.xml": "ef9876b78e00f417",
+  "02-decoders.xml": "8e71e92fe0019459",
+  "03-rules.xml": "9e0afa236c8f0488"
+ }
+}

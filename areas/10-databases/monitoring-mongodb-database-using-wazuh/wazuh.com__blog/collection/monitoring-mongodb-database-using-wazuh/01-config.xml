@@ -1,0 +1,7 @@
+<!-- Configure the Wazuh agent to collect and forward the MongoDB logs to the Wazuh server for analysis --> 
+<ossec_config>
+  <localfile>
+    <log_format>json</log_format>
+    <location>/var/log/mongodb/auditLog.json</location>
+  </localfile>
+</ossec_config>

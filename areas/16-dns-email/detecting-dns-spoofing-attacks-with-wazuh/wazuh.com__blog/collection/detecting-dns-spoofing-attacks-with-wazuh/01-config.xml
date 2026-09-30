@@ -1,0 +1,6 @@
+<ossec_config>
+  <localfile>​
+    <log_format>json</log_format>​
+    <location>/opt/zeek/logs/current/*.log</location>​
+  </localfile>
+</ossec_config>

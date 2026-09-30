@@ -1,0 +1,8 @@
+<ossec_config>
+  <syscheck>
+    <directories check_all="yes" realtime="yes">/etc/systemd/system/</directories>
+    <directories check_all="yes" realtime="yes">/usr/lib/systemd/system/</directories>
+    <directories check_all="yes" realtime="yes">/usr/local/lib/systemd/system/</directories>
+    <directories check_all="yes" realtime="yes">/lib/systemd/system/</directories>
+  </syscheck>
+</ossec_config>

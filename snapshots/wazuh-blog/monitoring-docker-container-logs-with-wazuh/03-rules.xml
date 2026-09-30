@@ -1,0 +1,9 @@
+<group name="docker-log-rule,">
+  <rule id="100009" level="5">
+    <field name="web_action">"GET / HTTP/1.1" 200</field>
+    <description>Docker Container: Successful Web GET request on Container: $(program_name) from $(srcip)</description> <mitre>
+      <id>T1016.001</id>
+    </mitre>
+    <group>docker-log-rule,</group>
+  </rule>
+</group>

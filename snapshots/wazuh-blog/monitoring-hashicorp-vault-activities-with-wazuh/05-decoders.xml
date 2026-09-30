@@ -1,0 +1,9 @@
+<decoder name="vault-seal">
+  <program_name>^vault-seal$</program_name>
+</decoder>
+
+<decoder name="vault-seal-fields">
+  <parent>vault-seal</parent>
+  <regex type="pcre2">(\w+)\s+-\s+(\w.+)</regex>
+  <order>vault_seal_level, vault_seal_message</order>
+</decoder>

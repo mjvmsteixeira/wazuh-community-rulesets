@@ -1,0 +1,11 @@
+<!-- The YARA batch script is executed when a file is added or modified in the Downloads folder monitored by the Wazuh FIM -->
+<command>
+  <name>yara</name>
+  <executable>yara.bat</executable>
+  <timeout_allowed>no</timeout_allowed>
+</command>
+<active-response>
+  <command>yara</command>
+  <location>local</location>
+  <rules_id>100028,100029</rules_id>
+</active-response>

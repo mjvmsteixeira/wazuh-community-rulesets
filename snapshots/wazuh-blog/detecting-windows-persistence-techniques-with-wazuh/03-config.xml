@@ -1,0 +1,4 @@
+<syscheck>
+  <frequency>43200</frequency>
+   <windows_registry arch="both">HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Winlogon</windows_registry>
+</syscheck>

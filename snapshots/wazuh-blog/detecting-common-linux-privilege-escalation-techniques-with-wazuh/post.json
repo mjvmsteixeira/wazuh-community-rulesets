@@ -1,0 +1,19 @@
+{
+ "url": "https://wazuh.com/blog/detecting-common-linux-privilege-escalation-techniques-with-wazuh/",
+ "title": "Detecting common Linux privilege escalation techniques with Wazuh",
+ "published": "2026-07-16",
+ "modified": "2026-07-16",
+ "files": {
+  "01-config.xml": "ec7dc0d8c64a0e97",
+  "02-rules.xml": "7118c42e539dafe2",
+  "03-config.xml": "57966d7d7e3a878f",
+  "04-rules.xml": "1fcb9799a370f633",
+  "05-config.xml": "a3696f5427de460b",
+  "06-rules.xml": "5d7915e361eb6f54",
+  "07-rules.xml": "ec8d769768d6a3b0",
+  "08-config.xml": "18a61d065ed9007a",
+  "09-rules.xml": "c813608635542e72",
+  "10-config.xml": "90ac75a5a5b498bd",
+  "11-rules.xml": "12da710fa6fe8994"
+ }
+}

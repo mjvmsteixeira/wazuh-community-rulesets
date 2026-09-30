@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/monitoring-dhcp-starvation-attack-with-suricata-and-wazuh/",
+ "title": "Monitoring DHCP starvation attack with Suricata and Wazuh",
+ "published": "2023-06-01",
+ "modified": "2024-06-27",
+ "files": {
+  "01-config.xml": "e2ae9e76c69a5a78",
+  "02-rules.xml": "cfea41f144f0b21b"
+ }
+}

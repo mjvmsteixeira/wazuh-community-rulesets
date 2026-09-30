@@ -1,0 +1,28 @@
+<!-- T1574.006 — Dynamic Linker Hijacking -->
+
+  <rule id="100209" level="14">
+    <if_sid>80700</if_sid>
+    <field name="audit.key">priv_esc_dynlinker</field>
+    <description>Possible privilege escalation: dynamic linker config file was written by $(audit.exe) (AUID: $(audit.auid)) — possible LD_PRELOAD hijacking</description>
+    <mitre>
+      <id>T1574.006</id>
+    </mitre>
+  </rule>
+
+  <rule id="100210" level="14">
+    <if_sid>554</if_sid>
+    <field name="file" type="pcre2">^\/etc\/ld\.so(?:\.preload|\.conf(?:\.d\/.+)?)$</field>
+    <description>Possible privilege escalation: FIM detected a new dynamic linker config file — $(file)</description>
+    <mitre>
+      <id>T1574.006</id>
+    </mitre>
+  </rule>
+
+  <rule id="100211" level="14">
+    <if_sid>550</if_sid>
+    <field name="file" type="pcre2">^\/etc\/ld\.so(?:\.preload|\.conf(?:\.d\/.+)?)$</field>
+    <description>Possible privilege escalation: FIM detected a change to a dynamic linker config file — $(file)</description>
+    <mitre>
+      <id>T1574.006</id>
+    </mitre>
+  </rule>

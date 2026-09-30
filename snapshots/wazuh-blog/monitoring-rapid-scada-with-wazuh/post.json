@@ -1,0 +1,13 @@
+{
+ "url": "https://wazuh.com/blog/monitoring-rapid-scada-with-wazuh/",
+ "title": "Monitoring Rapid SCADA with Wazuh",
+ "published": "2025-04-16",
+ "modified": "2025-04-16",
+ "files": {
+  "01-config.xml": "d2735a7a1b8dfa89",
+  "02-rules.xml": "22cdf0630c6775e5",
+  "03-config.xml": "d501ef21f519c0a8",
+  "04-decoders.xml": "6f5bd39e9789b5f5",
+  "05-rules.xml": "03830e478ebaa734"
+ }
+}

@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/monitoring-mariadb-server-with-wazuh/",
+ "title": "Monitoring MariaDB server with Wazuh",
+ "published": "2025-07-30",
+ "modified": "2025-11-28",
+ "files": {
+  "01-decoders.xml": "6b667fda0b87c369",
+  "02-rules.xml": "260d6013305f3099"
+ }
+}

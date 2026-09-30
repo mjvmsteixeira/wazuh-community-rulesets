@@ -1,0 +1,4 @@
+<decoder name="raw_json">
+  <prematch>wazuh-lnkparse: INFO - Scan result: </prematch>
+  <plugin_decoder offset="after_prematch">JSON_Decoder</plugin_decoder>
+</decoder>

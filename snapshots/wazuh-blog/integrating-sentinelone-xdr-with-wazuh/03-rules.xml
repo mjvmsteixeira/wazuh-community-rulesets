@@ -1,0 +1,31 @@
+<!-- Rules to detect SentinelOne events via syslog -->
+
+<!-- SentinelOne logs grouped -->
+<group name="sentinelone">
+  <rule id="105000" level="2">
+    <decoded_as>sentinelone</decoded_as>
+    <description>Logs from SentinelOne.</description>
+  </rule>
+
+  <!-- Rule to detect successfully mitigated threat -->
+  <rule id="105001" level="5">
+    <if_sid>105000</if_sid>
+    <field name="log_message2">Kill performed successfully</field>
+    <description>SentinelOne: Threat $(file_path) successfully mitigated on $(suser).</description>
+  </rule>
+  
+  <!-- Rule to detect active threat -->
+  <rule id="105002" level="10">
+    <if_sid>105000</if_sid>
+    <field name="log_message1">New active threat</field>
+    <description>SentinelOne: $(log_message1) $(file_path) detected on $(endpoint).</description>
+  </rule>
+  
+  <!-- Rules to detect successful threat quarantine -->
+  <rule id="105003" level="5">
+    <if_sid>105000</if_sid>
+    <field name="log_message2">Quarantine performed successfully</field>
+    <description>SentinelOne: Threat file $(file_path) quarantined successfully on $(suser).</description>
+  </rule>
+
+</group>

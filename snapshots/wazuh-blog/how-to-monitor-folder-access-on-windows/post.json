@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/how-to-monitor-folder-access-on-windows/",
+ "title": "How to monitor folder access on Windows",
+ "published": "2020-03-05",
+ "modified": "2023-06-09",
+ "files": {
+  "01-config.xml": "f15de7dc444fa79d",
+  "02-rules.xml": "96ccad0616ef5a90"
+ }
+}

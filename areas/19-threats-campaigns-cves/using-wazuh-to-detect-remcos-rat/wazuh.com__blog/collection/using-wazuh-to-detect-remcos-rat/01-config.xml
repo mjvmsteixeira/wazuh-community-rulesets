@@ -1,0 +1,5 @@
+<!-- Configure Wazuh agent to receive events from Sysmon -->
+<localfile>   
+  <location>Microsoft-Windows-Sysmon/Operational</location>
+  <log_format>eventchannel</log_format>
+</localfile>

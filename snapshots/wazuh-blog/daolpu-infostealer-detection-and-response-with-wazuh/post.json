@@ -1,0 +1,13 @@
+{
+ "url": "https://wazuh.com/blog/daolpu-infostealer-detection-and-response-with-wazuh/",
+ "title": "Daolpu infostealer detection and response with Wazuh",
+ "published": "2024-08-22",
+ "modified": "2024-08-22",
+ "files": {
+  "01-config.xml": "7783c8b105ed341a",
+  "02-rules.xml": "900e095d4344e675",
+  "03-decoders.xml": "a42d3dbfceab0aad",
+  "04-rules.xml": "37ff3818338fc7fe",
+  "05-config.xml": "2875822a2826b295"
+ }
+}

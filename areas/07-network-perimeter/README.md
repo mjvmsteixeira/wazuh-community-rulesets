@@ -27,6 +27,7 @@ Firewalls, routers, switches, VPN, NAC (FortiGate, Sophos, MikroTik, UniFi, Mera
 | hp-router | [sujalthakur-03/Wazuh-Decoders-Rules](https://github.com/sujalthakur-03/Wazuh-Decoders-Rules) | 24 | 12 | yes | yes | manager: remote syslog | no MITRE | — | NONE | 2025-06-25 | — |
 | huawei1-decoder | [Maverick000011/wazuh-custom-decoders](https://github.com/Maverick000011/wazuh-custom-decoders) | 0 | 16 | yes | yes | manager: remote syslog | no MITRE | — | NONE | 2026-09-02 | — |
 | huawei2-decoder | [Maverick000011/wazuh-custom-decoders](https://github.com/Maverick000011/wazuh-custom-decoders) | 0 | 16 | yes | yes | manager: remote syslog | no MITRE | — | NONE | 2026-09-02 | — |
+| integrating-cisco-secure-endpoint | [wazuh.com/blog](https://wazuh.com/blog/) | 5 | 0 | yes | yes | — | no MITRE | — | © Wazuh, Inc. (blog; origem citada) | 2026-09-24 | — |
 | meraki | [cbrede/wazuh-meraki](https://github.com/cbrede/wazuh-meraki) | 0 | 28 | yes | yes | manager: remote syslog | no MITRE | — | NONE | 2024-11-13 | — |
 | meraki | [leperchaun/wazuh-decoders-rules](https://github.com/leperchaun/wazuh-decoders-rules) | 10 | 36 | no | yes (1 warning) | manager: remote syslog | no MITRE | — | GPL-3.0 | 2024-06-16 | — |
 | meraki | [wazuh/integrations](https://github.com/wazuh/integrations) | 34 | 93 | yes | yes | `pack-meraki` | no MITRE | — | AGPL-3.0 | 2026-09-11 | — |
@@ -40,7 +41,7 @@ Firewalls, routers, switches, VPN, NAC (FortiGate, Sophos, MikroTik, UniFi, Mera
 | mikrotik | [sujalthakur-03/Wazuh-Decoders-Rules](https://github.com/sujalthakur-03/Wazuh-Decoders-Rules) | 49 | 34 | yes | yes (4 warnings) | manager: remote syslog | no MITRE | — | NONE | 2025-06-25 | — |
 | mikrotik | [wheelert/wazuh-mikrotik](https://github.com/wheelert/wazuh-mikrotik) | 25 | 13 | yes | yes | manager: remote syslog | no MITRE | — | GPL-3.0 | 2026-04-10 | — |
 | mikrotik | [xArshh/Wazuh-MikroTik-Integration](https://github.com/xArshh/Wazuh-MikroTik-Integration) | 24 | 23 | yes | yes (1 warning) | manager: remote syslog | no MITRE | 1 ok (1 containment) | NONE | 2026-01-01 | — |
-| openvpn-geoip | [TheMuntu/Wazuh-Detection](https://github.com/TheMuntu/Wazuh-Detection) | 2 | 4 | yes | yes | manager: remote syslog | no MITRE | — | NONE | 2024-11-01 | — |
+| monitoring-network-devices | [wazuh.com/blog](https://wazuh.com/blog/) | 5 | 4 | yes | yes | `pack-monitoring-network-devices` | no MITRE | 1 ok (1 containment), 2 broken, 2 destructive without allowlist | © Wazuh, Inc. (blog; origem citada) | 2026-09-24 | — |
 | openvpn | [adampielak/wazuh_custom_rules](https://github.com/adampielak/wazuh_custom_rules) | 4 | 2 | no | no | `pack-openvpn` | 50% of 4 techniques | — | NONE | 2026-06-16 | — |
 | openvpn | [bret99/wazuh_custom_rules](https://github.com/bret99/wazuh_custom_rules) | 6 | 2 | no | no | `pack-openvpn` | 50% of 4 techniques | — | MIT | 2026-08-05 | — |
 | opnsense-naxsi | [socfortress/Wazuh-Rules](https://github.com/socfortress/Wazuh-Rules) | 3 | 8 | yes | yes | `pack-opnsense-naxsi` | 0% of 1 techniques | — | MIT? (README badge, no LICENSE file) | 2026-03-11 | — |

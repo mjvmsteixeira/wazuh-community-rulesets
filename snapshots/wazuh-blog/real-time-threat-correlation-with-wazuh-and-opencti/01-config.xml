@@ -1,0 +1,8 @@
+<ossec_config>
+  <integration>
+    <name>custom-opencti</name>
+    <group>sysmon,suricata,web,syscheck,virustotal,sshd</group>
+    <hook_url><OPENCTI_URL>/graphql</hook_url>
+    <alert_format>json</alert_format>
+  </integration>
+</ossec_config>

@@ -1,0 +1,79 @@
+<group name="meshagent,windows,sysmon">
+
+<!-- MeshAgent installation -->
+<rule id="100011" level="12">
+    <if_sid>61603</if_sid>
+    <field name="win.eventdata.image" type="pcre2">\.exe</field>
+    <field name="win.eventdata.CommandLine" type="pcre2">(meshagent|mesh).*\.exe.*-fullinstall</field>
+    <description>MeshAgent installation</description>
+    <mitre>
+     <id>T1204.002</id>
+      <id>T1036</id>
+      <id>T1219</id>
+    </mitre>
+  </rule>
+
+<!-- MeshAgent creates file -->
+<rule id="100012" level="12">
+    <if_sid>61613</if_sid>
+    <field name="win.eventdata.image" type="pcre2">\.exe</field>
+    <field name="win.eventdata.targetFilename" type="pcre2">(?i)[c-z]:\\\\Program\sFiles\\\\Mesh\sAgent\\\\MeshAgent\.exe</field>
+    <description>Possible MeshAgent folder has been created</description>
+    <mitre>
+      <id>T1219</id>
+    </mitre>
+  </rule>
+
+<!-- MeshAgent service registry key detection-->
+<rule id="100013" level="10">
+    <if_sid>61614</if_sid>
+    <field name="win.eventdata.targetObject" type="pcre2" >HKLM\\\\System\\\\CurrentControlSet\\\\Services\\\\Mesh\sAgent</field>
+    <field name="win.eventdata.eventType" type="pcre2" >^CreateKey$</field>
+    <field name="win.eventdata.user" type="pcre2" >NT AUTHORITY\\\\SYSTEM</field>
+    <description>Registry key created for MeshAgent service</description>
+    <mitre>
+      <id>T1112</id>
+      <id>T1219</id>
+    </mitre>
+  </rule>
+
+<!-- MeshAgent registry Value detection-->
+<rule id="100014" level="10">
+    <if_sid>61615</if_sid>
+    <field name="win.eventdata.targetObject" type="pcre2" >HKLM\\\\System\\\\CurrentControlSet\\\\Services\\\\Mesh\sAgent\\\\Type</field>
+    <field name="win.eventdata.eventType" type="pcre2" >^SetValue$</field>
+    <field name="win.eventdata.user" type="pcre2" >NT AUTHORITY\\\\SYSTEM</field>
+    <description>MeshAgent registry modified</description>
+    <mitre>
+      <id>T1112</id>
+      <id>T1219</id>
+    </mitre>
+  </rule>
+
+<!-- MeshAgent registry key for safe booting detection-->
+<rule id="100015" level="10">
+    <if_sid>61614</if_sid>
+    <field name="win.eventdata.targetObject" type="pcre2" >HKLM\\\\System\\\\CurrentControlSet\\\\Control\\\\SafeBoot\\\\Network\\\\Mesh\sAgent</field>
+    <field name="win.eventdata.eventType" type="pcre2" >^CreateKey$</field>
+    <field name="win.eventdata.user" type="pcre2" >.</field>
+    <description>Registry key created for MeshAgent booting</description>
+    <mitre>
+      <id>T1534</id>
+      <id>T1219</id>
+    </mitre>
+  </rule>
+
+<!-- MeshAgent firewall rule detection-->
+<rule id="100016" level="12">
+    <if_sid>61615</if_sid>
+    <field name="win.eventdata.targetObject" type="pcre2" >HKLM\\\\System\\\\CurrentControlSet\\\\Services\\\\SharedAccess\\\\Parameters\\\\FirewallPolicy\\\\FirewallRules</field>
+    <field name="win.eventdata.eventType" type="pcre2" >^SetValue$</field>
+    <field name="win.eventdata.details" type="pcre2" >\|Action=Allow\|Active=TRUE.*MeshAgent\.exe</field>
+    <description>Firewall rule created for MeshAgent service</description>
+    <mitre>
+      <id>T1543</id>
+      <id>T1219</id>
+    </mitre>
+  </rule>
+
+</group>

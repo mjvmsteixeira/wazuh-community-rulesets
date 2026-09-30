@@ -1,0 +1,12 @@
+{
+ "url": "https://wazuh.com/blog/security-observability-on-linux-with-wazuh-and-tetragon/",
+ "title": "Security Observability on Linux with Wazuh and Tetragon Insights",
+ "published": "2025-09-30",
+ "modified": "2025-09-30",
+ "files": {
+  "01-config.xml": "fdbd3c1d638251e9",
+  "02-decoders.xml": "5f97d79810c63245",
+  "03-rules.xml": "c81543ac651e6161",
+  "04-rules.xml": "18daf04ba89ed145"
+ }
+}

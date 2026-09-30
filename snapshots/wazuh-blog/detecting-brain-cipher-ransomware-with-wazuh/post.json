@@ -1,0 +1,14 @@
+{
+ "url": "https://wazuh.com/blog/detecting-brain-cipher-ransomware-with-wazuh/",
+ "title": "Detecting Brain Cipher ransomware with Wazuh",
+ "published": "2025-02-04",
+ "modified": "2025-05-28",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-rules.xml": "cb849cc6e0d5deb9",
+  "03-rules.xml": "05144af60e42bae9",
+  "04-config.xml": "74a5424a03d7f1df",
+  "05-decoders.xml": "8493094f61602cc6",
+  "06-rules.xml": "567c26876fb9a5fd"
+ }
+}

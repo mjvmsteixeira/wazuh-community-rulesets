@@ -1,0 +1,12 @@
+<command>
+   <name>analyze-scheduled-task</name>
+   <executable>analyze-scheduled-task.cmd</executable>
+   <timeout_allowed>no</timeout_allowed>
+</command>
+
+<active-response>
+   <disabled>no</disabled>
+   <command>analyze-scheduled-task</command>
+   <location>local</location>
+   <rules_id>115006</rules_id>
+</active-response>

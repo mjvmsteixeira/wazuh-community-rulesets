@@ -1,0 +1,13 @@
+<group name="yara,">
+  <rule id="111100" level="0">
+    <decoded_as>yara_decoder</decoded_as>
+    <description>Yara grouping rule</description>
+  </rule>
+
+  <!-- malware detection by yara scan -->
+  <rule id="111101" level="12">
+    <if_sid>111100</if_sid>
+    <match>wazuh-yara: INFO - Scan result: </match>
+    <description>File "$(yara_scanned_file)" is a positive match. Yara rule: $(yara_rule)</description>
+  </rule>
+</group>

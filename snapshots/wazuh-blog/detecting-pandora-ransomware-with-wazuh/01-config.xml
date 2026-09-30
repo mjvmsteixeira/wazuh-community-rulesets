@@ -1,0 +1,3 @@
+<syscheck>
+  <directories check_all="yes" realtime="yes">C:\Users\*\Downloads</directories>
+</syscheck>

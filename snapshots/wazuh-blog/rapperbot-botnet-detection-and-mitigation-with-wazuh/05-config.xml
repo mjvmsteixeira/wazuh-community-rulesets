@@ -1,0 +1,5 @@
+<agent_config os="linux">
+    <syscheck>
+        <directories whodata="yes">/home</directories>
+    </syscheck>
+</agent_config>

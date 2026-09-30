@@ -1,0 +1,24 @@
+<!-- Disk health metric -->
+<decoder name="disk_health_check">
+     <program_name>disk_health_check</program_name>
+</decoder>
+
+<decoder name="disk_health_sib">
+  <parent>disk_health_check</parent>
+  <prematch>ossec: output: 'disk_health':\.</prematch>
+  <regex offset="after_prematch">(\S+)</regex>
+  <order>disk_usage_%</order>
+</decoder>
+
+
+<!-- Network metric -->
+<decoder name="network_check">
+     <program_name>network_check</program_name>
+</decoder>
+
+<decoder name="network_check_sib">
+  <parent>network_check</parent>
+  <prematch>ossec: output: 'network_metrics':\.</prematch>
+  <regex offset="after_prematch">(\S+) (\S+)</regex>
+  <order>network_in, network_out</order>
+</decoder>

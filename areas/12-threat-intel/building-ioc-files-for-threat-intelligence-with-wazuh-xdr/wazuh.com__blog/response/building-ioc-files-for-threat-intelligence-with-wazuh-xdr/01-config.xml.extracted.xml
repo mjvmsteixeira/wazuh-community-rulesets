@@ -1,0 +1,12 @@
+<!-- Blocos de resposta extraídos, sem alterações, de wazuh.com/blog:building-ioc-files-for-threat-intelligence-with-wazuh-xdr/01-config.xml @ b4b3f986b301 -->
+<command>
+    <name>ioc-builder</name>
+    <executable>ioc-builder.py</executable>
+  </command>
+
+<active-response>
+    <disabled>no</disabled>
+    <command>ioc-builder</command>
+    <location>server</location>
+    <rules_id>5712,87105,31103</rules_id>
+  </active-response>

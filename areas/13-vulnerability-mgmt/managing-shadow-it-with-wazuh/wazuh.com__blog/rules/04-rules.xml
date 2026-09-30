@@ -1,0 +1,15 @@
+<group name="shadow_it,remediation,">
+
+  <rule id="100313" level="10">
+    <if_sid>657</if_sid>
+    <field name="parameters.remediation_status">SUCCESS</field>
+    <description>$(parameters.program): Shadow IT remediation successful, $(parameters.alert.data.program.name) has been automatically uninstalled.</description>
+  </rule>
+
+  <rule id="100314" level="12">
+    <if_sid>657</if_sid>
+    <field name="parameters.remediation_status">FAILED</field>
+    <description>$(parameters.program): Shadow IT remediation FAILED for $(parameters.alert.data.program.name). Manual intervention required.</description>
+  </rule>
+
+</group>

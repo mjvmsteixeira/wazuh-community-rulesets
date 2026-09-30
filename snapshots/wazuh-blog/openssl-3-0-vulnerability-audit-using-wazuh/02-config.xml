@@ -1,0 +1,18 @@
+<ossec_config>
+  …
+  <vulnerability-detector>
+    …
+    <!-- Ubuntu OS vulnerabilities -->
+    <provider name="canonical">
+      <enabled>yes</enabled>
+      <os>trusty</os>
+      <os>xenial</os>
+      <os>bionic</os>
+      <os>focal</os>
+      <os>jammy</os>
+      <update_interval>1h</update_interval>
+    </provider>
+    …
+  </vulnerability-detector>
+  …
+</ossec_config>

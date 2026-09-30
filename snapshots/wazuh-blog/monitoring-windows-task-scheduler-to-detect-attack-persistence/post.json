@@ -1,0 +1,13 @@
+{
+ "url": "https://wazuh.com/blog/monitoring-windows-task-scheduler-to-detect-attack-persistence/",
+ "title": "Monitoring Windows task scheduler to detect attack persistence",
+ "published": "2022-06-02",
+ "modified": "2026-09-30",
+ "files": {
+  "01-config.xml": "852d032eaea42ae0",
+  "02-rules.xml": "cf966b3ba6e18624",
+  "03-config.xml": "5883ebd9c434ac20",
+  "04-config.xml": "8243f2fa1decf956",
+  "05-rules.xml": "898e38c1700410f3"
+ }
+}

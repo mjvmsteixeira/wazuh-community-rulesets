@@ -1,0 +1,3 @@
+<ruleset>
+  <list>etc/lists/lynx-malware-hashes</list>
+</ruleset>

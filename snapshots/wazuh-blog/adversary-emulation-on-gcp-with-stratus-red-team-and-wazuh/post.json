@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/adversary-emulation-on-gcp-with-stratus-red-team-and-wazuh/",
+ "title": "Adversary emulation on GCP with Stratus Red Team and Wazuh",
+ "published": "2023-07-21",
+ "modified": "2024-06-28",
+ "files": {
+  "01-config.xml": "f0bcff826493e798",
+  "02-rules.xml": "27539cf6ac0ead34"
+ }
+}

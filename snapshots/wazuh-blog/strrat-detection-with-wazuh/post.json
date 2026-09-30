@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/strrat-detection-with-wazuh/",
+ "title": "STRRAT detection with Wazuh",
+ "published": "2022-12-22",
+ "modified": "2024-06-13",
+ "files": {
+  "01-rules.xml": "aef4fa3883f1df75",
+  "02-config.xml": "d48cb9e695ff7bf0",
+  "03-rules.xml": "9e87863c2825b93f"
+ }
+}

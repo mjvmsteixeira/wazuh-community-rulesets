@@ -1,0 +1,12 @@
+{
+ "url": "https://wazuh.com/blog/detecting-hoaxshell-with-wazuh/",
+ "title": "Detecting hoaxshell with Wazuh",
+ "published": "2023-01-12",
+ "modified": "2025-05-21",
+ "files": {
+  "01-config.xml": "f4f4cbcf2202957f",
+  "02-rules.xml": "f9c4db92ef3e6abb",
+  "03-config.xml": "379cdbc4e0efb663",
+  "04-rules.xml": "337a90db50b8959a"
+ }
+}

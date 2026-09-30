@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/incident-management-with-wazuh-and-rootly/",
+ "title": "Incident management with Wazuh and Rootly",
+ "published": "2026-01-29",
+ "modified": "2026-01-29",
+ "files": {
+  "01-rules.xml": "7c938feddca140be",
+  "02-config.xml": "10ce69b62eea9442"
+ }
+}

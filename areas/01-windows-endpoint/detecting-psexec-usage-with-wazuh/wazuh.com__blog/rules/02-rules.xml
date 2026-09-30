@@ -1,0 +1,51 @@
+<group name="windows,sysmon">
+
+  <rule id="160010" level="10">
+    <if_group>windows,sysmon</if_group> 
+    <field name="win.eventdata.eventType" type="pcre2" >SetValue</field>
+    <field name="win.eventdata.targetObject" type="pcre2" >\\\\SOFTWARE\\\\Sysinternals\\\\PsExec\\\\EulaAccepted</field>
+    <options>no_full_log</options>
+    <description>PsExec EULA registry found on $(win.system.computer)</description>
+      <mitre>
+        <id>T1112</id>
+      </mitre>
+  </rule>
+  
+  <rule id="160011" level="10">
+    <if_group>windows,sysmon</if_group> 
+    <field name="win.eventdata.targetObject" type="pcre2" >HKLM\\\\System\\\\CurrentControlSet\\\\Services\\\\PSEXESVC</field>
+    <field name="win.eventdata.eventType" type="pcre2" >^SetValue$</field>
+    <field name="win.eventdata.user" type="pcre2" >NT AUTHORITY\\\\SYSTEM</field>
+    <options>no_full_log</options> 
+    <description>PsExec service running as $(win.eventdata.user) has been created on $(win.system.computer)</description>
+      <mitre>
+        <id>T1543.003</id>
+      </mitre>
+  </rule>  
+  
+  <rule id="160012" level="10">
+    <if_group>windows,sysmon</if_group> 
+    <field name="win.eventdata.targetObject" type="pcre2" >HKLM\\\\System\\\\CurrentControlSet\\\\Services\\\\PSEXESVC</field>
+    <field name="win.eventdata.eventType" type="pcre2" >^DeleteKey$</field>
+    <field name="win.eventdata.user" type="pcre2" >NT AUTHORITY\\\\SYSTEM</field>
+    <options>no_full_log</options>
+    <description>PsExec service running as $(win.eventdata.user) has been deleted on $(win.system.computer)</description>
+      <mitre>
+        <id>T1543.003</id>
+      </mitre>
+  </rule>
+  
+  <rule id="160013" level="10">
+    <if_group>windows,sysmon</if_group> 
+    <field name="win.eventdata.eventType" type="pcre2" >CreatePipe</field>
+    <field name="win.eventdata.image" type="pcre2" >\\\\PSEXESVC.exe</field>
+    <match type="pcre2">(?i)(PSEXESVC|stdin|stdout|stderr)</match>
+    <field name="win.eventdata.user" type="pcre2" >NT AUTHORITY\\\\SYSTEM</field>
+    <options>no_full_log</options> 
+    <description>PsExec named pipe running as $(win.eventdata.user) has been found on $(win.system.computer)</description>
+      <mitre>
+        <id>T1570</id>
+      </mitre>
+  </rule>
+
+</group>

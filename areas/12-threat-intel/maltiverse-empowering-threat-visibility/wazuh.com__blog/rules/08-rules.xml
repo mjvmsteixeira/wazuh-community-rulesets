@@ -1,0 +1,6 @@
+<group name="squid_url,maltiverse_urltest">
+  <rule id="111042" level="6">
+    <decoded_as>squid_url</decoded_as>
+    <description> [SQUID URL] - $(client_ip) has accessed $(url)</description>
+  </rule>
+</group>

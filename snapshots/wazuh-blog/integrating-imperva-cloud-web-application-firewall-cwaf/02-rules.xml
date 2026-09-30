@@ -1,0 +1,84 @@
+<group name="ImpervaWAF">
+
+     <!-- Imperva -->
+  <rule id="100550" level="2">
+    <decoded_as>imperva-waf</decoded_as>
+    <description>Imperva WAF learning log: $(waf.event)</description>
+  </rule>
+
+  <rule id="100551" level="9" ignore="60">
+    <if_sid>100550</if_sid>
+    <field name="waf.eventcode">^8$</field>
+    <field name="waf.event">^DDoS$</field>
+    <description>Imperva WAF: DDoS detected.</description>
+    <mitre>
+      <id>T1498</id>
+    </mitre>
+  </rule>
+
+  <rule id="100552" level="10">
+    <if_sid>100550</if_sid>
+    <field name="waf.eventcode">^10$</field>
+    <field name="waf.event">^RFI$</field>
+    <description>Imperva WAF: RFI detected.</description>
+    <mitre>
+      <id>T1190</id>
+    </mitre>
+  </rule>
+
+  <rule id="100553" level="4">
+    <if_sid>100550</if_sid>
+    <field name="waf.eventcode">^3$</field>
+    <field name="waf.event">^ACL (block country/IP/URL)$</field>
+    <description>Imperva WAF: ACL (block country/IP/URL) detected.</description>
+  </rule>
+
+  <rule id="100554" level="7">
+    <if_sid>100550</if_sid>
+    <field name="waf.eventcode">^4$</field>
+    <field name="waf.event">^Bot Access Control$</field>
+    <description>Rule Triggered: $(waf.rulename)</description>
+    <mitre>
+      <id>T1089</id>
+    </mitre>
+  </rule>
+
+  <rule id="100555" level="5">
+    <if_sid>100550</if_sid>
+    <field name="waf.eventcode">^3$</field>
+    <field name="waf.act" negate="yes">^REQ_BLOCKED_</field>
+    <field name="waf.event">Illegal Resource Access</field>
+    <description>$(waf.act) to $(waf.request)</description>
+    <mitre>
+      <id>T1199</id>
+    </mitre>
+  </rule>
+
+  <rule id="100556" level="5">
+    <if_sid>100550</if_sid>
+    <field name="waf.act" negate="yes">^REQ_BLOCKED</field>
+    <field name="waf.event">^Cross Site Scripting$</field>
+    <description>Imperva WAF: $(waf.event)</description>
+  </rule>
+
+  <rule id="100557" level="4" ignore="60">
+    <if_sid>100550</if_sid>
+    <field name="waf.act" negate="yes">^REQ_BLOCKED_SESSION$</field>
+    <field name="waf.event">^SQL Injection$</field>
+    <description>Imperva WAF: $(waf.event)</description>
+  </rule>
+
+  <rule id="100558" level="8" ignore="60">
+    <if_sid>100550</if_sid>
+    <field name="waf.eventcode">^9$</field>
+    <field name="waf.event">^Backdoor Protect$</field>
+    <description>Imperva WAF: $(waf.event)</description>
+  </rule>
+
+  <rule id="100559" level="2">
+    <if_sid>100550</if_sid>
+    <field name="waf.http.code">^200$|^304$|^302$|^301$</field>
+    <field name="waf.event">^API Specification Violation$</field>
+    <description>API Specification Violation detected by Incapsula - Http codes</description>
+  </rule>
+</group>

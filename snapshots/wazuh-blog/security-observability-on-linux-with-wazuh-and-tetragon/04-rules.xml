@@ -1,0 +1,11 @@
+<group name="tetragon,">
+  <rule id="110004" level="9">
+    <if_sid>110003</if_sid>
+    <field name="family">AF_INET|AF_INET6</field>
+    <description>Outbound connection to "$(dstip)" on port "$(dstport)" detected.</description>
+    <mitre>
+      <id>T1049</id>
+      <id>T1041</id>
+    </mitre>
+  </rule>
+</group>

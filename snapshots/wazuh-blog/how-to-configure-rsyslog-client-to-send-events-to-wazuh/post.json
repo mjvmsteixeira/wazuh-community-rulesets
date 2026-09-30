@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/how-to-configure-rsyslog-client-to-send-events-to-wazuh/",
+ "title": "How to configure Rsyslog client to send events to Wazuh",
+ "published": "2024-08-15",
+ "modified": "2025-05-21",
+ "files": {
+  "01-config.xml": "678ba6c7053a6f22",
+  "02-config.xml": "2cfcdd4d4a29456a",
+  "03-rules.xml": "72ad54135f6f2af5"
+ }
+}

@@ -1,0 +1,9 @@
+{
+ "url": "https://wazuh.com/blog/scanning-kubernetes-infrastructure-against-cis-benchmark-with-wazuh/",
+ "title": "Scanning Kubernetes infrastructure against CIS Benchmark with Wazuh",
+ "published": "2026-08-06",
+ "modified": "2026-08-06",
+ "files": {
+  "01-config.xml": "3c2fdb4b7d8c0b66"
+ }
+}

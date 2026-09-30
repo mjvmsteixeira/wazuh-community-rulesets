@@ -1,0 +1,6 @@
+<group name="ransomware,ransomware_rollback,">
+  <rule id="100105" level="5">
+    <field name="rollback_status">completed</field>
+    <description>Wazuh_Ransomware_Protection: Files restored successfully.</description>
+  </rule>
+</group>

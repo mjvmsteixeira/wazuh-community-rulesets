@@ -1,0 +1,6 @@
+<rule id="222016" level="4">
+  <if_sid>222000</if_sid>
+  <action>login</action>
+  <status>failed</status>
+  <description>Fortigate: Login failed.</description>
+</rule>

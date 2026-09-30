@@ -1,0 +1,5 @@
+<agent_config os="Linux">
+   <rootcheck>
+      <system_audit>/var/ossec/etc/shared/system_audit_test.txt</system_audit>
+   </rootcheck>
+</agent_config>

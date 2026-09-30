@@ -1,0 +1,12 @@
+<wodle name="aws-s3">
+  <disabled>no</disabled>
+  <remove_from_bucket>no</remove_from_bucket>
+  <interval>10m</interval>
+  <run_on_start>yes</run_on_start>
+  <skip_on_error>no</skip_on_error>
+
+  <bucket type="cloudtrail">
+    <name><AWS_BUCKET_NAME></name>
+    <aws_profile><AWS_PROFILE_NAME></aws_profile>
+  </bucket>
+</wodle>

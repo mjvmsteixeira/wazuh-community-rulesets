@@ -1,0 +1,19 @@
+<group name="windows, sysmon, sysmon_process-anomalies,">
+   <rule id="100000" level="12">
+     <if_group>sysmon_event1</if_group>
+     <field name="win.eventdata.image">mimikatz.exe</field>
+     <description>Sysmon - Suspicious Process - mimikatz.exe</description>
+   </rule>
+
+   <rule id="100001" level="12">
+     <if_group>sysmon_event8</if_group>
+     <field name="win.eventdata.sourceImage">mimikatz.exe</field>
+     <description>Sysmon - Suspicious Process mimikatz.exe created a remote thread</description>
+   </rule>
+
+   <rule id="100002" level="12">
+     <if_group>sysmon_event_10</if_group>
+     <field name="win.eventdata.sourceImage">mimikatz.exe</field>
+     <description>Sysmon - Suspicious Process mimikatz.exe accessed $(win.eventdata.targetImage)</description>
+   </rule>
+</group>

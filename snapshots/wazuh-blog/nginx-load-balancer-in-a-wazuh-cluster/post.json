@@ -1,0 +1,9 @@
+{
+ "url": "https://wazuh.com/blog/nginx-load-balancer-in-a-wazuh-cluster/",
+ "title": "Load balancing a Wazuh server cluster using NGINX",
+ "published": "2024-05-29",
+ "modified": "2025-05-21",
+ "files": {
+  "01-config.xml": "f09f6fc87d7dffa4"
+ }
+}

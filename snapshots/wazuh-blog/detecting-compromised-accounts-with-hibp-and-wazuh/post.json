@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/detecting-compromised-accounts-with-hibp-and-wazuh/",
+ "title": "Detecting compromised accounts with HIBP and Wazuh",
+ "published": "2025-01-28",
+ "modified": "2025-01-28",
+ "files": {
+  "01-rules.xml": "959690330f291da8",
+  "02-config.xml": "e3a02b044390e128"
+ }
+}

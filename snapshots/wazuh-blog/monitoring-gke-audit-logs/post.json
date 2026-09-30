@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/monitoring-gke-audit-logs/",
+ "title": "Monitoring GKE audit logs",
+ "published": "2020-11-13",
+ "modified": "2023-03-01",
+ "files": {
+  "01-rules.xml": "a472667f4f477ce1",
+  "02-rules.xml": "87ad0455e7407e2b",
+  "03-rules.xml": "104b46448e65145a"
+ }
+}

@@ -1,0 +1,8 @@
+<rule id="101556" level="12">
+      <if_sid>60105</if_sid>
+      <field name="win.system.eventID">^529$|^4625$</field>
+      <description>Logon Failure - Unknown user or bad password</description>
+      <mitre>
+        <id>T1531</id>
+      </mitre>
+  </rule>

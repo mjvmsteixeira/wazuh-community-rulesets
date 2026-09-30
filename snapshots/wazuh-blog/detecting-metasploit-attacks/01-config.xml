@@ -1,0 +1,11 @@
+<agent_config>
+  <sca>
+    <enabled>yes</enabled>
+    <scan_on_start>yes</scan_on_start>
+    <interval>15m</interval>
+    <skip_nfs>yes</skip_nfs>
+    <policies>
+      <policy>/var/ossec/etc/shared/sca_drupal.yaml</policy>
+    </policies>
+  </sca>
+</agent_config>

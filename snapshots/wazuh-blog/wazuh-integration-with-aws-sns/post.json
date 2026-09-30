@@ -1,0 +1,9 @@
+{
+ "url": "https://wazuh.com/blog/wazuh-integration-with-aws-sns/",
+ "title": "Wazuh integration with AWS SNS",
+ "published": "2023-12-21",
+ "modified": "2024-07-08",
+ "files": {
+  "01-config.xml": "0ed7cbba812f81b2"
+ }
+}

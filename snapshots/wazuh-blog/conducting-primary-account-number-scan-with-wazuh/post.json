@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/conducting-primary-account-number-scan-with-wazuh/",
+ "title": "Conducting primary account number scan with Wazuh",
+ "published": "2023-05-11",
+ "modified": "2024-06-24",
+ "files": {
+  "01-config.xml": "2453b10a0d70e2c3",
+  "02-config.xml": "68ca401937b5b084",
+  "03-rules.xml": "a35ddd23e0c6c589"
+ }
+}

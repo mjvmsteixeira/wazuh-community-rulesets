@@ -1,0 +1,20 @@
+<decoder name="vault-audit">
+    <prematch>^[vault audit]</prematch>
+    <plugin_decoder offset="after_prematch">JSON_Decoder</plugin_decoder>
+</decoder>
+
+<decoder name="vault">
+  <program_name>^vault$</program_name>
+</decoder>
+
+<decoder name="vault-fields">
+  <parent>vault</parent>
+  <regex type="pcre2">\[(\w+)\]\s+([\w\.-]+):\s+(.*)</regex>
+  <order>vault_level, vault_component, vault_message</order>
+</decoder>
+
+<decoder name="vault-fields">
+  <parent>vault</parent>
+  <regex type="pcre2">from ([\d\.]+):(\d+)</regex>
+  <order>srcip, srcport</order>
+</decoder>

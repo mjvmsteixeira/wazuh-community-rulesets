@@ -1,0 +1,9 @@
+{
+ "url": "https://wazuh.com/blog/forward-alerts-with-fluentd/",
+ "title": "Integrating Wazuh with Fluentd for unified logging",
+ "published": "2024-03-15",
+ "modified": "2025-05-21",
+ "files": {
+  "01-config.xml": "ba4cfcf76cf7ec21"
+ }
+}

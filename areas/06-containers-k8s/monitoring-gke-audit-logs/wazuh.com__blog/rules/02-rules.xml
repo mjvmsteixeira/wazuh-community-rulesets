@@ -1,0 +1,9 @@
+<group name="gke,k8s,">
+  <rule id="400002" level="10">
+    <if_sid>400001</if_sid>
+    <field name="gcp.labels.authorization.k8s.io/decision">forbid</field>
+    <description>GKE forbidden $(gcp.protoPayload.methodName) operation.</description>
+    <options>no_full_log</options>
+    <group>authentication_failure</group>
+  </rule>
+</group>

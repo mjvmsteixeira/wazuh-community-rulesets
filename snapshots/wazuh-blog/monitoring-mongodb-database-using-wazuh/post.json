@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/monitoring-mongodb-database-using-wazuh/",
+ "title": "Monitoring MongoDB database using Wazuh",
+ "published": "2024-06-19",
+ "modified": "2025-11-26",
+ "files": {
+  "01-config.xml": "91f640dac89fe8ec",
+  "02-rules.xml": "b52c4ebcc5e9df4a"
+ }
+}

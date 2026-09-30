@@ -1,0 +1,13 @@
+{
+ "url": "https://wazuh.com/blog/detecting-gunra-ransomware-with-wazuh/",
+ "title": "Detecting Gunra Ransomware with Wazuh Alerts",
+ "published": "2025-10-07",
+ "modified": "2025-10-07",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-rules.xml": "eaf319d676a9dba9",
+  "03-config.xml": "5690c6f542dd9e0a",
+  "04-config.xml": "57bb39932b0704be",
+  "05-rules.xml": "4043fa3a0d537612"
+ }
+}

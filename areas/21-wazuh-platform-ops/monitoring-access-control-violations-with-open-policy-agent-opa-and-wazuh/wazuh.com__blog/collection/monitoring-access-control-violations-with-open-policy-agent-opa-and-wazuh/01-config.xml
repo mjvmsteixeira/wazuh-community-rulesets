@@ -1,0 +1,4 @@
+<localfile>
+  <log_format>json</log_format>
+  <location>/var/log/opa/decision_logs.json</location>
+</localfile>

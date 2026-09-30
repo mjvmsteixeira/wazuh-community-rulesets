@@ -1,0 +1,10 @@
+  <rule id="111040" level="10" frequency="2" timeframe="180">
+    <if_group>sysmon_event_11</if_group>
+    <field name="win.eventdata.targetFilename" type="pcre2">(?i)\.dll$</field>
+    <field name="win.eventdata.targetFilename" type="pcre2">(?i)^(?!.*\\+(Windows\\+System32|Windows\\+SysWOW64|Program Files|Program Files \(x86\)|ProgramData\\+Microsoft\\+Windows Defender)\\+).+$</field>
+    <description>DLL created outside common system and application directories - possible DLL hijacking activity ($(win.eventdata.targetFilename) by $(win.eventdata.user)).</description>
+    <options>no_full_log</options>
+    <mitre>
+      <id>T1574.001</id>
+    </mitre>
+  </rule>

@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/detecting-razr-ransomware-with-wazuh/",
+ "title": "Detecting Razr ransomware with Wazuh",
+ "published": "2025-01-15",
+ "modified": "2025-01-20",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-rules.xml": "58c484e61011020d"
+ }
+}

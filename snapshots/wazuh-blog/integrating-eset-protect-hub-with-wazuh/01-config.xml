@@ -1,0 +1,10 @@
+<ossec_config>
+ 
+<!--Configuration of other local files -->
+ 
+  <localfile>
+    <log_format>json</log_format>
+    <location>/var/log/eset_integration.log</location>
+  </localfile>
+ 
+</ossec_config>

@@ -1,0 +1,15 @@
+<group name="linux_privilege_escalation,">
+
+  <!-- T1548.003 — Sudo and Sudo Caching -->
+
+  <rule id="100201" level="14">
+    <if_sid>80700</if_sid>
+    <field name="audit.execve.a0">sudo</field>
+    <match type="pcre2">a[123]="(?:[^"]*\/)?(?:bash|sh|dash|zsh|python\d*|perl|ruby|lua|php|node|find|awk|sed|vi|vim|nvim|less|more|man|tar|cp|mv|chmod|chown|tee|env|gdb|nmap|docker|podman|rsync|scp|socat)"</match>
+    <description>Possible privilege escalation: sudo used to run a sensitive binary - "$(audit.execve.a1)"</description>
+    <mitre>
+      <id>T1548.003</id>
+    </mitre>
+  </rule>
+
+</group>

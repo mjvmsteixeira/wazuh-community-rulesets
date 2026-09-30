@@ -1,0 +1,21 @@
+<group name="local,cobalt_strike,beaconing,">
+ 
+  <rule id="100007" level="3">
+    <if_sid>61603</if_sid>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)curl\.exe.+-s</field>
+    <description>Curl - $(win.eventdata.image) - ran in silent mode.</description>
+  </rule>
+ 
+  <rule id="100008" level="3">
+    <if_sid>100007</if_sid>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)-o</field>
+    <description>Curl ran in silent mode and sent its output to a file.</description>
+  </rule>
+ 
+  <rule id="100009" level="10" timeframe="150" frequency="3">
+    <if_matched_sid>100008</if_matched_sid>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)-o</field>
+    <description>Curl ran in silent mode and sent its output to a file multiple times. Possible beaconing activity.</description>
+  </rule>
+ 
+</group>

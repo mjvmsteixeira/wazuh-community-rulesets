@@ -1,0 +1,12 @@
+{
+ "url": "https://wazuh.com/blog/integrating-bitdefender-gravityzone-with-wazuh/",
+ "title": "Integrating Bitdefender GravityZone with Wazuh",
+ "published": "2024-11-06",
+ "modified": "2024-11-07",
+ "files": {
+  "01-config.xml": "dde3718aa7112726",
+  "02-config.xml": "96c7fb8a8d5533d0",
+  "03-decoders.xml": "7ca66b6596f1b741",
+  "04-rules.xml": "36927b4dc0b2dff0"
+ }
+}

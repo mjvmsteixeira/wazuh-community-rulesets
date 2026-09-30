@@ -1,0 +1,31 @@
+<group name="panchan,">
+<!-- Panchan outbound SSH brute force -->
+    <rule id="100022" level="12" ignore="600">
+        <if_sid>530</if_sid>
+        <match>ossec: output: 'Checking outbound SSH'</match>
+        <description>Multiple outbound SSH connections detected. Possible outbound SSH port Scanning.</description>
+    </rule>
+
+<!-- Panchan listening on port 1919 -->
+    <rule id="100024" level="12" ignore="600">
+        <if_sid>530</if_sid>
+        <match>ossec: output: 'Detecting possible botnet communication'</match>
+        <description>Detected port 1919 listening. Possible Panchan botnet activity.</description>
+    </rule>
+
+<!-- Panchan binary path detected -->
+    <rule id="100026" level="15" ignore="600">
+        <if_sid>530</if_sid>
+        <match>ossec: output: 'Finding Panchan binary path'</match>
+        <regex type="pcre2">xinetd</regex>
+        <description>Detected xinetd binary outside /bin or /sbin. Possible Panchan malware infection.</description>
+    </rule>
+
+<!-- Panchan persistence detected -->
+    <rule id="100027" level="15" ignore="600">
+        <if_sid>530</if_sid>
+        <match>ossec: output: 'Detecting Panchan persistence service'</match>
+        <regex type="pcre2">systemd-worker\.service</regex>
+        <description>Panchan persistence service detected.</description>
+    </rule>
+</group>

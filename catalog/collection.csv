@@ -1,6 +1,20 @@
 folder,source,families,default_inputs,agent_groups,manager_requirements,undefined,declared_files,declared_entries,declared_placeholders,declared_incomplete
 areas/01-windows-endpoint/attck-mapped/BernaldoPenasAntelo__Windows-MITRE_ATT-CK-Wazuh-Rules,BernaldoPenasAntelo/Windows-MITRE_ATT-CK-Wazuh-Rules,win-sysmon:161;sysmon:148;win-security:57;win-base:8;msauth:6;win-system:4;win-ms_logs:1,msauth;win-base;win-ms_logs;win-security;win-system,win-sysmon,,,1,3,0,0
+areas/01-windows-endpoint/detecting-common-windows-privilege-escalation-techniques-with-wazuh/wazuh.com__blog,wazuh.com/blog,sysmon:5;win-sysmon:5,,win-sysmon,,,1,1,0,0
+areas/01-windows-endpoint/detecting-psexec-usage-with-wazuh/wazuh.com__blog,wazuh.com/blog,sysmon:4;sysmon_id_1:4;sysmon_id_10:4;sysmon_id_11:4;sysmon_id_13:4;sysmon_id_20:4;sysmon_id_3:4;sysmon_id_7:4;sysmon_id_8:4;win-sysmon:4,,win-sysmon,,,1,1,0,0
+areas/01-windows-endpoint/detecting-windows-attacks-with-microsoft-defender-asr-and-wazuh/wazuh.com__blog,wazuh.com/blog,win-wdefender:2,,win-defender,,,1,1,0,0
+areas/01-windows-endpoint/detecting-windows-screensaver-persistence-attack-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:2,,win-sysmon,,,1,1,0,0
+areas/01-windows-endpoint/file-integrity-monitoring-windows-user-groups/wazuh.com__blog,wazuh.com/blog,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
+areas/01-windows-endpoint/how-to-monitor-folder-access-on-windows/wazuh.com__blog,wazuh.com/blog,win-security:1,win-security,,,,1,1,0,0
+areas/01-windows-endpoint/hunting-for-suspicious-windows-lnk-files-with-wazuh-xdr/wazuh.com__blog,wazuh.com/blog,ossec:2,,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,0,0,0,0
+areas/01-windows-endpoint/hunting-for-windows-credential-access-attacks/wazuh.com__blog,wazuh.com/blog,win-sysmon:3;sysmon_id_1:1,,win-sysmon,,,1,1,0,0
+areas/01-windows-endpoint/learn-to-detect-threats-on-windows-by-monitoring-sysmon-events/wazuh.com__blog,wazuh.com/blog,sysmon:3;win-sysmon:3,,win-sysmon,,,1,1,0,0
+areas/01-windows-endpoint/monitoring-commonly-abused-windows-utilities/wazuh.com__blog,wazuh.com/blog,win-sysmon:11,,win-sysmon,,,1,1,0,0
+areas/01-windows-endpoint/monitoring-usb-drives-in-windows-using-wazuh/wazuh.com__blog,wazuh.com/blog,win-security:1,win-security,,,,0,0,0,0
+areas/01-windows-endpoint/monitoring-windows-resources-with-performance-counters/wazuh.com__blog,wazuh.com/blog,dec:json:1,,pack-monitoring-windows-resources-with-performance-counters,,eventos JSON: definir o <localfile> json com a localização do ficheiro,1,5,0,0
+areas/01-windows-endpoint/monitoring-windows-task-scheduler-to-detect-attack-persistence/wazuh.com__blog,wazuh.com/blog,dec:json:2,,pack-monitoring-windows-task-scheduler-to-detect-attack-persistence;win-sysmon,,eventos JSON: definir o <localfile> json com a localização do ficheiro,2,2,0,0
 areas/01-windows-endpoint/offense-lab-windows/0xbad53c__wazuh-detection-rules,0xbad53c/wazuh-detection-rules,sysmon:29;win-sysmon:28;win-base:2;win-security:2,win-base;win-security,pack-offense-lab-windows;win-sysmon;win-terminalservices-localsessionmanager,,,0,0,0,0
+areas/01-windows-endpoint/report-windows-firewall-status-event-channel/wazuh.com__blog,wazuh.com/blog,msauth:4,msauth,win-firewall,,,1,1,0,0
 areas/01-windows-endpoint/sigma-generated/SanWieb__sigWah,SanWieb/sigWah,sysmon:916;win-sysmon:916,,win-sysmon,,,0,0,0,0
 areas/01-windows-endpoint/sigma-generated/n00bsteam__Wazuh-Extended,n00bsteam/Wazuh-Extended,win-sysmon:1337;sysmon:1310;sysmon_id_1:1306;sysmon_id_10:1306;sysmon_id_11:1306;sysmon_id_13:1306;sysmon_id_20:1306;sysmon_id_3:1306;sysmon_id_7:1306;sysmon_id_8:1306,,win-sysmon,,,0,0,0,0
 areas/01-windows-endpoint/sysmon-eventchannel/socfortress__Wazuh-Rules,socfortress/Wazuh-Rules,win-sysmon:1014;win-powershell:60;sysmon:14;sysmon_id_1:12;win-base:11;dec:json:3;sysmon_id_10:1;sysmon_id_3:1;win-ms_logs:1;win-security:1,canal Security;win-base;win-ms_logs;win-security,pack-sysmon-eventchannel;win-powershell;win-sysmon,,eventos JSON: definir o <localfile> json com a localização do ficheiro,6,6,0,0
@@ -8,7 +22,7 @@ areas/01-windows-endpoint/sysmon-ion-storm/n0rthl1ght__wazuh_info_collection,n0r
 areas/01-windows-endpoint/sysmon-modular/fusuyfusuy__wazuh_local_rules,fusuyfusuy/wazuh_local_rules,win-sysmon:145;sysmon:135;win-wdefender:10;win-base:6;sysmon_id_1:5;sysmon_id_10:5;sysmon_id_11:5;sysmon_id_13:5;sysmon_id_20:5;sysmon_id_3:5;sysmon_id_7:5;sysmon_id_8:5;win-security:4;win-application:1,win-application;win-base;win-security,pack-sysmon-modular;win-defender;win-smbclient;win-smbserver;win-sysmon;win-terminalservices-localsessionmanager;win-terminalservices-remoteconnectionmanager,,,0,0,0,0
 areas/01-windows-endpoint/sysmon-sigma/sametsazak__sysmon,sametsazak/sysmon,sysmon:27;win-sysmon:26,,win-sysmon,,,1,1,0,0
 areas/01-windows-endpoint/sysmon/mdnahidmondol__wazuh-AuditD-Sysmon-rules,mdnahidmondol/wazuh-AuditD-Sysmon-rules,win-sysmon:16,,win-sysmon,,,0,0,0,0
-areas/01-windows-endpoint/wazuh-blog-pack/adampielak__wazuh-scripts-resource,adampielak/wazuh-scripts-resource,win-sysmon:31;sysmon_id_1:9;win-base:8;msauth:4;ossec:4;dec:json:3;sysmon:1;sysmon_id_13:1;win-ms_logs:1;win-powershell:1;win-security:1,msauth;win-base;win-ms_logs;win-security,pack-wazuh-blog-pack;win-firewall;win-powershell;win-sysmon,integration virustotal,eventos JSON: definir o <localfile> json com a localização do ficheiro,16,19,1,0
+areas/01-windows-endpoint/using-wazuh-to-monitor-sysmon-events/wazuh.com__blog,wazuh.com/blog,sysmon:1;win-sysmon:1,,win-sysmon,,,1,1,0,0
 areas/01-windows-endpoint/windows-ad/captainobvious-sec__wazuh-field-notes,captainobvious-sec/wazuh-field-notes,win-security:80;win-powershell:36;ossec:23;win-base:2;win_event_channel:2;win-ms_logs:1;win-sysmon:1;win-system:1,win-base;win-ms_logs;win-security;win-system;win_event_channel,win-powershell;win-sysmon,,,0,0,0,0
 areas/02-identity-access/1password/wazuh__integrations,wazuh/integrations,dec:json:3,,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,0,0,0,0
 areas/02-identity-access/active-directory/JM2K69__WAZUH-Sentinel-AD,JM2K69/WAZUH-Sentinel-AD,win-sysmon:12;dec:json:1,canal Security,win-sysmon,,eventos JSON: definir o <localfile> json com a localização do ficheiro,0,0,0,0
@@ -21,12 +35,18 @@ areas/02-identity-access/aruba-clearpass/parlakbarann__wazuh-custom-network-deco
 areas/02-identity-access/auth0/wazuh__integrations,wazuh/integrations,dec:json:1,,pack-auth0,,,1,2,0,1
 areas/02-identity-access/authentik/phastier__wazuh,phastier/wazuh,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
 areas/02-identity-access/authentik/wazuh__integrations,wazuh/integrations,dec:json:1,,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,0,0,0,0
+areas/02-identity-access/automated-password-rotation-with-wazuh-and-shuffle/wazuh.com__blog,wazuh.com/blog,amazon:2,,,integration shuffle;wodle aws-s3,,2,2,2,0
 areas/02-identity-access/beyondinsight-password-safe/wazuh__integrations,wazuh/integrations,dec:json:1,,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,0,0,0,0
 areas/02-identity-access/beyondtrust/pfuz__wazuh-ruleset,pfuz/wazuh-ruleset,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
 areas/02-identity-access/bitwarden/timohissink__vault-event-monitor,timohissink/vault-event-monitor,dec:json:1,,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,1,1,1,1
+areas/02-identity-access/detecting-sharphound-active-directory-activities/wazuh.com__blog,wazuh.com/blog,win-sysmon:6;win-security:1,win-security,win-sysmon,,,2,2,0,0
 areas/02-identity-access/entra-id/yunusmrcoban__wazuh-custom,yunusmrcoban/wazuh-custom,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
+areas/02-identity-access/how-to-detect-active-directory-attacks-with-wazuh-part-1-of-2/wazuh.com__blog,wazuh.com/blog,win-security:4,win-security,win-sysmon,,,1,1,0,0
+areas/02-identity-access/how-to-detect-active-directory-attacks-with-wazuh-part-2/wazuh.com__blog,wazuh.com/blog,win-sysmon:3;sysmon:1;win-security:1,win-security,win-sysmon,,,1,1,0,0
 areas/02-identity-access/keycloak/stephane-segning__keycloak-wazuh-siem,stephane-segning/keycloak-wazuh-siem,,,osquery;pack-keycloak,localfile /var/ossec/logs/active-responses.log;wodle cis-cat,eventos JSON: definir o <localfile> json com a localização do ficheiro,1,8,0,0
 areas/02-identity-access/mfa/od55__wazuh-local-ruleset,od55/wazuh-local-ruleset,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
+areas/02-identity-access/monitoring-aws-managed-microsoft-active-directory/wazuh.com__blog,wazuh.com/blog,,,,wodle aws-s3,,1,1,1,0
+areas/02-identity-access/monitoring-hashicorp-vault-activities-with-wazuh/wazuh.com__blog,wazuh.com/blog,,,pack-monitoring-hashicorp-vault-activities-with-wazuh,,eventos JSON: definir o <localfile> json com a localização do ficheiro,1,1,0,0
 areas/02-identity-access/nps/od55__wazuh-local-ruleset,od55/wazuh-local-ruleset,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
 areas/02-identity-access/okta/calvinanglo__corpsec-ops-platform,calvinanglo/corpsec-ops-platform,dec:json:1,,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,0,0,0,0
 areas/02-identity-access/okta/moizl599__wazuh_okta-integration,moizl599/wazuh_okta-integration,dec:json:1,,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,0,0,0,0
@@ -35,22 +55,32 @@ areas/02-identity-access/onepassword/calvinanglo__corpsec-ops-platform,calvinang
 areas/02-identity-access/openbao/bayusky__wazuh-custom-rules-and-decoders,bayusky/wazuh-custom-rules-and-decoders,dec:json:1,,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,0,0,0,0
 areas/03-linux-unix/auditd-cis-attck/BernaldoPenasAntelo__Linux-MITRE_ATT-CK-Wazuh-Rules,BernaldoPenasAntelo/Linux-MITRE_ATT-CK-Wazuh-Rules,auditd:57;dec:kernel:3;systemd:3;dec:unix:2;pam:2;syslog:2;dec:auditd:1;dec:ssh:1;usb:1,dec:kernel;dec:unix;pam;syslog;systemd;usb,linux-auditd,,família oficial dec:ssh (1 regras);decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
 areas/03-linux-unix/auditd/mdnahidmondol__wazuh-AuditD-Sysmon-rules,mdnahidmondol/wazuh-AuditD-Sysmon-rules,auditd:1,,linux-auditd,,,0,0,0,0
+areas/03-linux-unix/detecting-common-linux-persistence-techniques-with-wazuh/wazuh.com__blog,wazuh.com/blog,ossec:11;auditd:2,,linux-auditd;pack-detecting-common-linux-persistence-techniques-with-wazuh,,,2,4,0,0
+areas/03-linux-unix/detecting-common-linux-privilege-escalation-techniques-with-wazuh/wazuh.com__blog,wazuh.com/blog,auditd:8;ossec:8,,linux-auditd,,,1,1,0,0
+areas/03-linux-unix/detecting-illegitimate-crypto-miners-on-linux-endpoints/wazuh.com__blog,wazuh.com/blog,ossec:4;syslog:4,syslog,linux-suricata;pack-detecting-illegitimate-crypto-miners-on-linux-endpoints,integration virustotal,,3,3,0,0
+areas/03-linux-unix/detecting-unauthorized-suid-and-sgid-binaries-with-wazuh/wazuh.com__blog,wazuh.com/blog,,,,,,1,1,1,0
 areas/03-linux-unix/detection-engineering/Jeremy-Burgos__wazuh-detection-engineering,Jeremy-Burgos/wazuh-detection-engineering,ossec:10;wazuh:8;auditd:7,,linux-auditd,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
+areas/03-linux-unix/enhancing-linux-security-with-apparmor-and-wazuh/wazuh.com__blog,wazuh.com/blog,ossec:3,,,,,0,0,0,0
 areas/03-linux-unix/freebsd/alonsobsd__wazuh-freebsd-ruleset,alonsobsd/wazuh-freebsd-ruleset,dec:windows:6,dec:windows,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
+areas/03-linux-unix/hunting-for-linux-credential-access-attacks-with-wazuh/wazuh.com__blog,wazuh.com/blog,auditd:5,,linux-auditd,,,1,1,0,0
 areas/03-linux-unix/journald/phastier__wazuh,phastier/wazuh,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
 areas/03-linux-unix/linux-attck/captainobvious-sec__wazuh-field-notes,captainobvious-sec/wazuh-field-notes,auditd:18;ossec:13;sshd:2;syslog:2;pam:1,pam;sshd;syslog,linux-auditd;pack-linux-attck,,,1,2,0,0
 areas/03-linux-unix/linux-custom/Hasitha9796__wazuh-custom-decoders,Hasitha9796/wazuh-custom-decoders,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
 areas/03-linux-unix/lkrg/adampielak__wazuh-lkrg,adampielak/wazuh-lkrg,,,,,,0,0,0,0
+areas/03-linux-unix/monitoring-linux-resource-usage-with-wazuh/wazuh.com__blog,wazuh.com/blog,,,pack-monitoring-linux-resource-usage-with-wazuh,,,1,4,0,0
+areas/03-linux-unix/monitoring-root-actions-on-linux-using-auditd-and-wazuh/wazuh.com__blog,wazuh.com/blog,auditd:2,,linux-auditd,,,1,1,0,0
+areas/03-linux-unix/monitoring-usb-drives-in-linux-using-wazuh/wazuh.com__blog,wazuh.com/blog,,,pack-monitoring-usb-drives-in-linux-using-wazuh,,,1,1,0,0
 areas/03-linux-unix/offense-lab-linux/0xbad53c__wazuh-detection-rules,0xbad53c/wazuh-detection-rules,auditd:6;pam:1;syslog:1,pam;syslog,linux-auditd,,,0,0,0,0
 areas/03-linux-unix/sysmon-linux-auditd/socfortress__Wazuh-Rules,socfortress/Wazuh-Rules,dec:auditd:3,,linux-auditd,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
 areas/03-linux-unix/sysmon-linux/0xbad53c__ossec-sysmon-for-linux-decoder,0xbad53c/ossec-sysmon-for-linux-decoder,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
 areas/03-linux-unix/sysmon-linux/n00bsteam__Wazuh-Extended,n00bsteam/Wazuh-Extended,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
-areas/03-linux-unix/wazuh-blog-pack/adampielak__wazuh-scripts-resource,adampielak/wazuh-scripts-resource,ossec:18;auditd:7,,linux-auditd;linux-suricata;pack-wazuh-blog-pack,,,8,13,1,0
 areas/04-macos/detection-engineering/Jeremy-Burgos__wazuh-detection-engineering,Jeremy-Burgos/wazuh-detection-engineering,ossec:8;wazuh:8;dec:json:2,,,,eventos JSON: definir o <localfile> json com a localização do ficheiro;decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
 areas/04-macos/jamf/phastier__wazuh,phastier/wazuh,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
 areas/04-macos/macos/phastier__wazuh,phastier/wazuh,syslog:1,syslog,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
-areas/04-macos/wazuh-blog-pack/adampielak__wazuh-scripts-resource,adampielak/wazuh-scripts-resource,,,pack-wazuh-blog-pack,,,3,10,0,0
+areas/04-macos/monitoring-macos-resources/wazuh.com__blog,wazuh.com/blog,,,pack-monitoring-macos-resources,,,1,8,0,0
+areas/04-macos/monitoring-usb-drives-in-macos-using-wazuh/wazuh.com__blog,wazuh.com/blog,dec:json:4,,pack-monitoring-usb-drives-in-macos-using-wazuh,,,1,1,0,0
 areas/05-cloud-saas/activemq/wazuh__integrations,wazuh/integrations,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
+areas/05-cloud-saas/adversary-emulation-on-gcp-with-stratus-red-team-and-wazuh/wazuh.com__blog,wazuh.com/blog,gcp:5,,,wodle gcp-pubsub,,0,0,0,0
 areas/05-cloud-saas/airflow/wazuh__integrations,wazuh/integrations,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
 areas/05-cloud-saas/atlassian-bitbucket/wazuh__integrations,wazuh/integrations,,,,,,0,0,0,0
 areas/05-cloud-saas/aws-bedrock/wazuh__integrations,wazuh/integrations,dec:json:2,,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,0,0,0,0
@@ -62,25 +92,43 @@ areas/05-cloud-saas/azure-frontdoor/wazuh__integrations,wazuh/integrations,dec:j
 areas/05-cloud-saas/azure-functions/wazuh__integrations,wazuh/integrations,dec:json:1,,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,0,0,0,0
 areas/05-cloud-saas/azure-metrics/wazuh__integrations,wazuh/integrations,dec:json:1,,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,0,0,0,0
 areas/05-cloud-saas/azure/wazuh__integrations,wazuh/integrations,dec:json:1,,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,0,0,0,0
+areas/05-cloud-saas/cloud-security-posture-management-on-microsoft-azure/wazuh.com__blog,wazuh.com/blog,azure:6,,,wodle azure-logs,,1,1,1,0
+areas/05-cloud-saas/cloud-security-posture-management/wazuh.com__blog,wazuh.com/blog,gcp:2,,,wodle gcp-pubsub,,0,0,0,0
 areas/05-cloud-saas/corpsec-gws-intune/calvinanglo__corpsec-ops-platform,calvinanglo/corpsec-ops-platform,win-sysmon:6;dec:json:3;syslog:3;sca:1;vulnerability-detector:1,syslog,osquery;pack-corpsec-gws-intune;win-sysmon,integration custom-n8n-alert;integration custom-n8n-critical;localfile /var/ossec/logs/active-responses.log,,1,14,0,0
+areas/05-cloud-saas/detecting-aws-access-key-compromise-with-wazuh/wazuh.com__blog,wazuh.com/blog,amazon:4,,,wodle aws-s3,,1,1,1,0
+areas/05-cloud-saas/detecting-stratus-red-team-adversary-emulation-on-microsoft-azure-with-wazuh/wazuh.com__blog,wazuh.com/blog,azure:8,,,wodle azure-logs,,1,1,1,0
 areas/05-cloud-saas/google-workspace/wazuh__integrations,wazuh/integrations,dec:json:1,,pack-google-workspace,,eventos JSON: definir o <localfile> json com a localização do ficheiro,1,1,0,0
+areas/05-cloud-saas/integrating-imperva-cloud-web-application-firewall-cwaf/wazuh.com__blog,wazuh.com/blog,,,pack-integrating-imperva-cloud-web-application-firewall-cwaf,,,1,1,0,0
 areas/05-cloud-saas/m365-aws-sap/socfortress__Wazuh-Rules,socfortress/Wazuh-Rules,dec:json:1,,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,0,0,0,0
 areas/05-cloud-saas/m365-inventory/wazuh__integrations,wazuh/integrations,dec:json:1,,pack-m365-inventory,localfile /var/ossec/logs/m365_inventory.log,,1,2,0,0
+areas/05-cloud-saas/monitor-office-365-with-wazuh/wazuh.com__blog,wazuh.com/blog,,,,,,1,1,1,0
+areas/05-cloud-saas/monitoring-aws-environments-with-wazuh/wazuh.com__blog,wazuh.com/blog,amazon:1,,,integration custom-aws_block_host;wodle aws-s3,,1,1,0,0
+areas/05-cloud-saas/monitoring-snowflake-data-warehouse-with-wazuh/wazuh.com__blog,wazuh.com/blog,dec:json:1,,pack-monitoring-snowflake-data-warehouse-with-wazuh,,,1,2,0,0
 areas/05-cloud-saas/netsuite/wazuh__integrations,wazuh/integrations,dec:json:1,,pack-netsuite,,,1,2,1,0
 areas/05-cloud-saas/office365/phastier__wazuh,phastier/wazuh,office365:9,,,module office365,,0,0,0,0
 areas/05-cloud-saas/oracle-cloud-infrastructure-streaming/wazuh__integrations,wazuh/integrations,,,pack-oracle-cloud-infrastructure-streaming,,eventos JSON: definir o <localfile> json com a localização do ficheiro,1,1,0,0
 areas/05-cloud-saas/salesforce/wazuh__integrations,wazuh/integrations,dec:json:1,,pack-salesforce,,eventos JSON: definir o <localfile> json com a localização do ficheiro,1,1,0,0
 areas/05-cloud-saas/stratus-red-team/TheMuntu__Wazuh-Detection,TheMuntu/Wazuh-Detection,amazon:4,,,wodle aws-s3,,0,0,0,0
-areas/05-cloud-saas/wazuh-blog-pack/adampielak__wazuh-scripts-resource,adampielak/wazuh-scripts-resource,ossec:3;gcp:2;amazon:1;dec:json:1,,pack-wazuh-blog-pack,integration custom-aws_block_host;wodle aws-s3;wodle gcp-pubsub,,5,9,0,0
 areas/05-cloud-saas/yandex-cloud/opennix-solutions__wazuh-yandex-cloud-rules,opennix-solutions/wazuh-yandex-cloud-rules,dec:json:2;sshd:1,sshd,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,0,0,0,0
+areas/06-containers-k8s/auditing-kubernetes-with-wazuh/wazuh.com__blog,wazuh.com/blog,,,,,,0,0,0,0
+areas/06-containers-k8s/cloud-native-security-with-wazuh-and-falco/wazuh.com__blog,wazuh.com/blog,dec:json:1,,pack-cloud-native-security-with-wazuh-and-falco,,,1,1,0,0
+areas/06-containers-k8s/container-image-security-with-wazuh-and-trivy/wazuh.com__blog,wazuh.com/blog,,,pack-container-image-security-with-wazuh-and-trivy,,,1,1,0,0
+areas/06-containers-k8s/container-vulnerability-scanning-with-wazuh-and-snyk/wazuh.com__blog,wazuh.com/blog,dec:json:1,,pack-container-vulnerability-scanning-with-wazuh-and-snyk,localfile /var/ossec/logs/container_vulnerability_scan.log,eventos JSON: definir o <localfile> json com a localização do ficheiro,2,2,0,0
+areas/06-containers-k8s/detecting-kubernetes-attacks-with-wazuh-2/wazuh.com__blog,wazuh.com/blog,,,pack-detecting-kubernetes-attacks-with-wazuh-2,,,1,1,0,0
+areas/06-containers-k8s/detecting-kubernetes-with-kubelinter-and-wazuh/wazuh.com__blog,wazuh.com/blog,dec:json:1,,pack-detecting-kubernetes-with-kubelinter-and-wazuh,,,1,1,0,0
+areas/06-containers-k8s/detecting-vulnerabilities-in-container-images-using-amazon-ecr/wazuh.com__blog,wazuh.com/blog,dec:json:1,,,wodle aws-s3,eventos JSON: definir o <localfile> json com a localização do ficheiro,1,1,1,0
+areas/06-containers-k8s/docker-container-security-monitoring-with-wazuh/wazuh.com__blog,wazuh.com/blog,,,linux-docker;pack-docker-container-security-monitoring-with-wazuh,,,1,3,0,0
 areas/06-containers-k8s/docker-journald/mootzen__wazuhToolSet,mootzen/wazuhToolSet,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
 areas/06-containers-k8s/docker/phastier__wazuh,phastier/wazuh,docker_integration:1,,linux-docker,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
 areas/06-containers-k8s/falco/Myth799__cyber-sec-k8s-security-deployment,Myth799/cyber-sec-k8s-security-deployment,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
 areas/06-containers-k8s/falco/michelep__wazuh-falco,michelep/wazuh-falco,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
 areas/06-containers-k8s/falco/paaszti__Wazuh-Falco-integration,paaszti/Wazuh-Falco-integration,,,pack-falco,,eventos JSON: definir o <localfile> json com a localização do ficheiro,1,1,0,0
 areas/06-containers-k8s/falco/zeinoux__siem-falco-wazuh,zeinoux/siem-falco-wazuh,,,linux-docker;osquery;pack-falco,localfile /var/ossec/logs/active-responses.log;wodle cis-cat,,1,13,0,0
+areas/06-containers-k8s/monitoring-docker-container-logs-with-wazuh/wazuh.com__blog,wazuh.com/blog,,,pack-monitoring-docker-container-logs-with-wazuh,,,1,1,0,0
+areas/06-containers-k8s/monitoring-gke-audit-logs/wazuh.com__blog,wazuh.com/blog,gcp:1,,,wodle gcp-pubsub,,0,0,0,0
+areas/06-containers-k8s/security-observability-on-linux-with-wazuh-and-tetragon/wazuh.com__blog,wazuh.com/blog,,,pack-security-observability-on-linux-with-wazuh-and-tetragon,,,1,1,0,0
+areas/06-containers-k8s/streamlining-container-image-security-with-grype-and-wazuh/wazuh.com__blog,wazuh.com/blog,,,pack-streamlining-container-image-security-with-grype-and-wazuh,,,1,1,0,0
 areas/06-containers-k8s/tetragon-falco/socfortress__Wazuh-Rules,socfortress/Wazuh-Rules,dec:json:297,,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,0,0,0,0
-areas/06-containers-k8s/wazuh-blog-pack/adampielak__wazuh-scripts-resource,adampielak/wazuh-scripts-resource,dec:json:2,,linux-docker;osquery;pack-wazuh-blog-pack,wodle cis-cat,,7,13,0,0
 areas/07-network-perimeter/arista-ngfw/wazuh__integrations,wazuh/integrations,,,,remote syslog,,0,0,0,0
 areas/07-network-perimeter/arista/Hasitha9796__wazuh-custom-decoders,Hasitha9796/wazuh-custom-decoders,,,,remote syslog,,0,0,0,0
 areas/07-network-perimeter/aruba-clearpass/baro77__CPPM2Wazuh,baro77/CPPM2Wazuh,,,,remote syslog,,0,0,0,0
@@ -104,6 +152,7 @@ areas/07-network-perimeter/hp-cisco-switches/parlakbarann__wazuh-custom-network-
 areas/07-network-perimeter/hp-router/sujalthakur-03__Wazuh-Decoders-Rules,sujalthakur-03/Wazuh-Decoders-Rules,,,,remote syslog,,0,0,0,0
 areas/07-network-perimeter/huawei1-decoder/Maverick000011__wazuh-custom-decoders,Maverick000011/wazuh-custom-decoders,,,,remote syslog,,0,0,0,0
 areas/07-network-perimeter/huawei2-decoder/Maverick000011__wazuh-custom-decoders,Maverick000011/wazuh-custom-decoders,,,,remote syslog,,0,0,0,0
+areas/07-network-perimeter/integrating-cisco-secure-endpoint/wazuh.com__blog,wazuh.com/blog,,,,,,0,0,0,0
 areas/07-network-perimeter/meraki/cbrede__wazuh-meraki,cbrede/wazuh-meraki,,,,remote syslog,,0,0,0,0
 areas/07-network-perimeter/meraki/leperchaun__wazuh-decoders-rules,leperchaun/wazuh-decoders-rules,,,,remote syslog,,0,0,0,0
 areas/07-network-perimeter/meraki/wazuh__integrations,wazuh/integrations,,,pack-meraki,,,1,1,0,0
@@ -117,7 +166,7 @@ areas/07-network-perimeter/mikrotik/phastier__wazuh,phastier/wazuh,,,,remote sys
 areas/07-network-perimeter/mikrotik/sujalthakur-03__Wazuh-Decoders-Rules,sujalthakur-03/Wazuh-Decoders-Rules,,,,remote syslog,,0,0,0,0
 areas/07-network-perimeter/mikrotik/wheelert__wazuh-mikrotik,wheelert/wazuh-mikrotik,,,,remote syslog,,0,0,0,0
 areas/07-network-perimeter/mikrotik/xArshh__Wazuh-MikroTik-Integration,xArshh/Wazuh-MikroTik-Integration,,,,remote syslog,,0,0,0,0
-areas/07-network-perimeter/openvpn-geoip/TheMuntu__Wazuh-Detection,TheMuntu/Wazuh-Detection,,,,remote syslog,,0,0,0,0
+areas/07-network-perimeter/monitoring-network-devices/wazuh.com__blog,wazuh.com/blog,,,pack-monitoring-network-devices,,,1,1,0,0
 areas/07-network-perimeter/openvpn/adampielak__wazuh_custom_rules,adampielak/wazuh_custom_rules,dec:json:1,,pack-openvpn,,,1,3,0,0
 areas/07-network-perimeter/openvpn/bret99__wazuh_custom_rules,bret99/wazuh_custom_rules,dec:json:3,,pack-openvpn,,,1,4,0,0
 areas/07-network-perimeter/opnsense-naxsi/socfortress__Wazuh-Rules,socfortress/Wazuh-Rules,,,pack-opnsense-naxsi,,,1,1,0,0
@@ -162,8 +211,11 @@ areas/08-ndr-ids/flowtriq/wazuh__integrations,wazuh/integrations,,,,,decoders pr
 areas/08-ndr-ids/lumu/wazuh__integrations,wazuh/integrations,,,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,0,0,0,0
 areas/08-ndr-ids/maltrail/MikhailKasimov__maltrail-wazuh-decoder-and-rules,MikhailKasimov/maltrail-wazuh-decoder-and-rules,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
 areas/08-ndr-ids/maltrail/hawkteam404__Wazuh,hawkteam404/Wazuh,,,,,,0,0,0,0
+areas/08-ndr-ids/monitoring-dhcp-starvation-attack-with-suricata-and-wazuh/wazuh.com__blog,wazuh.com/blog,suricata:1,,linux-suricata,,,1,1,0,0
+areas/08-ndr-ids/network-security-monitoring-with-wazuh-and-zeek/wazuh.com__blog,wazuh.com/blog,dec:json:1,,pack-network-security-monitoring-with-wazuh-and-zeek,,,1,1,0,0
 areas/08-ndr-ids/nids-honeypot/socfortress__Wazuh-Rules,socfortress/Wazuh-Rules,suricata:7;dec:json:5,,linux-suricata;pack-nids-honeypot,,,1,1,0,0
 areas/08-ndr-ids/nta/od55__wazuh-local-ruleset,od55/wazuh-local-ruleset,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
+areas/08-ndr-ids/responding-to-network-attacks-with-suricata-and-wazuh-xdr/wazuh.com__blog,wazuh.com/blog,suricata:2,,linux-suricata,,,1,1,0,0
 areas/08-ndr-ids/trend-micro-ddi/wazuh__integrations,wazuh/integrations,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
 areas/08-ndr-ids/zeek/mellomatcha__wazuh,mellomatcha/wazuh,dec:json:5,,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,0,0,0,0
 areas/09-web-apps-waf/akamai/wazuh__integrations,wazuh/integrations,dec:json:1,,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,0,0,0,0
@@ -173,6 +225,7 @@ areas/09-web-apps-waf/bitrix/adampielak__wazuh_custom_rules,adampielak/wazuh_cus
 areas/09-web-apps-waf/caddy/NucleiAv__caddy-detection-rules,NucleiAv/caddy-detection-rules,,,pack-caddy,,,1,1,0,0
 areas/09-web-apps-waf/caddy/tread-lightly__Caddy_decoders_for_Wazuh,tread-lightly/Caddy_decoders_for_Wazuh,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
 areas/09-web-apps-waf/confluence/adampielak__wazuh_custom_rules,adampielak/wazuh_custom_rules,dec:json:1,,,,,1,2,0,1
+areas/09-web-apps-waf/detecting-web-attacks-using-wazuh-and-teler/wazuh.com__blog,wazuh.com/blog,dec:json:3,,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,1,1,1,1
 areas/09-web-apps-waf/directum/adampielak__wazuh_custom_rules,adampielak/wazuh_custom_rules,dec:json:2,,pack-directum,,,1,1,0,0
 areas/09-web-apps-waf/envoy/chrisandoryan__Wazoy,chrisandoryan/Wazoy,dec:json:1,,pack-envoy,,,1,2,0,0
 areas/09-web-apps-waf/filezilla-sftp/navein-kumar__wazuh-filezilla-sftp-rules,navein-kumar/wazuh-filezilla-sftp-rules,,,,,,0,0,0,0
@@ -181,18 +234,23 @@ areas/09-web-apps-waf/jira/adampielak__wazuh_custom_rules,adampielak/wazuh_custo
 areas/09-web-apps-waf/modsecurity/Hasitha9796__wazuh-custom-decoders,Hasitha9796/wazuh-custom-decoders,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
 areas/09-web-apps-waf/modsecurity/socfortress__Wazuh-Rules,socfortress/Wazuh-Rules,apache:1,,linux-apache,,,0,0,0,0
 areas/09-web-apps-waf/orangebox/OrangeBox-Labs__Wazuh,OrangeBox-Labs/Wazuh,web:2,,linux-apache,,,0,0,0,0
+areas/09-web-apps-waf/securing-web-applications-with-coraza-waf-and-wazuh/wazuh.com__blog,wazuh.com/blog,ossec:3;dec:json:1,,pack-securing-web-applications-with-coraza-waf-and-wazuh,,,1,1,0,0
 areas/09-web-apps-waf/skudonet/dzoelfi__skudonet-wazuh-decoders,dzoelfi/skudonet-wazuh-decoders,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
 areas/09-web-apps-waf/web-accesslog/phastier__wazuh,phastier/wazuh,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
 areas/09-web-apps-waf/web-attacks/0xbad53c__wazuh-detection-rules,0xbad53c/wazuh-detection-rules,web:5,,linux-apache,,,0,0,0,0
 areas/09-web-apps-waf/web-attacks/MORGADO01__wazuh-detection-rules,MORGADO01/wazuh-detection-rules,web:7;apache:2;nginx:1;ossec:1,,linux-apache;linux-nginx,,,0,0,0,0
 areas/09-web-apps-waf/web-attacks/wirekits__wazuh-rules,wirekits/wazuh-rules,ossec:1;wazuh:1;web:1,,linux-apache,,,0,0,0,0
+areas/09-web-apps-waf/web-shell-attack-detection-with-wazuh/wazuh.com__blog,wazuh.com/blog,auditd:2;ossec:2;win-sysmon:2;dec:ossec:1,,linux-auditd;pack-web-shell-attack-detection-with-wazuh;win-sysmon,,,3,3,0,0
 areas/09-web-apps-waf/webshell/TheMuntu__Wazuh-Detection,TheMuntu/Wazuh-Detection,auditd:2;ossec:2;win-sysmon:2;dec:ossec:1,,linux-auditd;win-sysmon,,,0,0,0,0
 areas/09-web-apps-waf/webshell/bayusky__wazuh-custom-rules-and-decoders,bayusky/wazuh-custom-rules-and-decoders,auditd:2;ossec:2;win-sysmon:2;dec:ossec:1,,linux-auditd;win-sysmon,,,0,0,0,0
 areas/09-web-apps-waf/wpscan/bayusky__wazuh-custom-rules-and-decoders,bayusky/wazuh-custom-rules-and-decoders,web:1,,linux-apache,,,0,0,0,0
 areas/10-databases/dam-mysql-mssql-postgresql/mjvmsteixeira__wazuh-database-compliance,mjvmsteixeira/wazuh-database-compliance,dec:json:16,,pack-dam-mysql-mssql-postgresql,,,6,6,0,0
+areas/10-databases/monitoring-mariadb-server-with-wazuh/wazuh.com__blog,wazuh.com/blog,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
+areas/10-databases/monitoring-mongodb-atlas-with-wazuh/wazuh.com__blog,wazuh.com/blog,amazon:1,,pack-monitoring-mongodb-atlas-with-wazuh,wodle aws-s3,,1,2,0,0
+areas/10-databases/monitoring-mongodb-database-using-wazuh/wazuh.com__blog,wazuh.com/blog,,,pack-monitoring-mongodb-database-using-wazuh,,,1,1,0,0
+areas/10-databases/monitoring-postgresql-database-with-wazuh/wazuh.com__blog,wazuh.com/blog,,,pack-monitoring-postgresql-database-with-wazuh,,,1,1,0,0
 areas/10-databases/mysql/Hasitha9796__wazuh-custom-decoders,Hasitha9796/wazuh-custom-decoders,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
 areas/10-databases/postgres/Hasitha9796__wazuh-custom-decoders,Hasitha9796/wazuh-custom-decoders,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
-areas/10-databases/wazuh-blog-pack/adampielak__wazuh-scripts-resource,adampielak/wazuh-scripts-resource,amazon:1,,pack-wazuh-blog-pack,wodle aws-s3,,2,3,0,0
 areas/11-endpoint-security-edr/admin-by-request-epm/wazuh__integrations,wazuh/integrations,dec:json:1,,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,0,0,0,0
 areas/11-endpoint-security-edr/bitdefender-gravityzone/wazuh__integrations,wazuh/integrations,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
 areas/11-endpoint-security-edr/cortex-xdr/femontanher__cortex-xdr-wazuh-api-integration,femontanher/cortex-xdr-wazuh-api-integration,dec:json:1,,,localfile /var/ossec/logs/cortex_xdr/alerts.json,,1,1,0,0
@@ -201,6 +259,9 @@ areas/11-endpoint-security-edr/crowdstrike/calvinanglo__corpsec-ops-platform,cal
 areas/11-endpoint-security-edr/edr-av/socfortress__Wazuh-Rules,socfortress/Wazuh-Rules,win-base:6;dec:json:4,win-base,pack-edr-av,,,3,3,0,0
 areas/11-endpoint-security-edr/edr/calvinanglo__corpsec-ops-platform,calvinanglo/corpsec-ops-platform,win-sysmon:11;ossec:2,,win-sysmon,,,0,0,0,0
 areas/11-endpoint-security-edr/eset/bayusky__wazuh-custom-rules-and-decoders,bayusky/wazuh-custom-rules-and-decoders,dec:json:1,,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,1,1,0,1
+areas/11-endpoint-security-edr/integrating-admin-by-request-abr-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-application:4,win-application,,,,0,0,0,0
+areas/11-endpoint-security-edr/integrating-bitdefender-gravityzone-with-wazuh/wazuh.com__blog,wazuh.com/blog,,,pack-integrating-bitdefender-gravityzone-with-wazuh,,,1,1,0,0
+areas/11-endpoint-security-edr/integrating-sentinelone-xdr-with-wazuh/wazuh.com__blog,wazuh.com/blog,dec:json:1,,pack-integrating-sentinelone-xdr-with-wazuh,,,2,3,0,0
 areas/11-endpoint-security-edr/kaspersky-ksc/tread-lightly__KSC_decoders_and_rules_for_Wazuh,tread-lightly/KSC_decoders_and_rules_for_Wazuh,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
 areas/11-endpoint-security-edr/kaspersky/adampielak__wazuh_custom_rules,adampielak/wazuh_custom_rules,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
 areas/11-endpoint-security-edr/kaspersky/fredycibersec__wazuh-stuff,fredycibersec/wazuh-stuff,,,pack-kaspersky,,,1,1,0,0
@@ -215,8 +276,15 @@ areas/11-endpoint-security-edr/trend-micro/Hasitha9796__wazuh-custom-decoders,Ha
 areas/11-endpoint-security-edr/withsecure/fredycibersec__wazuh-stuff,fredycibersec/wazuh-stuff,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
 areas/12-threat-intel/abuseipdb/wazuh__integrations,wazuh/integrations,dec:json:1,,,integration custom-abuseipdb,eventos JSON: definir o <localfile> json com a localização do ficheiro,1,2,0,0
 areas/12-threat-intel/alienvault-otx/wazuh__integrations,wazuh/integrations,dec:json:1;syslog:1,syslog,,integration custom-alienvault,eventos JSON: definir o <localfile> json com a localização do ficheiro,1,1,0,0
+areas/12-threat-intel/building-ioc-files-for-threat-intelligence-with-wazuh-xdr/wazuh.com__blog,wazuh.com/blog,,,linux-apache,integration virustotal,,2,2,1,0
 areas/12-threat-intel/criminalip/shahidakhter786__wazuh-criminalip-integration,shahidakhter786/wazuh-criminalip-integration,dec:json:1,,,integration custom-criminalip,eventos JSON: definir o <localfile> json com a localização do ficheiro,1,1,0,0
+areas/12-threat-intel/detecting-compromised-accounts-with-hibp-and-wazuh/wazuh.com__blog,wazuh.com/blog,dec:json:1,,pack-detecting-compromised-accounts-with-hibp-and-wazuh,,,1,1,0,0
+areas/12-threat-intel/detecting-known-bad-actors-with-wazuh-and-abuseipdb/wazuh.com__blog,wazuh.com/blog,sshd:2,sshd,pack-detecting-known-bad-actors-with-wazuh-and-abuseipdb,integration custom-abuseipdb.py,,2,2,1,0
+areas/12-threat-intel/detecting-malicious-urls-using-wazuh-and-urlhaus/wazuh.com__blog,wazuh.com/blog,,,linux-suricata,integration custom-urlhaus.py,,2,2,0,0
+areas/12-threat-intel/enhancing-threat-intelligence-with-wazuh-and-criminal-ip-integration/wazuh.com__blog,wazuh.com/blog,dec:json:1,,linux-apache,integration custom-criminalip.py,eventos JSON: definir o <localfile> json com a localização do ficheiro,2,2,1,0
 areas/12-threat-intel/google-threat-intelligence/wazuh__integrations,wazuh/integrations,,,pack-google-threat-intelligence,integration custom-gti,,2,4,0,1
+areas/12-threat-intel/integrating-wazuh-with-yeti-platform/wazuh.com__blog,wazuh.com/blog,dec:json:1,,pack-integrating-wazuh-with-yeti-platform,integration custom-yeti.py,eventos JSON: definir o <localfile> json com a localização do ficheiro,2,2,1,0
+areas/12-threat-intel/maltiverse-empowering-threat-visibility/wazuh.com__blog,wazuh.com/blog,ossec:2,,pack-maltiverse-empowering-threat-visibility,integration maltiverse,,6,6,0,0
 areas/12-threat-intel/malware-ip/adampielak__wazuh_custom_rules,adampielak/wazuh_custom_rules,sshd:2;win-security:2,sshd;win-security,,,,0,0,0,0
 areas/12-threat-intel/misp/MISP__wazuh-integration,MISP/wazuh-integration,dec:json:1,,,integration None,eventos JSON: definir o <localfile> json com a localização do ficheiro,1,2,0,2
 areas/12-threat-intel/misp/bayusky__wazuh-custom-rules-and-decoders,bayusky/wazuh-custom-rules-and-decoders,,,,,,0,0,0,0
@@ -225,19 +293,28 @@ areas/12-threat-intel/opencti-retrohunt/federicofantini__Wazuh-TI,federicofantin
 areas/12-threat-intel/opencti/bayusky__wazuh-custom-rules-and-decoders,bayusky/wazuh-custom-rules-and-decoders,,,,,,0,0,0,0
 areas/12-threat-intel/opencti/hawkteam404__Wazuh,hawkteam404/Wazuh,dec:json:1,,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,0,0,0,0
 areas/12-threat-intel/orangebox/OrangeBox-Labs__Wazuh,OrangeBox-Labs/Wazuh,malicious-ioc-rules:2;sshd:1,sshd,,,,0,0,0,0
+areas/12-threat-intel/real-time-threat-correlation-with-wazuh-and-opencti/wazuh.com__blog,wazuh.com/blog,dec:json:1;win-sysmon:1,,win-sysmon,integration custom-opencti,eventos JSON: definir o <localfile> json com a localização do ficheiro,2,2,1,0
 areas/12-threat-intel/socradar/Hasitha9796__wazuh-custom-decoders,Hasitha9796/wazuh-custom-decoders,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
 areas/12-threat-intel/socradar/wazuh__integrations,wazuh/integrations,sshd:5;ossec:2,sshd,pack-socradar,integration custom-socradar,eventos JSON: definir o <localfile> json com a localização do ficheiro,2,4,0,1
 areas/12-threat-intel/ti-enrichment/socfortress__Wazuh-Rules,socfortress/Wazuh-Rules,dec:json:1,,,integration custom-dnsstats;integration custom-misp;integration custom-opencti,eventos JSON: definir o <localfile> json com a localização do ficheiro,3,3,0,0
+areas/12-threat-intel/using-osint-to-create-cdb-lists/wazuh.com__blog,wazuh.com/blog,,,,,,0,0,0,0
 areas/12-threat-intel/virustotal-ip/wazuh__integrations,wazuh/integrations,virustotal:3,,,integration custom-virustotal_ip;integration virustotal,,1,1,0,0
+areas/13-vulnerability-mgmt/detecting-threats-using-inventory-data/wazuh.com__blog,wazuh.com/blog,wazuh:3,,,,,0,0,0,0
 areas/13-vulnerability-mgmt/greenbone/wazuh__integrations,wazuh/integrations,dec:json:1,,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,1,1,0,1
+areas/13-vulnerability-mgmt/integrating-dependency-track-with-wazuh/wazuh.com__blog,wazuh.com/blog,,,pack-integrating-dependency-track-with-wazuh,,eventos JSON: definir o <localfile> json com a localização do ficheiro,1,1,0,0
 areas/13-vulnerability-mgmt/lynis/phastier__wazuh,phastier/wazuh,dec:json:1,,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,0,0,0,0
+areas/13-vulnerability-mgmt/managing-shadow-it-with-wazuh/wazuh.com__blog,wazuh.com/blog,ossec:2;wazuh:1,,,,,1,1,0,0
+areas/13-vulnerability-mgmt/monitoring-end-of-life-software-with-wazuh/wazuh.com__blog,wazuh.com/blog,dec:json:1,,,localfile /var/ossec/logs/eol-findings/eol.json,,1,1,0,0
 areas/13-vulnerability-mgmt/nessus/wazuh__integrations,wazuh/integrations,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
 areas/13-vulnerability-mgmt/nuclei/adampielak__wazuh_custom_rules,adampielak/wazuh_custom_rules,dec:json:1,,pack-nuclei,,,1,2,1,0
 areas/13-vulnerability-mgmt/openvas/wazuh__integrations,wazuh/integrations,dec:json:2,,pack-openvas,,,1,2,0,0
 areas/13-vulnerability-mgmt/vuln-inventory/socfortress__Wazuh-Rules,socfortress/Wazuh-Rules,dec:json:27,,pack-vuln-inventory,,eventos JSON: definir o <localfile> json com a localização do ficheiro,1,1,0,0
 areas/14-ot-ics-iot/home-assistant/BeardedTinker__wazuh-homelab-security,BeardedTinker/wazuh-homelab-security,,,,remote syslog,,0,0,0,0
+areas/14-ot-ics-iot/monitoring-rapid-scada-with-wazuh/wazuh.com__blog,wazuh.com/blog,ossec:3,,pack-monitoring-rapid-scada-with-wazuh,,,1,4,0,0
 areas/14-ot-ics-iot/ot-sentinel/Sbharadwaj05__ot-sentinel-rules,Sbharadwaj05/ot-sentinel-rules,dec:json:29,,,localfile /var/ossec/logs/dnp3/dnp3_tap.log;localfile /var/ossec/logs/iec104/iec104_tap.log;localfile /var/ossec/logs/modbus/modbus_tap.log;localfile /var/ossec/logs/mqtt/mqtt_tap.log;localfile /var/ossec/logs/opcua/opcua_tap.log,,1,5,0,0
 areas/15-infra-virt-storage-backup/esxi/pfuz__wazuh-ruleset,pfuz/wazuh-ruleset,,,,remote syslog,,0,0,0,0
+areas/15-infra-virt-storage-backup/monitoring-hyper-v-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-base:3;dec:json:1,win-base,pack-monitoring-hyper-v-with-wazuh,,eventos JSON: definir o <localfile> json com a localização do ficheiro,2,5,0,0
+areas/15-infra-virt-storage-backup/monitoring-vmware-esxi-with-wazuh/wazuh.com__blog,wazuh.com/blog,,,pack-monitoring-vmware-esxi-with-wazuh,,,2,2,0,0
 areas/15-infra-virt-storage-backup/proxmox/adampielak__wazuh_custom_rules,adampielak/wazuh_custom_rules,dec:json:2,,pack-proxmox,,,1,4,0,0
 areas/15-infra-virt-storage-backup/proxmox/captainobvious-sec__wazuh-field-notes,captainobvious-sec/wazuh-field-notes,proxmox-ve:9;syslog:1,syslog,,remote syslog,,0,0,0,0
 areas/15-infra-virt-storage-backup/proxmox/phastier__wazuh,phastier/wazuh,web:3;proxmox-ve:1,,linux-apache,remote syslog,,0,0,0,0
@@ -255,46 +332,149 @@ areas/15-infra-virt-storage-backup/veeam/pfuz__wazuh-ruleset,pfuz/wazuh-ruleset,
 areas/15-infra-virt-storage-backup/vmware/adampielak__wazuh_custom_rules,adampielak/wazuh_custom_rules,dec:json:1,,pack-vmware,,,1,1,0,0
 areas/16-dns-email/abnormal-security/wazuh__integrations,wazuh/integrations,dec:json:1,,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,0,0,0,0
 areas/16-dns-email/bind/od55__wazuh-local-ruleset,od55/wazuh-local-ruleset,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
+areas/16-dns-email/detecting-dns-spoofing-attacks-with-wazuh/wazuh.com__blog,wazuh.com/blog,dec:json:1;ossec:1,,pack-detecting-dns-spoofing-attacks-with-wazuh,,,1,1,0,0
+areas/16-dns-email/detecting-dns-tunneling-attacks-with-wazuh/wazuh.com__blog,wazuh.com/blog,,,pack-detecting-dns-tunneling-attacks-with-wazuh,,,1,1,0,0
+areas/16-dns-email/detecting-phishing-attacks-with-wazuh-and-shuffle/wazuh.com__blog,wazuh.com/blog,dec:json:5;office365:1,,,integration shuffle;integration slack;module office365,eventos JSON: definir o <localfile> json com a localização do ficheiro,2,2,2,0
 areas/16-dns-email/email-phishing/socfortress__Wazuh-Rules,socfortress/Wazuh-Rules,,,,,,0,0,0,0
+areas/16-dns-email/how-to-send-email-notifications-with-wazuh/wazuh.com__blog,wazuh.com/blog,apache:2,,linux-apache;pack-how-to-send-email-notifications-with-wazuh,,,1,2,0,0
+areas/16-dns-email/integrating-mimecast-with-wazuh/wazuh.com__blog,wazuh.com/blog,,,pack-integrating-mimecast-with-wazuh,,,1,2,0,0
 areas/16-dns-email/orangebox/OrangeBox-Labs__Wazuh,OrangeBox-Labs/Wazuh,exim:1;postfix:1,,,,família oficial exim (1 regras);família oficial postfix (1 regras),0,0,0,0
 areas/16-dns-email/pi-hole/Tomo-9925__wazuh-pi-hole-decoder-and-rules,Tomo-9925/wazuh-pi-hole-decoder-and-rules,,,pack-pi-hole,,,1,1,0,0
 areas/16-dns-email/stalwart-mail/lulzkiller666__Custom-Wazuh-decoders-and-rules,lulzkiller666/Custom-Wazuh-decoders-and-rules,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
 areas/16-dns-email/technitium-dns/wazuh__integrations,wazuh/integrations,dec:json:1,,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,1,1,0,1
 areas/16-dns-email/trend-micro-email/Maverick000011__wazuh-custom-decoders,Maverick000011/wazuh-custom-decoders,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
-areas/16-dns-email/wazuh-blog-pack/adampielak__wazuh-scripts-resource,adampielak/wazuh-scripts-resource,dec:json:1;ossec:1,,pack-wazuh-blog-pack,,,2,2,0,0
 areas/16-dns-email/zimbra/Lordkaly__wazuh-collection,Lordkaly/wazuh-collection,syslog:1,syslog,pack-zimbra,,,1,1,0,0
 areas/17-ai-llm/ai-exfil/calvinanglo__corpsec-ops-platform,calvinanglo/corpsec-ops-platform,dec:json:1,,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,0,0,0,0
 areas/17-ai-llm/azure-ai-foundry/wazuh__integrations,wazuh/integrations,dec:json:1,,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,0,0,0,0
 areas/17-ai-llm/azure-openai/wazuh__integrations,wazuh/integrations,dec:json:1,,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,0,0,0,0
 areas/17-ai-llm/chatgpt/AnonymousWP__Wazuh-ChatGPT-integration,AnonymousWP/Wazuh-ChatGPT-integration,sshd:1,sshd,,integration custom-chatgpt.py,,2,2,0,0
 areas/17-ai-llm/chatgpt/wazuh__integrations,wazuh/integrations,dec:json:1,,,integration custom-chatgpt,eventos JSON: definir o <localfile> json com a localização do ficheiro,1,1,0,0
+areas/17-ai-llm/enriching-wazuh-vulnerability-detection-with-google-gemini-integration/wazuh.com__blog,wazuh.com/blog,,,,integration custom-gemini.py,,1,1,1,0
+areas/17-ai-llm/nmap-and-chatgpt-security-auditing/wazuh.com__blog,wazuh.com/blog,dec:json:1,,,integration custom-chatgpt.py,eventos JSON: definir o <localfile> json com a localização do ficheiro,3,3,3,0
 areas/17-ai-llm/whisper/wazuh__integrations,wazuh/integrations,dec:json:1,,,integration custom-whisper,eventos JSON: definir o <localfile> json com a localização do ficheiro,1,1,0,0
 areas/18-compliance-frameworks/cjis/TristanGNS__wazuh-cjis-rules,TristanGNS/wazuh-cjis-rules,msauth:18;dec:json:1;ossec:1,msauth,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,0,0,0,0
+areas/18-compliance-frameworks/conducting-primary-account-number-scan-with-wazuh/wazuh.com__blog,wazuh.com/blog,ossec:1,,pack-conducting-primary-account-number-scan-with-wazuh,,,2,10,0,0
 areas/18-compliance-frameworks/ens-rd311-2022/fredycibersec__ENS-Wazuh-integration,fredycibersec/ENS-Wazuh-integration,ossec:7;syslog:7;sshd:4;attack:3;auditd:2;pam:2,pam;sshd;syslog,linux-auditd,,,0,0,0,0
 areas/18-compliance-frameworks/nist-csf-2.0/Sbharadwaj05__Wazuh-NIST-Rules-Set,Sbharadwaj05/Wazuh-NIST-Rules-Set,dec:json:27;auditd:13;syslog:4;firewall:2;win-sysmon:2;dec:ssh:1;sshd:1;web:1;win-security:1,canal Security;sshd;syslog;win-security,linux-apache;linux-auditd;linux-nginx;pack-nist-csf-2-0;win-sysmon,remote syslog,família oficial dec:ssh (1 regras);eventos JSON: definir o <localfile> json com a localização do ficheiro,2,11,0,2
-areas/19-threats-campaigns-cves/apache-text4shell/TheMuntu__Wazuh-Detection,TheMuntu/Wazuh-Detection,web:1,,linux-apache,,,0,0,0,0
+areas/18-compliance-frameworks/wazuh-for-cmmc-compliance/wazuh.com__blog,wazuh.com/blog,pam:1,pam,,,,0,0,0,0
+areas/19-threats-campaigns-cves/blackbit-ransomware-detection-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:12;sysmon_id_1:1,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/blx-stealer-detection-and-response-using-wazuh/wazuh.com__blog,wazuh.com/blog,ossec:2;sysmon_id_11:2;sysmon_id_1:1;win-sysmon:1,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/chaos-malware-detecting-using-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:2;auditd:1;sysmon_id_13:1,,linux-auditd;win-sysmon,,,2,2,0,0
+areas/19-threats-campaigns-cves/chavecloak-malware-detection-and-response-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:4;ossec:2;sysmon_id_13:1,,win-sysmon,integration virustotal,,2,2,1,0
 areas/19-threats-campaigns-cves/cl-sta-1087/Dinas-Kominfo-Kota-Tangerang__cl-sta-1087-malware-rules,Dinas-Kominfo-Kota-Tangerang/cl-sta-1087-malware-rules,sysmon:5;win-sysmon:5;web:4;ossec:1;win-base:1;win-system:1,win-base;win-system,linux-apache;win-sysmon,,,0,0,0,0
+areas/19-threats-campaigns-cves/crosslock-ransomware-detection/wazuh.com__blog,wazuh.com/blog,sysmon_id_1:9;win-sysmon:1,,win-sysmon,integration virustotal,,2,2,0,0
 areas/19-threats-campaigns-cves/cve-2026-31431-copy-fail/mym0us3r__COPY-FAIL-Detection-with-Wazuh-4.14.4,mym0us3r/COPY-FAIL-Detection-with-Wazuh-4.14.4,auditd:4;audit:2,,linux-auditd,,,1,1,0,0
 areas/19-threats-campaigns-cves/cve-2026-43284-dirty-frag/mym0us3r__DIRTY-FRAG-Detection-with-Wazuh-4.14.4,mym0us3r/DIRTY-FRAG-Detection-with-Wazuh-4.14.4,auditd:7,,linux-auditd,,,1,1,0,0
+areas/19-threats-campaigns-cves/daolpu-infostealer-detection-and-response-with-wazuh/wazuh.com__blog,wazuh.com/blog,ossec:2;win-sysmon:2;sysmon_id_1:1,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/darkwatchman-rat-detection/wazuh.com__blog,wazuh.com/blog,win-sysmon:6;sysmon:3;sysmon_id_1:1,,win-sysmon,integration virustotal,,2,2,1,0
+areas/19-threats-campaigns-cves/defending-against-the-rogueplanet-vulnerability-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:7;sysmon:4,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/detect-and-respond-to-blacksuit-ransomware-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:3,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-amadey-malware/wazuh.com__blog,wazuh.com/blog,win-sysmon:4;suricata:2,,linux-suricata;win-sysmon,,,2,2,0,0
+areas/19-threats-campaigns-cves/detecting-and-blocking-cacti-remote-code-execution-vulnerability-cve-2022-46169-/wazuh.com__blog,wazuh.com/blog,web:1,,linux-apache;pack-detecting-and-blocking-cacti-remote-code-execution-vulnerability-cve-2022-46169,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-and-removing-sosano-backdoor-malware-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:6;ossec:3;sysmon_id_13:1,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-and-removing-whispergate-malware/wazuh.com__blog,wazuh.com/blog,ossec:5;wazuh:3,,,integration virustotal,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-and-responding-mamona-ransomware-with-wazuh/wazuh.com__blog,wazuh.com/blog,ossec:2;win-sysmon:2,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-and-responding-to-apos-malware-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:6;ossec:2,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-and-responding-to-bqtlock-ransomware-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:8;ossec:3;win-security:1,win-security,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-and-responding-to-cephalus-ransomware-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:4;ossec:3,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-and-responding-to-funklocker-ransomware-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:8;ossec:2,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-and-responding-to-greenblood-ransomware-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:4;ossec:3;sysmon_id_1:3;sysmon_id_11:1,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-and-responding-to-invisibleferret-with-wazuh/wazuh.com__blog,wazuh.com/blog,ossec:3,,pack-detecting-and-responding-to-invisibleferret-with-wazuh,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-and-responding-to-latrodectus-malware-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:4;ossec:2,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-and-responding-to-lumma-stealer-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:5;ossec:2,,win-sysmon,integration virustotal,,2,2,1,0
+areas/19-threats-campaigns-cves/detecting-and-responding-to-phobos-ransomware-using-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:8;ossec:2;sysmon_id_1:1;sysmon_id_13:1,,win-sysmon,integration virustotal,,2,2,1,0
+areas/19-threats-campaigns-cves/detecting-and-responding-to-rhadamanthys-stealer-with-wazuh/wazuh.com__blog,wazuh.com/blog,sysmon_id_1:6;win-sysmon:3;ossec:2;sysmon_id_13:1,,win-sysmon,integration virustotal,,2,2,1,0
+areas/19-threats-campaigns-cves/detecting-and-responding-to-salat-stealer-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:6,,win-sysmon,integration virustotal,,2,2,1,0
+areas/19-threats-campaigns-cves/detecting-apache-text4shell-cve-2022-42889-with-wazuh/wazuh.com__blog,wazuh.com/blog,web:1,,linux-apache,,,1,1,1,0
+areas/19-threats-campaigns-cves/detecting-asyncrat-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:5,,win-sysmon,integration virustotal,,2,2,1,0
+areas/19-threats-campaigns-cves/detecting-auto-color-malware-with-wazuh/wazuh.com__blog,wazuh.com/blog,ossec:1,,pack-detecting-auto-color-malware-with-wazuh,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-blackcat-ransomware-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:5;ossec:3,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-brain-cipher-ransomware-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:8;ossec:2,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-cobalt-strike-beacons-using-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:4;sysmon:1,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-cve-2026-33017-exploitation-in-langflow-with-wazuh/wazuh.com__blog,wazuh.com/blog,auditd:1,,linux-auditd;pack-detecting-cve-2026-33017-exploitation-in-langflow-with-wazuh,,,2,2,0,0
+areas/19-threats-campaigns-cves/detecting-deerstealer-malware-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:6;sysmon_id_11:1;sysmon_id_13:1,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-dirty-pipe-vulnerability-with-wazuh-cve-2022-0847/wazuh.com__blog,wazuh.com/blog,auditd:1,,linux-auditd,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-doge-big-balls-ransomware-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:3;ossec:2,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-exploitation-of-xz-utils-vulnerability-cve-2024-3094-with-wazuh/wazuh.com__blog,wazuh.com/blog,ossec:1,,pack-detecting-exploitation-of-xz-utils-vulnerability-cve-2024-3094-with-wazuh,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-follina-cve-2022-30190-attack-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:1,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-frigidstealer-malware-with-wazuh/wazuh.com__blog,wazuh.com/blog,,,pack-detecting-frigidstealer-malware-with-wazuh,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-gunra-ransomware-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:3;ossec:2;win-security:2,win-security,win-sysmon,integration virustotal,,2,2,1,0
+areas/19-threats-campaigns-cves/detecting-hoaxshell-with-wazuh/wazuh.com__blog,wazuh.com/blog,sysmon_id_3:1,,win-sysmon;win-windows-powershell,,,2,2,0,0
+areas/19-threats-campaigns-cves/detecting-impacket-with-wazuh/wazuh.com__blog,wazuh.com/blog,sysmon_id_1:1;win-sysmon:1,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-koske-malware-with-wazuh/wazuh.com__blog,wazuh.com/blog,ossec:1,,pack-detecting-koske-malware-with-wazuh,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-lockbit-3-0-ransomware-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:6;ossec:2,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-lodarat-malware-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:5;ossec:2,,win-sysmon,integration virustotal,,2,2,1,0
+areas/19-threats-campaigns-cves/detecting-log4shell-with-wazuh/wazuh.com__blog,wazuh.com/blog,,,linux-apache,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-lynx-ransomware-with-wazuh/wazuh.com__blog,wazuh.com/blog,ossec:2;win-sysmon:1,,pack-detecting-lynx-ransomware-with-wazuh;win-sysmon,,,2,2,0,0
+areas/19-threats-campaigns-cves/detecting-maranhao-stealer-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:6;sysmon_id_13:1,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-medusa-ransomware-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:2;sysmon_id_1:1,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-metasploit-attacks/wazuh.com__blog,wazuh.com/blog,,,pack-detecting-metasploit-attacks,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-njrat-malware/wazuh.com__blog,wazuh.com/blog,win-sysmon:4;sysmon_id_13:2;sysmon_id_1:1;sysmon_id_11:1,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-pandora-ransomware-with-wazuh/wazuh.com__blog,wazuh.com/blog,ossec:1,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-peaklight-malware-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:4;ossec:2;sysmon_id_11:1,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-powershell-exploitation-techniques-in-windows-using-wazuh/wazuh.com__blog,wazuh.com/blog,win-base:5;win-powershell:1,win-base,win-powershell,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-purehvnc-malware-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:7,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-pwnkit-cve-2021-4034-with-wazuh/wazuh.com__blog,wazuh.com/blog,auditd:1,,linux-auditd,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-razr-ransomware-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:2,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-sliver-c2-framework-with-wazuh/wazuh.com__blog,wazuh.com/blog,ossec:3;win-sysmon:2,,pack-detecting-sliver-c2-framework-with-wazuh;win-sysmon,,,2,2,0,0
+areas/19-threats-campaigns-cves/detecting-spring4shell-cve-2022-22965-with-wazuh/wazuh.com__blog,wazuh.com/blog,,,linux-apache,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-sysjoker-backdoor-malware-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:7;auditd:5;sysmon_id_13:1,,linux-auditd;win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-vidar-infostealer-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:3,,win-sysmon,integration virustotal,,2,2,0,0
+areas/19-threats-campaigns-cves/detecting-xll-files-used-for-dropping-fin7-jssloader-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:3,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/detecting-xworm-malware-with-wazuh/wazuh.com__blog,wazuh.com/blog,ossec:3;win-base:2;win-sysmon:1,win-base,win-powershell;win-sysmon,,,2,2,0,0
+areas/19-threats-campaigns-cves/emotet-malware-detection/wazuh.com__blog,wazuh.com/blog,sysmon:1;win-sysmon:1,,win-sysmon,integration virustotal,,2,2,0,0
 areas/19-threats-campaigns-cves/hoaxshell/TheMuntu__Wazuh-Detection,TheMuntu/Wazuh-Detection,win-sysmon:1,,win-sysmon,,,0,0,0,0
+areas/19-threats-campaigns-cves/how-to-detect-and-mitigate-panchan-botnet-using-wazuh/wazuh.com__blog,wazuh.com/blog,ossec:6,,pack-how-to-detect-and-mitigate-panchan-botnet-using-wazuh,,,1,4,0,0
+areas/19-threats-campaigns-cves/how-to-detect-black-basta-malware-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:3,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/how-to-detect-meshagent-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:6,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/how-to-detect-redline-infostealer-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:4;sysmon_id_11:1,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/how-wazuh-detects-and-responds-to-mint-stealer/wazuh.com__blog,wazuh.com/blog,ossec:2;sysmon_id_1:2;sysmon_id_11:1;win-sysmon:1,,win-sysmon,,,1,1,0,0
 areas/19-threats-campaigns-cves/judol-gambling-seo/bayusky__wazuh-custom-rules-and-decoders,bayusky/wazuh-custom-rules-and-decoders,ossec:2,,,,,0,0,0,0
+areas/19-threats-campaigns-cves/kuiper-ransomware-detection-and-response/wazuh.com__blog,wazuh.com/blog,sysmon_id_1:8;win-sysmon:3;ossec:2,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/limerat-detection/wazuh.com__blog,wazuh.com/blog,win-sysmon:5;ossec:2;sysmon:1;sysmon_id_1:1;sysmon_id_10:1;sysmon_id_11:1;sysmon_id_13:1;sysmon_id_20:1;sysmon_id_3:1;sysmon_id_7:1;sysmon_id_8:1,,win-sysmon,,,1,1,0,0
 areas/19-threats-campaigns-cves/lpe-quartet-2026/mym0us3r__Detect-Quartet-of-Linux-local-root-vulns-with-Wazuh,mym0us3r/Detect-Quartet-of-Linux-local-root-vulns-with-Wazuh,auditd:14,,linux-auditd,,,1,1,0,0
-areas/19-threats-campaigns-cves/raspberry-robin-worms/TheMuntu__Wazuh-Detection,TheMuntu/Wazuh-Detection,win-sysmon:4;sysmon:1;sysmon_id_1:1,,win-sysmon,,,0,0,0,0
-areas/19-threats-campaigns-cves/redline-infostealer/TheMuntu__Wazuh-Detection,TheMuntu/Wazuh-Detection,win-sysmon:4;sysmon_id_11:1,,win-sysmon,,,0,0,0,0
+areas/19-threats-campaigns-cves/meduza-stealer-detection-and-mitigation/wazuh.com__blog,wazuh.com/blog,win-sysmon:5,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/monitoring-sfx-archives-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:6;sysmon_id_11:1,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/ransomware-protection-on-windows-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:11;sysmon_id_1:9;ossec:4;sysmon_id_13:1;win-ms_logs:1,win-ms_logs,pack-ransomware-protection-on-windows-with-wazuh;win-sysmon,integration virustotal,,3,3,1,0
+areas/19-threats-campaigns-cves/rapperbot-botnet-detection-and-mitigation-with-wazuh/wazuh.com__blog,wazuh.com/blog,ossec:7,,pack-rapperbot-botnet-detection-and-mitigation-with-wazuh,,,1,4,0,0
+areas/19-threats-campaigns-cves/snake-keylogger-detection-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:5,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/strrat-detection-with-wazuh/wazuh.com__blog,wazuh.com/blog,ossec:5,,pack-strrat-detection-with-wazuh,,,1,1,0,0
+areas/19-threats-campaigns-cves/using-wazuh-to-detect-bpfdoor-malware/wazuh.com__blog,wazuh.com/blog,auditd:1,,linux-auditd,,,1,1,0,0
+areas/19-threats-campaigns-cves/using-wazuh-to-detect-remcos-rat/wazuh.com__blog,wazuh.com/blog,ossec:2;win-sysmon:2;sysmon_id_11:1,,win-sysmon,,,1,1,0,0
+areas/19-threats-campaigns-cves/venom-rat-detection-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:2;sysmon_id_11:1;sysmon_id_13:1,,win-sysmon,,,1,1,0,0
+areas/20-attck-multiplatform/adversary-emulation-with-caldera-and-wazuh/wazuh.com__blog,wazuh.com/blog,,,win-sysmon,,,1,1,0,0
 areas/20-attck-multiplatform/attck-tactics/MORGADO01__wazuh-detection-rules,MORGADO01/wazuh-detection-rules,win-security:9;win-sysmon:7;syslog:5;sshd:4;auditd:3;ossec:3;win-application:3;firewall:2;msauth:2;pam:2;virustotal:2;dec:unix:1;wazuh:1;win-ms_logs:1,dec:unix;msauth;pam;sshd;syslog;win-application;win-ms_logs;win-security,linux-auditd;win-sysmon,integration virustotal;remote syslog,,0,0,0,0
 areas/20-attck-multiplatform/attck-tactics/wirekits__wazuh-rules,wirekits/wazuh-rules,ossec:14;wazuh:14;sshd:1,sshd,,,,0,0,0,0
 areas/20-attck-multiplatform/correlacao-cross-device/captainobvious-sec__wazuh-field-notes,captainobvious-sec/wazuh-field-notes,,,,,,0,0,0,0
+areas/20-attck-multiplatform/detecting-data-exfiltration-using-living-off-the-land-tools-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:3;win-base:1,win-base,win-powershell;win-sysmon,,,2,2,0,0
+areas/20-attck-multiplatform/detecting-defense-evasion-techniques-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:3,,win-sysmon,,,1,1,0,0
+areas/20-attck-multiplatform/detecting-process-injection-attacks-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-sysmon:2,,win-sysmon,,,1,1,0,0
 areas/20-attck-multiplatform/detection-engineering/Jeremy-Burgos__wazuh-detection-engineering,Jeremy-Burgos/wazuh-detection-engineering,ossec:3;sshd:2,sshd,linux-auditd;osquery;pack-detection-engineering,integration custom-abuseipdb.py;integration virustotal,,9,18,0,0
+areas/20-attck-multiplatform/emulation-of-attck-techniques-and-detection-with-wazuh/wazuh.com__blog,wazuh.com/blog,,,win-sysmon,,,1,1,0,0
 areas/20-attck-multiplatform/orangebox/OrangeBox-Labs__Wazuh,OrangeBox-Labs/Wazuh,ossec:20;sshd:4;attack:3;auditd:2;dec:auditd:1;pam:1;syslog:1,pam;sshd;syslog,linux-auditd;osquery;pack-orangebox,integration custom-orangebox-email.py;localfile /var/ossec/logs/active-responses.log;wodle cis-cat,,4,26,0,0
 areas/20-attck-multiplatform/sigma-compiled/zshguy__tyrian-detection-pack,zshguy/tyrian-detection-pack,sysmon:39;win-sysmon:39;auditd:22;amazon:4;azure:4;office365:4;win-system:3,win-system,linux-auditd;win-sysmon,module office365;wodle aws-s3;wodle azure-logs,,0,0,0,0
 areas/20-attck-multiplatform/suricata-sysmon-fim/paolokappa__wazuh-siem-rules,paolokappa/wazuh-siem-rules,win-sysmon:52;sysmon:43;sysmon_id_11:22;ossec:21;win-powershell:17;suricata:10;cisco-ftd:8;sysmon_id_10:5;sysmon_id_1:4;sysmon_id_7:4;fortigate:3;virustotal:3;win_event_channel:3;dec:json:2;sysmon_id_13:2;sysmon_id_20:2;sysmon_id_3:2;sysmon_id_8:2;auditd:1;malicious-ioc-rules:1;web_appsec:1,win_event_channel,linux-apache;linux-auditd;linux-docker;linux-suricata;osquery;pack-suricata-sysmon-fim;win-defender;win-firewall;win-powershell;win-smbclient;win-smbserver;win-sysmon;win-terminalservices-localsessionmanager;win-terminalservices-remoteconnectionmanager;win-windows-powershell,integration virustotal;localfile /var/ossec/logs/active-responses.log;remote syslog;wodle cis-cat,família oficial web_appsec (1 regras),6,142,1,0
-areas/20-attck-multiplatform/wazuh-blog-pack/adampielak__wazuh-scripts-resource,adampielak/wazuh-scripts-resource,win-sysmon:234;ossec:100;sysmon_id_1:40;sysmon_id_11:16;sysmon_id_13:15;dec:json:12;auditd:11;sysmon:10;sysmon_id_3:6;sysmon_id_10:5;sysmon_id_20:5;sysmon_id_7:5;sysmon_id_8:5;win-security:5;win-application:4;win-base:3;amazon:2;apache:2;suricata:2;web:2;dec:ossec:1;gcp:1;office365:1,win-application;win-base;win-security,linux-apache;linux-auditd;linux-suricata;osquery;pack-wazuh-blog-pack;win-powershell;win-sysmon;win-windows-powershell,integration custom-gemini.py;integration custom-rootly;integration custom-servicenow;integration custom-urlhaus.py;integration shuffle;integration virustotal;localfile /var/ossec/logs/active-responses.log;module office365;wodle aws-s3;wodle gcp-pubsub,,129,135,18,0
 areas/21-wazuh-platform-ops/active-response/bayusky__wazuh-custom-rules-and-decoders,bayusky/wazuh-custom-rules-and-decoders,ossec:2,,,,,0,0,0,0
 areas/21-wazuh-platform-ops/afinacao-ruido/phastier__wazuh,phastier/wazuh,web:9;syslog:5;ossec:2;pam:2;proxmox-ve:2;sshd:2,pam;sshd;syslog,linux-apache;pack-afinacao-ruido,remote syslog,,1,6,1,1
+areas/21-wazuh-platform-ops/agent-groups-and-centralized-configuration/wazuh.com__blog,wazuh.com/blog,,,pack-agent-groups-and-centralized-configuration,,,1,2,0,0
+areas/21-wazuh-platform-ops/creating-decoders-and-rules-from-scratch/wazuh.com__blog,wazuh.com/blog,,,pack-creating-decoders-and-rules-from-scratch,,,1,1,0,0
 areas/21-wazuh-platform-ops/detect-new-agents/wazuh__integrations,wazuh/integrations,dec:json:1,,pack-detect-new-agents,localfile /var/ossec/logs/new_agents.json,,1,2,0,0
+areas/21-wazuh-platform-ops/detecting-and-responding-to-malicious-files-using-cdb-lists-and-active-response/wazuh.com__blog,wazuh.com/blog,ossec:3,,,,,0,0,0,0
+areas/21-wazuh-platform-ops/detection-with-elastic-stack-integration/wazuh.com__blog,wazuh.com/blog,ossec:1,,pack-detection-with-elastic-stack-integration,,,1,1,0,0
+areas/21-wazuh-platform-ops/how-to-configure-rsyslog-client-to-send-events-to-wazuh/wazuh.com__blog,wazuh.com/blog,web:1,,linux-apache,,,0,0,0,0
+areas/21-wazuh-platform-ops/how-to-forward-android-syslog-to-wazuh/wazuh.com__blog,wazuh.com/blog,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
+areas/21-wazuh-platform-ops/incident-management-with-wazuh-and-rootly/wazuh.com__blog,wazuh.com/blog,win-security:1,win-security,,integration custom-rootly,,1,1,0,0
+areas/21-wazuh-platform-ops/integrating-servicenow-with-wazuh/wazuh.com__blog,wazuh.com/blog,win-security:1,win-security,,integration custom-servicenow,,1,1,1,0
+areas/21-wazuh-platform-ops/integrating-wazuh-with-defectdojo-for-devsecops/wazuh.com__blog,wazuh.com/blog,dec:json:1,,pack-integrating-wazuh-with-defectdojo-for-devsecops,,,1,1,0,0
+areas/21-wazuh-platform-ops/monitoring-access-control-violations-with-open-policy-agent-opa-and-wazuh/wazuh.com__blog,wazuh.com/blog,ossec:3;dec:json:1,,pack-monitoring-access-control-violations-with-open-policy-agent-opa-and-wazuh,,,1,1,0,0
+areas/21-wazuh-platform-ops/monitoring-remote-openvpn-connections-with-geoip-and-wazuh-xdr/wazuh.com__blog,wazuh.com/blog,,,pack-monitoring-remote-openvpn-connections-with-geoip-and-wazuh-xdr,,,1,1,0,0
 areas/21-wazuh-platform-ops/orangebox/OrangeBox-Labs__Wazuh,OrangeBox-Labs/Wazuh,wazuh:4,,,,,0,0,0,0
+areas/21-wazuh-platform-ops/root-user-access-monitoring-with-ossec/wazuh.com__blog,wazuh.com/blog,ossec:2,,,,,0,0,0,0
+areas/21-wazuh-platform-ops/scheduling-remote-commands-for-wazuh-agents/wazuh.com__blog,wazuh.com/blog,,,pack-scheduling-remote-commands-for-wazuh-agents,,,2,2,0,0
+areas/21-wazuh-platform-ops/sibling-decoders-flexible-extraction-of-information/wazuh.com__blog,wazuh.com/blog,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
 areas/21-wazuh-platform-ops/silent-agent-monitoring/wazuh__integrations,wazuh/integrations,dec:json:1,,,integration custom-server-telegram,eventos JSON: definir o <localfile> json com a localização do ficheiro,1,3,0,1
 areas/21-wazuh-platform-ops/socfortress-ops/socfortress__Wazuh-Rules,socfortress/Wazuh-Rules,win-sysmon:63;sysmon:61;sysmon_id_10:15;sysmon_id_11:8;sysmon_id_7:8;win-security:7;dec:json:6;sysmon_id_1:4;WEF-baseline:3;wazuh:2;osquery:1;sysmon_id_8:1;win-powershell:1;win-wdefender:1,win-security,osquery;win-defender;win-powershell;win-sysmon,,família oficial WEF-baseline (3 regras);eventos JSON: definir o <localfile> json com a localização do ficheiro;decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
+areas/21-wazuh-platform-ops/using-wazuh-to-detect-raspberry-robin-worms/wazuh.com__blog,wazuh.com/blog,win-sysmon:4;sysmon:1;sysmon_id_1:1,,win-sysmon,,,1,1,0,0
 areas/90-misc/minecraft/hrHVN__Wazuh_games,hrHVN/Wazuh_games,,,pack-minecraft,localfile /var/ossec/logs/active-responses.log,,1,4,0,0
 areas/90-misc/politicas-internas/adampielak__wazuh_custom_rules,adampielak/wazuh_custom_rules,dec:json:1,,pack-politicas-internas,integration custom-telegram;integration custom-vkteams,,4,12,0,0
 areas/90-misc/politicas-internas/bret99__wazuh_custom_rules,bret99/wazuh_custom_rules,auditd:5;syslog:4;win-application:3;dec:json:1;ossec:1,syslog;win-application,linux-auditd;pack-politicas-internas,integration custom-telegram;integration custom-vkteams,,9,19,1,0

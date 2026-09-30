@@ -1,0 +1,13 @@
+<group name="invisbleferret,">
+  <rule id="100511" level="12">
+   <if_sid>657</if_sid>
+    <match>Successfully removed threat</match>
+    <description>$(parameters.program): Successfully removed threat $(parameters.alert.syscheck.path) whose hash appears in a malware blacklist.</description>
+  </rule>
+
+  <rule id="100512" level="12">
+   <if_sid>657</if_sid>
+    <match>Error removing threat</match>
+    <description>$(parameters.program): Error removing threat $(parameters.alert.syscheck.path) whose hash appears in a malware blacklist.</description>
+  </rule>
+</group>

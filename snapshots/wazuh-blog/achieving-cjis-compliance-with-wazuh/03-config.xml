@@ -1,0 +1,7 @@
+<!-- File integrity monitoring -->
+  <syscheck>
+    <disabled>no</disabled>
+    <directories realtime="yes">/etc,/usr/bin,/usr/sbin</directories>
+    <alert_new_files>yes</alert_new_files>
+    <ignore>/etc/mtab</ignore> 
+  </syscheck>

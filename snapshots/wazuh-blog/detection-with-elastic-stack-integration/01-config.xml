@@ -1,0 +1,9 @@
+<ossec_config>
+  <!-- Check for MasterCard PAN -->	
+  <localfile>
+    <log_format>full_command</log_format>		
+    <command>powershell -c "Get-ChildItem -Path 'C:\Users\*' -Recurse -Exclude *.dll,*.exe,*.jpg,*.png,*jpeg,*.sys,*.msi,*.dat | Select-String '(\D|^)5[1-5][0-9]{2}(\ |\-|)[0-9]{4}(\ |\-|)[0-9]{4}(\ |\-|)[0-9]{4}(\D|$)' | Select-Object -Unique path -EV Err -EA SilentlyContinue"</command>
+    <alias>PAN scan</alias>
+    <frequency>86400</frequency>
+  </localfile>		
+</ossec_config>

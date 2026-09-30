@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/detecting-kubernetes-attacks-with-wazuh-2/",
+ "title": "Detecting Kubernetes attacks with Wazuh",
+ "published": "2026-04-30",
+ "modified": "2026-04-30",
+ "files": {
+  "01-config.xml": "4e102af66e2e09f5",
+  "02-rules.xml": "58e4b73dcda3ca5e"
+ }
+}

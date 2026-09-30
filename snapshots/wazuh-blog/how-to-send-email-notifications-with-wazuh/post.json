@@ -1,0 +1,14 @@
+{
+ "url": "https://wazuh.com/blog/how-to-send-email-notifications-with-wazuh/",
+ "title": "How to Send Email Notifications",
+ "published": "2019-10-24",
+ "modified": "2023-11-27",
+ "files": {
+  "01-config.xml": "dc7c2710fed280e2",
+  "02-rules.xml": "d7b73875e508f676",
+  "03-config.xml": "94a3b283d8d804de",
+  "04-config.xml": "2bb2351364beae90",
+  "05-rules.xml": "af7c488986bd056f",
+  "06-rules.xml": "13b3729012700bea"
+ }
+}

@@ -1,0 +1,6 @@
+<ossec_config>
+  <localfile>
+    <log_format>syslog</log_format>
+    <location>/var/log/dns_monitoring.log</location>
+  </localfile>
+</ossec_config>

@@ -1,0 +1,8 @@
+<ossec_config>
+  <syscheck>
+    <directories check_all="yes" realtime="yes" report_changes="yes">/etc/group</directories>
+    <directories check_all="yes" realtime="yes" report_changes="yes">/etc/gshadow</directories>
+    <directories check_all="yes" realtime="yes" report_changes="yes">/etc/sudoers</directories>
+    <directories check_all="yes" realtime="yes" report_changes="yes">/etc/sudoers.d</directories>
+  </syscheck>
+</ossec_config>

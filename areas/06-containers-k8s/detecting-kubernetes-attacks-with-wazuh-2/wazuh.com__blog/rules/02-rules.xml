@@ -1,0 +1,186 @@
+<group name="k8s_stratus_read_team_rules,k8s_attack,">
+  <rule id="110001" level="0">
+    <field name="apiVersion">audit</field>
+    <description>Kubernetes audit log.</description>
+  </rule>
+
+  <rule id="110002" level="10">
+    <if_sid>110001</if_sid>
+    <regex type="pcre2">requestURI":"\/api\/v1\/secrets(?:\?[^"]*)?"\s*,\s*"verb"\s*:\s*"list"</regex>
+    <description>Potential credential access activity detected: cluster-wide enumeration of Kubernetes secrets.</description>
+    <mitre>
+      <id>T1552</id>
+    </mitre>
+  </rule>
+
+  <rule id="110003" level="10">
+    <if_sid>110001</if_sid>
+    <regex type="pcre2">requestURI":"\/api\/v1\/namespaces\/[^"\/]+\/pods\/[^"\/]+\/exec\?[^"]*%2Fvar%2Frun%2Fsecrets%2Fkubernetes\.io%2Fserviceaccount%2Ftoken[^"]*"\s*,\s*"verb"\s*:\s*"create"</regex>
+    <description>Potential credential access activity detected: pod exec request targeting Kubernetes service account token.</description>
+  </rule>
+
+  <rule id="110004" level="6">
+    <if_sid>110001</if_sid>
+    <regex type="pcre2">requestURI":"\/apis\/rbac\.authorization\.k8s\.io\/v1\/clusterroles(?:\?[^"]*)?"\s*,\s*"verb"\s*:\s*"create</regex>
+    <description>Kubernetes ClusterRole creation</description>
+    <group>kubernetes,persistence,rbac_create_admin_clusterrole,</group>
+    <mitre>
+      <id>T1098</id>
+    </mitre>
+  </rule>
+  
+  <rule id="110005" level="6">
+    <if_sid>110001</if_sid>
+    <regex type="pcre2">requestURI":"\/api\/v1\/namespaces\/[^"\/]+\/serviceaccounts(?:\?[^"]*)?"\s*,\s*"verb"\s*:\s*"create</regex>
+    <description>Kubernetes ServiceAccount creation</description>
+    <group>kubernetes,persistence,rbac_create_admin_clusterrole,</group>
+    <mitre>
+      <id>T1098</id>
+    </mitre>
+  </rule>
+  
+  <rule id="110006" level="6">
+    <if_sid>110001</if_sid>
+    <regex type="pcre2">requestURI":"\/apis\/rbac\.authorization\.k8s\.io\/v1\/clusterrolebindings(?:\?[^"]*)?"\s*,\s*"verb"\s*:\s*"create</regex>
+    <description>Kubernetes ClusterRoleBinding creation</description>
+    <group>kubernetes,privilege_escalation,rbac_create_admin_clusterrole,</group>
+    <mitre>
+      <id>T1098</id>
+    </mitre>
+  </rule>
+
+  <rule id="110007" level="12" timeframe="120" frequency="2">
+    <if_sid>110006</if_sid>
+    <if_matched_sid>110004</if_matched_sid>
+    <if_matched_sid>110005</if_matched_sid>
+    <description>Potential persistence and privilege escalation activity detected: Kubernetes ClusterRole, ServiceAccount, and ClusterRoleBinding created in close succession</description>
+    <group>kubernetes,persistence,privilege_escalation,correlation,</group>
+    <mitre>
+      <id>T1098</id>
+    </mitre>
+  </rule>
+
+  <rule id="110008" level="14">
+    <if_sid>110001</if_sid>
+    <field name="verb">create</field>
+    <field name="objectRef.resource">pods</field>
+    <regex type="pcre2">hostPath.*"path":"\/".*(mountPath":"\/host".*cat \/host\/etc\/passwd|cat \/host\/etc\/passwd.*mountPath":"\/host")</regex>
+    <description>Container breakout attempt detected: Kubernetes pod mounts the host root filesystem and accesses host files</description>
+    <group>kubernetes,privilege_escalation,container_escape,hostpath,critical,</group>
+    <mitre>
+      <id>T1611</id>
+    </mitre>
+  </rule>
+
+  <rule id="110009" level="14">
+    <if_sid>110001</if_sid>
+    <field name="objectRef.resource">nodes</field>
+    <field name="objectRef.subresource">proxy</field>
+    <field name="verb">get</field>
+    <field name="responseStatus.code">200</field>
+    <regex type="pcre2">system:serviceaccount.*$</regex>
+    <description>Possible Kubernetes privilege escalation through successful nodes/proxy access by a service account</description>
+    <mitre>
+      <id>T1068</id>
+    </mitre>
+    <group>k8s_node_proxy_access,k8s_privilege_escalation,</group>
+  </rule>
+
+  <rule id="110010" level="15">
+    <if_sid>110001</if_sid>
+    <field name="verb">create</field>
+    <field name="responseStatus.code">201</field>
+    <field name="requestObject.kind">Pod</field>
+    <regex type="pcre2">securityContext":\{"privileged":true\}</regex>
+    <description>Possible Kubernetes privilege escalation through successful creation of a privileged pod</description>
+    <mitre>
+      <id>T1611</id>
+    </mitre>
+    <group>k8s_privileged_pod_creation,k8s_privilege_escalation,</group>
+  </rule>
+
+  <!-- Stage 1: CSR created -->
+  <rule id="110011" level="8">
+    <if_sid>110001</if_sid>
+    <field name="objectRef.resource">certificatesigningrequests</field>
+    <field name="verb">create</field>
+    <field name="responseStatus.code">201</field>
+    <description>Kubernetes certificate signing request created for client certificate authentication</description>
+    <mitre>
+      <id>T1649</id>
+    </mitre>
+    <group>k8s_csr_create,k8s_credential_access,</group>
+  </rule>
+
+  <!-- Stage 2: Same CSR approved -->
+  <rule id="110012" level="10">
+    <if_sid>110001</if_sid>
+    <field name="objectRef.resource">certificatesigningrequests</field>
+    <field name="verb">update</field>
+    <field name="objectRef.subresource">approval</field>
+    <field name="responseStatus.code">200</field>
+    <description>Possible Kubernetes client certificate credential creation through successful CSR approval</description>
+    <mitre>
+      <id>T1649</id>
+    </mitre>
+    <group>k8s_csr_approval,k8s_credential_access,k8s_persistence,</group>
+  </rule>
+
+<!-- Stage 3:CSR status update by certificate controller -->
+  <rule id="110013" level="10">
+    <if_sid>110001</if_sid>
+    <field name="objectRef.resource">certificatesigningrequests</field>
+    <field name="verb">update</field>
+    <field name="objectRef.subresource">status</field>
+    <field name="responseStatus.code">200</field>
+    <field name="user.username" type="pcre2">^system:serviceaccount:.*:certificate-controller$</field>
+    <description>Kubernetes certificate signing request status updated by the certificate controller after approval</description>
+    <mitre>
+      <id>T1649</id>
+    </mitre>
+    <group>k8s_csr_status_update,k8s_credential_access,</group>
+  </rule>
+
+   <!-- Stage 4: CSR get -->
+  <rule id="110014" level="10">
+    <if_sid>110001</if_sid>
+    <field name="objectRef.resource">certificatesigningrequests</field>
+    <field name="verb">get</field>
+    <field name="responseStatus.code">200</field>
+    <description>Kubernetes certificate signing request retrieved after creation or approval</description>
+    <mitre>
+      <id>T1649</id>
+    </mitre>
+    <group>k8s_csr_get,k8s_credential_access,</group>
+  </rule>
+
+  <!-- Stage 5: Same CSR deleted shortly after approval -->
+  <rule id="110015" level="10">
+    <if_sid>110001</if_sid>
+    <field name="objectRef.resource">certificatesigningrequests</field>
+    <field name="verb">delete</field>
+    <field name="responseStatus.code">200</field>
+    <description>Kubernetes certificate signing request deleted after certificate issuance activity</description>
+    <mitre>
+      <id>T1649</id>
+    </mitre>
+    <group>k8s_csr_abuse,k8s_privilege_escalation,k8s_persistence,</group>
+  </rule>
+
+  <rule id="110016" level="14">
+    <if_sid>110001</if_sid>
+    <field name="objectRef.resource">serviceaccounts</field>
+    <field name="objectRef.subresource">token</field>
+    <field name="verb">create</field>
+    <field name="responseStatus.code">201</field>
+    <field name="objectRef.namespace">kube-system</field>
+    <field name="user.username" negate="yes">system:kube-controller-manager</field>
+    <field name="user.groups" type="pcre2" negate="yes">system:nodes</field>
+    <description>Possible Kubernetes persistence through successful creation of a long-lived service account token outside expected system activity</description>
+    <mitre>
+      <id>T1098</id>
+    </mitre>
+    <group>k8s_long_lived_token,k8s_persistence,</group>
+  </rule>
+
+</group>

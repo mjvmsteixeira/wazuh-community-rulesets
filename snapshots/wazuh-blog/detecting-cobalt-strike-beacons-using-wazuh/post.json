@@ -1,0 +1,13 @@
+{
+ "url": "https://wazuh.com/blog/detecting-cobalt-strike-beacons-using-wazuh/",
+ "title": "Detecting Cobalt Strike beacons using Wazuh",
+ "published": "2022-06-15",
+ "modified": "2026-09-30",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-rules.xml": "67a5c5e89b3860ad",
+  "03-rules.xml": "2991667839d7e8aa",
+  "04-rules.xml": "a1ae17487b253e82",
+  "05-rules.xml": "9d9db6f29265d5c5"
+ }
+}

@@ -1,0 +1,23 @@
+<group name="cryptominer,">
+
+  <rule id="100010" level="10">
+    <if_sid>554</if_sid>
+    <field name="file"  type="pcre2">\/authorized_keys$</field>
+    <regex type="pcre2">added</regex>
+    <description>SSH authorized_keys file "$(file)" has been added.</description>
+    <mitre>
+      <id>T1098.004</id>
+    </mitre>
+  </rule>
+  
+  <rule id="100011" level="10">
+    <if_sid>550</if_sid>
+    <field name="file"  type="pcre2">\/authorized_keys$</field>
+    <regex type="pcre2">modified</regex>
+    <description>SSH authorized_keys file "$(file)" has been modified.</description>
+    <mitre>
+      <id>T1098.004</id>
+    </mitre>
+  </rule>
+
+</group>

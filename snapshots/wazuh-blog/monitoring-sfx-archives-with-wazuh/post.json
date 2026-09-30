@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/monitoring-sfx-archives-with-wazuh/",
+ "title": "Monitoring SFX archives with Wazuh",
+ "published": "2023-06-08",
+ "modified": "2024-06-27",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-rules.xml": "2d0cc3f159be00b3"
+ }
+}

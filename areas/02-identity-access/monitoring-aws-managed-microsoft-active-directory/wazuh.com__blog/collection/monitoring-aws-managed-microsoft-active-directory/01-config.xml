@@ -1,0 +1,12 @@
+<ossec_config>
+  <wodle name="aws-s3">
+    <disabled>no</disabled>
+    <interval>45m</interval>
+    <run_on_start>yes</run_on_start>
+    <service type="cloudwatchlogs">
+    <aws_profile>default</aws_profile>                               
+    <aws_log_groups>/aws/directoryservice/<DIRECTORY_ID>-wazuh.domain.com</aws_log_groups>
+    <regions><REGION></regions>
+    </service>
+  </wodle>
+</ossec_config>

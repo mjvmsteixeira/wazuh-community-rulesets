@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/root-user-access-monitoring-with-ossec/",
+ "title": "Root user access monitoring with OSSEC",
+ "published": "2016-04-11",
+ "modified": "2023-02-28",
+ "files": {
+  "01-config.xml": "03184bd8543b7a54",
+  "02-rules.xml": "5617802a7d78c9de",
+  "03-rules.xml": "d355973a2a70327a"
+ }
+}

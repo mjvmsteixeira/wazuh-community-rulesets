@@ -1,0 +1,12 @@
+<ossec_config>
+
+  <!-- IRIS integration -->
+  <integration>
+    <name>custom-wazuh_iris.py</name>
+    <hook_url>https://<IRIS_IP_ADDRESS>/alerts/add</hook_url>
+    <level>7</level>
+    <api_key><IRIS_API_KEY></api_key> <!-- Replace with your IRIS API key -->
+    <alert_format>json</alert_format>
+  </integration>
+
+</ossec_config>

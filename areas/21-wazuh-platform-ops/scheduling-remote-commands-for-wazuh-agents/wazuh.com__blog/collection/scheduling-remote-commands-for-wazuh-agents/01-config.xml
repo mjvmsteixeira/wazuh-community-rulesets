@@ -1,0 +1,11 @@
+<wodle name="command">
+  <disabled>no</disabled>
+  <tag>test</tag>
+  <command>/bin/bash /root/script.sh</command>
+  <interval>1d</interval>
+  <ignore_output>no</ignore_output>
+  <run_on_start>yes</run_on_start>
+  <timeout>0</timeout>
+  <verify_sha1>da39a3ee5e6b4b0d3255bfef95601890afd80709</verify_sha1>
+  <verify_sha256>292a188e498caea5c5fbfb0beca413c980e7a5edf40d47cf70e1dbc33e4f395e</verify_sha256>
+</wodle>

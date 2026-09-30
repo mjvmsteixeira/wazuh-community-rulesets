@@ -1,0 +1,57 @@
+<group name="performance_metric,">
+
+<!-- High memory usage -->
+<rule id="100101" level="12">
+  <decoded_as>memory_health</decoded_as>
+  <field type="pcre2" name="memory_usage_%">^(0*[8-9]\d|0*[1-9]\d{2,})</field>
+  <description>Memory usage is high: $(memory_usage_%)%</description>
+  <options>no_full_log</options>
+</rule>
+
+<!-- High CPU usage -->
+<rule id="100102" level="12">
+  <decoded_as>CPU_health</decoded_as>
+  <field type="pcre2" name="cpu_usage_%">^(0*[8-9]\d|0*[1-9]\d{2,})</field>
+  <description>CPU usage is high: $(cpu_usage_%)%</description>
+  <options>no_full_log</options>
+</rule>
+
+<!-- High disk usage -->
+<rule id="100103" level="12">
+  <decoded_as>disk_health</decoded_as>
+  <field type="pcre2" name="disk_usage_%">^(0*[7-9]\d|0*[1-9]\d{2,})</field>
+  <description>Disk space is running low: $(disk_usage_%)%</description>
+  <options>no_full_log</options>
+</rule>
+
+<!-- CPU usage check -->
+<rule id="100104" level="3">
+  <decoded_as>cpu_usage_check</decoded_as>
+  <description>CPU usage metrics: $(totalCPU_used_%) of CPU is in use</description>
+</rule>
+    
+<!-- Load average check -->
+<rule id="100105" level="3">
+  <decoded_as>load_average_check</decoded_as>
+  <description>Load average metrics: $(1min_loadAverage) for last 1 minute</description>
+</rule>
+
+<!-- Memory check -->
+<rule id="100106" level="3">
+  <decoded_as>memory_check</decoded_as>
+  <description>Memory metrics: $(memory_used_bytes) of memory is in use</description>
+</rule>
+
+<!-- Disk check -->
+<rule id="100107" level="3">
+  <decoded_as>disk_check</decoded_as>
+  <description>Disk metrics: $(disk_used) of storage is in use</description>
+</rule>
+
+<!-- Network check -->
+<rule id="100108" level="3">
+  <decoded_as>network_check</decoded_as>
+  <description>Network metrics: $(network_in) inbound | $(network_out) outbound</description>
+</rule>    
+
+</group>

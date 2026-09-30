@@ -1,0 +1,13 @@
+{
+ "url": "https://wazuh.com/blog/using-wazuh-to-detect-remcos-rat/",
+ "title": "Using Wazuh to detect Remcos RAT",
+ "published": "2022-10-19",
+ "modified": "2024-06-10",
+ "files": {
+  "01-config.xml": "7783c8b105ed341a",
+  "02-rules.xml": "292b141b9d75037f",
+  "03-decoders.xml": "59502e04d4daff5c",
+  "04-rules.xml": "94e0c6b3f1227a65",
+  "05-config.xml": "d3a4572b2a8cab8e"
+ }
+}

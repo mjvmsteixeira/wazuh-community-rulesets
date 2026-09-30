@@ -1,0 +1,9 @@
+{
+ "url": "https://wazuh.com/blog/preventing-and-detecting-ransomware-with-wazuh/",
+ "title": "Preventing and detecting ransomware with Wazuh",
+ "published": "2019-12-12",
+ "modified": "2023-08-16",
+ "files": {
+  "01-config.xml": "78f49681b088779c"
+ }
+}

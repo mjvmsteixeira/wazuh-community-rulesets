@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/monitoring-access-control-violations-with-open-policy-agent-opa-and-wazuh/",
+ "title": "Monitoring access control violations with Open Policy Agent (OPA) and Wazuh",
+ "published": "2026-02-09",
+ "modified": "2026-02-09",
+ "files": {
+  "01-config.xml": "18cd6da87af20578",
+  "02-rules.xml": "4a61e8b7ae58dc8a",
+  "03-rules.xml": "d170f5c4feec11f5"
+ }
+}

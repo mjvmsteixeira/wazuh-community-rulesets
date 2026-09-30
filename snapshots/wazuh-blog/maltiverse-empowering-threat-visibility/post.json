@@ -1,0 +1,19 @@
+{
+ "url": "https://wazuh.com/blog/maltiverse-empowering-threat-visibility/",
+ "title": "Empowering threat visibility with Wazuh and Maltiverse",
+ "published": "2023-11-30",
+ "modified": "2024-07-08",
+ "files": {
+  "01-config.xml": "6a49d2711586708e",
+  "02-config.xml": "9b12bdc1ebf98880",
+  "03-config.xml": "833972a102456840",
+  "04-decoders.xml": "3d038ccbe570d805",
+  "05-rules.xml": "da16cfa8afe5467f",
+  "06-config.xml": "7014efcb8ed70a8b",
+  "07-decoders.xml": "2a724ec89627a4c3",
+  "08-rules.xml": "fe46829d85e94970",
+  "09-config.xml": "f3beca95547a9009",
+  "10-rules.xml": "19c05a00b4647975",
+  "11-config.xml": "055a41a70794ccf1"
+ }
+}

@@ -1,0 +1,18 @@
+{
+ "url": "https://wazuh.com/blog/detecting-illegitimate-crypto-miners-on-linux-endpoints/",
+ "title": "Detecting illegitimate crypto miners on Linux endpoints",
+ "published": "2022-09-08",
+ "modified": "2025-11-28",
+ "files": {
+  "01-config.xml": "ea356780fab43746",
+  "02-rules.xml": "c1d8c4b77ce0c8ef",
+  "03-rules.xml": "263aabd9c7f680ef",
+  "04-config.xml": "78f9cf3bc9284c00",
+  "05-rules.xml": "41d19229dcae2060",
+  "06-config.xml": "8d300a7fd435ff11",
+  "07-config.xml": "eae2c5c02325eed9",
+  "08-config.xml": "e63e68855593cf14",
+  "09-rules.xml": "6da58371950a4917",
+  "10-config.xml": "177bd7da4c7e3909"
+ }
+}

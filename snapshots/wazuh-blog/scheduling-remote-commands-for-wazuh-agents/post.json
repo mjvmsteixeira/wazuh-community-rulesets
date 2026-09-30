@@ -1,0 +1,12 @@
+{
+ "url": "https://wazuh.com/blog/scheduling-remote-commands-for-wazuh-agents/",
+ "title": "Scheduling remote commands | Wazuh | Open Source XDR. Open Source SIEM",
+ "published": "2018-12-14",
+ "modified": "2023-02-17",
+ "files": {
+  "01-config.xml": "ead4abc0746e5e2b",
+  "02-decoders.xml": "c389ee49c3a78ea1",
+  "03-rules.xml": "7c97f9f9d8fbc18f",
+  "04-config.xml": "66bcb1188e409b86"
+ }
+}

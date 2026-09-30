@@ -1,0 +1,12 @@
+<!-- Blocos de resposta extraídos, sem alterações, de wazuh.com/blog:detecting-brain-cipher-ransomware-with-wazuh/04-config.xml @ b4b3f986b301 -->
+<command>
+  <name>yara</name>
+  <executable>yara.bat</executable>
+  <timeout_allowed>no</timeout_allowed>
+</command>
+
+<active-response>
+  <command>yara</command>
+  <location>local</location>
+  <rules_id>100211,100212</rules_id>
+</active-response>

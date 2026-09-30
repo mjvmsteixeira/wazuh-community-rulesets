@@ -1,0 +1,33 @@
+<group name="windows,sysmon,vidar_detection_rule,">
+<!-- Vidar downloads malicious DLL files on victim endpoint -->
+  <rule id="100084" level="10">
+    <if_sid>61613</if_sid>
+    <field name="win.eventdata.image" type="pcre2">(?i)\\\\.+(exe|dll|bat|msi)</field>
+    <field name="win.eventdata.targetFilename" type="pcre2">(?i)\\\\ProgramData\\\\(freebl3|mozglue|msvcp140|nss3|softokn3|vcruntime140)\.dll</field>
+    <description>Possible Vidar malware detected. $(win.eventdata.targetFilename) was downloaded on $(win.system.computer)</description>
+    <mitre>
+      <id>T1056.001</id>
+    </mitre>
+  </rule>
+<!-- Vidar loads malicious DLL files -->
+  <rule id="100085" level="12">
+    <if_sid>61609</if_sid>
+    <field name="win.eventdata.image" type="pcre2">(?i)\\\\.+(exe|dll|bat|msi)</field>
+    <field name="win.eventdata.imageLoaded" type="pcre2">(?i)\\\\programdata\\\\(freebl3|mozglue|msvcp140|nss3|softokn3|vcruntime140)\.dll</field>
+    <description>Possible Vidar malware detected. Malicious $(win.eventdata.imageLoaded) file loaded by $(win.eventdata.image)</description>
+    <mitre>
+      <id>T1574.002</id>
+    </mitre>
+  </rule>
+<!-- Vidar deletes itself or a malicious process it creates -->
+  <rule id="100086" level="7" frequency="5" timeframe="360">
+    <if_sid>61603</if_sid>
+    <if_matched_sid>100085</if_matched_sid>
+    <field name="win.eventdata.image" type="pcre2">(?i)\\\\cmd.exe</field>
+    <match type="pcre2">cmd.exe\\" /c timeout /t \d{1,}.+del /f /q \\".+(exe|dll|bat|msi)</match>
+    <description>Possible Vidar malware detected. Malware deletes $(win.eventdata.parentCommandLine)</description>
+    <mitre>
+      <id>T1070.004</id>
+    </mitre>
+  </rule>
+</group>

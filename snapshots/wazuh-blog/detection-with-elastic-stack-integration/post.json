@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/detection-with-elastic-stack-integration/",
+ "title": "Extending Wazuh detection with Elastic Stack integration",
+ "published": "2023-09-27",
+ "modified": "2024-07-08",
+ "files": {
+  "01-config.xml": "38b194741f730680",
+  "02-rules.xml": "f72d2d34d71fcc66"
+ }
+}

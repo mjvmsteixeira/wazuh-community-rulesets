@@ -1,0 +1,12 @@
+{
+ "url": "https://wazuh.com/blog/detecting-and-responding-to-malicious-files-using-cdb-lists-and-active-response/",
+ "title": "Detecting and responding to Malicious Files",
+ "published": "2022-03-29",
+ "modified": "2026-09-30",
+ "files": {
+  "01-config.xml": "1f9e4d2afc7e1d2b",
+  "02-rules.xml": "e1d2a310771458d9",
+  "03-config.xml": "4b7ff3b6a915f462",
+  "04-rules.xml": "28e1ea0a9b6ad93c"
+ }
+}

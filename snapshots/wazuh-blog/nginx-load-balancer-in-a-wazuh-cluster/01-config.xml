@@ -1,0 +1,6 @@
+<ossec_config>
+ <client>
+   <server>      
+     <address><NGINX_LOAD_BALANCER_IP></address>
+     <port>1514</port>
+     <protocol>tcp</protocol>

@@ -1,0 +1,12 @@
+{
+ "url": "https://wazuh.com/blog/detecting-metasploit-attacks/",
+ "title": "Detecting Metasploit attacks",
+ "published": "2020-06-25",
+ "modified": "2022-10-19",
+ "files": {
+  "01-config.xml": "69d20d5dec7ed3cf",
+  "02-config.xml": "4ebdf893d87fffde",
+  "03-config.xml": "5e7ab7ab619429ff",
+  "04-rules.xml": "daffb0443a2d3de2"
+ }
+}

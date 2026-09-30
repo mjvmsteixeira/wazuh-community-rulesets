@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/detecting-log4shell-with-wazuh/",
+ "title": "Detecting Log4Shell with Wazuh",
+ "published": "2021-12-17",
+ "modified": "2026-09-30",
+ "files": {
+  "01-config.xml": "bb775f3e0442fc41",
+  "02-rules.xml": "80230806d1895153",
+  "03-config.xml": "2edf93312e8b9fda"
+ }
+}

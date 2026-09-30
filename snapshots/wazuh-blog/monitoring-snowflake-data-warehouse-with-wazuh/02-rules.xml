@@ -1,0 +1,62 @@
+<!-- Rules to detect Snowflake events -->
+
+<!-- Snowflake logs group -->
+<group name="snowflake">
+  <rule id="110100" level="0">
+    <decoded_as>json</decoded_as>
+    <field name="SOURCE">snowflake</field>
+    <description>Logs from Snowflake</description>
+  </rule>
+ 
+<!-- Rule to detect failed login attempts -->
+  <rule id="110101" level="10">
+    <if_sid>110100</if_sid>
+    <field name="EVENT_TYPE" type="pcre2">(?i)LOGIN</field>
+    <field name="IS_SUCCESS" type="pcre2">(?i)NO</field>
+    <description>Snowflake: Failed login attempt by $(USER_NAME)</description>
+    <mitre>
+      <id>T1110</id>
+    </mitre>
+  </rule>
+ 
+<!-- Rule to detect admins with no MFA configured --> 
+  <rule id="110102" level="10">
+    <if_sid>110100</if_sid>
+    <field name="TITLE">admin_no_mfa</field>
+    <description>Snowflake: The admin user $(LOGIN_NAME) does not have MFA configured</description>
+    <mitre>
+      <id>T1110</id>
+    </mitre>
+  </rule>
+
+<!-- Rule to detect network policy changes -->
+  <rule id="110103" level="10">
+    <if_sid>110100</if_sid>
+    <field name="TITLE">made the following Network Policy change</field>
+    <description>Snowflake: The user $(USER_NAME) performed the following network operation $(QUERY_TYPE)</description>
+  </rule>
+
+<!-- Rule to detect an admin role granted to a user --> 
+  <rule id="110104" level="10">
+    <if_sid>110100</if_sid>
+    <field name="TITLE" type="pcre2">granted the .* role on</field>
+    <description>Snowflake: Admin role granted to user</description>
+    <mitre>
+      <id>TA0004</id>
+    </mitre>
+  </rule>
+
+<!-- Rule to detect when a DB is modified -->  
+  <rule id="110105" level="10">
+    <if_sid>110100</if_sid>
+    <field name="TITLE" type="pcre2">executed DB query</field>
+    <description>Snowflake: The user $(USER_NAME) performed the action $(QUERY_TYPE) on a database</description>
+  </rule>
+
+<!-- Rule to detect when a Schema is modified -->  
+  <rule id="110106" level="10">
+    <if_sid>110100</if_sid>
+    <field name="TITLE" type="pcre2">executed schema query</field>
+    <description>Snowflake: The user $(USER_NAME) performed the action $(QUERY_TYPE) on a schema</description>
+  </rule>
+</group>

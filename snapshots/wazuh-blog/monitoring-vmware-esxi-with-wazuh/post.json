@@ -1,0 +1,14 @@
+{
+ "url": "https://wazuh.com/blog/monitoring-vmware-esxi-with-wazuh/",
+ "title": "Monitoring VMware ESXi with Wazuh",
+ "published": "2023-05-18",
+ "modified": "2025-11-27",
+ "files": {
+  "01-config.xml": "ad7c8afbfae1054c",
+  "02-decoders.xml": "71e4831eedea26ea",
+  "03-rules.xml": "eaa465f6b022e144",
+  "04-config.xml": "e4ac92be0ece2020",
+  "05-decoders.xml": "35f67b5485d26018",
+  "06-rules.xml": "411353325ec46083"
+ }
+}

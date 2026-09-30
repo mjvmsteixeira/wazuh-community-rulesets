@@ -12,6 +12,9 @@ Commercial EDR/AV/XDR, YARA, Osquery, EPM.
 | edr-av | [socfortress/Wazuh-Rules](https://github.com/socfortress/Wazuh-Rules) | 93 | 2 | yes | yes | `pack-edr-av` | 52% of 31 techniques | — | MIT? (README badge, no LICENSE file) | 2026-03-11 | — |
 | edr | [calvinanglo/corpsec-ops-platform](https://github.com/calvinanglo/corpsec-ops-platform) | 13 | 0 | yes | yes | `win-sysmon` | 77% of 13 techniques | — | NONE | 2026-05-02 | — |
 | eset | [bayusky/wazuh-custom-rules-and-decoders](https://github.com/bayusky/wazuh-custom-rules-and-decoders) | 1261 | 0 | yes | yes | to be defined | 54% of 273 techniques | — | GPL-2.0 | 2026-03-07 | — |
+| integrating-admin-by-request-abr-with-wazuh | [wazuh.com/blog](https://wazuh.com/blog/) | 6 | 0 | yes | no | default | 100% of 4 techniques | — | © Wazuh, Inc. (blog; origem citada) | 2026-09-24 | — |
+| integrating-bitdefender-gravityzone-with-wazuh | [wazuh.com/blog](https://wazuh.com/blog/) | 2 | 2 | yes | yes | `pack-integrating-bitdefender-gravityzone-with-wazuh` | no MITRE | — | © Wazuh, Inc. (blog; origem citada) | 2026-09-24 | — |
+| integrating-sentinelone-xdr-with-wazuh | [wazuh.com/blog](https://wazuh.com/blog/) | 9 | 9 | yes | yes | `pack-integrating-sentinelone-xdr-with-wazuh` | no MITRE | — | © Wazuh, Inc. (blog; origem citada) | 2026-09-24 | — |
 | kaspersky-ksc | [tread-lightly/KSC_decoders_and_rules_for_Wazuh](https://github.com/tread-lightly/KSC_decoders_and_rules_for_Wazuh) | 60 | 19 | yes | yes | to be defined | 55% of 11 techniques | — | NONE | 2024-08-16 | — |
 | kaspersky | [adampielak/wazuh_custom_rules](https://github.com/adampielak/wazuh_custom_rules) | 1 | 3 | yes | yes | to be defined | no MITRE | — | NONE | 2026-06-16 | — |
 | kaspersky | [fredycibersec/wazuh-stuff](https://github.com/fredycibersec/wazuh-stuff) | 11 | 29 | yes | yes | `pack-kaspersky` | 67% of 3 techniques | — | MIT | 2025-06-09 | — |

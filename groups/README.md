@@ -18,42 +18,97 @@ chown -R wazuh:wazuh /var/ossec/etc/shared/win-sysmon
 
 An agent can be in several groups (`win-sysmon` + `win-powershell` + `pack-...`). The `pack-*` paths come from the sources: review before use.
 
-## Groups (67)
+## Groups (129)
 
 | Group | OS | Entries | Folders served | Origin | `verify-agent-conf` |
 |---|---|---:|---:|---|---|
-| [`linux-apache`](linux-apache/agent.conf) | linux | 1 | 13 | declared by the source, inferred | yes |
-| [`linux-auditd`](linux-auditd/agent.conf) | linux | 1 | 21 | declared by the source, inferred | yes |
+| [`linux-apache`](linux-apache/agent.conf) | linux | 1 | 19 | declared by the source, inferred | yes |
+| [`linux-auditd`](linux-auditd/agent.conf) | linux | 1 | 30 | declared by the source, inferred | yes |
 | [`linux-docker`](linux-docker/agent.conf) | linux | 1 | 4 | declared by the source, inferred | yes |
 | [`linux-nginx`](linux-nginx/agent.conf) | linux | 1 | 2 | declared by the source, inferred | yes |
-| [`linux-suricata`](linux-suricata/agent.conf) | linux | 1 | 5 | declared by the source, inferred | yes |
-| [`osquery`](osquery/agent.conf) | linux, windows | 2 | 10 | declared by the source, inferred | yes |
+| [`linux-suricata`](linux-suricata/agent.conf) | linux | 1 | 8 | declared by the source, inferred | yes |
+| [`osquery`](osquery/agent.conf) | linux, windows | 2 | 8 | declared by the source, inferred | yes |
 | [`pack-afinacao-ruido`](pack-afinacao-ruido/agent.conf) | linux | 5 | 1 | declared by the source | yes |
+| [`pack-agent-groups-and-centralized-configuration`](pack-agent-groups-and-centralized-configuration/agent.conf) | linux | 2 | 1 | declared by the source | yes |
 | [`pack-auth0`](pack-auth0/agent.conf) | linux | 1 | 1 | declared by the source | yes |
 | [`pack-bitrix`](pack-bitrix/agent.conf) | linux | 1 | 1 | declared by the source | yes |
 | [`pack-caddy`](pack-caddy/agent.conf) | linux | 1 | 1 | declared by the source | yes |
 | [`pack-cisco-wireless-radius`](pack-cisco-wireless-radius/agent.conf) | linux | 5 | 1 | declared by the source | yes |
+| [`pack-cloud-native-security-with-wazuh-and-falco`](pack-cloud-native-security-with-wazuh-and-falco/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-conducting-primary-account-number-scan-with-wazuh`](pack-conducting-primary-account-number-scan-with-wazuh/agent.conf) | linux, windows | 10 | 1 | declared by the source | yes |
+| [`pack-container-image-security-with-wazuh-and-trivy`](pack-container-image-security-with-wazuh-and-trivy/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-container-vulnerability-scanning-with-wazuh-and-snyk`](pack-container-vulnerability-scanning-with-wazuh-and-snyk/agent.conf) | linux | 1 | 1 | declared by the source | yes |
 | [`pack-corpsec-gws-intune`](pack-corpsec-gws-intune/agent.conf) | linux | 9 | 1 | declared by the source | yes |
+| [`pack-creating-decoders-and-rules-from-scratch`](pack-creating-decoders-and-rules-from-scratch/agent.conf) | linux | 1 | 1 | declared by the source | yes |
 | [`pack-dam-mysql-mssql-postgresql`](pack-dam-mysql-mssql-postgresql/agent.conf) | linux, windows | 4 | 1 | declared by the source | yes |
 | [`pack-darktrace`](pack-darktrace/agent.conf) | linux | 1 | 1 | declared by the source | yes |
 | [`pack-detect-new-agents`](pack-detect-new-agents/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-detecting-and-blocking-cacti-remote-code-execution-vulnerability-cve-2022-46169`](pack-detecting-and-blocking-cacti-remote-code-execution-vulnerability-cve-2022-46169/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-detecting-and-responding-to-invisibleferret-with-wazuh`](pack-detecting-and-responding-to-invisibleferret-with-wazuh/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-detecting-auto-color-malware-with-wazuh`](pack-detecting-auto-color-malware-with-wazuh/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-detecting-common-linux-persistence-techniques-with-wazuh`](pack-detecting-common-linux-persistence-techniques-with-wazuh/agent.conf) | linux | 3 | 1 | declared by the source | yes |
+| [`pack-detecting-compromised-accounts-with-hibp-and-wazuh`](pack-detecting-compromised-accounts-with-hibp-and-wazuh/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-detecting-cve-2026-33017-exploitation-in-langflow-with-wazuh`](pack-detecting-cve-2026-33017-exploitation-in-langflow-with-wazuh/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-detecting-dns-spoofing-attacks-with-wazuh`](pack-detecting-dns-spoofing-attacks-with-wazuh/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-detecting-dns-tunneling-attacks-with-wazuh`](pack-detecting-dns-tunneling-attacks-with-wazuh/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-detecting-exploitation-of-xz-utils-vulnerability-cve-2024-3094-with-wazuh`](pack-detecting-exploitation-of-xz-utils-vulnerability-cve-2024-3094-with-wazuh/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-detecting-frigidstealer-malware-with-wazuh`](pack-detecting-frigidstealer-malware-with-wazuh/agent.conf) | darwin | 1 | 1 | declared by the source | yes |
+| [`pack-detecting-illegitimate-crypto-miners-on-linux-endpoints`](pack-detecting-illegitimate-crypto-miners-on-linux-endpoints/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-detecting-known-bad-actors-with-wazuh-and-abuseipdb`](pack-detecting-known-bad-actors-with-wazuh-and-abuseipdb/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-detecting-koske-malware-with-wazuh`](pack-detecting-koske-malware-with-wazuh/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-detecting-kubernetes-attacks-with-wazuh-2`](pack-detecting-kubernetes-attacks-with-wazuh-2/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-detecting-kubernetes-with-kubelinter-and-wazuh`](pack-detecting-kubernetes-with-kubelinter-and-wazuh/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-detecting-lynx-ransomware-with-wazuh`](pack-detecting-lynx-ransomware-with-wazuh/agent.conf) | windows | 1 | 1 | declared by the source | yes |
+| [`pack-detecting-metasploit-attacks`](pack-detecting-metasploit-attacks/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-detecting-sliver-c2-framework-with-wazuh`](pack-detecting-sliver-c2-framework-with-wazuh/agent.conf) | windows | 1 | 1 | declared by the source | yes |
 | [`pack-detection-engineering`](pack-detection-engineering/agent.conf) | darwin, linux | 14 | 1 | declared by the source | yes |
+| [`pack-detection-with-elastic-stack-integration`](pack-detection-with-elastic-stack-integration/agent.conf) | windows | 1 | 1 | declared by the source | yes |
 | [`pack-directum`](pack-directum/agent.conf) | windows | 1 | 1 | declared by the source | yes |
+| [`pack-docker-container-security-monitoring-with-wazuh`](pack-docker-container-security-monitoring-with-wazuh/agent.conf) | linux | 2 | 1 | declared by the source | yes |
 | [`pack-edr-av`](pack-edr-av/agent.conf) | linux, windows | 3 | 1 | declared by the source | yes |
 | [`pack-envoy`](pack-envoy/agent.conf) | linux | 2 | 1 | declared by the source | yes |
 | [`pack-falco`](pack-falco/agent.conf) | linux | 9 | 2 | declared by the source | yes |
 | [`pack-google-threat-intelligence`](pack-google-threat-intelligence/agent.conf) | linux | 1 | 1 | declared by the source | yes |
 | [`pack-google-workspace`](pack-google-workspace/agent.conf) | linux | 1 | 1 | declared by the source | yes |
 | [`pack-haproxy`](pack-haproxy/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-how-to-detect-and-mitigate-panchan-botnet-using-wazuh`](pack-how-to-detect-and-mitigate-panchan-botnet-using-wazuh/agent.conf) | linux | 4 | 1 | declared by the source | yes |
+| [`pack-how-to-send-email-notifications-with-wazuh`](pack-how-to-send-email-notifications-with-wazuh/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-integrating-bitdefender-gravityzone-with-wazuh`](pack-integrating-bitdefender-gravityzone-with-wazuh/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-integrating-dependency-track-with-wazuh`](pack-integrating-dependency-track-with-wazuh/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-integrating-imperva-cloud-web-application-firewall-cwaf`](pack-integrating-imperva-cloud-web-application-firewall-cwaf/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-integrating-mimecast-with-wazuh`](pack-integrating-mimecast-with-wazuh/agent.conf) | linux | 2 | 1 | declared by the source | yes |
+| [`pack-integrating-sentinelone-xdr-with-wazuh`](pack-integrating-sentinelone-xdr-with-wazuh/agent.conf) | linux | 3 | 1 | declared by the source | yes |
+| [`pack-integrating-wazuh-with-defectdojo-for-devsecops`](pack-integrating-wazuh-with-defectdojo-for-devsecops/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-integrating-wazuh-with-yeti-platform`](pack-integrating-wazuh-with-yeti-platform/agent.conf) | linux | 1 | 1 | declared by the source | yes |
 | [`pack-jira`](pack-jira/agent.conf) | linux | 1 | 1 | declared by the source | yes |
 | [`pack-kaspersky`](pack-kaspersky/agent.conf) | linux | 1 | 1 | declared by the source | yes |
 | [`pack-keycloak`](pack-keycloak/agent.conf) | linux | 4 | 1 | declared by the source | yes |
 | [`pack-linux-attck`](pack-linux-attck/agent.conf) | linux | 1 | 1 | declared by the source | yes |
 | [`pack-m365-inventory`](pack-m365-inventory/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-maltiverse-empowering-threat-visibility`](pack-maltiverse-empowering-threat-visibility/agent.conf) | linux | 1 | 1 | declared by the source | yes |
 | [`pack-meraki`](pack-meraki/agent.conf) | linux | 1 | 1 | declared by the source | yes |
 | [`pack-mikrotik`](pack-mikrotik/agent.conf) | linux | 5 | 1 | declared by the source | yes |
 | [`pack-minecraft`](pack-minecraft/agent.conf) | linux | 3 | 1 | declared by the source | yes |
+| [`pack-monitoring-access-control-violations-with-open-policy-agent-opa-and-wazuh`](pack-monitoring-access-control-violations-with-open-policy-agent-opa-and-wazuh/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-monitoring-docker-container-logs-with-wazuh`](pack-monitoring-docker-container-logs-with-wazuh/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-monitoring-hashicorp-vault-activities-with-wazuh`](pack-monitoring-hashicorp-vault-activities-with-wazuh/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-monitoring-hyper-v-with-wazuh`](pack-monitoring-hyper-v-with-wazuh/agent.conf) | windows | 5 | 1 | declared by the source | yes |
+| [`pack-monitoring-linux-resource-usage-with-wazuh`](pack-monitoring-linux-resource-usage-with-wazuh/agent.conf) | linux | 4 | 1 | declared by the source | yes |
+| [`pack-monitoring-macos-resources`](pack-monitoring-macos-resources/agent.conf) | darwin, linux | 8 | 1 | declared by the source | yes |
+| [`pack-monitoring-mongodb-atlas-with-wazuh`](pack-monitoring-mongodb-atlas-with-wazuh/agent.conf) | linux | 2 | 1 | declared by the source | yes |
+| [`pack-monitoring-mongodb-database-using-wazuh`](pack-monitoring-mongodb-database-using-wazuh/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-monitoring-network-devices`](pack-monitoring-network-devices/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-monitoring-postgresql-database-with-wazuh`](pack-monitoring-postgresql-database-with-wazuh/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-monitoring-rapid-scada-with-wazuh`](pack-monitoring-rapid-scada-with-wazuh/agent.conf) | windows | 4 | 1 | declared by the source | yes |
+| [`pack-monitoring-remote-openvpn-connections-with-geoip-and-wazuh-xdr`](pack-monitoring-remote-openvpn-connections-with-geoip-and-wazuh-xdr/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-monitoring-snowflake-data-warehouse-with-wazuh`](pack-monitoring-snowflake-data-warehouse-with-wazuh/agent.conf) | linux | 2 | 1 | declared by the source | yes |
+| [`pack-monitoring-usb-drives-in-linux-using-wazuh`](pack-monitoring-usb-drives-in-linux-using-wazuh/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-monitoring-usb-drives-in-macos-using-wazuh`](pack-monitoring-usb-drives-in-macos-using-wazuh/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-monitoring-vmware-esxi-with-wazuh`](pack-monitoring-vmware-esxi-with-wazuh/agent.conf) | linux | 2 | 1 | declared by the source | yes |
+| [`pack-monitoring-windows-resources-with-performance-counters`](pack-monitoring-windows-resources-with-performance-counters/agent.conf) | windows | 5 | 1 | declared by the source | yes |
+| [`pack-monitoring-windows-task-scheduler-to-detect-attack-persistence`](pack-monitoring-windows-task-scheduler-to-detect-attack-persistence/agent.conf) | windows | 1 | 1 | declared by the source | yes |
 | [`pack-netsuite`](pack-netsuite/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-network-security-monitoring-with-wazuh-and-zeek`](pack-network-security-monitoring-with-wazuh-and-zeek/agent.conf) | linux | 1 | 1 | declared by the source | yes |
 | [`pack-nids-honeypot`](pack-nids-honeypot/agent.conf) | linux | 1 | 1 | declared by the source | yes |
 | [`pack-nist-csf-2-0`](pack-nist-csf-2-0/agent.conf) | linux | 2 | 1 | declared by the source | yes |
 | [`pack-nuclei`](pack-nuclei/agent.conf) | linux | 1 | 1 | declared by the source | yes |
@@ -66,10 +121,17 @@ An agent can be in several groups (`win-sysmon` + `win-powershell` + `pack-...`)
 | [`pack-pi-hole`](pack-pi-hole/agent.conf) | linux | 1 | 1 | declared by the source | yes |
 | [`pack-politicas-internas`](pack-politicas-internas/agent.conf) | linux, windows | 16 | 2 | declared by the source | yes |
 | [`pack-proxmox`](pack-proxmox/agent.conf) | linux | 4 | 1 | declared by the source | yes |
+| [`pack-ransomware-protection-on-windows-with-wazuh`](pack-ransomware-protection-on-windows-with-wazuh/agent.conf) | windows | 1 | 1 | declared by the source | yes |
 | [`pack-rapid7`](pack-rapid7/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-rapperbot-botnet-detection-and-mitigation-with-wazuh`](pack-rapperbot-botnet-detection-and-mitigation-with-wazuh/agent.conf) | linux | 4 | 1 | declared by the source | yes |
 | [`pack-salesforce`](pack-salesforce/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-scheduling-remote-commands-for-wazuh-agents`](pack-scheduling-remote-commands-for-wazuh-agents/agent.conf) | linux | 2 | 1 | declared by the source | yes |
+| [`pack-securing-web-applications-with-coraza-waf-and-wazuh`](pack-securing-web-applications-with-coraza-waf-and-wazuh/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-security-observability-on-linux-with-wazuh-and-tetragon`](pack-security-observability-on-linux-with-wazuh-and-tetragon/agent.conf) | linux | 1 | 1 | declared by the source | yes |
 | [`pack-socradar`](pack-socradar/agent.conf) | linux | 1 | 1 | declared by the source | yes |
 | [`pack-sophos-central`](pack-sophos-central/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-streamlining-container-image-security-with-grype-and-wazuh`](pack-streamlining-container-image-security-with-grype-and-wazuh/agent.conf) | linux | 1 | 1 | declared by the source | yes |
+| [`pack-strrat-detection-with-wazuh`](pack-strrat-detection-with-wazuh/agent.conf) | windows | 1 | 1 | declared by the source | yes |
 | [`pack-suricata-sysmon-fim`](pack-suricata-sysmon-fim/agent.conf) | darwin, linux, windows | 66 | 1 | declared by the source | yes |
 | [`pack-synology`](pack-synology/agent.conf) | linux | 1 | 2 | declared by the source | yes |
 | [`pack-sysmon-eventchannel`](pack-sysmon-eventchannel/agent.conf) | windows | 4 | 1 | declared by the source | yes |
@@ -78,14 +140,14 @@ An agent can be in several groups (`win-sysmon` + `win-powershell` + `pack-...`)
 | [`pack-vmware`](pack-vmware/agent.conf) | linux | 1 | 1 | declared by the source | yes |
 | [`pack-vuln-inventory`](pack-vuln-inventory/agent.conf) | linux | 1 | 1 | declared by the source | yes |
 | [`pack-watchguard`](pack-watchguard/agent.conf) | linux | 1 | 1 | declared by the source | yes |
-| [`pack-wazuh-blog-pack`](pack-wazuh-blog-pack/agent.conf) | darwin, linux, windows | 76 | 8 | declared by the source | yes |
+| [`pack-web-shell-attack-detection-with-wazuh`](pack-web-shell-attack-detection-with-wazuh/agent.conf) | linux | 1 | 1 | declared by the source | yes |
 | [`pack-zimbra`](pack-zimbra/agent.conf) | linux | 1 | 1 | declared by the source | yes |
-| [`win-defender`](win-defender/agent.conf) | windows | 1 | 4 | declared by the source, inferred | yes |
+| [`win-defender`](win-defender/agent.conf) | windows | 1 | 5 | declared by the source, inferred | yes |
 | [`win-firewall`](win-firewall/agent.conf) | windows | 1 | 2 | declared by the source | yes |
-| [`win-powershell`](win-powershell/agent.conf) | windows | 1 | 6 | declared by the source, inferred | yes |
+| [`win-powershell`](win-powershell/agent.conf) | windows | 1 | 7 | declared by the source, inferred | yes |
 | [`win-smbclient`](win-smbclient/agent.conf) | windows | 1 | 2 | declared by the source, inferred | yes |
 | [`win-smbserver`](win-smbserver/agent.conf) | windows | 1 | 2 | declared by the source, inferred | yes |
-| [`win-sysmon`](win-sysmon/agent.conf) | windows | 1 | 28 | declared by the source, inferred | yes |
+| [`win-sysmon`](win-sysmon/agent.conf) | windows | 1 | 103 | declared by the source, inferred | yes |
 | [`win-terminalservices-localsessionmanager`](win-terminalservices-localsessionmanager/agent.conf) | windows | 1 | 3 | declared by the source, inferred | yes |
 | [`win-terminalservices-remoteconnectionmanager`](win-terminalservices-remoteconnectionmanager/agent.conf) | windows | 1 | 2 | declared by the source, inferred | yes |
 | [`win-windows-powershell`](win-windows-powershell/agent.conf) | windows | 1 | 2 | declared by the source | yes |

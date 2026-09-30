@@ -1,0 +1,138 @@
+<group name="vault,">
+
+  <!-- Vault operational base rule-->
+  <rule id="100600" level="0">
+    <decoded_as>vault</decoded_as>
+    <description>Vault operational events.</description>
+  </rule>
+
+  <!-- Trace and debug logs -->
+  <rule id="100601" level="3">
+    <if_sid>100600</if_sid>
+    <field name="vault_level">^TRACE$|^DEBUG$</field>
+    <description>[Vault operational] Debug log.</description>
+  </rule>
+
+  <!-- Informational log, useful for audit trail -->
+  <rule id="100602" level="3">
+    <if_sid>100600</if_sid>
+    <field name="vault_level">^INFO$</field>
+    <description>[Vault operational] Informational log from $(vault_component).</description>
+  </rule>
+
+  <!-- Warning - may indicate misconfiguration issues -->
+  <rule id="100603" level="5">
+    <if_sid>100600</if_sid>
+    <field name="vault_level">^WARN$|^WARNING$</field>
+    <description>[Vault operational] Warning: $(vault_message)</description>
+  </rule>
+
+  <!-- Error - requires investigation -->
+  <rule id="100604" level="7">
+    <if_sid>100600</if_sid>
+    <field name="vault_level">^ERROR$</field>
+    <description>[Vault operational] Error: $(vault_message)</description>
+  </rule>
+
+  <!-- Critical: Vault sealed - all secret access is now blocked. -->
+  <rule id="100605" level="12">
+    <if_sid>100600</if_sid>
+    <match>vault is sealed|marked as sealed</match>
+    <description>[Vault operational] Critical: Vault has been sealed.</description>
+    <group>service_availability,</group>
+  </rule>
+
+  <!-- Info: Vault unsealed - the service is now accessible. -->
+  <rule id="100606" level="3">
+    <if_sid>100600</if_sid>
+    <match>vault is unsealed</match>
+    <description>[Vault operational] Info: Vault has been unsealed.</description>
+    <group>service_availability,</group>
+  </rule>
+
+  <!-- Critical: Audit device failure - this might result in a service unavailability -->
+  <rule id="100607" level="10">
+    <if_sid>100604</if_sid>
+    <match>audit mount failed|</match>
+    <description>[Vault operational] Critical: Audit failure - $(vault_message).</description>
+  </rule>
+
+  <!-- Vault audit base rule-->
+  <rule id="100610" level="0">
+    <decoded_as>vault-audit</decoded_as>
+    <description>Vault audit events.</description>
+  </rule>
+
+  <!-- Catches every API request Vault receives. -->
+  <rule id="100611" level="3">
+    <if_sid>100610</if_sid>
+    <field name="type">request</field>
+    <description>[Vault audit] $(request.operation) request performed by $(auth.display_name) on $(request.path).</description>
+  </rule>
+
+  <!-- Catches successful response to a request. -->
+  <rule id="100612" level="3">
+    <if_sid>100610</if_sid>
+    <field name="type">response</field>
+    <field name="data.error" negate="yes">.+</field>
+    <description>[Vault audit] Successful response on path ($(request.path)) by $(auth.display_name).</description>
+  </rule>
+
+  <!-- Catches any response containing an error -->
+  <rule id="100613" level="7">
+    <if_sid>100610</if_sid>
+    <field name="type">response</field>
+    <field name="data.error">.+</field>
+    <description>[Vault audit] Request on path ($(request.path)) by $(auth.display_name) failed.</description>
+  </rule>
+
+  <!-- Root token usage -->
+  <rule id="100614" level="9">
+    <if_sid>100611</if_sid>
+    <field name="auth.display_name">^root$</field>
+    <description>[Vault audit] Root token used for $(request.operation) on $(request.path).</description>
+    <group>pci_dss_10.2.2,</group>
+  </rule>
+
+  <!-- Succesfull deletion -->
+  <rule id="100615" level="12">
+    <if_sid>100612</if_sid>
+    <field name="request.operation">^delete$</field>
+    <description>[Vault audit] Critical: $(request.path) deleted by $(auth.display_name). Potential footprint cleaning.</description>
+    <mitre>
+      <id>T1562.001</id>
+    </mitre>
+  </rule>
+
+  <rule id="100616" level="7">
+    <if_sid>100612</if_sid>
+    <field name="request.operation">^update$</field>
+    <description>[Vault audit] $(request.path) updated by $(auth.display_name).</description>
+    <mitre>
+      <id>T1562.001</id>
+    </mitre>
+  </rule>
+
+  <!-- Exfiltration by any user: 10+ reads in 60s -->
+  <rule id="100617" level="14" frequency="10" timeframe="60">
+    <if_matched_sid>100611</if_matched_sid>
+    <field name="request.operation">^read$</field>
+    <same_field>auth.accessor</same_field>
+    <description>[Vault audit] Potential data exfiltration: $(auth.display_name) performed 10+ reads in 1 minute.</description>
+    <mitre>
+      <id>T1537</id>
+    </mitre>
+  </rule>
+
+  <!-- Escalated: root token performs 10+ reads in 60s -->
+  <rule id="100618" level="15" frequency="10" timeframe="60">
+    <if_matched_sid>100611</if_matched_sid>
+    <field name="request.operation">^delete$</field>
+    <same_field>auth.accessor</same_field>
+    <description>[Vault audit] Potential data destruction: $(auth.display_name) performed 10+ deletes in 1 minute.</description>
+    <mitre>
+      <id>T1537</id>
+    </mitre>
+  </rule>
+
+</group>

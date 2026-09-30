@@ -15,12 +15,17 @@ A maior parte das regras Wazuh derivam do ecossistema OSSEC/Wazuh (GPLv2). Vári
 - **GPL-3.0** (13): 0xbad53c/ossec-sysmon-for-linux-decoder, AnonymousWP/Wazuh-ChatGPT-integration, BernaldoPenasAntelo/Linux-MITRE_ATT-CK-Wazuh-Rules, BernaldoPenasAntelo/Windows-MITRE_ATT-CK-Wazuh-Rules, LFBernardo/wazuh-fortios-5.6.X, Lordkaly/wazuh-collection, NucleiAv/caddy-detection-rules, SanWieb/sigWah, federicofantini/Wazuh-TI, leperchaun/wazuh-decoders-rules, sametsazak/sysmon, steffenfritz/wazuh-pflog, wheelert/wazuh-mikrotik
 - **MIT** (22): Dinas-Kominfo-Kota-Tangerang/cl-sta-1087-malware-rules, H2FSpawn/wazuh-mikrotik-decoder, Halino/Wazuh-Unifi, JM2K69/WAZUH-Sentinel-AD, Jeremy-Burgos/wazuh-detection-engineering, MedNamouchi/SIEM-MikroTik-Wazuh-Graylog, TristanGNS/wazuh-cjis-rules, bret99/wazuh_custom_rules, captainobvious-sec/wazuh-field-notes, dominiktr/wazuh-decoders-rules, fredycibersec/wazuh-stuff, horrorshow21/Wazuh-Unifi-UDMPFWLogs, jzsecops/wazuh-wireguard-integration, kboykov/wazuh-infoblox-ruleset, mjvmsteixeira/wazuh-database-compliance, mym0us3r/COPY-FAIL-Detection-with-Wazuh-4.14.4, mym0us3r/DIRTY-FRAG-Detection-with-Wazuh-4.14.4, mym0us3r/Detect-Quartet-of-Linux-local-root-vulns-with-Wazuh, paolokappa/wazuh-siem-rules, shahidakhter786/wazuh-criminalip-integration, timohissink/vault-event-monitor, zshguy/tyrian-detection-pack
 - **MIT? (badge no README, sem ficheiro LICENSE)** (1): socfortress/Wazuh-Rules
+- **© Wazuh, Inc. (blog; origem citada)** (1): wazuh.com/blog
+
+## Blog da Wazuh
+
+Os exemplos de regras, decoders e configuração dos artigos do [blog da Wazuh](https://wazuh.com/blog/) são capturados por `tools/fetch_blog.py` para `snapshots/wazuh-blog/` e reproduzidos sem alterações, um artigo por pasta. O conteúdo é © Wazuh, Inc.; cada pasta indica no `SOURCE.md` o artigo de origem, com o link, o título e as datas de publicação e de captura.
 
 ## Pedidos de remoção
 
 É autor de uma fonte e não quer o seu conteúdo aqui? [Abra uma issue](https://github.com/mjvmsteixeira/wazuh-community-rulesets/issues/new/choose) (modelo *Pedido de remoção*) e a fonte é retirada do registo e da página na versão seguinte.
 
-## Fontes sem ficheiro de licença (67)
+## Fontes sem ficheiro de licença (66)
 
 O autor mantém todos os direitos; os ficheiros são publicados sem alterações e com a origem indicada. Uso interno recomendado até o repositório de origem incluir licença:
 
@@ -43,11 +48,10 @@ O autor mantém todos os direitos; os ficheiros são publicados sem alterações
 - [OrangeBox-Labs/Wazuh](https://github.com/OrangeBox-Labs/Wazuh) — 90 regras, 2 decoders
 - [Rayanex7/wazuh-siem-implementation](https://github.com/Rayanex7/wazuh-siem-implementation) — 36 regras, 28 decoders
 - [Sparxx95/Wazuh-Sophos-WAF-IDP](https://github.com/Sparxx95/Wazuh-Sophos-WAF-IDP) — 9 regras, 28 decoders
-- [TheMuntu/Wazuh-Detection](https://github.com/TheMuntu/Wazuh-Detection) — 31 regras, 5 decoders
+- [TheMuntu/Wazuh-Detection](https://github.com/TheMuntu/Wazuh-Detection) — 17 regras, 0 decoders
 - [Tomo-9925/wazuh-pi-hole-decoder-and-rules](https://github.com/Tomo-9925/wazuh-pi-hole-decoder-and-rules) — 3 regras, 6 decoders
 - [Tomo-9925/wazuh-synology-dsm-decoder-and-rules](https://github.com/Tomo-9925/wazuh-synology-dsm-decoder-and-rules) — 11 regras, 19 decoders
 - [adampielak/wazuh-lkrg](https://github.com/adampielak/wazuh-lkrg) — 10 regras, 0 decoders
-- [adampielak/wazuh-scripts-resource](https://github.com/adampielak/wazuh-scripts-resource) — 1010 regras, 408 decoders
 - [adampielak/wazuh_custom_rules](https://github.com/adampielak/wazuh_custom_rules) — 76 regras, 56 decoders
 - [alextibor/wazuh-fortigate-rules-decoders](https://github.com/alextibor/wazuh-fortigate-rules-decoders) — 1387 regras, 738 decoders
 - [angolo40/WazuhMikrotik](https://github.com/angolo40/WazuhMikrotik) — 8 regras, 8 decoders

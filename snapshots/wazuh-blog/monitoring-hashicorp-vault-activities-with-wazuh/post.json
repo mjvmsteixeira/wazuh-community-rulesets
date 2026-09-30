@@ -1,0 +1,14 @@
+{
+ "url": "https://wazuh.com/blog/monitoring-hashicorp-vault-activities-with-wazuh/",
+ "title": "Monitoring HashiCorp Vault activities with Wazuh",
+ "published": "2026-03-26",
+ "modified": "2026-03-26",
+ "files": {
+  "01-config.xml": "5d8aa4c54c69e88b",
+  "02-decoders.xml": "3606bc5d16dd3a27",
+  "03-rules.xml": "55b3d90219186cd6",
+  "04-config.xml": "a221c73b53410187",
+  "05-decoders.xml": "5ce8991184242d1f",
+  "06-rules.xml": "787d5a8d5fd3a470"
+ }
+}

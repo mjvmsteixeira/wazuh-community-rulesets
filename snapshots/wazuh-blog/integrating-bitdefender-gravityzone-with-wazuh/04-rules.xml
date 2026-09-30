@@ -1,0 +1,16 @@
+<!-- Rules to detect Bitdefender events via syslog -->
+
+<!-- BitDefender logs grouped -->
+<group name="bitdefender-GZ">
+  <rule id="100600" level="0">
+    <decoded_as>gravityzone</decoded_as>
+    <description>Logs from Bitdefender.</description>
+  </rule>
+
+  <!-- Rule to detect active threat -->
+  <rule id="100601" level="10">
+    <if_sid>100600</if_sid>
+    <field name="BitdefenderModule">AntiMalware</field>
+    <description>Bitdefender: $(MalwareName) detected on $(DeviceHostName) and $(Action).</description>
+  </rule>
+</group>

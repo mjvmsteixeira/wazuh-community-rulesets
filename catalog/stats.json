@@ -2,66 +2,66 @@
  "generated": "2026-09-29",
  "official_reference": "wazuh/wazuh v4.14.8 ruleset",
  "sources_listed": 126,
- "sources_cloned": 124,
+ "sources_cloned": 125,
  "sources_failed": [
   "CitraIT/wazuh_decoders_and_rules",
   "Ghost47-coder/Wazuh-Rules"
  ],
  "sources_included": 115,
- "files": 1343,
- "rules": 16373,
- "decoders": 5298,
- "rule_entries_dup_in_folder": 716,
- "unique_rule_ids": 9114,
- "id_conflicts": 1867,
- "id_conflicts_community": 1854,
- "id_conflicts_official_collision": 10,
+ "files": 1688,
+ "rules": 16586,
+ "decoders": 5344,
+ "rule_entries_dup_in_folder": 719,
+ "unique_rule_ids": 8321,
+ "id_conflicts": 1884,
+ "id_conflicts_community": 1862,
+ "id_conflicts_official_collision": 19,
  "id_conflicts_official_multi_overwrite": 3,
- "deps_missing": 23,
- "deps_same_source_other_folder": 74,
- "deps_cross_source": 57,
+ "deps_missing": 8,
+ "deps_same_source_other_folder": 102,
+ "deps_cross_source": 6,
  "cdb_lists": {
+  "em falta": 47,
   "copiada da fonte": 31,
-  "em falta": 33,
-  "oficial": 3
+  "oficial": 4
  },
- "folders": 299,
- "folders_standalone": 255,
+ "folders": 479,
+ "folders_standalone": 405,
  "test_files_copied": 134,
- "excluded_files": 206,
+ "excluded_files": 255,
  "decoders_detail": {
-  "roots": 639,
-  "children": 4659,
-  "root_collisions_between_sources": 43,
+  "roots": 660,
+  "children": 4684,
+  "root_collisions_between_sources": 42,
   "root_names_also_official": 17,
-  "distinct_fields": 2918,
+  "distinct_fields": 2932,
   "fields_with_ecs": 305,
   "field_uses_with_ecs_pct": 35,
   "regex_engines": {
-   "osregex": 3873,
-   "pcre2": 1414
+   "osregex": 3910,
+   "pcre2": 1417
   }
  },
  "mitre": {
-  "inválido": 118,
-  "normalizado": 2842,
-  "sem mitre": 8176,
-  "válido": 5237
+  "inválido": 122,
+  "normalizado": 2845,
+  "sem mitre": 8267,
+  "válido": 5352
  },
  "response": {
-  "definitions": 109,
+  "definitions": 149,
   "by_status": {
    "ignorado": 2,
-   "ok": 83,
-   "partido": 24
+   "ok": 91,
+   "partido": 56
   },
   "by_kind": {
-   "active-response": 48,
-   "integration": 61
+   "active-response": 72,
+   "integration": 77
   },
-  "destructive": 14,
-  "destructive_without_allowlist": 12,
-  "copied": 39,
+  "destructive": 19,
+  "destructive_without_allowlist": 17,
+  "copied": 95,
   "playbook_docs": {
    "ADORSYS-GIS/wazuh-playbook — procedimental (por rule.id/técnica)": 3,
    "ADORSYS-GIS/wazuh-playbook — remediação SCA (por check)": 71,
@@ -69,150 +69,150 @@
    "cisagov/playbook-ng — contramedida (CISA COUN7ER)": 152,
    "guardsight/gsvsoc_cirt-playbook-battle-cards — procedimental (battle card PICERL)": 63
   },
-  "techniques": 418,
-  "techniques_level12": 335,
+  "techniques": 426,
+  "techniques_level12": 336,
   "techniques_level12_without_playbook": 151,
   "techniques_level12_without_countermeasure": 78,
-  "techniques_level12_without_containment": 324
+  "techniques_level12_without_containment": 300
  },
  "sigma": {
   "rules": 3760,
   "with_technique": 3048,
   "commit": "07ec293a5169",
   "techniques_sigma": 381,
-  "techniques_registry": 418,
+  "techniques_registry": 426,
   "by_status": {
-   "ambos": 313,
-   "registo sem regras de nível ≥ 12": 25,
-   "só Sigma": 43,
-   "só registo": 80
+   "ambos": 316,
+   "registo sem regras de nível ≥ 12": 26,
+   "só Sigma": 39,
+   "só registo": 84
   },
-  "sigma_only_with_high": 20
+  "sigma_only_with_high": 18
  },
  "collection": {
-  "folders_with_agent_groups": 104,
-  "folders_default_only": 5,
-  "folders_with_manager_requirements": 116,
-  "folders_with_undefined": 112,
-  "declared_files": 313,
-  "declared_entries": 638,
-  "unassigned_files": 38,
-  "groups": 67
+  "folders_with_agent_groups": 248,
+  "folders_default_only": 9,
+  "folders_with_manager_requirements": 150,
+  "folders_with_undefined": 129,
+  "declared_files": 364,
+  "declared_entries": 701,
+  "unassigned_files": 60,
+  "groups": 129
  },
  "official_overlap": {
-  "colisão": 10,
+  "colisão": 19,
   "overwrite com mesma cadeia e nível": 96,
-  "overwrite de ID inexistente no oficial": 5,
-  "overwrite de nível": 54,
+  "overwrite de ID inexistente no oficial": 4,
+  "overwrite de nível": 55,
   "overwrite estrutural": 4
  },
- "decoder_replacement_files": 13,
- "rules_outside_custom_range": 6362,
+ "decoder_replacement_files": 14,
+ "rules_outside_custom_range": 5417,
  "per_area": {
   "01-windows-endpoint": {
-   "rules": 5273,
+   "rules": 5264,
    "decoders": 3,
    "sources": 11
   },
   "02-identity-access": {
-   "rules": 267,
-   "decoders": 183,
-   "sources": 16
+   "rules": 310,
+   "decoders": 191,
+   "sources": 17
   },
   "03-linux-unix": {
-   "rules": 477,
-   "decoders": 328,
+   "rules": 498,
+   "decoders": 322,
    "sources": 13
   },
   "04-macos": {
-   "rules": 89,
-   "decoders": 65,
+   "rules": 90,
+   "decoders": 53,
    "sources": 3
   },
   "05-cloud-saas": {
-   "rules": 757,
-   "decoders": 60,
+   "rules": 767,
+   "decoders": 58,
    "sources": 8
   },
   "06-containers-k8s": {
-   "rules": 384,
-   "decoders": 33,
+   "rules": 408,
+   "decoders": 42,
    "sources": 8
   },
   "07-network-perimeter": {
-   "rules": 4086,
+   "rules": 4094,
    "decoders": 3605,
    "sources": 50
   },
   "08-ndr-ids": {
-   "rules": 144,
-   "decoders": 62,
-   "sources": 7
+   "rules": 155,
+   "decoders": 112,
+   "sources": 8
   },
   "09-web-apps-waf": {
-   "rules": 314,
+   "rules": 334,
    "decoders": 88,
-   "sources": 17
+   "sources": 18
   },
   "10-databases": {
-   "rules": 57,
-   "decoders": 26,
+   "rules": 82,
+   "decoders": 41,
    "sources": 3
   },
   "11-endpoint-security-edr": {
-   "rules": 1536,
-   "decoders": 165,
-   "sources": 12
+   "rules": 1553,
+   "decoders": 176,
+   "sources": 13
   },
   "12-threat-intel": {
-   "rules": 189,
-   "decoders": 5,
-   "sources": 10
-  },
-  "13-vulnerability-mgmt": {
-   "rules": 52,
-   "decoders": 9,
-   "sources": 4
-  },
-  "14-ot-ics-iot": {
-   "rules": 46,
-   "decoders": 25,
-   "sources": 2
-  },
-  "15-infra-virt-storage-backup": {
-   "rules": 580,
-   "decoders": 223,
+   "rules": 229,
+   "decoders": 10,
    "sources": 11
   },
+  "13-vulnerability-mgmt": {
+   "rules": 72,
+   "decoders": 10,
+   "sources": 5
+  },
+  "14-ot-ics-iot": {
+   "rules": 62,
+   "decoders": 27,
+   "sources": 3
+  },
+  "15-infra-virt-storage-backup": {
+   "rules": 611,
+   "decoders": 247,
+   "sources": 12
+  },
   "16-dns-email": {
-   "rules": 70,
-   "decoders": 112,
+   "rules": 94,
+   "decoders": 181,
    "sources": 9
   },
   "17-ai-llm": {
-   "rules": 36,
+   "rules": 44,
    "decoders": 1,
-   "sources": 3
+   "sources": 4
   },
   "18-compliance-frameworks": {
-   "rules": 212,
+   "rules": 214,
    "decoders": 6,
-   "sources": 3
+   "sources": 4
   },
   "19-threats-campaigns-cves": {
-   "rules": 64,
-   "decoders": 0,
-   "sources": 6
+   "rules": 654,
+   "decoders": 107,
+   "sources": 7
   },
   "20-attck-multiplatform": {
-   "rules": 1423,
-   "decoders": 285,
+   "rules": 690,
+   "decoders": 28,
    "sources": 8
   },
   "21-wazuh-platform-ops": {
-   "rules": 287,
-   "decoders": 10,
-   "sources": 5
+   "rules": 331,
+   "decoders": 32,
+   "sources": 6
   },
   "90-misc": {
    "rules": 30,

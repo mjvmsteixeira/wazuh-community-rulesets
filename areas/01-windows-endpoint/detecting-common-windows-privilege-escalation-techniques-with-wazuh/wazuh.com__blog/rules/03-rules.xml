@@ -1,0 +1,10 @@
+ <rule id="111020" level="12">
+    <if_group>sysmon_event_13</if_group>
+    <field name="win.eventdata.targetObject" type="pcre2">(?i)\\+Services\\+[^\\]+\\+(Parameters\\+)?(ImagePath|FailureCommand|ServiceDll)$</field>
+    <field name="win.eventdata.image" type="pcre2">(?i)^(?!.*\\+Windows\\+System32\\+services\.exe$).+$</field>
+    <description>Service registry value modified by a process other than services.exe - possible unauthorized service configuration change ($(win.eventdata.targetObject) set to $(win.eventdata.details) by $(win.eventdata.image), user $(win.eventdata.user)).</description>
+    <options>no_full_log</options>
+    <mitre>
+      <id>T1574.011</id>
+    </mitre>
+  </rule>

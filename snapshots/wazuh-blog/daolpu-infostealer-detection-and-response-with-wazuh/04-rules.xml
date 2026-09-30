@@ -1,0 +1,32 @@
+<!-- File added to the Downloads folder -->
+<group name= "syscheck,">
+  <rule id="100028" level="7">
+    <if_sid>550</if_sid>
+    <field name="file" type="pcre2">(?i)C:\\Users.+Downloads</field>
+    <description>File modified in the Downloads folder.</description>
+  </rule>
+<!-- File modified in the Downloads folder -->
+  <rule id="100029" level="7">
+    <if_sid>554</if_sid>
+    <field name="file" type="pcre2">(?i)C:\\Users.+Downloads</field>
+    <description>File added to the Downloads folder.</description>
+  </rule>
+</group>
+<!--  Rule for the decoder (yara_decoder) -->
+<group name="yara,">
+  <rule id="100063" level="0">
+    <decoded_as>yara_decoder</decoded_as>
+    <description>Yara grouping rule</description>
+  </rule>
+<!--  YARA scan detects a positive match -->
+  <rule id="100064" level="12">
+    <if_sid>100063</if_sid>
+    <match type="pcre2">wazuh-yara: INFO - Scan result: </match>
+    <description>File "$(yara_scanned_file)" is a positive match. Yara rule: $(yara_rule)</description>
+  </rule>
+  <rule id="100065" level="12">
+    <if_sid>100063</if_sid>
+    <match type="pcre2">wazuh-yara: INFO - Successfully deleted: </match>
+    <description>Successfully removed "$(yara_scanned_file)". YARA rule: $(yara_rule)</description>
+  </rule>
+</group>

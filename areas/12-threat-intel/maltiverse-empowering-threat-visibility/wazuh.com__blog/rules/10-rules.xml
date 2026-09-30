@@ -1,0 +1,13 @@
+<group name="maltiverse_sample_test">
+  <!-- Rules for Linux systems -->
+  <rule id="111050" level="7">
+    <if_sid>550</if_sid>
+    <field name="file">/tmp</field>
+    <description>File modified in /tmp directory.</description>
+    </rule>
+  <rule id="111051" level="7">
+    <if_sid>554</if_sid>
+    <field name="file">/tmp</field>
+    <description>File added to /tmp directory.</description>
+  </rule>
+</group>

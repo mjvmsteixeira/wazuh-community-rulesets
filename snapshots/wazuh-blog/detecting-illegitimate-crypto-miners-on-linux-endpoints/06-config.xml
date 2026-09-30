@@ -1,0 +1,7 @@
+<agent_config os="linux">
+  <syscheck>
+    <directories check_all="yes" realtime="yes">/tmp/</directories>
+    <directories check_all="yes" realtime="yes">/var/tmp/</directories>
+    <directories check_all="yes" realtime="yes">/home/*/Downloads/</directories>
+  </syscheck>
+</agent_config>

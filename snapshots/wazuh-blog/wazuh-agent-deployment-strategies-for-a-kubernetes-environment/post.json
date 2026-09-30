@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/wazuh-agent-deployment-strategies-for-a-kubernetes-environment/",
+ "title": "Wazuh agent deployment strategies for persistence in Kubernetes",
+ "published": "2025-10-22",
+ "modified": "2025-10-28",
+ "files": {
+  "01-config.xml": "1562afe91ce00df3",
+  "02-config.xml": "37dd95fb860c7019"
+ }
+}

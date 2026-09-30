@@ -5,6 +5,8 @@ Proxmox/PBS, VMware, Synology, QNAP, Veeam.
 | Topic | Source | Rules | Decoders | Standalone | Loads | Collection | Playbooks | Responses | License | Last commit | Tests |
 |---|---|---:|---:|---|---|---|---|---|---|---|---:|
 | esxi | [pfuz/wazuh-ruleset](https://github.com/pfuz/wazuh-ruleset) | 20 | 26 | yes | yes | manager: remote syslog | no MITRE | — | NONE | 2025-01-24 | — |
+| monitoring-hyper-v-with-wazuh | [wazuh.com/blog](https://wazuh.com/blog/) | 9 | 0 | yes | yes (9 warnings) | `pack-monitoring-hyper-v-with-wazuh`; to be defined | no MITRE | — | © Wazuh, Inc. (blog; origem citada) | 2026-09-24 | — |
+| monitoring-vmware-esxi-with-wazuh | [wazuh.com/blog](https://wazuh.com/blog/) | 22 | 24 | no | no | `pack-monitoring-vmware-esxi-with-wazuh` | no MITRE | — | © Wazuh, Inc. (blog; origem citada) | 2026-09-24 | — |
 | proxmox | [adampielak/wazuh_custom_rules](https://github.com/adampielak/wazuh_custom_rules) | 4 | 0 | yes | yes | `pack-proxmox` | no MITRE | — | NONE | 2026-06-16 | — |
 | proxmox | [captainobvious-sec/wazuh-field-notes](https://github.com/captainobvious-sec/wazuh-field-notes) | 32 | 6 | yes | yes | manager: remote syslog | 100% of 10 techniques | — | MIT | 2026-09-14 | — |
 | proxmox | [phastier/wazuh](https://github.com/phastier/wazuh) | 18 | 16 | no | no | `linux-apache`; manager: remote syslog | 100% of 4 techniques | — | NONE | 2026-09-02 | — |

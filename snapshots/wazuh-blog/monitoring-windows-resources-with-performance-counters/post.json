@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/monitoring-windows-resources-with-performance-counters/",
+ "title": "Monitoring Windows resources with Performance Counters",
+ "published": "2024-07-04",
+ "modified": "2025-05-21",
+ "files": {
+  "01-rules.xml": "a424de0c9d119012",
+  "02-config.xml": "6ebf380090bf5fde"
+ }
+}

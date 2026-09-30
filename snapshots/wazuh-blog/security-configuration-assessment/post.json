@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/security-configuration-assessment/",
+ "title": "Security Configuration Assessment (SCA)",
+ "published": "2019-11-18",
+ "modified": "2024-06-04",
+ "files": {
+  "01-config.xml": "1e49ca7cc5e6d76c",
+  "02-config.xml": "e1d9903b0fcd10d3"
+ }
+}

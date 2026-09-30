@@ -1,0 +1,5 @@
+<ossec_config>
+  <syscheck>
+    <directories whodata="yes" report_changes="yes">C:\Program Files\SCADA\BaseDAT, C:\Program Files\SCADA\Config, C:\Program Files\SCADA\ScadaAgent\Config, C:\Program Files\SCADA\ScadaComm\Config, C:\Program Files\SCADA\ScadaServer\Config, C:\Program Files\SCADA\ScadaWeb\config</directories>
+  </syscheck>
+</ossec_config>

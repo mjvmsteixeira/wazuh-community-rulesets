@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/adversary-emulation-with-caldera-and-wazuh/",
+ "title": "Adversary emulation with CALDERA and Wazuh",
+ "published": "2022-04-29",
+ "modified": "2026-09-30",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-rules.xml": "f88b4113669748d3"
+ }
+}

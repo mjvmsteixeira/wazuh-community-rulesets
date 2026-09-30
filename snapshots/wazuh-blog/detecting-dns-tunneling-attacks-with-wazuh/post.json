@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/detecting-dns-tunneling-attacks-with-wazuh/",
+ "title": "Detecting DNS tunneling attacks with Wazuh",
+ "published": "2026-03-05",
+ "modified": "2026-03-10",
+ "files": {
+  "01-config.xml": "5a42488287dc4526",
+  "02-decoders.xml": "fa3389d93efe2c0a",
+  "03-rules.xml": "e82c24879d7930dc"
+ }
+}

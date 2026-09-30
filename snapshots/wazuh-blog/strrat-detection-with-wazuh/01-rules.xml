@@ -1,0 +1,35 @@
+<group name="syscheck,strrat_detection_rule,">
+<!-- STRRAT downloads a system-hook Java file for recording keystrokes -->
+  <rule id="100050" level="12">
+    <if_sid>554</if_sid>
+    <field name="file" type="pcre2">(?i)^c:\\users.+lib\\system-hook.+jar$</field>
+    <description>Possible STRRAT malware detected. $(file) was downloaded on the endpoint</description>
+    <mitre>
+      <id>T1056.001</id>
+    </mitre>
+  </rule>
+<!-- STRRAT poses as ransomware -->
+  <rule id="100051" level="8">
+    <if_sid>550,554</if_sid>
+    <field name="file" type="pcre2">(?i)c:\\users.+(documents|desktop|downloads).+crimson</field>
+    <description>Possible STRRAT malware detected. The .crimson extension has been appended to $(file)</description>
+    <mitre>
+      <id>T1486</id>
+    </mitre>
+  </rule>
+<!-- STRRAT creates a lock file -->
+  <rule id="100052" level="12">
+    <if_sid>554</if_sid>
+    <field name="file" type="pcre2">(?i)^c:\\users.+\\\d{1,}lock\.file$</field>
+    <description>Possible STRRAT malware detected. $(file) was created on the endpoint</description>
+  </rule>
+<!-- STRRAT downloads Java files -->
+  <rule id="100053" level="12">
+    <if_sid>554</if_sid>
+    <field name="file" type="pcre2">(?i)^c:\\users.+lib\\(jna\-platform|sqlite).+jar$</field>
+    <description>Possible STRRAT malware detected. $(file) was downloaded on the endpoint</description>
+    <mitre>
+      <id>T1407</id>
+    </mitre>
+  </rule>
+</group>

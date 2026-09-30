@@ -1,0 +1,9 @@
+{
+ "url": "https://wazuh.com/blog/filtering-security-data-with-the-wazuh-query-language/",
+ "title": "Filtering security data with the Wazuh Query Language",
+ "published": "2024-04-29",
+ "modified": "2024-06-24",
+ "files": {
+  "01-config.xml": "966fa0f83211ee22"
+ }
+}

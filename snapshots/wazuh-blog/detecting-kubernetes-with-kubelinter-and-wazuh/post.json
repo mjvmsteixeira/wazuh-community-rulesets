@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/detecting-kubernetes-with-kubelinter-and-wazuh/",
+ "title": "Detecting Kubernetes misconfigurations with KubeLinter and Wazuh",
+ "published": "2026-04-23",
+ "modified": "2026-04-23",
+ "files": {
+  "01-config.xml": "3280f67872ab58bf",
+  "02-rules.xml": "b6eaee16db29d131"
+ }
+}

@@ -1,0 +1,8 @@
+<!-- Blocos de resposta extraídos, sem alterações, de wazuh.com/blog:wazuh-for-cmmc-compliance/03-config.xml @ b4b3f986b301 -->
+<active-response>
+    <disabled>no</disabled>
+    <command>disable-account</command>
+    <location>local</location>
+    <rules_id>120100</rules_id>
+    <timeout>300</timeout>
+  </active-response>

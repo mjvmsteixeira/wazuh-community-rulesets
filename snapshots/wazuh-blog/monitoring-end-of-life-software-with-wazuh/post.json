@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/monitoring-end-of-life-software-with-wazuh/",
+ "title": "Monitoring end-of-life software with Wazuh",
+ "published": "2026-07-23",
+ "modified": "2026-07-23",
+ "files": {
+  "01-config.xml": "357da73cf1f7243b",
+  "02-rules.xml": "461efba91b1a46ff"
+ }
+}

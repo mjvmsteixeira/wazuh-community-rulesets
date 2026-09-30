@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/detecting-process-injection-attacks-with-wazuh/",
+ "title": "Detecting process injection attacks with Wazuh",
+ "published": "2022-07-22",
+ "modified": "2024-06-07",
+ "files": {
+  "01-config.xml": "30154787471f82e8",
+  "02-rules.xml": "75e3c542458a6086",
+  "03-rules.xml": "1b8f8d1efbe9b326"
+ }
+}

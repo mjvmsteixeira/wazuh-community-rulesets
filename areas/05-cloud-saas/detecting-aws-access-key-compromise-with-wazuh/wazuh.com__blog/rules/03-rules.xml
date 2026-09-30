@@ -1,0 +1,73 @@
+<group name="amazon,aws_iam_compromise,">
+
+  <!-- STAGE 1: Key validation from an unrecognized source IP -->
+  <rule id="101600" level="8">
+    <if_sid>80200,80202,80203,80250</if_sid>
+    <field name="aws.eventName" type="pcre2">GetCallerIdentity|GetSessionToken</field>
+    <list field="aws.sourceIPAddress" lookup="not_match_key">etc/lists/trusted_aws_ips</list>
+    <list field="aws.userIdentity.userName" lookup="not_match_key">etc/lists/aws_service_identities</list>
+    <description>AWS IAM: Access key validated ($(aws.eventName)) from unrecognized IP $(aws.sourceIPAddress) by $(aws.userIdentity.userName) - [Possible stolen key].</description>
+    <mitre>
+      <id>T1078.004</id>
+    </mitre>
+  </rule>
+
+  <!-- STAGE 2: Enumeration - repeated AccessDenied from the same identity -->
+  <rule id="101601" level="10" frequency="6" timeframe="900">
+    <if_matched_sid>80250</if_matched_sid>
+    <same_field>aws.userIdentity.userName</same_field>
+    <description>AWS IAM: Repeated AccessDenied errors from $(aws.userIdentity.userName) - [Possible permission enumeration].</description>
+    <mitre>
+      <id>T1580</id>
+      <id>T1087.004</id>
+      <id>T1069.003</id>
+    </mitre>
+  </rule>
+
+  <!-- STAGE 3: Persistence - new credential or identity from an unrecognized IP -->
+  <rule id="101602" level="12">
+    <if_sid>80200,80202,80203,80250</if_sid>
+    <field name="aws.eventName" type="pcre2">CreateAccessKey|CreateUser|AttachUserPolicy</field>
+    <list field="aws.sourceIPAddress" lookup="not_match_key">etc/lists/trusted_aws_ips</list>
+    <list field="aws.userIdentity.userName" lookup="not_match_key">etc/lists/aws_service_identities</list>
+    <description>AWS IAM: Persistence action $(aws.eventName) attempted by $(aws.userIdentity.userName) from unrecognized IP $(aws.sourceIPAddress).</description>
+    <mitre>
+      <id>T1098.001</id>
+    </mitre>
+  </rule>
+
+  <!-- GuardDuty flags credential exfiltration or anomalous use -->
+  <rule id="101603" level="12">
+    <if_sid>80300,80301,80302,80303</if_sid>
+    <field name="aws.type" type="pcre2">(?i)(InstanceCredentialExfiltration|AnomalousBehavior|Exfiltration:S3)</field>
+    <description>AWS GuardDuty: Credential exfiltration or anomalous behavior detected - $(aws.type).</description>
+    <mitre>
+      <id>T1552</id>
+    </mitre>
+  </rule>
+
+  <!-- CORRELATION: validation processed before persistence -->
+  <rule id="101604" level="15">
+    <if_sid>101602</if_sid>
+    <if_matched_sid>101600</if_matched_sid>
+    <same_field>aws.userIdentity.userName</same_field>
+    <description>CRITICAL: IAM identity $(aws.userIdentity.userName) shows a full compromise chain (validation processed before persistence) - High-confidence access key compromise!</description>
+    <mitre>
+      <id>T1078.004</id>
+      <id>T1098.001</id>
+    </mitre>
+  </rule>
+
+  <!-- CORRELATION, REVERSE ORDER: persistence processed before validation -->
+  <rule id="101605" level="15">
+    <if_sid>101600</if_sid>
+    <if_matched_sid>101602</if_matched_sid>
+    <same_field>aws.userIdentity.userName</same_field>
+    <description>CRITICAL: IAM identity $(aws.userIdentity.userName) shows a full compromise chain (persistence processed before validation) - High-confidence access key compromise!</description>
+    <mitre>
+      <id>T1078.004</id>
+      <id>T1098.001</id>
+    </mitre>
+  </rule>
+
+</group>

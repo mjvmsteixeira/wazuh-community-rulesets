@@ -1,0 +1,14 @@
+{
+ "url": "https://wazuh.com/blog/detecting-medusa-ransomware-with-wazuh/",
+ "title": "Detecting Medusa ransomware with Wazuh",
+ "published": "2025-04-24",
+ "modified": "2025-04-24",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-rules.xml": "882879b71e31f209",
+  "03-rules.xml": "05144af60e42bae9",
+  "04-config.xml": "29fad5114d762d25",
+  "05-decoders.xml": "13193c3c92948d98",
+  "06-rules.xml": "567c26876fb9a5fd"
+ }
+}

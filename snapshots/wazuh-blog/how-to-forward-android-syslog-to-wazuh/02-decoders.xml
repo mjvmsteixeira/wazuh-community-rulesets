@@ -1,0 +1,5 @@
+<decoder name="android_decoder_02">
+   <prematch>\.*Finsky</prematch>
+   <regex>\.*Successful (install) of (\.+) \.*</regex>
+   <order>action_name,package_name</order>
+</decoder>

@@ -1,0 +1,6 @@
+<remote>
+<connection>syslog</connection>
+<allowed-ips>your-device-ip-1</allowed-ips>
+<allowed-ips>your-device-ip-2</allowed-ips>
+<allowed-ips>your-device-ip-3</allowed-ips>
+</remote>

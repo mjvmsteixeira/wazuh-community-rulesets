@@ -1,0 +1,6 @@
+<group name="local,linux,">
+  <rule id="100102" level="6">
+    <field name="chatgpt.nmap_port_service">\w+</field>
+      <description>The service $(chatgpt.nmap_port_service) is on an open port.</description>
+  </rule>
+</group>

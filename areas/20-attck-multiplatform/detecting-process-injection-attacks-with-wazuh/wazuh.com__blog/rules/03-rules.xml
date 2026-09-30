@@ -1,0 +1,9 @@
+<group name="windows,sysmon">
+  <rule id="100201" level="12">
+    <if_sid>61600</if_sid>
+    <description>Process injection activity detected: "$(win.eventdata.Image)" has been tampered with</description>
+    <mitre>
+      <id>T1055.012</id>
+    </mitre>
+  </rule>
+</group>

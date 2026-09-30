@@ -1,0 +1,41 @@
+<ossec_config>
+  <!-- Check for MasterCard PAN -->
+  <localfile>
+    <log_format>full_command</log_format>
+    <command>grep -rilE --exclude-dir={bin,boot,mnt,proc,dev,usr,lib64,sbin,lib,run,sys} --exclude={*.bin,*.deb,*.iso,*.lock,*.jpg,*.png,*jpeg,*.gif,*.sys,*.dat} '(\D|^)5[1-5][0-9]{2}(\ |\-|)[0-9]{4}(\ |\-|)[0-9]{4}(\ |\-|)[0-9]{4}(\D|$)' /home</command>
+    <alias>PAN scan</alias>
+    <frequency>86400</frequency>
+  </localfile>
+
+  <!-- Check for Visa PAN -->
+  <localfile>
+    <log_format>full_command</log_format>
+    <command>grep -rilE --exclude-dir={bin,boot,mnt,proc,dev,usr,lib64,sbin,lib,run,sys} --exclude={*.bin,*.deb,*.iso,*.lock,*.jpg,*.png,*jpeg,*.gif,*.sys,*.dat} '(\D|^)4[0-9]{3}(\ |\-|)[0-9]{4}(\ |\-|)[0-9]{4}(\ |\-|)[0-9]{4}(\D|$)' /home</command>
+    <alias>PAN scan</alias>
+    <frequency>86400</frequency>
+  </localfile>
+
+  <!-- Check for AMEX PAN -->
+  <localfile>
+    <log_format>full_command</log_format>
+    <command>grep -rilE --exclude-dir={bin,boot,mnt,proc,dev,usr,lib64,sbin,lib,run,sys} --exclude={*.bin,*.deb,*.iso,*.lock,*.jpg,*.png,*jpeg,*.gif,*.sys,*.dat} '(\D|^)(34|37)[0-9]{2}(\ |\-|)[0-9]{6}(\ |\-|)[0-9]{5}(\D|$)' /home</command>
+    <alias>PAN scan</alias>
+    <frequency>86400</frequency>
+  </localfile>
+
+  <!-- Check for JCB PAN -->
+  <localfile>
+    <log_format>full_command</log_format>
+    <command>grep -rilE --exclude-dir={bin,boot,mnt,proc,dev,usr,lib64,sbin,lib,run,sys} --exclude={*.bin,*.deb,*.iso,*.lock,*.jpg,*.png,*jpeg,*.gif,*.sys,*.dat} '(\D|^)3[0-9]{3}(\ |\-|)[0-9]{4}(\ |\-|)[0-9]{4}(\ |\-|)[0-9]{4}(\D|$)' /home</command>
+    <alias>PAN scan</alias>
+    <frequency>86400</frequency>
+  </localfile>
+
+  <!-- Check for Discover PAN -->
+  <localfile>
+    <log_format>full_command</log_format>
+    <command>grep -rilE --exclude-dir={bin,boot,mnt,proc,dev,usr,lib64,sbin,lib,run,sys} --exclude={*.bin,*.deb,*.iso,*.lock,*.jpg,*.png,*jpeg,*.gif,*.sys,*.dat} '(\D|^)6011(\ |\-|)[0-9]{4}(\ |\-|)[0-9]{4}(\ |\-|)[0-9]{4}(\D|$)' /home</command>
+    <alias>PAN scan</alias>
+    <frequency>86400</frequency>
+  </localfile>
+</ossec_config>

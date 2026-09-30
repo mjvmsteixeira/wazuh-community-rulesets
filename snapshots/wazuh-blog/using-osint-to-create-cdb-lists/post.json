@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/using-osint-to-create-cdb-lists/",
+ "title": "Using OSINT to create CDB lists and block malicious IPs",
+ "published": "2017-06-22",
+ "modified": "2023-02-17",
+ "files": {
+  "01-config.xml": "638e4e297d5be940",
+  "02-rules.xml": "de06116583695af1",
+  "03-config.xml": "84554d8ce6193f0e"
+ }
+}

@@ -1,0 +1,12 @@
+<!-- Blocos de resposta extraídos, sem alterações, de wazuh.com/blog:hunting-for-suspicious-windows-lnk-files-with-wazuh-xdr/03-config.xml @ b4b3f986b301 -->
+<command>
+    <name>lnkparser</name>
+    <executable>lnkparser.bat</executable>
+    <timeout_allowed>no</timeout_allowed>
+  </command>
+
+<active-response>
+    <command>lnkparser</command>
+    <location>local</location>
+    <rules_id>110000,110001</rules_id>
+  </active-response>

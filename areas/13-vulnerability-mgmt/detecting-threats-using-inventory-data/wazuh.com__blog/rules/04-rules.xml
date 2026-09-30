@@ -1,0 +1,18 @@
+<group name="syscollector,">
+  <!-- ports -->
+  <rule id="100300" level="2">
+      <if_sid>221</if_sid>
+      <field name="type">dbsync_ports</field>
+      <description>Syscollector ports event.</description>
+  </rule>
+
+<!-- Abnormal Destination Port Detected -->
+  <rule id="100370" level="9">
+    <if_sid>100300</if_sid>
+    <field name="operation_type">INSERTED</field>
+    <field name="port.process" negate="yes">wazuh-agentd</field>
+    <list field="port.local_port" lookup="not_match_key">etc/lists/common-ports</list>
+    <description>Network connection to Uncommon Port $(port.local_port) from $(port.remote_ip)</description>
+  </rule>
+
+</group>

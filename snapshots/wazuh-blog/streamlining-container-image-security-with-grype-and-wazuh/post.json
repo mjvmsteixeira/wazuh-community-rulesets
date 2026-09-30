@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/streamlining-container-image-security-with-grype-and-wazuh/",
+ "title": "Streamlining container image security with Grype and Wazuh",
+ "published": "2024-06-27",
+ "modified": "2024-06-27",
+ "files": {
+  "01-config.xml": "034cf1e164bbebdd",
+  "02-decoders.xml": "9d8032419651e04f",
+  "03-rules.xml": "2dfab6e07b2a3695"
+ }
+}

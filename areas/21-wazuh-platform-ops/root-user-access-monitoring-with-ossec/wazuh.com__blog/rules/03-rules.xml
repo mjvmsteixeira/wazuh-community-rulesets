@@ -1,0 +1,5 @@
+<rule id="100002" level="9">
+    <if_sid>516</if_sid>
+    <description>System Audit event</description>
+    <group>rootcheck,</group>
+</rule>

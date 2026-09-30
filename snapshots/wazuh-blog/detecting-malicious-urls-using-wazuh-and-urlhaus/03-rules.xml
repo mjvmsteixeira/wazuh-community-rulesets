@@ -1,0 +1,6 @@
+<group name="local, suricata,">
+  <rule id="100004" level="10">
+    <field name="urlhaus.url_threat">malware_download</field>
+    <description>URLhaus: An endpoint connected to a url known for deploying malware.</description>
+  </rule>
+</group>

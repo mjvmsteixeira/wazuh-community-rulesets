@@ -1,0 +1,31 @@
+<group name="windows_shortcut,">
+  <rule id="110003" level="12">
+    <decoded_as>raw_json</decoded_as>
+    <field name="lnk_data.command_line_arguments" type="pcre2">(?i)cmd|powershell|psexec|MSHTA|bitsadmin|certutil|vbc|csc|del|echo|tasklist|rundll32|regsvr32|%COMSPEC%|Assembly\.Load|\[Reflection\.Assembly\]::Load|\.dll|\.scr|\.pif|http|https|ftp|ServerXMLHTTP|\.url|cdn.|\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b|\.ps1|invoke|\[Convert\]|FromBase|-exex|-nop|-noprofile|-noni|-enc|-decode|-accepteula|hidden|bypass|javascript|jscript|vbscript|wscript|cscript|\.js|\.vb|\.wsc|\.wsh|\.wsf|\.sct|\.cmd|\.hta|\.bat|ActiveXObject|eval|\.7z|\.zip|\.cab|\.iso|\.rar|\.tar|\.bz2|\.lzh|\.dat|expand|makecab|winword|exel|powerpnt|\.rtf|\.doc|\.dot|\.xls|\.xla|\.csv|\.ppt|\.pps|\.xml|\.pdf|%PDF|\.swf|\.fws|setlocal|EnableExtensions|DisableDelayedExpansion|process call</field>
+    <description>Suspicious Windows shortcut "$(lnk_data.file_path)" with malicious artifacts. Possible LNK file abuse.</description>
+    <mitre>
+      <id>T1547.009</id>
+      <id>T1036</id>
+    </mitre>
+  </rule>
+
+  <rule id="110004" level="12">
+    <decoded_as>raw_json</decoded_as>
+    <field name="header.link_flags" type="pcre2">(?i)HasRelativePath</field>
+    <field name="lnk_data.relative_path" type="pcre2">(?i)cmd|powershell|psexec|MSHTA|bitsadmin|certutil|vbc|csc|del|echo|tasklist|rundll32|regsvr32|%COMSPEC%|Assembly\.Load|\[Reflection\.Assembly\]::Load|\.dll|\.scr|\.pif|http|https|ftp|ServerXMLHTTP|\.url|cdn.|\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b|\.ps1|invoke|\[Convert\]|FromBase|-exex|-nop|-noprofile|-noni|-enc|-decode|-accepteula|hidden|bypass|javascript|jscript|vbscript|wscript|cscript|\.js|\.vb|\.wsc|\.wsh|\.wsf|\.sct|\.cmd|\.hta|\.bat|ActiveXObject|eval|\.7z|\.zip|\.cab|\.iso|\.rar|\.tar|\.bz2|\.lzh|\.dat|expand|makecab|winword|exel|powerpnt|\.rtf|\.doc|\.dot|\.xls|\.xla|\.csv|\.ppt|\.pps|\.xml|\.pdf|%PDF|\.swf|\.fws|setlocal|EnableExtensions|DisableDelayedExpansion|process call</field>
+    <description>Suspicious Windows shortcut "$(lnk_data.file_path)" with malicious artifacts. Possible LNK file abuse.</description>
+    <mitre>
+      <id>T1547.009</id>
+      <id>T1036</id>
+    </mitre>
+  </rule>
+
+  <rule id="110005" level="12">
+    <if_sid>110003,110004</if_sid>
+    <description>Suspicious Windows shortcut "$(lnk_data.file_path)" with malicious artifacts. Possible LNK file abuse.</description>
+    <mitre>
+      <id>T1547.009</id>
+      <id>T1036</id>
+    </mitre>
+  </rule>
+</group>

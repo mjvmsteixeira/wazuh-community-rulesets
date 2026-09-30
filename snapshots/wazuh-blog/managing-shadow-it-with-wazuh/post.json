@@ -1,0 +1,12 @@
+{
+ "url": "https://wazuh.com/blog/managing-shadow-it-with-wazuh/",
+ "title": "Managing shadow IT with Wazuh",
+ "published": "2026-06-18",
+ "modified": "2026-06-18",
+ "files": {
+  "01-config.xml": "2e5fcf04eab350bd",
+  "02-rules.xml": "40d1933db7cf5f7e",
+  "03-config.xml": "9d8e26147432dd5a",
+  "04-rules.xml": "d7d0fdd6199fb9b6"
+ }
+}

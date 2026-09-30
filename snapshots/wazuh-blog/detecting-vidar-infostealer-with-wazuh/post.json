@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/detecting-vidar-infostealer-with-wazuh/",
+ "title": "Detecting Vidar infostealer with Wazuh",
+ "published": "2023-03-09",
+ "modified": "2024-06-14",
+ "files": {
+  "01-config.xml": "5006d7a91e07099a",
+  "02-config.xml": "7783c8b105ed341a",
+  "03-rules.xml": "c484120a21576423"
+ }
+}

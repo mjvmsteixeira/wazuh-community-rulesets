@@ -1,0 +1,16 @@
+{
+ "url": "https://wazuh.com/blog/detecting-lynx-ransomware-with-wazuh/",
+ "title": "Detecting Lynx ransomware with Wazuh",
+ "published": "2025-02-24",
+ "modified": "2025-02-24",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-rules.xml": "c6f39d9ea128732e",
+  "03-config.xml": "316fa0167cc2f226",
+  "04-rules.xml": "6dd5c912453031a3",
+  "05-config.xml": "344009af4677cba0",
+  "06-decoders.xml": "bcf79bcc6b3df485",
+  "07-rules.xml": "a524321d04d621bf",
+  "08-config.xml": "0d0afeac4ff8cd1c"
+ }
+}

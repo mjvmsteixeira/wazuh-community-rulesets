@@ -1,0 +1,17 @@
+{
+ "url": "https://wazuh.com/blog/ransomware-protection-on-windows-with-wazuh/",
+ "title": "Ransomware protection on Windows with Wazuh",
+ "published": "2024-10-17",
+ "modified": "2025-02-18",
+ "files": {
+  "01-config.xml": "3015b35539fb2664",
+  "02-config.xml": "e061ba556a524fc1",
+  "03-rules.xml": "7a986bfac648da6e",
+  "04-config.xml": "3d5267bd69f65a6a",
+  "05-rules.xml": "1d99ad1e8ecc597c",
+  "06-config.xml": "344009af4677cba0",
+  "07-decoders.xml": "bcf79bcc6b3df485",
+  "08-rules.xml": "e959f67f62ae37c1",
+  "09-config.xml": "62e46533a13087ff"
+ }
+}

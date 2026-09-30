@@ -1,0 +1,10 @@
+<group name="attrib">
+  <rule id="100641" level="7">
+    <if_sid>61603</if_sid>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)ATTRIB\s+\+h|ATTRIB.EXE\s+\+h|ATTRIB\s+\+s\s+\+h|ATTRIB.exe\s+\+s\s+\+h</field>
+    <description>attrib was used to hide files or directories. Current directory: $(win.eventdata.currentDirectory).</description>
+    <mitre>
+      <id>T1564.001</id>
+    </mitre>
+  </rule>
+</group>

@@ -1,0 +1,7 @@
+<ossec_config>
+  <localfile>
+    <location>/var/log/defectdojo.json</location>
+    <log_format>json</log_format>
+    <label key="@source">DefectDojo</label>
+  </localfile>
+</ossec_config>

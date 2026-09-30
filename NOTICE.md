@@ -6,6 +6,10 @@ This repository aggregates third-party files **without modifying them**. Each so
 
 Most Wazuh rules derive from the OSSEC/Wazuh ecosystem (GPLv2). Several sources declare GPL-3.0 or AGPL-3.0, whose terms propagate to derived works. Before publishing a combined pack, the resulting license must be compatible with every source included.
 
+## Wazuh blog
+
+The rule, decoder and configuration examples from the [Wazuh blog](https://wazuh.com/blog/) articles are captured by `tools/fetch_blog.py` into `snapshots/wazuh-blog/` and reproduced unchanged, one article per folder. The content is © Wazuh, Inc.; each folder's `SOURCE.md` names the source article, with its link, title, and publication and capture dates.
+
 ## Removal requests
 
 Author of a source and do not want your content here? [Open an issue](https://github.com/mjvmsteixeira/wazuh-community-rulesets/issues/new/choose) (*Removal request* template) and the source is removed from the registry and the page in the next release.
@@ -19,8 +23,9 @@ Author of a source and do not want your content here? [Open an issue](https://gi
 - **GPL-3.0** (13): 0xbad53c/ossec-sysmon-for-linux-decoder, AnonymousWP/Wazuh-ChatGPT-integration, BernaldoPenasAntelo/Linux-MITRE_ATT-CK-Wazuh-Rules, BernaldoPenasAntelo/Windows-MITRE_ATT-CK-Wazuh-Rules, LFBernardo/wazuh-fortios-5.6.X, Lordkaly/wazuh-collection, NucleiAv/caddy-detection-rules, SanWieb/sigWah, federicofantini/Wazuh-TI, leperchaun/wazuh-decoders-rules, sametsazak/sysmon, steffenfritz/wazuh-pflog, wheelert/wazuh-mikrotik
 - **MIT** (22): Dinas-Kominfo-Kota-Tangerang/cl-sta-1087-malware-rules, H2FSpawn/wazuh-mikrotik-decoder, Halino/Wazuh-Unifi, JM2K69/WAZUH-Sentinel-AD, Jeremy-Burgos/wazuh-detection-engineering, MedNamouchi/SIEM-MikroTik-Wazuh-Graylog, TristanGNS/wazuh-cjis-rules, bret99/wazuh_custom_rules, captainobvious-sec/wazuh-field-notes, dominiktr/wazuh-decoders-rules, fredycibersec/wazuh-stuff, horrorshow21/Wazuh-Unifi-UDMPFWLogs, jzsecops/wazuh-wireguard-integration, kboykov/wazuh-infoblox-ruleset, mjvmsteixeira/wazuh-database-compliance, mym0us3r/COPY-FAIL-Detection-with-Wazuh-4.14.4, mym0us3r/DIRTY-FRAG-Detection-with-Wazuh-4.14.4, mym0us3r/Detect-Quartet-of-Linux-local-root-vulns-with-Wazuh, paolokappa/wazuh-siem-rules, shahidakhter786/wazuh-criminalip-integration, timohissink/vault-event-monitor, zshguy/tyrian-detection-pack
 - **MIT? (README badge, no LICENSE file)** (1): socfortress/Wazuh-Rules
+- **© Wazuh, Inc. (blog; origem citada)** (1): wazuh.com/blog
 
-## Sources without a license file (67)
+## Sources without a license file (66)
 
 The author keeps all rights; the files are published unchanged, with their origin. Internal use recommended until the origin repository includes a license:
 
@@ -43,11 +48,10 @@ The author keeps all rights; the files are published unchanged, with their origi
 - [OrangeBox-Labs/Wazuh](https://github.com/OrangeBox-Labs/Wazuh) — 90 rules, 2 decoders
 - [Rayanex7/wazuh-siem-implementation](https://github.com/Rayanex7/wazuh-siem-implementation) — 36 rules, 28 decoders
 - [Sparxx95/Wazuh-Sophos-WAF-IDP](https://github.com/Sparxx95/Wazuh-Sophos-WAF-IDP) — 9 rules, 28 decoders
-- [TheMuntu/Wazuh-Detection](https://github.com/TheMuntu/Wazuh-Detection) — 31 rules, 5 decoders
+- [TheMuntu/Wazuh-Detection](https://github.com/TheMuntu/Wazuh-Detection) — 17 rules, 0 decoders
 - [Tomo-9925/wazuh-pi-hole-decoder-and-rules](https://github.com/Tomo-9925/wazuh-pi-hole-decoder-and-rules) — 3 rules, 6 decoders
 - [Tomo-9925/wazuh-synology-dsm-decoder-and-rules](https://github.com/Tomo-9925/wazuh-synology-dsm-decoder-and-rules) — 11 rules, 19 decoders
 - [adampielak/wazuh-lkrg](https://github.com/adampielak/wazuh-lkrg) — 10 rules, 0 decoders
-- [adampielak/wazuh-scripts-resource](https://github.com/adampielak/wazuh-scripts-resource) — 1010 rules, 408 decoders
 - [adampielak/wazuh_custom_rules](https://github.com/adampielak/wazuh_custom_rules) — 76 rules, 56 decoders
 - [alextibor/wazuh-fortigate-rules-decoders](https://github.com/alextibor/wazuh-fortigate-rules-decoders) — 1387 rules, 738 decoders
 - [angolo40/WazuhMikrotik](https://github.com/angolo40/WazuhMikrotik) — 8 rules, 8 decoders

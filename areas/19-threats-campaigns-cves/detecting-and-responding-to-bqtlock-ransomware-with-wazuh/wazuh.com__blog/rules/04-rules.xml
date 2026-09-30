@@ -1,0 +1,7 @@
+<group name="BQTLock,">
+  <rule id="100121" level="13">
+    <if_sid>554, 550</if_sid>
+    <list field="sha256" lookup="match_key">etc/lists/BQTLock-hashes</list>
+    <description>A known BQTLock ransomware hash detected: $(file)</description>
+  </rule>
+</group>

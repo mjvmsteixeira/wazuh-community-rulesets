@@ -1,0 +1,12 @@
+{
+ "url": "https://wazuh.com/blog/detecting-pandora-ransomware-with-wazuh/",
+ "title": "Detecting Pandora Ransomware with Wazuh",
+ "published": "2022-05-20",
+ "modified": "2024-06-07",
+ "files": {
+  "01-config.xml": "c926f3ba5c8423c6",
+  "02-rules.xml": "6bfc090571f07ce8",
+  "03-config.xml": "3d5267bd69f65a6a",
+  "04-rules.xml": "9d02c2940d78b062"
+ }
+}

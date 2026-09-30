@@ -1,0 +1,14 @@
+{
+ "url": "https://wazuh.com/blog/kuiper-ransomware-detection-and-response/",
+ "title": "Kuiper ransomware detection and response with Wazuh",
+ "published": "2024-04-11",
+ "modified": "2024-06-24",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-rules.xml": "2aa26a985205980e",
+  "03-rules.xml": "e84cd8184cc1966a",
+  "04-config.xml": "3a465c70dfbb7cdc",
+  "05-decoders.xml": "8493094f61602cc6",
+  "06-rules.xml": "9562fd9dd351ce8f"
+ }
+}

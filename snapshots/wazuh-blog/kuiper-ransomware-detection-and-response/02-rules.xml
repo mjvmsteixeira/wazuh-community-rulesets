@@ -1,0 +1,111 @@
+<group name="kuiper,ransomware,">
+ <!-- Ransom note file creation -->
+  <rule id="100011" level="15" timeframe="100" frequency="2">
+    <if_sid>61613</if_sid>
+    <field name="win.eventdata.image" type="pcre2">\.exe</field>
+    <field name="win.eventdata.targetFilename" type="pcre2">(?i)[C-Z]:.*.\\README_TO_DECRYPT.txt</field>
+    <description>The file $(win.eventdata.targetFilename) has been created in multiple directories. Kuiper ransomware detected.</description>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+  </rule>
+  
+  <rule id="100012" level="12">
+    <if_sid>61603</if_sid>
+    <field name="win.eventdata.CommandLine" type="pcre2">(?i)cmd.exe\s\/c\s\\\"vssadmin\sresize\sshadowstorage\s\/for=[C-Z]:\s\/on=C:\s\/maxsize=401MB|vssadmin\sdelete\sshadows\s\/all\s\/quiet</field>
+    <description>Shadow copies have been deleted. Possible ransomware detected.</description>
+    <mitre>
+      <id>T1087</id>
+      <id>T1059.003</id>
+    </mitre>
+  </rule>
+
+  <rule id="100013" level="12">
+    <if_sid>61603</if_sid>
+    <field name="win.eventdata.CommandLine" type="pcre2">(?i)powershell.exe\s\s-ep\sbypass\s-c\sSet-MpPreference\s-DisableRealtimeMonitoring 1\s-ErrorAction\sSilentlyContinue|powershell.exe\\"\s-ep\sbypass\s-w\shidden\s-c\s\\"while\(\$true\){\sSet-MpPreference\s-DisableRealtimeMonitoring\s\$true\s}\\"</field>
+    <description>Microsoft Defender Real-time Monitoring disabled.Possible ransomware activity.</description>
+    <mitre>
+      <id>T1087</id>
+      <id>T1059.003</id>
+    </mitre>
+  </rule>
+
+  <rule id="100014" level="12">
+    <if_sid>92032</if_sid>
+    <field name="win.eventdata.CommandLine" type="pcre2">(?i)taskkill\s\s\/f\s\/im\sCETASvc.exe</field>
+    <description>Trend Micro process terminated. Possible ransomware activity detected.</description>
+    <mitre>
+      <id>T1087</id>
+      <id>T1059.003</id>
+    </mitre>
+  </rule>
+
+  <rule id="100015" level="12">
+    <if_sid>92032</if_sid>
+    <field name="win.eventdata.CommandLine" type="pcre2">(?i)taskkill\s\s\/f\s\/im NortonSecurity.exe</field>
+    <description>Norton Security process terminated. Possible ransomware activity detected.</description>
+    <mitre>
+      <id>T1087</id>
+      <id>T1059.003</id>
+    </mitre>
+  </rule>
+
+  <rule id="100016" level="12">
+    <if_sid>92032</if_sid>
+    <field name="win.eventdata.CommandLine" type="pcre2">(?i)taskkill\s\s\/f\s\/im SophosSAU.exe</field>
+    <description>Sophos process terminated. Possible ransomware activity detected.</description>
+    <mitre>
+      <id>T1087</id>
+      <id>T1059.003</id>
+    </mitre>
+  </rule>
+
+  <rule id="100017" level="12">
+    <if_sid>92036</if_sid>
+    <field name="win.eventdata.CommandLine" type="pcre2">(?i)net\s\sstop\sTrend\sMicro</field>
+    <description>Trend Micro service disabled. Possible ransomware activity detected.</description>
+    <mitre>
+      <id>T1087</id>
+      <id>T1059.003</id>
+    </mitre>
+  </rule>
+
+  <rule id="100018" level="12">
+    <if_sid>92036</if_sid>
+    <field name="win.eventdata.CommandLine" type="pcre2">(?i)net\s\sstop\sNtrtscan</field>
+    <description>Nortion Security service disabled. Possible ransomware activity detected.</description>
+    <mitre>
+      <id>T1087</id>
+      <id>T1059.003</id>
+    </mitre>
+  </rule>
+
+  <rule id="100019" level="12">
+    <if_sid>92036</if_sid>
+    <field name="win.eventdata.CommandLine" type="pcre2">(?i)net\s\sstop\sAvast\sAntivirus!</field>
+    <description>Avast Antivirus service detected. Possible ransomware disabled.</description>
+    <mitre>
+      <id>T1087</id>
+      <id>T1059.003</id>
+    </mitre>
+  </rule>
+
+  <rule id="100020" level="12">
+     <if_sid>92032</if_sid>
+     <field name="win.eventdata.CommandLine" type="pcre2">(?i)wevtutil\s\scl\ssecurity</field>
+     <description>Windows security event logs deleted. Possible ransomware activity detected.</description>
+     <mitre>
+       <id>T1070.001</id>
+     </mitre>
+  </rule>
+
+  <rule id="100021" level="12">
+     <if_sid>92032</if_sid>
+     <field name="win.eventdata.CommandLine" type="pcre2">(?i)wevtutil\s\scl\sapplication</field>
+     <description>Windows application event deleted. Possible ransomware activity detected.</description>
+     <mitre>
+       <id>T1070.001</id>
+     </mitre>
+  </rule>
+
+</group>

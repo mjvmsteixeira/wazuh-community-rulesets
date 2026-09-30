@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/how-to-detect-meshagent-with-wazuh/",
+ "title": "How to detect MeshAgent with Wazuh",
+ "published": "2023-04-20",
+ "modified": "2024-06-24",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-rules.xml": "cfeb4d7ced671930"
+ }
+}

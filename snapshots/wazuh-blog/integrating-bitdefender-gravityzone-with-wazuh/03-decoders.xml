@@ -1,0 +1,10 @@
+<decoder name="gravityzone">
+  <program_name>CEF</program_name>
+  <prematch>GravityZone</prematch>
+</decoder> 
+
+<decoder name="gravityzone_child">
+  <parent>gravityzone</parent>
+  <regex type="pcre2">.*(AntiMalware).*dvchost=(\S+) \S+ dvc=(\S+) \S+ BitdefenderGZMalwareType=(\S+) BitdefenderGZMalwareName=(.*) BitdefenderGZMalwareHash=(\S+) act=(\S+) filePath=(\S+) BitdefenderGZDetectionTime=(\S+).*BitdefenderGZCleanedMalwareCnt=(\d+) BitdefenderGZBlockedMalwareCnt=(\d+) BitdefenderGZDeletedMalwareCnt=(\d+) BitdefenderGZQuarantinedMalwareCnt=(\d+) BitdefenderGZIgnoredMalwareCnt=(\d+) BitdefenderGZPresentMalwareCnt=(\d+) suser=(\S+).*</regex>
+  <order>BitdefenderModule,DeviceHostName,DeviceIP,MalwareType,MalwareName,MalwareHash,Action,FilePath,DetectionTime,CleanedMalwareCount,BlockedMalwareCount,DeletedMalwareCount,QuarantinedMalwareCount,IgnoredMalwareCount,PresentMalwareCount,User</order>
+</decoder>

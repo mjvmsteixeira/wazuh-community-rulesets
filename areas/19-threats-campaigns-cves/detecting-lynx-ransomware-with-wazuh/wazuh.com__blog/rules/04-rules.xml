@@ -1,0 +1,11 @@
+<group name="lynx,ransomware,">
+<!-- Detects Lynx ransomware executable -->
+  <rule id="100103" level="15">
+    <if_sid>554, 550</if_sid>
+    <list field="sha256" lookup="match_key">etc/lists/malware-hashes</list>
+    <description>Lynx ransomware executable detected: $(file)</description>
+    <mitre>
+      <id>T1204.002</id>
+    </mitre>
+  </rule>
+</group>

@@ -1,0 +1,14 @@
+{
+ "url": "https://wazuh.com/blog/nmap-and-chatgpt-security-auditing/",
+ "title": "Nmap and ChatGPT security auditing with Wazuh",
+ "published": "2023-07-13",
+ "modified": "2024-06-28",
+ "files": {
+  "01-config.xml": "7f54f4cca10c7904",
+  "02-config.xml": "8b044cb389fcb634",
+  "03-rules.xml": "4ff5a8c2f3115779",
+  "04-rules.xml": "8b58a866a5178e7e",
+  "05-config.xml": "c3d04b74fa4bd9a2",
+  "06-rules.xml": "b5fafca716c6d584"
+ }
+}

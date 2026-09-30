@@ -15,12 +15,18 @@ Active Directory, Entra ID, Okta, Duo, Auth0, Authentik, password vaults.
 | auth0 | [wazuh/integrations](https://github.com/wazuh/integrations) | 3 | 0 | yes | yes | `pack-auth0` | no MITRE | — | AGPL-3.0 | 2026-09-11 | — |
 | authentik | [phastier/wazuh](https://github.com/phastier/wazuh) | 26 | 2 | yes | yes | to be defined | 100% of 5 techniques | — | NONE | 2026-09-02 | — |
 | authentik | [wazuh/integrations](https://github.com/wazuh/integrations) | 5 | 0 | yes | yes | to be defined | no MITRE | — | AGPL-3.0 | 2026-09-11 | — |
+| automated-password-rotation-with-wazuh-and-shuffle | [wazuh.com/blog](https://wazuh.com/blog/) | 2 | 0 | no | yes (2 warnings) | manager: integration shuffle, wodle aws-s3 | no MITRE | 1 ok (0 containment) | © Wazuh, Inc. (blog; origem citada) | 2026-09-24 | — |
 | beyondinsight-password-safe | [wazuh/integrations](https://github.com/wazuh/integrations) | 6 | 0 | yes | yes | to be defined | no MITRE | — | AGPL-3.0 | 2026-09-11 | — |
 | beyondtrust | [pfuz/wazuh-ruleset](https://github.com/pfuz/wazuh-ruleset) | 6 | 23 | yes | yes | to be defined | no MITRE | — | NONE | 2025-01-24 | — |
 | bitwarden | [timohissink/vault-event-monitor](https://github.com/timohissink/vault-event-monitor) | 45 | 0 | yes | yes | to be defined | 100% of 1 techniques | — | MIT | 2026-07-31 | — |
+| detecting-sharphound-active-directory-activities | [wazuh.com/blog](https://wazuh.com/blog/) | 7 | 0 | yes | yes (14 warnings) | `win-sysmon` | 0% of 4 techniques | — | © Wazuh, Inc. (blog; origem citada) | 2026-09-24 | — |
 | entra-id | [yunusmrcoban/wazuh-custom](https://github.com/yunusmrcoban/wazuh-custom) | 6 | 13 | yes | yes | to be defined | no MITRE | — | NONE | 2025-10-21 | — |
+| how-to-detect-active-directory-attacks-with-wazuh-part-1-of-2 | [wazuh.com/blog](https://wazuh.com/blog/) | 4 | 0 | yes | yes (8 warnings) | `win-sysmon` | no MITRE | 1 ok (1 containment), 2 broken, 2 destructive without allowlist | © Wazuh, Inc. (blog; origem citada) | 2026-09-24 | — |
+| how-to-detect-active-directory-attacks-with-wazuh-part-2 | [wazuh.com/blog](https://wazuh.com/blog/) | 4 | 0 | yes | yes (7 warnings) | `win-sysmon` | no MITRE | — | © Wazuh, Inc. (blog; origem citada) | 2026-09-24 | — |
 | keycloak | [stephane-segning/keycloak-wazuh-siem](https://github.com/stephane-segning/keycloak-wazuh-siem) | 18 | 1 | no | yes (1 warning) | `osquery`, `pack-keycloak`; manager: localfile /var/ossec/logs/active-responses.log, wodle cis-cat; to be defined | 100% of 5 techniques | — | NONE | 2025-05-23 | — |
 | mfa | [od55/wazuh-local-ruleset](https://github.com/od55/wazuh-local-ruleset) | 0 | 22 | yes | yes | to be defined | no MITRE | — | NONE | 2026-01-28 | — |
+| monitoring-aws-managed-microsoft-active-directory | [wazuh.com/blog](https://wazuh.com/blog/) | 5 | 2 | yes | yes | manager: wodle aws-s3 | 100% of 2 techniques | — | © Wazuh, Inc. (blog; origem citada) | 2026-09-24 | — |
+| monitoring-hashicorp-vault-activities-with-wazuh | [wazuh.com/blog](https://wazuh.com/blog/) | 21 | 6 | yes | no | `pack-monitoring-hashicorp-vault-activities-with-wazuh`; to be defined | 100% of 2 techniques | 1 broken, 1 destructive without allowlist | © Wazuh, Inc. (blog; origem citada) | 2026-09-24 | — |
 | nps | [od55/wazuh-local-ruleset](https://github.com/od55/wazuh-local-ruleset) | 0 | 2 | yes | yes | to be defined | no MITRE | — | NONE | 2026-01-28 | — |
 | okta | [calvinanglo/corpsec-ops-platform](https://github.com/calvinanglo/corpsec-ops-platform) | 17 | 0 | yes | no | to be defined | 80% of 10 techniques | — | NONE | 2026-05-02 | — |
 | okta | [moizl599/wazuh_okta-integration](https://github.com/moizl599/wazuh_okta-integration) | 17 | 0 | yes | yes | to be defined | no MITRE | — | NONE | 2023-09-26 | — |

@@ -1,0 +1,21 @@
+<ossec_config>
+  <socket>
+    <name>fluent_socket</name>
+    <location>/var/run/fluent.sock</location>
+    <mode>udp</mode>
+  </socket>
+
+  <localfile>
+    <log_format>json</log_format>
+    <location>/var/ossec/logs/alerts/alerts.json</location>
+    <target>fluent_socket</target>
+  </localfile>
+
+  <fluent-forward>
+    <enabled>yes</enabled>
+    <tag>wazuh</tag>
+    <socket_path>/var/run/fluent.sock</socket_path> 
+    <address><FLUENTD_IP></address>
+    <port>24224</port>
+  </fluent-forward>
+</ossec_config>

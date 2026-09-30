@@ -1,0 +1,33 @@
+<decoder name="dns_monitor">
+  <prematch type="pcre2">^\s+\d+[\d\.]+\.\d+ > \d+[\d\.]+\.\d+:</prematch>
+</decoder>
+
+<decoder name="dns_monitor_fields">
+  <parent>dns_monitor</parent>
+  <regex type="pcre2">(\d+[\d\.]+)\.(\d+) > (\d+[\d\.]+)\.(\d+):</regex>
+  <order>src_ip, src_port, dst_ip, dst_port</order>
+</decoder>
+
+<decoder name="dns_monitor_fields">
+  <parent>dns_monitor</parent>
+  <regex type="pcre2">(?:\+|q:) (\w+)\?</regex>
+  <order>dns_type</order>
+</decoder>
+
+<decoder name="dns_monitor_fields">
+  <parent>dns_monitor</parent>
+  <regex type="pcre2">\?\s+([^\s\)]+)</regex>
+  <order>dns_query</order>
+</decoder>
+
+<decoder name="dns_monitor_fields">
+  <parent>dns_monitor</parent>
+  <regex type="pcre2">ns:\s+([^\s]+)</regex>
+  <order>dns_ns</order>
+</decoder>
+
+<decoder name="dns_monitor_fields">
+  <parent>dns_monitor</parent>
+  <regex type="pcre2">SOA\s+([^\s]+)\s+([^\s]+)</regex>
+  <order>dns_soa_primary, dns_soa_email</order>
+</decoder>

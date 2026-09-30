@@ -1,0 +1,27 @@
+<decoder name="securityapp">
+  <program_name>securityapp</program_name>
+</decoder>
+
+<decoder name="securityapp">
+  <parent>securityapp</parent>
+  <regex>^(\w+):</regex>
+  <order>type</order>
+</decoder>
+
+<decoder name="securityapp">
+  <parent>securityapp</parent>
+  <regex>srcuser="(\.+)"</regex>
+  <order>srcuser</order>
+</decoder>
+
+<decoder name="securityapp">
+  <parent>securityapp</parent>
+  <regex>action="(\.+)"</regex>
+  <order>action</order>
+</decoder>
+
+<decoder name="securityapp">
+  <parent>securityapp</parent>
+  <regex>dstusr="(\.+)"</regex>
+  <order>dstuser</order>
+</decoder>

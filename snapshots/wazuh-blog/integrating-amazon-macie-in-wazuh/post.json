@@ -1,0 +1,9 @@
+{
+ "url": "https://wazuh.com/blog/integrating-amazon-macie-in-wazuh/",
+ "title": "Integrating Amazon Macie in Wazuh",
+ "published": "2020-05-19",
+ "modified": "2023-02-17",
+ "files": {
+  "01-config.xml": "daa7c4f92cc09fbc"
+ }
+}

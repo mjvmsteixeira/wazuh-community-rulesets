@@ -1,0 +1,88 @@
+<group name="kubelinter,">
+  <!-- Parent rule: matches KubeLinter JSON findings -->
+  <rule id="100000" level="0">
+    <decoded_as>json</decoded_as>
+    <field name="integration">^kubelinter$</field>
+    <description>KubeLinter: Kubernetes misconfiguration finding detected.</description>
+  </rule>
+
+  <!-- Secret exposed as environment variable -->
+  <rule id="100001" level="12">
+    <if_sid>100000</if_sid>
+    <field name="check">^env-var-secret$</field>
+    <description>KubeLinter: $(kind) "$(name)" in namespace "$(namespace)" exposes a secret as a plain environment variable. Manifest: $(file).</description>
+    <mitre>
+      <id>T1552.007</id>
+    </mitre>
+  </rule>
+
+  <!-- Latest tag -->
+  <rule id="100002" level="7">
+    <if_sid>100000</if_sid>
+    <field name="check">^latest-tag$</field>
+    <description>KubeLinter: $(kind) "$(name)" in namespace "$(namespace)" uses an unpinned container image tag. Manifest: $(file).</description>
+    <mitre>
+      <id>T1204.003</id>
+    </mitre>
+  </rule>
+
+  <!-- Writable root filesystem -->
+  <rule id="100003" level="10">
+    <if_sid>100000</if_sid>
+    <field name="check">^no-read-only-root-fs$</field>
+    <description>KubeLinter: $(kind) "$(name)" in namespace "$(namespace)" has a container with a writable root filesystem. Manifest: $(file).</description>
+    <mitre>
+      <id>T1611</id>
+    </mitre>
+  </rule>
+
+  <!-- Privilege escalation allowed -->
+  <rule id="100004" level="13">
+    <if_sid>100000</if_sid>
+    <field name="check">^privilege-escalation-container$</field>
+    <description>KubeLinter: $(kind) "$(name)" in namespace "$(namespace)" allows privilege escalation. Manifest: $(file).</description>
+    <mitre>
+      <id>T1611</id>
+    </mitre>
+  </rule>
+
+  <!-- Privileged container -->
+  <rule id="100005" level="14">
+    <if_sid>100000</if_sid>
+    <field name="check">^privileged-container$</field>
+    <description>KubeLinter: $(kind) "$(name)" in namespace "$(namespace)" is running in privileged mode. Manifest: $(file).</description>
+    <mitre>
+      <id>T1611</id>
+    </mitre>
+  </rule>
+
+  <!-- Not running as non-root -->
+  <rule id="100006" level="10">
+    <if_sid>100000</if_sid>
+    <field name="check">^run-as-non-root$</field>
+    <description>KubeLinter: $(kind) "$(name)" in namespace "$(namespace)" is not set to run as a non-root user. Manifest: $(file).</description>
+    <mitre>
+      <id>T1611</id>
+    </mitre>
+  </rule>
+
+  <!-- No CPU requests -->
+  <rule id="100007" level="6">
+    <if_sid>100000</if_sid>
+    <field name="check">^unset-cpu-requirements$</field>
+    <description>KubeLinter: $(kind) "$(name)" in namespace "$(namespace)" has no CPU requests set. Manifest: $(file).</description>
+    <mitre>
+      <id>T1499</id>
+    </mitre>
+  </rule>
+
+  <!-- No memory limits -->
+  <rule id="100008" level="6">
+    <if_sid>100000</if_sid>
+    <field name="check">^unset-memory-requirements$</field>
+    <description>KubeLinter: $(kind) "$(name)" in namespace "$(namespace)" has no memory limits set. Manifest: $(file).</description>
+    <mitre>
+      <id>T1499</id>
+    </mitre>
+  </rule>
+</group>

@@ -1,0 +1,27 @@
+<ossec_config>
+  <wodle name="azure-logs">
+    <disabled>no</disabled>
+    <run_on_start>yes</run_on_start>
+    <interval>5m</interval>
+
+    <log_analytics>
+        <auth_path>/var/ossec/wodles/credentials/log_analytics_credentials</auth_path>
+        <tenantdomain><PRIMARY_DOMAIN></tenantdomain>
+
+        <request>
+            <tag>azurefindings</tag>
+            <query>SecurityRecommendation</query>
+            <workspace><LOG_ANALYTICS_WORKSPACE_ID></workspace>
+            <time_offset>1d</time_offset>
+        </request>
+
+        <request>
+            <tag>azurefindings</tag>
+            <query>SecurityAlert</query>
+            <workspace><LOG_ANALYTICS_WORKSPACE_ID></workspace>
+            <time_offset>1d</time_offset>
+        </request>
+
+    </log_analytics>
+  </wodle>
+</ossec_config>

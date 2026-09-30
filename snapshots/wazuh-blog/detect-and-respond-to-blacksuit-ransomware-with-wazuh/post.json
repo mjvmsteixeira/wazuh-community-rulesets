@@ -1,0 +1,14 @@
+{
+ "url": "https://wazuh.com/blog/detect-and-respond-to-blacksuit-ransomware-with-wazuh/",
+ "title": "Detect and respond to BlackSuit ransomware with Wazuh",
+ "published": "2024-11-13",
+ "modified": "2024-11-13",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-rules.xml": "ffcfcaab25e77184",
+  "03-rules.xml": "e84cd8184cc1966a",
+  "04-config.xml": "3a465c70dfbb7cdc",
+  "05-decoders.xml": "8493094f61602cc6",
+  "06-rules.xml": "9562fd9dd351ce8f"
+ }
+}

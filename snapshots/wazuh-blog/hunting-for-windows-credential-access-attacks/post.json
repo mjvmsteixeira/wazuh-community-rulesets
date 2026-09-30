@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/hunting-for-windows-credential-access-attacks/",
+ "title": "Hunting for Windows credential access attacks with Wazuh",
+ "published": "2023-09-07",
+ "modified": "2024-06-28",
+ "files": {
+  "01-config.xml": "d80ee3d824277254",
+  "02-rules.xml": "a56f27b4273ae220"
+ }
+}

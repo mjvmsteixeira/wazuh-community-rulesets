@@ -1,0 +1,6 @@
+<!-- Blocos de resposta extraídos, sem alterações, de wazuh.com/blog:monitoring-aws-environments-with-wazuh/02-config.xml @ b4b3f986b301 -->
+<integration>
+  <name>custom-aws_block_host</name>
+  <rule_id>100002</rule_id>
+  <alert_format>json</alert_format>
+</integration>

@@ -1,0 +1,6 @@
+<rule id="100003" level="5">
+  <decoded_as>android_decoder_02</decoded_as>
+  <description>App installed</description>
+  <field name="action_name">install</field>
+  <group>android_install,</group>
+</rule>

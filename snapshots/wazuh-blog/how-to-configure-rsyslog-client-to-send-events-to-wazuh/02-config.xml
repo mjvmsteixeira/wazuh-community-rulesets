@@ -1,0 +1,9 @@
+<ossec_config>  
+  <remote>
+    <connection>syslog</connection>
+    <port>514</port>
+    <protocol>tcp</protocol>
+    <allowed-ips><CIDR_NOTATION></allowed-ips>
+    <local_ip><WAZUH_SERVER_IP></local_ip>
+  </remote>
+</ossec_config>

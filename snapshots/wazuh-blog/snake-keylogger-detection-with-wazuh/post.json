@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/snake-keylogger-detection-with-wazuh/",
+ "title": "Snake keylogger detection with Wazuh",
+ "published": "2024-11-27",
+ "modified": "2024-11-27",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-rules.xml": "08fcca87f9325269",
+  "03-config.xml": "fb70fb2f3a4664b0"
+ }
+}

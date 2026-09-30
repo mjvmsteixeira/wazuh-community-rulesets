@@ -1,0 +1,96 @@
+<group name="BQTLock,ransomware,">
+
+<!-- Suspicious account creation by BQT ransomware -->
+  <rule id="100301" level="12">
+    <if_sid>60109</if_sid>
+    <field name="win.eventdata.targetUserName" type="pcre2">(?i)BQTLockAdmin$</field>
+    <description>Suspicious user account '$(win.eventdata.TargetUserName)' created. Possible BQTLock ransomware persistence mechanism.</description>
+    <mitre>
+      <id>T1136</id>
+    </mitre>
+  </rule>
+
+<!-- The ransomware creates data staging file -->
+  <rule id="100302" level="12">
+    <if_sid>61613</if_sid>
+    <field name="win.eventdata.image" type="pcre2">\.exe</field>
+    <field name="win.eventdata.targetFilename" type="pcre2">(?i)[C-Z]:\\\\Windows\\\\Temp\\\\[^\"]*passwords\.txt</field>
+    <description>File $(win.eventdata.targetFilename) created by BQTLock ransomware.</description>
+    <mitre>
+      <id>T1047</id>
+    </mitre>
+  </rule>
+
+<!-- The ransomware deletes Volume shadow copy -->
+  <rule id="100303" level="12">
+    <if_sid>61603</if_sid>
+    <field name="win.eventdata.CommandLine" type="pcre2">(?i)vssadmin\.exe\sdelete\sshadows\s\/all\s\/quiet</field>
+    <description>Volume shadow copy deleted using $(win.eventdata.originalFileName). Potential ransomware activity detected.</description>
+    <mitre>
+      <id>T1490</id>
+    </mitre>
+  </rule>
+  
+<!-- The ransomware modifies boot configuration -->
+  <rule id="100304" level="12">
+    <if_sid>61603</if_sid>
+    <field name="win.eventdata.CommandLine" type="pcre2">(?i)bcdedit\.exe\s\/set\s\{default\}\sbootstatuspolicy\signoreallfailures</field>
+    <description>Boot configuration modified to ignore failures. Potential ransomware recovery inhibition activity detected.</description>
+    <mitre>
+      <id>T1490</id>
+    </mitre>
+  </rule>
+
+<!-- The ransomware disables Windows recovery environment -->
+  <rule id="100305" level="12">
+    <if_sid>61603</if_sid>
+    <field name="win.eventdata.CommandLine" type="pcre2">(?i)bcdedit\.exe\s\/set\s\{default\}\srecoveryenabled\sno</field>
+    <description>Windows recovery environment disabled. Potential ransomware recovery inhibition activity detected.</description>
+    <mitre>
+      <id>T1490</id>
+    </mitre>
+  </rule>
+  
+<!-- The ransomware creates ransom note file -->
+  <rule id="100306" level="12" timeframe="100" frequency="2">
+    <if_sid>61613</if_sid>
+    <field name="win.eventdata.image" type="pcre2">\.exe</field>
+    <field name="win.eventdata.targetFilename" type="pcre2">(?i)[C-Z]:\\.*\\(READ_ME_NOW_\d+|README_TO_DECRYPT)\.txt$</field>
+    <description>The file $(win.eventdata.targetFilename) has been created in multiple directories. BQTLock ransomware detected.</description>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+  </rule>   
+
+<!-- The ransomware encrypts files across system by appending .BQTLock extension -->
+  <rule id="100307" level="12">
+    <if_sid>61613</if_sid>
+    <field name="win.eventdata.image" type="pcre2">\.exe</field>
+    <field name="win.eventdata.targetFilename" type="pcre2">(?i)[C-Z]:.*.\\*.BQTLOCK$</field>
+    <description>File created with .BQTLock extension. BQTLock ransomware encryption activity detected.</description>
+    <mitre>
+      <id>T1047</id>
+    </mitre>
+  </rule>
+  
+<!-- Suspicious scheduled task creation for persistence -->
+  <rule id="100308" level="12">
+    <if_sid>61603</if_sid>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)schtasks\s\/create\s\/tn\s\\\"BQTLock_Startup_\d+\\\"\s\/tr\s\\\".+?\\\"\s\/sc\sONLOGON\s\/rl\sHIGHEST\s\/f</field>
+    <description>Suspicious scheduled task created with ONLOGON trigger and elevated privileges matching BQTLock persistence pattern. Possible ransomware activity.</description>
+    <mitre>
+      <id>T1053.005</id>
+    </mitre>
+  </rule> 
+  
+<!-- The ransomware self-deletes using delayed command execution -->
+  <rule id="100309" level="12">
+    <if_sid>61603</if_sid>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)timeout\s\/t\s\d+.*del\s\/f\s\/q\s\\\"[^\"]+\\\".*exit</field>
+    <description>Suspicious command chaining with timeout and file deletion detected. Possible malware self-deletion activity detected.</description>
+    <mitre>
+      <id>T1070.004</id>
+    </mitre>
+  </rule>  
+  
+</group>

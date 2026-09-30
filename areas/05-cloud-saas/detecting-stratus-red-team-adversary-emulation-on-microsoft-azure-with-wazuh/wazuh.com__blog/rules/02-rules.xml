@@ -1,0 +1,92 @@
+<group name="azure_stratus_red_team_rules,azure_attack,entra_id_attack,">
+  <rule id="100101" level="10">
+    <if_sid>87801</if_sid>
+    <field name="AADOperationType">Update</field>
+    <field name="OperationName">Add service principal credentials</field>
+    <field name="Result">Success</field>
+    <description>Potential Entra ID application backdoor detected through service principal credential creation.</description>
+    <mitre>
+      <id>T1651</id>
+    </mitre>
+  </rule>
+  
+  <rule id="100102" level="10">
+    <if_sid>87801</if_sid>
+    <field name="ActivityDisplayName">Update application</field>
+    <match>FederatedIdentityCredentials</match>
+    <description>Potential Entra ID application backdoor detected through federated identity credential creation.</description>
+    <mitre>
+      <id>T1098</id>
+    </mitre>
+  </rule>
+
+  <rule id="100103" level="10">
+    <if_sid>87801</if_sid>
+    <field name="Category">ApplicationManagement</field>
+    <field name="ActivityDisplayName" type="pcre2">Create\sapplication\s–\sCertificates\sand\ssecrets\smanagement</field>
+    <description>Potential Entra ID application backdoor detected through application credential creation.</description>
+    <mitre>
+      <id>T1098</id>
+    </mitre>
+  </rule>
+
+  <rule id="100104" level="10">
+    <if_sid>87810</if_sid>
+    <field name="CategoryValue">Administrative</field>
+    <field name="OperationNameValue" type="pcre2">MICROSOFT.COMPUTE\/DISKS\/BEGINGETACCESS\/ACTION</field>
+    <field name="ResourceProviderValue">MICROSOFT.COMPUTE</field>
+    <description>Potential Azure managed disk export detected through SAS URL generation.</description>
+    <mitre>
+      <id>T1005</id>
+      <id>T1567</id>
+    </mitre>
+  </rule>
+
+  <rule id="100105" level="10">
+    <if_sid>87810</if_sid>
+    <field name="CategoryValue">Administrative</field>
+    <field name="OperationNameValue" type="pcre2">MICROSOFT.STORAGE\/STORAGEACCOUNTS\/LISTKEYS\/ACTION</field>
+    <field name="ResourceProviderValue">MICROSOFT.STORAGE</field>
+    <description>Potential Azure Storage exfiltration activity detected through storage account key retrieval.</description>
+    <mitre>
+      <id>T1537</id>
+      <id>T1567</id>
+    </mitre>
+  </rule>
+  
+  <rule id="100106" level="10">
+    <if_sid>87810</if_sid>
+    <field name="OperationNameValue" type="pcre2">MICROSOFT.AUTHORIZATION\/LOCKS\/DELETE</field>
+    <field name="ActivityStatusValue">Success</field>
+    <field name="ResourceProviderValue">MICROSOFT.AUTHORIZATION</field>
+    <description>Azure resource lock deletion detected.</description>
+    <mitre>
+      <id>T1485</id>
+    </mitre>
+  </rule>
+
+  
+  <rule id="100107" level="10">
+    <if_sid>87810</if_sid>
+    <field name="OperationNameValue" type="pcre2">MICROSOFT.MANAGEDIDENTITY\/USERASSIGNEDIDENTITIES\/FEDERATEDIDENTITYCREDENTIALS\/WRITE</field>
+    <field name="ActivityStatusValue">Success</field>
+    <field name="ActivitySubstatusValue">Created</field>
+    <description>Potential Azure managed identity backdoor detected through federated identity credential creation.</description>
+    <mitre>
+      <id>T1098</id>
+    </mitre>
+  </rule>
+
+  <rule id="100108" level="10">
+    <if_sid>87801</if_sid>
+    <field name="OperationName" type="pcre2">User\shas\selevated\stheir\saccess\sto\sUser\sAccess\sAdministrator\sfor\stheir\sAzure\sResources</field>
+    <field name="Result">Success</field>
+    <field name="Category">AzureRBACRoleManagementElevateAccess</field>
+    <field name="LoggedByService">Azure\sRBAC\s\(Elevated\sAccess\)</field>
+    <description>Azure user elevated access to User Access Administrator at root scope.</description>
+    <mitre>
+      <id>T1098</id>
+    </mitre>
+  </rule>
+
+</group>

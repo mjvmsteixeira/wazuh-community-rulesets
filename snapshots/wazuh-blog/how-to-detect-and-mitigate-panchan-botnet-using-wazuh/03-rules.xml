@@ -1,0 +1,13 @@
+<group name="syscheck,">
+    <rule id="100030" level="7">
+        <if_sid>550</if_sid>
+        <field name="file">/root/</field>
+        <description>File modified in /root directory.</description>
+    </rule>
+
+    <rule id="100031" level="7">
+        <if_sid>554</if_sid>
+        <field name="file">/root/</field>
+        <description>File added to /root directory.</description>
+    </rule>
+</group>

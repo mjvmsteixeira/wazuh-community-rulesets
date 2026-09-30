@@ -1,0 +1,14 @@
+{
+ "url": "https://wazuh.com/blog/blackbit-ransomware-detection-with-wazuh/",
+ "title": "Blackbit ransomware detection with Wazuh",
+ "published": "2023-11-15",
+ "modified": "2024-07-08",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-rules.xml": "9569c585109ca0df",
+  "03-rules.xml": "b91c80fa6308ea65",
+  "04-config.xml": "7fd44cd59211b10b",
+  "05-decoders.xml": "8493094f61602cc6",
+  "06-rules.xml": "2d0b4d478eaecf35"
+ }
+}

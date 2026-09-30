@@ -1,0 +1,6 @@
+<ossec_config>
+<remote>
+<connection>syslog</connection>
+<allowed-ips>192.168.1.0/24</allowed-ips>
+</remote>
+</ossec_config>

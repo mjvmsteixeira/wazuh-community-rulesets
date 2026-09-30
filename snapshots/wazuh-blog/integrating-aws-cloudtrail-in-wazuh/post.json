@@ -1,0 +1,9 @@
+{
+ "url": "https://wazuh.com/blog/integrating-aws-cloudtrail-in-wazuh/",
+ "title": "Integrating AWS CloudTrail in Wazuh",
+ "published": "2020-05-14",
+ "modified": "2023-06-09",
+ "files": {
+  "01-config.xml": "5ed7731fe73a9ad0"
+ }
+}

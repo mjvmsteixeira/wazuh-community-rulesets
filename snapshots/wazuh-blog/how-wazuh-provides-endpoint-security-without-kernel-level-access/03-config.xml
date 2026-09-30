@@ -1,0 +1,4 @@
+  <localfile>
+    <log_format>journald</log_format>
+    <location>journald</location>
+  </localfile>

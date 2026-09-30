@@ -1,0 +1,55 @@
+<!-- T1053.003 — Scheduled Task/Job: Cron -->
+
+  <rule id="100212" level="10">
+    <if_sid>80700</if_sid>
+    <field name="audit.key">priv_esc_cron</field>
+    <description>Possible privilege escalation: monitored cron or logrotate path was modified</description>
+    <mitre>
+      <id>T1053.003</id>
+    </mitre>
+  </rule>
+
+  <rule id="100213" level="12">
+    <if_sid>554</if_sid>
+    <field name="file" type="pcre2">^\/(?:etc\/crontab|etc\/cron\.(?:d|daily|hourly|weekly|monthly)\/.+|var\/spool\/cron\/crontabs\/.+)$</field>
+    <description>Possible privilege escalation: FIM detected a new cron configuration file — $(file)</description>
+    <mitre>
+      <id>T1053.003</id>
+    </mitre>
+  </rule>
+
+  <rule id="100214" level="12">
+    <if_sid>550</if_sid>
+    <field name="file" type="pcre2">^\/(?:etc\/crontab|etc\/cron\.(?:d|daily|hourly|weekly|monthly)\/.+|var\/spool\/cron\/crontabs\/.+)$</field>
+    <description>Possible privilege escalation: FIM detected a modified cron configuration — $(file)</description>
+    <mitre>
+      <id>T1053.003</id>
+    </mitre>
+  </rule>
+
+  <rule id="100215" level="12">
+    <if_sid>554</if_sid>
+    <field name="file" type="pcre2">^\/etc\/logrotate\.d\/.+$</field>
+    <description>Possible privilege escalation: FIM detected a new logrotate configuration file — $(file)</description>
+    <mitre>
+      <id>T1053.003</id>
+    </mitre>
+  </rule>
+
+  <rule id="100216" level="12">
+    <if_sid>550</if_sid>
+    <field name="file" type="pcre2">^\/etc\/logrotate\.d\/.+$</field>
+    <description>Possible privilege escalation: FIM detected a modified logrotate configuration file — $(file)</description>
+    <mitre>
+      <id>T1053.003</id>
+    </mitre>
+  </rule>
+
+  <rule id="100217" level="14">
+    <if_sid>80700</if_sid>
+    <field name="audit.key">priv_esc_cron_path</field>
+    <description>Possible privilege escalation: root-privileged execution from a directory writable by all users</description>
+    <mitre>
+      <id>T1053.003</id>
+    </mitre>
+  </rule>

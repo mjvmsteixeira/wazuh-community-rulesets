@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/integrating-wazuh-with-yeti-platform/",
+ "title": "Integrating Wazuh with the Yeti platform",
+ "published": "2025-02-12",
+ "modified": "2025-07-31",
+ "files": {
+  "01-config.xml": "d17c174c53ca8438",
+  "02-rules.xml": "891d3e1b95a3edea",
+  "03-config.xml": "3b27d4717bf5313d"
+ }
+}

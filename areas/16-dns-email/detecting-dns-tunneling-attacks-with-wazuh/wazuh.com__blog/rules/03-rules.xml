@@ -1,0 +1,65 @@
+<group name="dns_tunneling,exfiltration,">
+
+  <!--BASE RULE. Matches all logs processed by the 'dns_monitor' decoder.-->
+  <rule id="101200" level="0">
+    <decoded_as>dns_monitor</decoded_as>
+    <description>DNS Monitor Base Event</description>
+  </rule>
+
+  <!--CONDITION 1: ENCODED QUERY (High Entropy Approximation). Detects long alphanumeric strings typical of Base64/Base32 within the query.-->
+  <rule id="101201" level="7">
+    <if_sid>101200</if_sid>
+    <field name="dns_query" type="pcre2">\b(?=[a-z0-9]*[0-9])(?=[a-z0-9]*[a-z])[a-z0-9]{10,}\b</field>
+    <description>DNS Query: ($(dns_query)) contains encoded string - [High Entropy]</description>
+  </rule>
+
+  <!-- CONDITION 2: DEEP SUBDOMAIN. Detects 2 or more subdomain levels (e.g., a.b.c.example.com).-->
+  <rule id="101202" level="7">
+    <if_sid>101200</if_sid>
+    <field name="dns_query" type="pcre2">^.+\..+\..+\..+</field>
+    <description>DNS Query: ($(dns_query)) contains deep subdomain structure - [Depth >= 2 subdomains]</description>
+  </rule>
+
+  <!--CONDITION 3: SUSPICIOUS TYPE. Detects TXT or NULL record types often used for tunneling.-->
+  <rule id="101203" level="7">
+    <if_sid>101200</if_sid>
+    <field name="dns_type" type="pcre2">TXT|NULL</field>
+    <description>DNS Query: ($(dns_query)) uses suspicious record type - [$(dns_type)]</description>
+  </rule>
+ 
+  <!-- COMBINATION RULES (2 or More Conditions)   -->
+
+  <!-- COMBINATION 1: Encoded + Suspicious Type -->
+  <rule id="101204" level="12">
+    <if_sid>101200</if_sid>
+    <field name="dns_query" type="pcre2">\b(?=[a-z0-9]*[0-9])(?=[a-z0-9]*[a-z])[a-z0-9]{10,}\b</field>
+    <field name="dns_type" type="pcre2">TXT|NULL</field>
+    <description>Suspicious DNS Query: ($(dns_query)) - [Encoded + $(dns_type) record type] - DNS Tunneling suspected!</description>
+  </rule>
+
+  <!-- COMBINATION 2: Deep Subdomain + Suspicious Type -->
+  <rule id="101205" level="12">
+    <if_sid>101200</if_sid>
+    <field name="dns_query" type="pcre2">^.+\..+\..+\..+</field>
+    <field name="dns_type" type="pcre2">TXT|NULL</field>
+    <description>Suspicious DNS Query: ($(dns_query)) - [Deep Subdomain + $(dns_type) record type] - DNS Tunneling suspected!</description>
+  </rule>
+
+  <!-- COMBINATION 3: Encoded + Deep Subdomain -->
+  <rule id="101206" level="12">
+    <if_sid>101200</if_sid>
+    <field name="dns_query" type="pcre2">\b(?=[a-z0-9]*[0-9])(?=[a-z0-9]*[a-z])[a-z0-9]{10,}\b</field>
+    <field name="dns_query" type="pcre2">^.+\..+\..+\..+</field>
+    <description>Suspicious DNS Query: ($(dns_query)) - [Encoded + Deep Subdomain] - DNS Tunneling suspected!</description>
+  </rule>
+
+  <!-- COMBINATION 4: All 3 Conditions (Encoded + Deep Subdomain + Suspicious Type) -->
+  <rule id="101207" level="15">
+    <if_sid>101200</if_sid>
+    <field name="dns_query" type="pcre2">[A-Za-z0-9]{16,}</field>
+    <field name="dns_query" type="pcre2">^.+\..+\..+\..+</field>
+    <field name="dns_type" type="pcre2">TXT|NULL</field>
+    <description>CRITICAL: Suspicious DNS Query: ($(dns_query))  - [All Conditions Met] - High Confidence DNS Tunneling!</description>
+  </rule>
+  
+</group>

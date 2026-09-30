@@ -1,0 +1,13 @@
+{
+ "url": "https://wazuh.com/blog/detecting-lockbit-3-0-ransomware-with-wazuh/",
+ "title": "Detecting Lockbit 3.0 ransomware with Wazuh",
+ "published": "2022-09-23",
+ "modified": "2024-06-07",
+ "files": {
+  "01-config.xml": "902dc8cbcbce6473",
+  "02-rules.xml": "b3aaa386fcc9f33c",
+  "03-decoders.xml": "30c00d9c7aaaa01a",
+  "04-rules.xml": "90187694928b0eac",
+  "05-config.xml": "d274bff4c192720c"
+ }
+}

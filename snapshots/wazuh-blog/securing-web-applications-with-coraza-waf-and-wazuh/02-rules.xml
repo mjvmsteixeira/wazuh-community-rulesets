@@ -1,0 +1,76 @@
+<group name="coraza,waf,">
+
+  <rule id="101800" level="0">
+    <decoded_as>json</decoded_as>
+    <location>coraza/audit.json$</location>
+    <field name="transaction.is_interrupted">\.+</field>
+    <description>Coraza WAF audit event</description>
+    <options>no_full_log</options>
+  </rule>
+
+  <rule id="101801" level="6">
+    <if_sid>101800</if_sid>
+    <field name="messages" type="pcre2">attack-sqli</field>
+    <description>Coraza WAF: SQL injection attempt against $(transaction.request.uri) from $(transaction.client_ip) (blocked: $(transaction.is_interrupted))</description>
+    <mitre><id>T1190</id></mitre>
+    <group>web_attack,sql_injection,</group>
+  </rule>
+
+  <rule id="101802" level="6">
+    <if_sid>101800</if_sid>
+    <field name="messages" type="pcre2">attack-xss</field>
+    <description>Coraza WAF: Cross-site scripting attempt against $(transaction.request.uri) from $(transaction.client_ip) (blocked: $(transaction.is_interrupted))</description>
+    <mitre><id>T1189</id></mitre>
+    <group>web_attack,xss,</group>
+  </rule>
+
+  <rule id="101803" level="6">
+    <if_sid>101800</if_sid>
+    <field name="messages" type="pcre2">attack-lfi</field>
+    <description>Coraza WAF: Path traversal or local file inclusion attempt against $(transaction.request.uri) from $(transaction.client_ip) (blocked: $(transaction.is_interrupted))</description>
+    <mitre><id>T1190</id></mitre>
+    <group>web_attack,path_traversal,</group>
+  </rule>
+
+  <rule id="101804" level="7">
+    <if_sid>101800</if_sid>
+    <field name="messages" type="pcre2">attack-rce</field>
+    <description>Coraza WAF: Remote command execution attempt against $(transaction.request.uri) from $(transaction.client_ip) (blocked: $(transaction.is_interrupted))</description>
+    <mitre><id>T1190</id></mitre>
+    <group>web_attack,rce,</group>
+  </rule>
+
+  <rule id="101805" level="10" frequency="6" timeframe="60">
+    <if_matched_group>web_attack</if_matched_group>
+    <same_field>transaction.client_ip</same_field>
+    <description>Coraza WAF: Multiple CRS detections from $(transaction.client_ip) in a short window, consistent with automated attack tooling</description>
+    <mitre><id>T1595</id></mitre>
+    <group>web_scan,recon,</group>
+    <options>no_full_log</options>
+  </rule>
+
+  <rule id="101806" level="7">
+    <if_sid>550</if_sid>
+    <field name="file">^/etc/caddy</field>
+    <description>Coraza WAF configuration file modified: $(file)</description>
+    <mitre><id>T1562.001</id></mitre>
+    <group>waf_config_change,</group>
+  </rule>
+
+  <rule id="101807" level="7">
+    <if_sid>554</if_sid>
+    <field name="file">^/etc/caddy</field>
+    <description>Coraza WAF configuration file added: $(file)</description>
+    <mitre><id>T1562.001</id></mitre>
+    <group>waf_config_change,</group>
+  </rule>
+
+  <rule id="101808" level="10">
+    <if_sid>553</if_sid>
+    <field name="file">^/etc/caddy</field>
+    <description>Coraza WAF configuration file deleted: $(file)</description>
+    <mitre><id>T1562.001</id></mitre>
+    <group>waf_config_change,</group>
+  </rule>
+
+</group>

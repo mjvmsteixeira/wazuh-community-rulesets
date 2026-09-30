@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/learn-to-detect-threats-on-windows-by-monitoring-sysmon-events/",
+ "title": "Learn to detect threats on Windows by monitoring Sysmon events",
+ "published": "2019-05-16",
+ "modified": "2023-02-17",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-rules.xml": "349159e45fa68ebe"
+ }
+}

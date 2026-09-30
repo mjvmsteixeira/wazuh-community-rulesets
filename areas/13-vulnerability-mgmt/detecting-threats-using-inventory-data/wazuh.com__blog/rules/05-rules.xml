@@ -1,0 +1,16 @@
+<group name="syscollector2,">
+  
+<!-- New network interface -->
+  <rule id="100371" level="2">
+    <if_sid>221</if_sid>
+    <field name="type">dbsync_network_iface</field>
+    <description>Syscollector network interface event.</description>
+  </rule>
+
+ <rule id="100372" level="9">
+   <if_sid>100371</if_sid>
+   <field name="operation_type">INSERTED</field>
+   <description>New network interface $(netinfo.iface.name) detected.</description>
+  </rule>
+
+</group>

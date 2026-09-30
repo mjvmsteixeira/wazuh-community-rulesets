@@ -1,0 +1,9 @@
+{
+ "url": "https://wazuh.com/blog/automating-windows-endpoint-hardening-with-wazuh/",
+ "title": "Automating Windows endpoint hardening with Wazuh",
+ "published": "2026-02-19",
+ "modified": "2026-02-20",
+ "files": {
+  "01-config.xml": "b19c86814f44e4ae"
+ }
+}

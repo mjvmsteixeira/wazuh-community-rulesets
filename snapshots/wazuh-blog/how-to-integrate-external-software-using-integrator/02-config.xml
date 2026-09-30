@@ -1,0 +1,7 @@
+<integration>
+  <name>custom-jira</name>
+  <group>syscheck</group>
+  <hook_url>https://testwazuhintegrator.atlassian.net/rest/api/3/issue/</hook_url>
+  <api_key>integratortest@accountemail.com:api_key</api_key>
+  <alert_format>json</alert_format>
+</integration>

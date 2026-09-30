@@ -1,0 +1,11 @@
+<wodle name="command">
+  <disabled>no</disabled>
+  <tag>disk-usage</tag>
+  <command>/bin/bash /var/ossec/etc/shared/disk-usage.sh</command>
+  <interval>1h</interval>
+  <run_on_start>yes</run_on_start>
+  <timeout>10</timeout>
+  <verify_md5>450d8f0ce1271aa72529ad58af2ed150</verify_md5>
+  <verify_sha1>97cc6260454a7243b55c46f1e39758f2419e6d38</verify_sha1>
+  <verify_sha256>724a10acf512747b3cc0657ec40d54708edf4bdd15b5115dd63c9a049efd1bc3</verify_sha256>
+</wodle>

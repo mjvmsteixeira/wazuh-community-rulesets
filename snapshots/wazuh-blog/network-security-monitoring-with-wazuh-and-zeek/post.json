@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/network-security-monitoring-with-wazuh-and-zeek/",
+ "title": "Network security monitoring with Wazuh and Zeek",
+ "published": "2025-09-16",
+ "modified": "2026-05-26",
+ "files": {
+  "01-config.xml": "7008718a1464fbf2",
+  "02-decoders.xml": "b58b115a06679f04",
+  "03-rules.xml": "cd2b25151bdf811a"
+ }
+}

@@ -1,0 +1,14 @@
+{
+ "url": "https://wazuh.com/blog/monitoring-commonly-abused-windows-utilities/",
+ "title": "Monitoring commonly abused Windows utilities",
+ "published": "2022-06-09",
+ "modified": "2026-09-30",
+ "files": {
+  "01-config.xml": "852d032eaea42ae0",
+  "02-rules.xml": "edd28d72f8576057",
+  "03-rules.xml": "1fcc236ffd379872",
+  "04-rules.xml": "2424424e02fc64c5",
+  "05-rules.xml": "e4abf3f110914044",
+  "06-rules.xml": "6527a3d7320df021"
+ }
+}

@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/monitoring-snowflake-data-warehouse-with-wazuh/",
+ "title": "Monitoring Snowflake data warehouse with Wazuh",
+ "published": "2025-11-17",
+ "modified": "2025-11-17",
+ "files": {
+  "01-config.xml": "1b07b135b414b5ca",
+  "02-rules.xml": "580740d31ce6e006"
+ }
+}

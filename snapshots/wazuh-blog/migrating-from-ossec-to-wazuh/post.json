@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/migrating-from-ossec-to-wazuh/",
+ "title": "Migrating from OSSEC to Wazuh",
+ "published": "2023-10-30",
+ "modified": "2024-06-04",
+ "files": {
+  "01-config.xml": "ecc193926e603251",
+  "02-config.xml": "f705bc6253c9d3ae"
+ }
+}

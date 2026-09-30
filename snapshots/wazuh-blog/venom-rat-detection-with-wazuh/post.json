@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/venom-rat-detection-with-wazuh/",
+ "title": "Venom RAT detection with Wazuh",
+ "published": "2023-03-30",
+ "modified": "2024-06-14",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-rules.xml": "47050a96e2e101f9"
+ }
+}

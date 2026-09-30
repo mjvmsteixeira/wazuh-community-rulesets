@@ -1,0 +1,9 @@
+<group name="PCIDSS">
+  <!-- This rule generates an alert when a file is found to contain unmasked card PAN data. -->
+  <rule id="100010" level="6">
+    <if_sid>530</if_sid>
+    <match>^ossec: output: 'PAN scan'</match>
+    <description>Unmasked Card PAN discovered.</description>
+    <group>pci_dss_3.5.1,</group>
+  </rule>
+</group>

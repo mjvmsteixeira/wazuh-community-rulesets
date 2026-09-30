@@ -1,0 +1,14 @@
+<group name="windows,privilege_escalation,">
+
+  <rule id="111010" level="10">
+    <if_group>sysmon_event_13</if_group>
+    <field name="win.eventdata.targetObject" type="pcre2">(?i)\\+Services\\+[^\\]+\\+ImagePath$</field>
+    <field name="win.eventdata.details" type="pcre2">^[^"]*\s[^"]*\.exe</field>
+    <description>Service ImagePath set to an unquoted path containing a space - vulnerable to path interception ($(win.eventdata.targetObject) = $(win.eventdata.details)).</description>
+    <options>no_full_log</options>
+    <mitre>
+      <id>T1574.009</id>
+    </mitre>
+  </rule>
+
+</group>

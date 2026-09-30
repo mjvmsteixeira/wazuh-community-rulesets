@@ -1,0 +1,9 @@
+<decoder name="maltiverse_hostname">
+  <prematch>timestamp=</prematch>
+</decoder>
+
+<decoder name="maltiverse_hostname1">
+  <parent>maltiverse_hostname</parent>
+  <regex type="pcre2">timestamp=(.+?) identifier=(\w+) action=(\w+) .*? hostname: (\S+)</regex>
+  <order>log_timestamp, identifier, action, hostname</order>
+</decoder>

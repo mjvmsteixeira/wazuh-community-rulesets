@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/wazuh-for-cmmc-compliance/",
+ "title": "Wazuh for CMMC compliance",
+ "published": "2025-06-24",
+ "modified": "2025-06-24",
+ "files": {
+  "01-rules.xml": "f97f6b950f654246",
+  "02-config.xml": "0fe020205d2ed5f2",
+  "03-config.xml": "7caa74cdabceb790"
+ }
+}

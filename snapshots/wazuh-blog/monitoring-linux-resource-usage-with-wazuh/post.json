@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/monitoring-linux-resource-usage-with-wazuh/",
+ "title": "Monitoring Linux resource usage with Wazuh",
+ "published": "2023-05-04",
+ "modified": "2025-07-31",
+ "files": {
+  "01-config.xml": "9d81f9938fe517cd",
+  "02-decoders.xml": "7dbfcb208caa84f7",
+  "03-rules.xml": "9eb1174508e498af"
+ }
+}

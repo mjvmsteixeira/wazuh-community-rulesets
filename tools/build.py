@@ -115,15 +115,8 @@ if os.path.isdir(os.path.join(OFF, 'lists')):
 # ---------- recolha
 listed = [l.strip() for l in open(os.path.join(TOOLS, 'sources.txt')) if l.strip() and not l.startswith('#')]
 sources, files, excluded = {}, [], []
-for d in sorted(os.listdir(SRC)):
-    p = os.path.join(SRC, d)
-    if not os.path.isdir(os.path.join(p, '.git')): continue
-    repo = repo_of(p)
-    lic, licfile = detect_license(p)
-    tests = test_files(p)
-    sources[repo] = {'repo': repo, 'url': f'https://github.com/{repo}', 'commit': git(p, 'rev-parse', 'HEAD'),
-                     'last_commit': git(p, 'log', '-1', '--format=%cs'), 'license': LICENSE_OVERRIDE.get(repo, lic),
-                     'license_file': licfile, 'has_tests': bool(tests), 'tests': tests, 'dir': p}
+
+def collect(repo, p):
     for dp, fn in walk(p):
         for f in fn:
             fp = os.path.join(dp, f); low = f.lower()
@@ -141,10 +134,37 @@ for d in sorted(os.listdir(SRC)):
                 rec['why'] = why; excluded.append(rec)
             else:
                 files.append(rec)
+
+for d in sorted(os.listdir(SRC)):
+    p = os.path.join(SRC, d)
+    if not os.path.isdir(os.path.join(p, '.git')): continue
+    repo = repo_of(p)
+    lic, licfile = detect_license(p)
+    tests = test_files(p)
+    sources[repo] = {'repo': repo, 'url': f'https://github.com/{repo}', 'commit': git(p, 'rev-parse', 'HEAD'),
+                     'last_commit': git(p, 'log', '-1', '--format=%cs'), 'license': LICENSE_OVERRIDE.get(repo, lic),
+                     'license_file': licfile, 'has_tests': bool(tests), 'tests': tests, 'dir': p}
+    collect(repo, p)
+
+# capturas guardadas no repositório (p.ex. o blog da Wazuh, que não é um repositório git): snapshots/<nome>/SNAPSHOT.json
+SNAPS = os.path.join(os.path.dirname(TOOLS), 'snapshots')
+for d in sorted(os.listdir(SNAPS)) if os.path.isdir(SNAPS) else []:
+    p = os.path.join(SNAPS, d)
+    if not os.path.exists(os.path.join(p, 'SNAPSHOT.json')): continue
+    meta = json.load(open(os.path.join(p, 'SNAPSHOT.json')))
+    posts = {x: json.load(open(os.path.join(p, x, 'post.json'))) for x in sorted(os.listdir(p)) if os.path.exists(os.path.join(p, x, 'post.json'))}
+    digest = hashlib.sha256(json.dumps({k: v['files'] for k, v in posts.items()}, sort_keys=True).encode()).hexdigest()
+    sources[meta['repo']] = {'repo': meta['repo'], 'url': meta['url'], 'commit': digest[:40], 'retrieved': meta['retrieved'],
+                             'last_commit': max((v['published'] for v in posts.values() if v['published']), default=''),
+                             'license': meta['license'], 'license_file': None, 'has_tests': False, 'tests': [], 'dir': p,
+                             'snapshot': True, 'posts': posts}
+    collect(meta['repo'], p)
 failed = [r for r in listed if r not in sources]
 
 # duplicados exatos de ficheiro entre repos: fica a cópia introduzida primeiro (data do commit que adicionou o ficheiro)
 def introduced(f):
+    s = sources[f['repo']]
+    if s.get('snapshot'): return s['posts'][f['path'].split('/')[0]]['published'] or s['last_commit']
     out = git(sources[f['repo']]['dir'], 'log', '--diff-filter=A', '--format=%cs', '--', f['path'])
     return out.splitlines()[-1] if out else (sources[f['repo']]['last_commit'] or '9999')
 
@@ -436,8 +456,16 @@ for fo, fl in sorted(placed.items()):
         shutil.copy2(os.path.join(s['dir'], s['license_file']), os.path.join(base, 'LICENSE.upstream'))
     area, topic = fl[0]['area'], fl[0]['topic']
     with open(os.path.join(base, 'SOURCE.md'), 'w') as fh:
-        fh.write(f"# {s['repo']}\n\n- Origem: {s['url']}\n- Commit: `{s['commit']}` ({s['last_commit']})\n"
-                 f"- Licença: {s['license']}\n- Área: {area} / {topic}\n\n## Ficheiros (caminho original → caminho aqui)\n\n")
+        if s.get('snapshot'):
+            post = s['posts'][fl[0]['path'].split('/')[0]]
+            fh.write(f"# {post['title']}\n\n- Fonte: blog da Wazuh — [{post['title']}]({post['url']})\n- Publicado: {post['published']}"
+                     f"{' (atualizado ' + post['modified'] + ')' if post['modified'] and post['modified'] != post['published'] else ''}\n"
+                     f"- Captura: {s['retrieved']} (`snapshots/wazuh-blog/{fl[0]['path'].split('/')[0]}/`)\n"
+                     f"- Direitos: conteúdo © Wazuh, Inc., reproduzido sem alterações a partir do artigo citado\n- Área: {area} / {topic}\n\n"
+                     f"## Blocos de código do artigo (ficheiro capturado → caminho aqui)\n\n")
+        else:
+            fh.write(f"# {s['repo']}\n\n- Origem: {s['url']}\n- Commit: `{s['commit']}` ({s['last_commit']})\n"
+                     f"- Licença: {s['license']}\n- Área: {area} / {topic}\n\n## Ficheiros (caminho original → caminho aqui)\n\n")
         for f in fl:
             fh.write(f"- `{f['path']}` → `{os.path.relpath(f['dest'], fo)}` "
                      f"({len(f['rules'])} regras, {len(f['decoders'])} decoders{'' if f['wellformed'] else ', XML tolerado pelo Wazuh mas não estrito'})\n")
@@ -565,7 +593,9 @@ fold_rows = []
 for fo, fl in sorted(placed.items()):
     fd = [d for d in deps if d['folder'] == fo]
     cnt = fold_id_count[fo]
-    row = {'folder': fo, 'source': fl[0]['repo'], 'area': fl[0]['area'], 'topic': fl[0]['topic'], 'files': len(fl),
+    s_ = sources[fl[0]['repo']]
+    origin_url = s_['posts'][fl[0]['path'].split('/')[0]]['url'] if s_.get('snapshot') else s_['url']
+    row = {'folder': fo, 'source': fl[0]['repo'], 'origin_url': origin_url, 'area': fl[0]['area'], 'topic': fl[0]['topic'], 'files': len(fl),
            'rules': sum(cnt.values()), 'decoders': sum(len(f['decoders']) for f in fl),
            'dup_ids': sum(1 for c in cnt.values() if c > 1), 'dup_entries': sum(c - 1 for c in cnt.values() if c > 1),
            'official_clashes': sum(1 for i in cnt if conflict_type.get(i) == 'oficial: colisão sem overwrite'),

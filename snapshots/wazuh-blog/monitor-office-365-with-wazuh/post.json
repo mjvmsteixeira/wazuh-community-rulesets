@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/monitor-office-365-with-wazuh/",
+ "title": "Monitor Office 365 with Wazuh",
+ "published": "2020-03-20",
+ "modified": "2023-03-01",
+ "files": {
+  "01-config.xml": "8ae76ac7020ae91c",
+  "02-rules.xml": "9937e8e03652f3ec"
+ }
+}

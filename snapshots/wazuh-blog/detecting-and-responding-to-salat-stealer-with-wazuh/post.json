@@ -1,0 +1,13 @@
+{
+ "url": "https://wazuh.com/blog/detecting-and-responding-to-salat-stealer-with-wazuh/",
+ "title": "Detecting and responding to Salat stealer with Wazuh",
+ "published": "2026-02-26",
+ "modified": "2026-02-26",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-rules.xml": "59ffa5af44871dab",
+  "03-config.xml": "5690c6f542dd9e0a",
+  "04-config.xml": "57bb39932b0704be",
+  "05-rules.xml": "4043fa3a0d537612"
+ }
+}

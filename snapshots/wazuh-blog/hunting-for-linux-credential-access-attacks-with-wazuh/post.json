@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/hunting-for-linux-credential-access-attacks-with-wazuh/",
+ "title": "Hunting for Linux credential access attacks with Wazuh",
+ "published": "2024-06-14",
+ "modified": "2024-06-14",
+ "files": {
+  "01-config.xml": "0d9802ef3aba21cb",
+  "02-rules.xml": "f96e97bb0cd95939"
+ }
+}

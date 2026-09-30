@@ -1,0 +1,20 @@
+{
+ "url": "https://wazuh.com/blog/detecting-common-linux-persistence-techniques-with-wazuh/",
+ "title": "Detecting common Linux persistence techniques with Wazuh",
+ "published": "2023-02-23",
+ "modified": "2024-06-14",
+ "files": {
+  "01-config.xml": "d836d83e7409dbcc",
+  "02-rules.xml": "6b75f5904b9982cf",
+  "03-config.xml": "8e3f0dfc33d4d5e3",
+  "04-rules.xml": "5491f2e3e1de1f11",
+  "05-config.xml": "d64a52d62221edda",
+  "06-rules.xml": "fcdb843a5c2c35ba",
+  "07-config.xml": "3d691e722f0075cb",
+  "08-rules.xml": "0cf373c9f2d301e9",
+  "09-config.xml": "76fd98828fbcccbf",
+  "10-rules.xml": "e3e85b9c06de1274",
+  "11-config.xml": "8f2fb4248173311c",
+  "12-rules.xml": "bbdf36d02f2bed62"
+ }
+}

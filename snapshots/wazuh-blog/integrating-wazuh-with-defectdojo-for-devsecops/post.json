@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/integrating-wazuh-with-defectdojo-for-devsecops/",
+ "title": "Integrating Wazuh with DefectDojo for DevSecOps",
+ "published": "2024-12-24",
+ "modified": "2025-01-03",
+ "files": {
+  "01-config.xml": "d00b9e9d170ba391",
+  "02-rules.xml": "75ede3ab44ff439a"
+ }
+}

@@ -1,0 +1,11 @@
+<wodle name="aws-s3">
+  <disabled>no</disabled>
+  <interval>10m</interval>
+  <run_on_start>yes</run_on_start>
+  <skip_on_error>yes</skip_on_error>
+  <bucket type="custom">
+    <name>wazuh-aws-wodle</name>
+    <path>macie</path>
+    <aws_profile>default</aws_profile>
+  </bucket>
+</wodle>

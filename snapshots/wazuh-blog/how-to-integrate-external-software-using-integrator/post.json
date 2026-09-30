@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/how-to-integrate-external-software-using-integrator/",
+ "title": "How to integrate external software using Integrator",
+ "published": "2018-11-27",
+ "modified": "2023-02-17",
+ "files": {
+  "01-config.xml": "c1879620e57c0d67",
+  "02-config.xml": "ae2888cddc3b92dc"
+ }
+}

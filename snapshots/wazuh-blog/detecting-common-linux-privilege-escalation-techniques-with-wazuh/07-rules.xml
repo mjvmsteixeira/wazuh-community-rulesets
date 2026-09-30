@@ -1,0 +1,20 @@
+<!-- T1055 — Process Injection -->
+
+  <rule id="100207" level="12">
+    <if_sid>80700</if_sid>
+    <field name="audit.key">priv_esc_ptrace</field>
+    <description>Possible privilege escalation: ptrace PTRACE_ATTACH syscall detected — possible process injection</description>
+    <mitre>
+      <id>T1055</id>
+    </mitre>
+  </rule>
+
+  <rule id="100208" level="12">
+    <if_sid>100207</if_sid>
+    <field name="audit.uid" type="pcre2">^(?!0$)\d+$</field>
+    <field name="audit.command" negate="yes" type="pcre2">^(gdb|strace|ltrace|lldb|gdbserver)$</field>
+    <description>Possible privilege escalation: non-root process used PTRACE_ATTACH — possible process injection attempt (UID: $(audit.uid))</description>
+    <mitre>
+      <id>T1055</id>
+    </mitre>
+  </rule>

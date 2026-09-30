@@ -1,0 +1,14 @@
+{
+ "url": "https://wazuh.com/blog/crosslock-ransomware-detection/",
+ "title": "CrossLock ransomware detection with Wazuh",
+ "published": "2023-07-28",
+ "modified": "2025-12-17",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-rules.xml": "022888d018fd3f33",
+  "03-config.xml": "c926f3ba5c8423c6",
+  "04-config.xml": "3a42f01acffd32e6",
+  "05-config.xml": "431412557c0f8521",
+  "06-rules.xml": "70d50659bf393e6f"
+ }
+}

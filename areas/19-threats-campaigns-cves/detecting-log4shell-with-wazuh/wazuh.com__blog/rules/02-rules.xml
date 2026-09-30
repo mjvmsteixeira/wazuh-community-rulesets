@@ -1,0 +1,23 @@
+<group name="log4j, attack,">
+  <rule id="110002" level="7">
+    <if_group>web|accesslog|attack</if_group>
+    <regex type="pcre2">(?i)(((\$|24)\S*)((\{|7B)\S*)((\S*j\S*n\S*d\S*i))|JHtqbmRp)</regex>
+    <description>Possible Log4j RCE attack attempt detected.</description>
+    <mitre>
+      <id>T1190</id>
+      <id>T1210</id>
+      <id>T1211</id>
+    </mitre>
+  </rule>
+
+  <rule id="110003" level="12">
+    <if_sid>110002</if_sid>
+    <regex type="pcre2">ldap[s]?|rmi|dns|nis|iiop|corba|nds|http|lower|upper|(\$\{\S*\w\}\S*)+</regex>
+    <description>Log4j RCE attack attempt detected.</description>
+    <mitre>
+      <id>T1190</id>
+      <id>T1210</id>
+      <id>T1211</id>
+    </mitre>
+  </rule>
+</group>

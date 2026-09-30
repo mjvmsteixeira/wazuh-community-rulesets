@@ -1,0 +1,15 @@
+{
+ "url": "https://wazuh.com/blog/detecting-sliver-c2-framework-with-wazuh/",
+ "title": "Detecting Sliver C2 framework with Wazuh",
+ "published": "2023-04-05",
+ "modified": "2024-06-14",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-rules.xml": "1579b0c9887fb087",
+  "03-decoders.xml": "35f67b5485d26018",
+  "04-rules.xml": "011682caa35d1e01",
+  "05-config.xml": "dc672adfbbf92119",
+  "06-config.xml": "5f2c114da2af89a4",
+  "07-rules.xml": "c4fecfc89937ed3c"
+ }
+}

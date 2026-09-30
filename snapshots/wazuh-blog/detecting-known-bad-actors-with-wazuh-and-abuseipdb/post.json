@@ -1,0 +1,12 @@
+{
+ "url": "https://wazuh.com/blog/detecting-known-bad-actors-with-wazuh-and-abuseipdb/",
+ "title": "Detecting known bad actors with Wazuh and AbuseIPDB",
+ "published": "2022-02-04",
+ "modified": "2026-09-30",
+ "files": {
+  "01-rules.xml": "98307a21cfa90d00",
+  "02-config.xml": "0df13b92221a3123",
+  "03-rules.xml": "e34fc10a45a2d413",
+  "04-config.xml": "3b27d4717bf5313d"
+ }
+}

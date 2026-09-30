@@ -1,0 +1,41 @@
+<group name="eol,">
+
+  <!-- Base rule: any EOL finding -->
+  <rule id="100400" level="7">
+    <decoded_as>json</decoded_as>
+    <field name="integration">^eol_detector$</field>
+    <description>EOL software detected: $(eol.product) $(eol.version) on agent $(eol.agent_name) - EOL since $(eol.eol_date)</description>
+    <options>no_full_log</options>
+    <group>eol_software,pci_dss_6.3.3,nist_800_53_CM.8,hipaa_164.312.a.1,</group>
+  </rule>
+
+  <!-- 100 to 999 days past EOL -->
+  <rule id="100401" level="10">
+    <if_sid>100400</if_sid>
+    <field name="eol.type">^package$</field>
+    <field name="eol.days_past_eol" type="pcre2">^\d{3}$</field>
+    <description>HIGH RISK EOL: $(eol.product) $(eol.version) on agent $(eol.agent_name) is $(eol.days_past_eol) days past end-of-life</description>
+    <options>no_full_log</options>
+    <group>eol_software,pci_dss_6.3.3,nist_800_53_CM.8,hipaa_164.312.a.1,</group>
+  </rule>
+
+  <!-- 1000 or more days past EOL -->
+  <rule id="100402" level="13">
+    <if_sid>100400</if_sid>
+    <field name="eol.type">^package$</field>
+    <field name="eol.days_past_eol" type="pcre2">^\d{4,}$</field>
+    <description>CRITICAL RISK EOL: $(eol.product) $(eol.version) on agent $(eol.agent_name) is $(eol.days_past_eol) days past end-of-life</description>
+    <options>no_full_log</options>
+    <group>eol_software,pci_dss_6.3.3,nist_800_53_CM.8,hipaa_164.312.a.1,</group>
+  </rule>
+
+  <!-- EOL operating system -->
+  <rule id="100403" level="12">
+    <if_sid>100400</if_sid>
+    <field name="eol.type">^os$</field>
+    <description>EOL operating system: $(eol.product) $(eol.version) on agent $(eol.agent_name) - EOL since $(eol.eol_date)</description>
+    <options>no_full_log</options>
+    <group>eol_os,pci_dss_6.3.3,nist_800_53_CM.8,hipaa_164.312.a.1,</group>
+  </rule>
+
+</group>

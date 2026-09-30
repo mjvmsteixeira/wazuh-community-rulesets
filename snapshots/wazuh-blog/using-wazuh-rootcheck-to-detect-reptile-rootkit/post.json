@@ -1,0 +1,9 @@
+{
+ "url": "https://wazuh.com/blog/using-wazuh-rootcheck-to-detect-reptile-rootkit/",
+ "title": "Using Wazuh rootcheck to detect Reptile rootkit",
+ "published": "2022-08-11",
+ "modified": "2024-06-07",
+ "files": {
+  "01-config.xml": "20276ee7fe5be231"
+ }
+}

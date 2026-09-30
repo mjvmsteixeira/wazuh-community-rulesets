@@ -1,0 +1,9 @@
+<group name="windows-usb-detect,">
+  <rule id="111000" level="7">
+    <if_sid>60103</if_sid>
+    <field name="win.system.eventID">^6416$</field>
+    <match>USBSTOR\\Disk</match>
+    <options>no_full_log</options>
+    <description>Windows: A PNP device $(win.eventdata.deviceDescription) was connected to $(win.system.computer)</description>
+  </rule>
+</group>

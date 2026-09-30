@@ -1,0 +1,9 @@
+<decoder name="AWS_Managed_Microsoft_AD">
+        <prematch type="pcre2">\x3cEventID\x3e\d+\x3c\/EventID\x3e</prematch>
+</decoder>
+
+<decoder name="AWS_Managed_Microsoft_AD_001">
+        <parent>AWS_Managed_Microsoft_AD</parent>
+        <regex type="pcre2">\x3cEventID\x3e(\d+)\x3c\/EventID\x3e\x3cVersion\x3e0\x3c\/Version\x3e\x3cLevel\x3e0\x3c\/Level\x3e\x3cTask\x3e\d+\x3c\/Task\x3e\x3cOpcode\x3e\d+\x3c\/Opcode\x3e\x3cKeywords\x3e\S+?\x3c\/Keywords\x3e\x3cTimeCreated\s*SystemTime='\S+?\/\x3e\x3cEventRecordID\x3e\d+\x3c\/EventRecordID\x3e\x3cCorrelation\/\x3e\x3cExecution\s*ProcessID='\d+'\s*ThreadID='\d+'\/\x3e\x3cChannel\x3eSecurity\x3c\/Channel\x3e\x3cComputer\x3e\S+?\x3c\/Computer\x3e\x3cSecurity\/\x3e\x3c\/System\x3e\x3cEventData\x3e\x3cData\s*Name='TargetUserName'\x3e(\S+\s*\S*)?\x3c\/Data\x3e\x3cData\s*Name='TargetDomainName'\x3e(\S+)?\x3c\/Data\x3e\x3cData\s*Name='TargetSid'\x3e\S+?\x3c\/Data\x3e\x3cData\s*Name='SubjectUserSid'\x3e\S+?\x3c\/Data\x3e\x3cData\s*Name='SubjectUserName'\x3e(\S+)?\x3c\/Data\x3e.+</regex>
+        <order>eventid, targetusername, targetdomainname, subjectusername</order>
+</decoder>

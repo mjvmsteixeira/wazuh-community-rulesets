@@ -1,0 +1,15 @@
+<decoder name="rapid-scada-ip">
+  <parent>windows-date-format</parent>
+  <use_own_name>true</use_own_name>
+  <prematch offset="after_parent" type="pcre2">^\[.+\]\[.+\$\]\[\w\w\w\] .+, IP .+</prematch>
+  <regex offset="after_parent" type="pcre2">^\[(.+)\]\[.+\$\]\[(\w\w\w)\] (.+, IP) (\d+\.\d+\.\d+\.\d+|\S+)</regex>
+  <order>hostname, status, message, srcip</order>
+</decoder>
+
+<decoder name="rapid-scada-no-ip">
+  <parent>windows-date-format</parent>
+  <use_own_name>true</use_own_name>
+  <prematch offset="after_parent" type="pcre2">^\[.+\]\[.+\$\]\[\w\w\w\]</prematch>
+  <regex offset="after_parent" type="pcre2">^\[(.+)\]\[.+\$\]\[(\w\w\w)\] (.+)</regex>
+  <order>hostname, status, message</order>
+</decoder>

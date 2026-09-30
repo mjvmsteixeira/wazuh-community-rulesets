@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/ensuring-nis2-compliance-with-wazuh/",
+ "title": "Ensuring NIS2 compliance with Wazuh",
+ "published": "2024-09-05",
+ "modified": "2024-09-05",
+ "files": {
+  "01-config.xml": "c1f0581a2895d729",
+  "02-config.xml": "a49ebaf58cfc7c73"
+ }
+}

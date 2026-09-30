@@ -1,0 +1,10 @@
+<group name="windows,sysmon">
+
+  <rule id="100009" level="12">
+    <if_group>windows</if_group>
+    <field name="win.system.eventID">1</field>
+    <match>vssadmin.exe delete shadows</match>
+    <description>[Possible Ransomware] Suspicious vssadmin Process Launched!</description>
+  </rule>
+
+</group>

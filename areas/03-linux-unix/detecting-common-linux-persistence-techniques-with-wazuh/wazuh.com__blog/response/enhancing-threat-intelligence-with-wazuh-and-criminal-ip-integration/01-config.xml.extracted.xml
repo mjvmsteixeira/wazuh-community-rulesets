@@ -1,0 +1,7 @@
+<!-- Blocos de resposta extraídos, sem alterações, de wazuh.com/blog:enhancing-threat-intelligence-with-wazuh-and-criminal-ip-integration/01-config.xml @ b4b3f986b301 -->
+<integration>
+    <name>custom-criminalip.py</name>
+    <api_key><CRIMINALIP_API_KEY></api_key> 
+    <group>web, sshd, invalid_login, firewall, ids, system, database, application</group>
+    <alert_format>json</alert_format>
+  </integration>

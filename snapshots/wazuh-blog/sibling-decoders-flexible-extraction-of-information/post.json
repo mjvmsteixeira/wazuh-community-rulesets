@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/sibling-decoders-flexible-extraction-of-information/",
+ "title": "Sibling decoders: flexible extraction of information",
+ "published": "2019-05-14",
+ "modified": "2023-02-17",
+ "files": {
+  "01-decoders.xml": "8a7939183ea2f09d",
+  "02-decoders.xml": "27ce076804f547c7"
+ }
+}

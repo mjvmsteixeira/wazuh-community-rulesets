@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/cloud-security-posture-management-on-microsoft-azure/",
+ "title": "Cloud Security Posture Management on Microsoft Azure",
+ "published": "2023-10-18",
+ "modified": "2024-07-08",
+ "files": {
+  "01-config.xml": "a563a7bb9f3d9897",
+  "02-rules.xml": "724dcccc9ccdcac2"
+ }
+}

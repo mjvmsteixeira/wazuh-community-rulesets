@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/monitoring-network-devices-wazuh-hids/",
+ "title": "Monitoring Network Devices with OSSEC HIDS",
+ "published": "2016-05-17",
+ "modified": "2023-04-24",
+ "files": {
+  "01-config.xml": "4e89b5ab55d5de3c",
+  "02-config.xml": "0b6f92bf5fd38971"
+ }
+}

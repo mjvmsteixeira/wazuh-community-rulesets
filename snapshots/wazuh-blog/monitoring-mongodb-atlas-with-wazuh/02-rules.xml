@@ -1,0 +1,100 @@
+<group name="MongoDB_Atlas,">
+  <rule id="100600" level="1">
+    <if_sid>80200</if_sid>
+    <field name="aws.service.name">mongodb</field>
+    <description>MongoDB Atlas logs grouped.</description>
+  </rule>
+  
+  <rule id="100601" level="1">
+    <field name="links">cloud.mongodb.com/api/atlas</field>
+    <description>MongoDB Atlas logs grouped.</description>
+  </rule>
+</group>
+
+<group name="MongoDB_Atlas,authentication,">
+  <rule id="100602" level="10" frequency="3" timeframe="120">
+    <if_matched_sid>100600</if_matched_sid>
+    <field name="aws.log">"codeName":"Unauthorized"</field>
+    <description>MongoDB Atlas: Multiple attempts to run unauthorized activity.</description>
+  </rule>
+
+  <rule id="100603" level="10" frequency="3" timeframe="120">
+    <if_matched_sid>100600</if_matched_sid>
+    <field name="aws.log">Failed to authenticate</field>
+    <field name="aws.log">!mms-automation</field>
+    <description>MongoDB Atlas: Multiple failed authentication attempts.</description>
+    <mitre>
+      <id>T1110</id>
+    </mitre>
+  </rule>
+  
+</group>
+
+<group name="MongoDB_Atlas,impact,">
+  <rule id="100604" level="15">
+    <if_sid>100600</if_sid>
+    <field name="aws.log">"msg":"dropDatabase"</field>
+    <description>MongoDB Atlas: database dropped.</description>
+    <mitre>
+      <id>T1485</id>
+    </mitre>
+  </rule>
+
+  <rule id="100605" level="14">
+    <if_sid>100600</if_sid>
+    <field name="aws.log">"dropCollection"</field>
+    <description>MongoDB Atlas: Collection dropped.</description>
+    <mitre>
+      <id>T1485</id>
+    </mitre>
+  </rule>
+</group>
+
+<group name="MongoDB_Atlas,persistence,">
+
+  <rule id="100606" level="8">
+    <if_sid>100601</if_sid>
+    <field name="eventTypeName">MONGODB_USER_ADDED</field>
+    <description>MongoDB Atlas: New database user created.</description>
+    <mitre>
+      <id>T1136</id>
+    </mitre>
+  </rule>
+  
+  <rule id="100607" level="8">
+    <if_sid>100601</if_sid>
+    <field name="eventTypeName">NETWORK_PERMISSION_ENTRY_ADDED</field>
+    <description>MongoDB Atlas: New network $(whitelistEntry) added to IP access list.</description>
+    <mitre>
+      <id>T1562</id>
+    </mitre>
+  </rule>
+  
+  <rule id="100608" level="8">
+    <if_sid>100601</if_sid>
+    <field name="eventTypeName">NETWORK_PERMISSION_ENTRY_REMOVED</field>
+    <description>MongoDB Atlas: IP access list removed/modified.</description>
+    <mitre>
+      <id>T1562</id>
+    </mitre>
+  </rule>
+  
+  <rule id="100609" level="8">
+    <if_sid>100601</if_sid>
+    <field name="eventTypeName">SERVICE_ACCOUNT_CREATED</field>
+    <description>MongoDB Atlas: Service account $(clientId) created.</description>
+    <mitre>
+      <id>T1562</id>
+    </mitre>
+  </rule>
+  
+  <rule id="100610" level="8">
+    <if_sid>100601</if_sid>
+    <field name="eventTypeName">SERVICE_ACCOUNT_ADDED_TO_GROUP</field>
+    <description>MongoDB Atlas: Service account $(clientId) added to group $(groupId).</description>
+    <mitre>
+      <id>T1562</id>
+    </mitre>
+  </rule>
+
+</group>

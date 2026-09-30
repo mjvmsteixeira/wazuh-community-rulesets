@@ -1,0 +1,5 @@
+<ossec_config>
+  <syscheck>
+    <directories whodata="yes" check_all="yes" report_changes="yes">/root/WazuhFIMtest</directories> 
+  </syscheck>
+</ossec_config>

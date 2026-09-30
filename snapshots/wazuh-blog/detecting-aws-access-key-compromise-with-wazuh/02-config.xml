@@ -1,0 +1,19 @@
+<ossec_config>
+  <wodle name="aws-s3">
+    <disabled>no</disabled>
+    <interval>5m</interval>
+    <run_on_start>yes</run_on_start>
+    <skip_on_error>yes</skip_on_error>
+    <bucket type="cloudtrail">
+      <name><LOG_BUCKET></name>
+      <aws_profile>wazuh</aws_profile>
+      <only_logs_after><SETUP_COMPLETION_DATE></only_logs_after>
+    </bucket>
+    <bucket type="guardduty">
+      <name><LOG_BUCKET></name>
+      <path>guardduty</path>
+      <aws_profile>wazuh</aws_profile>
+      <only_logs_after><SETUP_COMPLETION_DATE></only_logs_after>
+    </bucket>
+  </wodle>
+</ossec_config>

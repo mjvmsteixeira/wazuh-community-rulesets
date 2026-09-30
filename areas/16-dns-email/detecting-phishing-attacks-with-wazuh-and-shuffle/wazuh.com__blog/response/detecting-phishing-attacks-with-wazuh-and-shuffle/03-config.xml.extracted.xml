@@ -1,0 +1,7 @@
+<!-- Blocos de resposta extraídos, sem alterações, de wazuh.com/blog:detecting-phishing-attacks-with-wazuh-and-shuffle/03-config.xml @ b4b3f986b301 -->
+<integration>
+    <name>slack</name>
+    <hook_url><SLACK_WEBHOOK_URL></hook_url>
+    <alert_format>json</alert_format>
+    <group>phishing</group>
+  </integration>

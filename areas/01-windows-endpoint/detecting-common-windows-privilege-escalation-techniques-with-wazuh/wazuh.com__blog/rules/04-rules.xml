@@ -1,0 +1,20 @@
+  <rule id="111030" level="12">
+    <if_group>sysmon_event_13</if_group>
+    <field name="win.eventdata.targetObject" type="pcre2">(?i)Policies\\+Microsoft\\+Windows\\+Installer\\+AlwaysInstallElevated$</field>
+    <field name="win.eventdata.details" type="pcre2">0x00000001</field>
+    <description>AlwaysInstallElevated enabled - MSI packages can run with elevated privileges ($(win.eventdata.targetObject) set by $(win.eventdata.user)).</description>
+    <options>no_full_log</options>
+    <mitre>
+      <id>T1218.007</id>
+    </mitre>
+  </rule>
+
+  <rule id="111031" level="14" frequency="2" timeframe="600">
+    <if_matched_sid>111030</if_matched_sid>
+    <different_field>win.eventdata.targetObject</different_field>
+    <description>AlwaysInstallElevated enabled in two different registry locations (HKLM and a user hive) within 10 minutes - both required values are now set, so any user can install an MSI package with SYSTEM privileges.</description>
+    <options>no_full_log</options>
+    <mitre>
+      <id>T1218.007</id>
+    </mitre>
+  </rule>

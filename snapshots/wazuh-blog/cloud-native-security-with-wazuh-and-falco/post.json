@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/cloud-native-security-with-wazuh-and-falco/",
+ "title": "Cloud native security with Wazuh and Falco",
+ "published": "2025-03-25",
+ "modified": "2025-03-25",
+ "files": {
+  "01-config.xml": "95928f2cb754cf74",
+  "02-rules.xml": "e75f0234df3844b2"
+ }
+}

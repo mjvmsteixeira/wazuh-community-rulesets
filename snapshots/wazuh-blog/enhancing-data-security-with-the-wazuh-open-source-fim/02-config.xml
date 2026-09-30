@@ -1,0 +1,5 @@
+<ossec_config>
+ <syscheck>
+ <windows_registry>HKEY_LOCAL_MACHINE\SYSTEM\Setup</windows_registry>
+ </syscheck>
+</ossec_config>

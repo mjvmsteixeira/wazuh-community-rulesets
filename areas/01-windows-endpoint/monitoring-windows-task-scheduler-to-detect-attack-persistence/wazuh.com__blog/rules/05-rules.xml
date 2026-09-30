@@ -1,0 +1,19 @@
+<rule id="115008" level="10">
+    <decoded_as>json</decoded_as>
+    <field name="ScheduledTaskAR.Arguments" type="pcre2" negate="yes">^null$</field>
+    <field name="TaskName" type="pcre2">(.|\s)*\S(.|\s)*</field>
+    <description>A new scheduled task "$(TaskName)" has been created on "$(ScheduledTaskAR.CimSystemProperties.ServerName)". The task will execute the command - "$(ScheduledTaskAR.Execute) $(ScheduledTaskAR.Arguments)".</description>
+    <mitre>
+        <id>T1053</id>
+    </mitre>
+  </rule>
+  
+  <rule id="115009" level="10">
+    <decoded_as>json</decoded_as>
+    <field name="ScheduledTaskAR.Arguments" type="pcre2">^null$</field>
+    <field name="TaskName" type="pcre2">(.|\s)*\S(.|\s)*</field>
+    <description>A new scheduled task "$(TaskName)" has been created on "$(ScheduledTaskAR.CimSystemProperties.ServerName)". The task will execute the command - "$(ScheduledTaskAR.Execute)".</description>
+    <mitre>
+        <id>T1053</id>
+    </mitre>
+  </rule>

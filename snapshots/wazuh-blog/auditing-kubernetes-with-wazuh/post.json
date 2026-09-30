@@ -1,0 +1,9 @@
+{
+ "url": "https://wazuh.com/blog/auditing-kubernetes-with-wazuh/",
+ "title": "Auditing Kubernetes with Wazuh",
+ "published": "2026-02-23",
+ "modified": "2026-02-26",
+ "files": {
+  "01-rules.xml": "d24e0fc92f9cf1db"
+ }
+}

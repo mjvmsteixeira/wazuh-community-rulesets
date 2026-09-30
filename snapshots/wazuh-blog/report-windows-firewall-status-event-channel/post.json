@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/report-windows-firewall-status-event-channel/",
+ "title": "Report Windows Firewall events | Wazuh | Open Source XDR. Open Source SIEM",
+ "published": "2016-05-12",
+ "modified": "2023-02-17",
+ "files": {
+  "01-config.xml": "51c3002367efd91f",
+  "02-rules.xml": "3d960feda40b3b20"
+ }
+}

@@ -1,0 +1,14 @@
+<group name="local,malware,active-response,">
+  <rule id="100004" level="7">
+    <if_sid>657</if_sid>
+    <match>Successfully removed threat</match>
+    <description>$(parameters.program): Successfully removed threat $(parameters.alert.syscheck.path) whose MD5 hash appears in a malware blacklist.</description>
+  </rule>
+
+
+  <rule id="100005" level="7">
+    <if_sid>657</if_sid>
+    <match>Error removing threat</match>
+    <description>$(parameters.program): Error removing threat $(parameters.alert.syscheck.path) whose MD5 hash appears in a malware blacklist.</description>
+  </rule>
+</group>

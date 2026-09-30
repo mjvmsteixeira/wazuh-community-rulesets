@@ -1,0 +1,32 @@
+<group name="malware_detection,fin7,">
+  <rule id="100007" level="0">
+    <if_sid>61603</if_sid>
+    <field name="win.eventdata.parentImage" type="pcre2">(?i)excel.exe</field>
+    <description>$(win.eventdata.image) Process launched by excel.</description>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+  </rule>
+ 
+  <rule id="100008" level="7">
+    <if_sid>100007</if_sid>
+    <field name="win.eventdata.image" type="pcre2">(?i).tmp</field>
+    <description>$(win.eventdata.image) executable masquerading as a TMP file was launched by excel. Possible FIN7 JSSLoader execution.</description>
+    <mitre>
+      <id>T1036</id>
+      <id>T1059</id>
+      <id>T1059.005</id>
+    </mitre>
+  </rule>
+ 
+  <rule id="100009" level="15">
+    <if_sid>100008</if_sid>
+    <field name="win.eventdata.image" type="pcre2">(?i)DNA</field>
+    <description>$(win.eventdata.image) executable masquerading as a .TMP file launched by excel. DNA prefix is typically associated with FIN7 JSSLoader.</description>
+    <mitre>
+      <id>T1036</id>
+      <id>T1059</id>
+      <id>T1059.005</id>
+    </mitre>
+  </rule>
+</group>

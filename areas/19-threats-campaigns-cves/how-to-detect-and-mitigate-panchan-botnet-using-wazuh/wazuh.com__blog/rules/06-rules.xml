@@ -1,0 +1,18 @@
+<group name="yara,">
+    <rule id="100033" level="0">
+        <decoded_as>yara_decoder</decoded_as>
+        <description>Yara grouping rule</description>
+    </rule>
+
+    <rule id="100034" level="12">
+        <if_sid>100033</if_sid>
+        <match>wazuh-yara: INFO - Scan result: </match>
+        <description>Malicious file "$(yara_scanned_file)" has been detected. YARA rule: $(yara_rule)</description>
+    </rule>
+
+    <rule id="100035" level="12">
+        <if_sid>100033</if_sid>
+        <match>wazuh-yara: INFO - Successfully removed threat: </match>
+        <description>Successfully removed malicious "$(yara_scanned_file)" file. YARA rule: $(yara_rule)</description>
+    </rule>   
+</group>

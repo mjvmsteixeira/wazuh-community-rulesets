@@ -1,0 +1,13 @@
+{
+ "url": "https://wazuh.com/blog/detecting-and-responding-to-cephalus-ransomware-with-wazuh/",
+ "title": "Detecting and responding to Cephalus ransomware with Wazuh",
+ "published": "2025-12-26",
+ "modified": "2025-12-26",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-rules.xml": "0bd97a607c7bf47c",
+  "03-decoders.xml": "13193c3c92948d98",
+  "04-rules.xml": "9fcadc8d3f910e3c",
+  "05-config.xml": "89532718b89d7158"
+ }
+}

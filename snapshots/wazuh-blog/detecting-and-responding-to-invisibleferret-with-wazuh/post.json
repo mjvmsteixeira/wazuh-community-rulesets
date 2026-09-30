@@ -1,0 +1,13 @@
+{
+ "url": "https://wazuh.com/blog/detecting-and-responding-to-invisibleferret-with-wazuh/",
+ "title": "Detecting and responding to InvisibleFerret with Wazuh",
+ "published": "2025-05-09",
+ "modified": "2025-06-02",
+ "files": {
+  "01-config.xml": "768abfd6de89a1db",
+  "02-rules.xml": "10512426ea9d76fb",
+  "03-rules.xml": "ee3911436fa5822b",
+  "04-config.xml": "b2ce2374cbff32ab",
+  "05-rules.xml": "b675fe67b55f9adc"
+ }
+}

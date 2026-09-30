@@ -1,0 +1,28 @@
+<!--  Rule for the decoder (yara_decoder) -->
+<group name="yara,">
+  <rule id="100213" level="0">
+    <decoded_as>yara_decoder</decoded_as>
+    <description>Yara grouping rule</description>
+  </rule>
+
+<!--  YARA scan detects a positive match -->
+  <rule id="100214" level="12">
+    <if_sid>100213</if_sid>
+    <match type="pcre2">wazuh-yara: INFO - Scan result: </match>
+    <description>File "$(yara_scanned_file)" is a ransomware. Yara rule: $(yara_rule)</description>
+  </rule>
+
+<!--  Wazuh successfully deletes malware with a positive match -->
+  <rule id="100215" level="12">
+    <if_sid>100213</if_sid>
+    <match type="pcre2">wazuh-yara: INFO - Successfully deleted: </match>
+    <description>Successfully removed "$(yara_scanned_file)" by active response due to YARA rule $(yara_rule) positive match</description>
+  </rule>
+
+<!--  Wazuh encounters an error when deleting malware with a positive match -->
+  <rule id="100216" level="12">
+    <if_sid>100213</if_sid>
+    <match type="pcre2">wazuh-yara: INFO - Error removing threat: </match>
+    <description>Error removing "$(yara_scanned_file)". YARA rule: $(yara_rule)</description>
+  </rule>
+</group>

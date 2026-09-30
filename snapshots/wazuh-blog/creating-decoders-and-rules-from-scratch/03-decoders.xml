@@ -1,0 +1,5 @@
+<decoder name="fortigate-custom1">
+  <parent>fortigate-custom</parent>
+  <regex>devid="(\S+)" logid="(\S+)" type="(\S+) subtype="(\S+)"</regex>
+  <order>devid, logid, type, subtype</order>
+</decoder>

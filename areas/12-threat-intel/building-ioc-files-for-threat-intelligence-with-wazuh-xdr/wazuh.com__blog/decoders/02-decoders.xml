@@ -1,0 +1,5 @@
+<decoder name="ioc_builder">
+  <prematch>^\w\w\w\s\w+\s+\d+\s\d\d:\d\d:\d\d\s+\d+\s\S+\sioc-data:</prematch>
+  <regex offset="after_prematch">^(\S+)\|(\S+)\|(\S+)</regex>
+  <order>ioc_not_found, ioc, ioc_file</order>
+</decoder>

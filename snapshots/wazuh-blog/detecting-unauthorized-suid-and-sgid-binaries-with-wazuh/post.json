@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/detecting-unauthorized-suid-and-sgid-binaries-with-wazuh/",
+ "title": "Detecting unauthorized SUID and SGID binaries with Wazuh",
+ "published": "2026-08-13",
+ "modified": "2026-08-13",
+ "files": {
+  "01-config.xml": "0189cced4b1e13ce",
+  "02-decoders.xml": "1ffa19cced89db7e",
+  "03-rules.xml": "12068c4b644468cb"
+ }
+}

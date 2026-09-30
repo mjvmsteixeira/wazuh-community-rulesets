@@ -1,14 +1,14 @@
 field,uses,folders,static,normalized_key,ecs
-srcip,371,101,True,srcip,source.ip
-action,173,44,True,action,event.action
-dstip,172,61,True,dstip,destination.ip
+srcip,372,106,True,srcip,source.ip
+action,174,47,True,action,event.action
+dstip,172,62,True,dstip,destination.ip
 message,127,19,False,message,message
-srcport,127,55,True,srcport,source.port
+srcport,126,56,True,srcport,source.port
 dstport,104,45,True,dstport,destination.port
-timestamp,97,12,False,timestamp,@timestamp
+timestamp,97,13,False,timestamp,@timestamp
 extra_data,95,15,True,extradata,event.original
 session_id,89,5,False,sessionid,network.session_id
-protocol,87,51,True,protocol,network.transport
+protocol,87,52,True,protocol,network.transport
 CPPM_IP,86,2,False,cppmip,
 CPPM_MsgNum,86,2,False,cppmmsgnum,
 CPPM_NumOfMsgs,86,2,False,cppmnumofmsgs,
@@ -18,7 +18,7 @@ event.id,81,2,False,id,event.id
 event.severity,81,2,False,severity,event.severity
 nas_ip,81,3,False,nasip,
 product.name,80,1,False,name,
-dstuser,78,25,True,dstuser,user.target.name
+dstuser,79,25,True,dstuser,user.target.name
 header,78,1,False,header,
 status,76,17,True,status,event.outcome
 user_name,72,4,False,username,user.name
@@ -33,17 +33,17 @@ seq_num,56,2,False,seqnum,
 id,53,24,True,id,event.code
 acct_delay_time,52,2,False,acctdelaytime,
 nas_port,51,3,False,nasport,
-type,45,24,False,type,event.type
+type,46,25,False,type,event.type
 calling_station_id,44,2,False,callingstationid,
 ip_address,43,4,False,ipaddress,
 nas_port_type,41,3,False,nasporttype,
 service,37,9,False,service,network.protocol
-url,36,21,True,url,url.original
+url,37,22,True,url,url.original
 method,34,11,False,method,http.request.method
-interface,33,11,False,interface,observer.ingress.interface.name
 ttl,33,3,False,ttl,
 acct_authentic,32,2,False,acctauthentic,
-severity,31,26,False,severity,event.severity
+interface,32,11,False,interface,observer.ingress.interface.name
+severity,32,27,False,severity,event.severity
 called_station_id,30,2,False,calledstationid,
 rule_id,30,3,False,ruleid,
 device,29,2,False,device,observer.name
@@ -51,11 +51,12 @@ esxi_host,29,2,False,esxihost,
 packet_size,28,1,False,packetsize,
 protocole,28,1,False,protocole,
 dst,27,5,False,dst,destination.ip
+log_type,27,15,False,logtype,
 src,27,6,False,src,source.ip
 src_port,27,8,False,srcport,source.port
 acct_session_time,26,2,False,acctsessiontime,
 dst_port,26,7,False,dstport,destination.port
-hostname,25,13,False,hostname,host.name
+hostname,26,14,False,hostname,host.name
 policy,25,2,False,policy,rule.name
 request_status,25,3,False,requeststatus,
 srcmac,25,13,False,srcmac,source.mac
@@ -65,6 +66,8 @@ dst_ip,24,3,False,dstip,destination.ip
 error_code,24,2,False,errorcode,
 src_ip,24,3,False,srcip,source.ip
 zyxel_hostname,24,1,False,zyxelhostname,
+yara_rule,23,12,False,yararule,
+yara_scanned_file,23,12,False,yarascannedfile,
 service_name,22,3,False,servicename,
 command,21,12,False,command,process.command_line
 srcaddr,21,1,False,srcaddr,source.ip
@@ -97,11 +100,11 @@ audit.session,12,2,False,session,network.session_id
 datacenter,12,2,False,datacenter,
 duration,12,8,False,duration,
 end_host_id,12,2,False,endhostid,
-local_port,12,3,False,localport,
-logtimestamp,12,2,False,logtimestamp,
+logtimestamp,12,3,False,logtimestamp,
 subsystem_category,12,2,False,subsystemcategory,
 system_name,12,6,True,systemname,host.name
 tcp_flags,12,2,False,tcpflags,
+version,12,11,False,version,observer.version
 audit.type,11,2,False,type,event.type
 cisco.facility,11,1,False,facility,
 cisco.mnemonic,11,1,False,mnemonic,
@@ -109,9 +112,9 @@ cisco.severity,11,1,False,severity,event.severity
 domain,11,5,False,domain,destination.domain
 flags,11,6,False,flags,
 ip,11,9,False,ip,
+local_port,11,2,False,localport,
 process_name,11,4,False,processname,process.name
 program,11,2,False,program,process.name
-version,11,10,False,version,observer.version
 category,10,10,False,category,event.category
 direction,10,9,False,direction,
 listener_id,10,1,False,listenerid,
@@ -141,7 +144,6 @@ device.name,8,1,False,name,
 devname,8,6,False,devname,observer.name
 geo_src,8,1,False,geosrc,
 log_level,8,3,False,loglevel,
-log_type,8,6,False,logtype,
 nessus_date,8,1,False,nessusdate,
 nessus_thread_id,8,1,False,nessusthreadid,
 nessus_time,8,1,False,nessustime,
@@ -151,6 +153,7 @@ process.name,8,1,False,name,process.name
 process.pid,8,1,False,pid,process.pid
 result,8,5,False,result,event.outcome
 rule_details,8,2,False,ruledetails,
+size,8,7,False,size,
 app,7,4,False,app,network.application
 audit.command,7,3,False,command,process.command_line
 deviceName,7,2,False,devicename,
@@ -170,7 +173,6 @@ nessus_message,7,1,False,nessusmessage,
 nessus_scan_id,7,1,False,nessusscanid,
 process_id,7,3,False,processid,
 pve.vmid,7,2,False,vmid,
-size,7,6,False,size,
 sns.msg,7,1,False,msg,message
 JobName,6,1,False,jobname,
 app_version,6,3,False,appversion,
@@ -217,11 +219,12 @@ dns_type,5,2,False,dnstype,
 error,5,4,False,error,
 event,5,5,False,event,
 event_code,5,3,False,eventcode,
+eventid,5,5,False,eventid,event.code
 file,5,5,False,file,file.path
 file_id,5,1,False,fileid,
 group,5,5,False,group,
+identifier,5,5,False,identifier,
 length,5,2,False,length,
-local_ip,5,4,False,localip,
 logid,5,4,False,logid,
 message_type,5,5,False,messagetype,
 mode,5,5,False,mode,
@@ -275,6 +278,7 @@ cfgpath,4,3,False,cfgpath,
 cfgtid,4,3,False,cfgtid,
 classification,4,3,False,classification,
 clid,4,1,False,clid,
+client_ip,4,4,False,clientip,source.ip
 connections,4,1,False,connections,
 container_name,4,2,False,containername,
 context_ID,4,1,False,contextid,
@@ -284,6 +288,7 @@ craction,4,3,False,craction,
 database,4,1,False,database,
 device.model,4,1,False,model,
 disk,4,4,False,disk,
+disk_usage_%,4,4,False,diskusage,
 dst_host,4,4,False,dsthost,
 dstintfrole,4,3,False,dstintfrole,
 dstname,4,4,False,dstname,
@@ -335,19 +340,19 @@ eventdata.terminalSessionId,4,4,False,terminalsessionid,
 eventdata.user,4,4,False,user,user.name
 eventdata.utcTime,4,4,False,utctime,
 eventdata.version,4,4,False,version,observer.version
-eventid,4,4,False,eventid,event.code
 frontend_name,4,1,False,frontendname,
 geo_dst,4,1,False,geodst,
 host_ip,4,3,False,hostip,
 http.date,4,2,False,date,http.date
 http.size,4,2,False,size,http.size
 icmp_type,4,3,False,icmptype,
-identifier,4,4,False,identifier,
 in,4,1,False,in,
 incidentserialno,4,3,False,incidentserialno,
 interface_in,4,1,False,interfacein,
 ipaddr,4,3,False,ipaddr,
 limit,4,3,False,limit,
+local_ip,4,3,False,localip,
+log_timestamp,4,4,False,logtimestamp,
 mastersrcmac,4,3,False,mastersrcmac,
 merevent,4,1,False,merevent,
 out,4,1,False,out,
@@ -404,6 +409,7 @@ uni_clientmac,4,3,False,uniclientmac,
 uri,4,4,False,uri,url.original
 urlfilteridx,4,4,False,urlfilteridx,
 urlfilterlist,4,4,False,urlfilterlist,
+used,4,4,False,used,
 user_session_id,4,2,False,usersessionid,
 usergate.severity,4,2,False,severity,event.severity
 usergate.version,4,2,False,version,observer.version
@@ -413,8 +419,6 @@ vipnet.ssh_session,4,1,False,sshsession,
 virusid,4,3,False,virusid,
 vpxd.event_type,4,1,False,eventtype,
 vpxd.module,4,1,False,module,
-yara_rule,4,3,False,yararule,
-yara_scanned_file,4,3,False,yarascannedfile,
 15mins_loadAverage,3,3,False,15minsloadaverage,
 1min_loadAverage,3,3,False,1minloadaverage,
 5mins_loadAverage,3,3,False,5minsloadaverage,
@@ -448,7 +452,6 @@ certhash,3,3,False,certhash,
 cfgattr,3,3,False,cfgattr,
 channeltype,3,3,False,channeltype,
 class,3,3,False,class,
-client_ip,3,3,False,clientip,source.ip
 connection,3,2,False,connection,
 connection_state,3,3,False,connectionstate,
 cookies,3,3,False,cookies,
@@ -465,7 +468,6 @@ device_timestamp,3,1,False,devicetimestamp,
 dhcp_server,3,1,False,dhcpserver,
 dhost,3,2,False,dhost,
 dir,3,3,False,dir,
-disk_usage_%,3,3,False,diskusage,
 dlpextra,3,3,False,dlpextra,
 dns,3,3,False,dns,
 dns_response,3,1,False,dnsresponse,
@@ -503,13 +505,15 @@ localip,3,3,False,localip,
 locip,3,3,False,locip,
 locport,3,3,False,locport,
 log_id,3,2,False,logid,
-log_timestamp,3,3,False,logtimestamp,
 login,3,3,False,login,user.name
 mark,3,1,False,mark,
 memory_available_bytes,3,3,False,memoryavailablebytes,
 memory_usage_%,3,3,False,memoryusage,
 memory_used_bytes,3,3,False,memoryusedbytes,
+network_in,3,3,False,networkin,
+network_out,3,3,False,networkout,
 outintf,3,3,False,outintf,
+package,3,3,False,package,
 policy_id,3,3,False,policyid,rule.id
 policy_name,3,3,False,policyname,
 policymode,3,3,False,policymode,
@@ -586,7 +590,6 @@ uni_ssid,3,3,False,unissid,
 uni_subcat,3,3,False,unisubcat,
 uni_utctime,3,3,False,uniutctime,
 unifi_category,3,3,False,unificategory,
-used,3,3,False,used,
 violations,3,3,False,violations,
 vipnet.coordinator.ip,3,1,False,ip,
 vipnet.rule.id,3,1,False,id,event.code
@@ -917,8 +920,6 @@ fndrfileid,2,2,False,fndrfileid,
 fndrfiletype,2,2,False,fndrfiletype,
 fndrseverity,2,2,False,fndrseverity,
 fndrverdict,2,2,False,fndrverdict,
-foreign_ip,2,2,False,foreignip,
-foreign_port,2,2,False,foreignport,
 forti,2,2,False,forti,
 fortiguardresp,2,2,False,fortiguardresp,
 fqdn,2,2,False,fqdn,
@@ -958,6 +959,8 @@ hostkeystatus,2,2,False,hostkeystatus,
 hseid,2,2,False,hseid,
 http.request_raw,2,1,False,requestraw,http.request_raw
 http.status,2,2,False,status,http.status
+http_method,2,2,False,httpmethod,http.request.method
+http_status,2,2,False,httpstatus,http.response.status_code
 httpcode,2,2,False,httpcode,
 hw.details,2,1,False,details,
 iaid,2,2,False,iaid,
@@ -973,6 +976,7 @@ icmp_id,2,1,False,icmpid,
 identity,2,2,False,identity,
 idleCPU_%,2,2,False,idlecpu,
 ietype,2,2,False,ietype,
+image,2,2,False,image,
 in_interface,2,2,False,ininterface,
 in_spi,2,2,False,inspi,
 inbandwidth,2,2,False,inbandwidth,
@@ -1065,8 +1069,6 @@ nat,2,2,False,nat,
 neighbor,2,2,False,neighbor,
 nessus_user,2,1,False,nessususer,
 netid,2,2,False,netid,
-network_in,2,2,False,networkin,
-network_out,2,2,False,networkout,
 networktransfertime,2,2,False,networktransfertime,
 new_arp,2,1,False,newarp,
 new_status,2,2,False,newstatus,
@@ -1100,7 +1102,6 @@ out_spi,2,2,False,outspi,
 outbandwidth,2,2,False,outbandwidth,
 outbandwidthavailable,2,2,False,outbandwidthavailable,
 outbandwidthused,2,2,False,outbandwidthused,
-package,2,2,False,package,
 packet_sent_by_origin,2,2,False,packetsentbyorigin,
 packet_sent_by_responder,2,2,False,packetsentbyresponder,
 packetloss,2,2,False,packetloss,
@@ -1184,7 +1185,6 @@ resolved_by,2,2,False,resolvedby,
 resource,2,1,False,resource,
 response_code,2,2,False,responsecode,
 risk,2,1,False,risk,
-rollback_status,2,2,False,rollbackstatus,
 router_ip,2,2,False,routerip,
 rpz_feed,2,1,False,rpzfeed,
 rsso_key,2,2,False,rssokey,
@@ -1402,6 +1402,7 @@ vpn_name,2,2,False,vpnname,
 vrf,2,2,False,vrf,
 vulncat,2,2,False,vulncat,
 vulncnt,2,2,False,vulncnt,
+vulnerability_id,2,2,False,vulnerabilityid,
 vulnid,2,2,False,vulnid,
 vulnname,2,2,False,vulnname,
 vulnresult,2,2,False,vulnresult,
@@ -1549,6 +1550,9 @@ app_category,1,1,False,appcategory,
 applayerproto,1,1,False,applayerproto,
 appliedConditionalAccessPolicies,1,1,False,appliedconditionalaccesspolicies,
 applmgmt.message,1,1,False,message,message
+ar_level,1,1,False,arlevel,
+ar_message,1,1,False,armessage,
+ar_pid,1,1,False,arpid,
 arp_resp,1,1,False,arpresp,
 arp_src,1,1,False,arpsrc,
 assigned_ip,1,1,False,assignedip,
@@ -1596,6 +1600,7 @@ auth_status,1,1,False,authstatus,
 auth_type,1,1,False,authtype,
 authentication_type,1,1,False,authenticationtype,
 authenticator,1,1,False,authenticator,
+available,1,1,False,available,
 awVersion,1,1,False,awversion,
 backup_location,1,1,False,backuplocation,
 backup_path,1,1,False,backuppath,
@@ -1619,6 +1624,7 @@ barracuda.waf.server_port,1,1,False,serverport,
 barracuda.waf.sessionid,1,1,False,sessionid,network.session_id
 barracuda.waf.severity_level,1,1,False,severitylevel,
 barracuda.waf.unit_name,1,1,False,unitname,
+binary_path,1,1,False,binarypath,
 blocked,1,1,False,blocked,
 blocked_requests,1,1,False,blockedrequests,
 blocking_exception_reason,1,1,False,blockingexceptionreason,
@@ -1832,6 +1838,7 @@ fields.su_for,1,1,False,sufor,
 fields.to_shell,1,1,False,toshell,
 fileDigest,1,1,False,filedigest,
 file_type,1,1,False,filetype,
+filesystem,1,1,False,filesystem,
 final_dstip,1,1,False,finaldstip,
 final_dstport,1,1,False,finaldstport,
 findings,1,1,False,findings,
@@ -1856,6 +1863,8 @@ flowtriq.signature_id,1,1,False,signatureid,
 flowtriq.source_count,1,1,False,sourcecount,
 flowtriq.start_time,1,1,False,starttime,
 foldername,1,1,False,foldername,
+foreign_ip,1,1,False,foreignip,
+foreign_port,1,1,False,foreignport,
 format,1,1,False,format,
 fragment,1,1,False,fragment,
 framed_proto,1,1,False,framedproto,
@@ -1890,11 +1899,12 @@ http.method,1,1,False,method,http.method
 http.referer,1,1,False,referer,http.referer
 http.request,1,1,False,request,http.request
 http.user_agent,1,1,False,useragent,http.user_agent
+http_body,1,1,False,httpbody,
 http_class_name,1,1,False,httpclassname,
-http_method,1,1,False,httpmethod,http.request.method
 http_query,1,1,False,httpquery,
 http_response_time,1,1,False,httpresponsetime,
-http_status,1,1,False,httpstatus,http.response.status_code
+http_size,1,1,False,httpsize,
+http_uri,1,1,False,httpuri,
 http_user_agent,1,1,False,httpuseragent,
 hw.new_state,1,1,False,newstate,
 hw.old_state,1,1,False,oldstate,
@@ -1912,7 +1922,6 @@ id_field1,1,1,False,idfield1,
 id_field2,1,1,False,idfield2,
 ids,1,1,False,ids,
 ifname,1,1,False,ifname,
-image,1,1,False,image,
 infoblox_msg,1,1,False,infobloxmsg,
 infoblox_service_id,1,1,False,infobloxserviceid,
 insight_threat_class,1,1,False,insightthreatclass,
@@ -2085,6 +2094,7 @@ mimecast.sha1,1,1,False,sha1,file.hash.sha1
 mimecast.sha256,1,1,False,sha256,file.hash.sha256
 minutes,1,1,False,minutes,
 miscellaneous,1,1,False,miscellaneous,
+mnt,1,1,False,mnt,
 modsec.accuracy,1,1,False,accuracy,
 modsec.action,1,1,False,action,event.action
 modsec.data,1,1,False,data,event.original
@@ -2333,6 +2343,7 @@ reserved,1,1,False,reserved,
 resource_type,1,1,False,resourcetype,
 resource_value,1,1,False,resourcevalue,
 response_flag,1,1,False,responseflag,
+rollback_status,1,1,False,rollbackstatus,
 route_domain,1,1,False,routedomain,
 rpz_feedtype,1,1,False,rpzfeedtype,
 rpz_policy,1,1,False,rpzpolicy,
@@ -2525,6 +2536,7 @@ stp_port,1,1,False,stpport,
 stp_state,1,1,False,stpstate,
 sub_id,1,1,False,subid,
 sub_violations,1,1,False,subviolations,
+subjectusername,1,1,False,subjectusername,
 subnet_mask,1,1,False,subnetmask,
 sw_component,1,1,False,swcomponent,
 sw_facility,1,1,False,swfacility,
@@ -2552,6 +2564,8 @@ systemd.verb,1,1,False,verb,
 tagName,1,1,False,tagname,
 targetIP,1,1,False,targetip,
 targetModule,1,1,False,targetmodule,
+targetdomainname,1,1,False,targetdomainname,
+targetusername,1,1,False,targetusername,
 temperature,1,1,False,temperature,
 threat,1,1,False,threat,
 threatCategory,1,1,False,threatcategory,
@@ -2723,6 +2737,7 @@ upstream_host,1,1,False,upstreamhost,
 uptime,1,1,False,uptime,
 urlIndex,1,1,False,urlindex,
 url_original,1,1,False,urloriginal,
+usage,1,1,False,usage,
 usb_action,1,1,False,usbaction,
 user.group,1,1,False,group,user.group
 user2,1,1,False,user2,
@@ -2772,7 +2787,6 @@ vpn_type,1,1,False,vpntype,
 vpxd.event_part,1,1,False,eventpart,
 vpxd.logout_target,1,1,False,logouttarget,
 vpxd.message,1,1,False,message,message
-vulnerability_id,1,1,False,vulnerabilityid,
 waf.act,1,1,False,act,
 waf.app,1,1,False,app,network.application
 waf.browser.type,1,1,False,type,event.type

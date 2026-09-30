@@ -1,0 +1,4 @@
+  <localfile>
+    <location>/var/log/incapsulaWAF.log</location>
+    <log_format>syslog</log_format>
+  </localfile>

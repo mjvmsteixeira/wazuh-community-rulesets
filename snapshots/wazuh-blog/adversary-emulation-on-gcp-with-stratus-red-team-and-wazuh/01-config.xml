@@ -1,0 +1,9 @@
+<ossec_config>
+  <gcp-pubsub>
+    <pull_on_start>yes</pull_on_start>
+    <interval>1m</interval>
+    <project_id><PROJECT_ID></project_id>
+    <subscription_name><SUBSCRIPTION_ID></subscription_name>
+     <credentials_file>/var/ossec/wodles/gcloud/credentials.json</credentials_file>
+  </gcp-pubsub>
+</ossec_config>

@@ -1,0 +1,12 @@
+{
+ "url": "https://wazuh.com/blog/real-time-threat-correlation-with-wazuh-and-opencti/",
+ "title": "Real-time threat correlation with Wazuh and OpenCTI",
+ "published": "2026-07-13",
+ "modified": "2026-07-13",
+ "files": {
+  "01-config.xml": "0058d5b0004d27fb",
+  "02-rules.xml": "69b682818cd396d5",
+  "03-config.xml": "d80ee3d824277254",
+  "04-config.xml": "b46b8520d59970dc"
+ }
+}

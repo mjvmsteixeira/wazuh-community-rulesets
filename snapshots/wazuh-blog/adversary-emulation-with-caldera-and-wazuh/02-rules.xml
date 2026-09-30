@@ -1,0 +1,30 @@
+<group name="windows">
+
+  <rule id="180001" level="8" ignore="120">
+    <if_group>windows</if_group>
+    <match>bitsadmin.exe /transfer /Download /priority Foreground</match>
+    <description>Suspicious download and execution with BITS job  on $(win.system.computer)</description>
+    <mitre>
+      <id>T1197</id>
+    </mitre>
+  </rule>
+
+  <rule id="180002" level="8" ignore="120">
+    <if_group>windows</if_group>
+    <match type="pcre2">(?i)(tshark|wireshark)</match>
+    <description>Network sniffing tool discovered on $(win.system.computer)</description>
+    <mitre>
+      <id>T1040</id>
+    </mitre>
+  </rule> 
+
+  <rule id="180003" level="8" ignore="120">
+    <if_group>windows</if_group>
+    <field name="win.eventdata.commandline" type="pcre2" > reg add \\\"HKLM\\\\System\\\\CurrentControlSet\\\\Control\\\\Terminal Server\\\\WinStations\\\\RDP-Tcp\\\" /v PortNumber /t REG_DWORD *</field>
+    <description>RDP port has been changed on $(win.system.computer)</description>
+    <mitre>
+      <id>T1021.001</id>
+    </mitre>
+  </rule>
+
+</group>

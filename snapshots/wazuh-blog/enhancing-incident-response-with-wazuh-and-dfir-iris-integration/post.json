@@ -1,0 +1,9 @@
+{
+ "url": "https://wazuh.com/blog/enhancing-incident-response-with-wazuh-and-dfir-iris-integration/",
+ "title": "Enhancing incident response with Wazuh and DFIR-IRIS",
+ "published": "2024-07-03",
+ "modified": "2025-05-21",
+ "files": {
+  "01-config.xml": "f7617a7c60d641b0"
+ }
+}

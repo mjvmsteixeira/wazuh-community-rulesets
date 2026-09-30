@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/monitoring-aws-environments-with-wazuh/",
+ "title": "Monitoring AWS environments with Wazuh",
+ "published": "2018-09-28",
+ "modified": "2023-02-17",
+ "files": {
+  "01-rules.xml": "807a5124eb028766",
+  "02-config.xml": "7121a4ce5ca50803"
+ }
+}

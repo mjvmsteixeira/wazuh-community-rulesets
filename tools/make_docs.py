@@ -265,6 +265,10 @@ A maior parte das regras Wazuh derivam do ecossistema OSSEC/Wazuh (GPLv2). Vári
 
 {ll}
 
+## Blog da Wazuh
+
+Os exemplos de regras, decoders e configuração dos artigos do [blog da Wazuh](https://wazuh.com/blog/) são capturados por `tools/fetch_blog.py` para `snapshots/wazuh-blog/` e reproduzidos sem alterações, um artigo por pasta. O conteúdo é © Wazuh, Inc.; cada pasta indica no `SOURCE.md` o artigo de origem, com o link, o título e as datas de publicação e de captura.
+
 ## Pedidos de remoção
 
 É autor de uma fonte e não quer o seu conteúdo aqui? [Abra uma issue]({REPO}/issues/new/choose) (modelo *Pedido de remoção*) e a fonte é retirada do registo e da página na versão seguinte.
@@ -486,6 +490,10 @@ open(os.path.join(ROOT, 'NOTICE.md'), 'w').write(f"""# NOTICE — source license
 This repository aggregates third-party files **without modifying them**. Each source folder has a `SOURCE.md` with the exact origin commit and, when there is one, `LICENSE.upstream` with the original license. Rights belong to their respective authors.
 
 Most Wazuh rules derive from the OSSEC/Wazuh ecosystem (GPLv2). Several sources declare GPL-3.0 or AGPL-3.0, whose terms propagate to derived works. Before publishing a combined pack, the resulting license must be compatible with every source included.
+
+## Wazuh blog
+
+The rule, decoder and configuration examples from the [Wazuh blog](https://wazuh.com/blog/) articles are captured by `tools/fetch_blog.py` into `snapshots/wazuh-blog/` and reproduced unchanged, one article per folder. The content is © Wazuh, Inc.; each folder's `SOURCE.md` names the source article, with its link, title, and publication and capture dates.
 
 ## Removal requests
 

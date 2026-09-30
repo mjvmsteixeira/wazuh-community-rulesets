@@ -1,0 +1,16 @@
+{
+ "url": "https://wazuh.com/blog/rapperbot-botnet-detection-and-mitigation-with-wazuh/",
+ "title": "RapperBot botnet detection and mitigation with Wazuh",
+ "published": "2022-09-29",
+ "modified": "2024-06-10",
+ "files": {
+  "01-config.xml": "b92e318a5e1727aa",
+  "02-rules.xml": "62ef9c2ca725b715",
+  "03-config.xml": "8c93ae9babf4e3a2",
+  "04-rules.xml": "881af970ac8c8394",
+  "05-config.xml": "2009a1f7150ad2cd",
+  "06-decoders.xml": "237c8227d2fdba9a",
+  "07-rules.xml": "161f6ff122fad90d",
+  "08-config.xml": "66f7f6f243e1d7c3"
+ }
+}

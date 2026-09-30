@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/detecting-maranhao-stealer-with-wazuh/",
+ "title": "Detecting Maranhão Stealer with Wazuh",
+ "published": "2025-10-14",
+ "modified": "2025-10-14",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-rules.xml": "ac2f629fcb2969c3"
+ }
+}

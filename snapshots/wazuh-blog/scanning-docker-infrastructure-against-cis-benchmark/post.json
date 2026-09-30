@@ -1,0 +1,9 @@
+{
+ "url": "https://wazuh.com/blog/scanning-docker-infrastructure-against-cis-benchmark/",
+ "title": "Scanning Docker infrastructure against CIS Benchmark with Wazuh",
+ "published": "2024-09-11",
+ "modified": "2024-09-11",
+ "files": {
+  "01-config.xml": "2b086d187a2f1137"
+ }
+}

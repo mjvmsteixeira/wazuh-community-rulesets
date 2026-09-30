@@ -61,7 +61,37 @@ AREAS_EN = {
  '99-unclassified': 'Files with no classification rule in tools/taxonomy.py (MAP) — classify before use',
 }
 
+# blog da Wazuh (snapshots/wazuh-blog/<slug>/): área pelo nome do artigo, tópico = slug; a primeira correspondência ganha
+BLOG_AREAS = [
+ (r'ransomware|stealer|rat(?:-|$)|\w*rat-detection|asyncrat|lodarat|njrat|limerat|strrat|venom|xworm|trojan|botnet|backdoor|malware|amadey|whispergate|invisibleferret|cobalt-strike|sliver|hoaxshell|metasploit|impacket|meshagent|keylogger|snake|fin7|jssloader|darkwatchman|apt\d|cve-\d|rogueplanet|xz-utils|log4j|log4shell|exploitation|campaign|lockbit|phobos|infostealer|sfx-archives', '19-threats-campaigns-cves'),
+ (r'misp|opencti|threat-intel|abuseipdb|alienvault|yeti|maltiverse|criminal-?ip|urlhaus|virustotal|threat-hunting-with|ioc|hibp|osint', '12-threat-intel'),
+ (r'pci-dss|hipaa|gdpr|nist|cmmc|iso-27001|compliance|cis-benchmark|tsc|fedramp|cjis|nis2|dora|primary-account-number', '18-compliance-frameworks'),
+ (r'-ai-|llm|chatgpt|openai|gemini|ollama|deepseek|genai|langflow|claude|copilot|machine-learning|artificial-intelligence', '17-ai-llm'),
+ (r'modbus|scada|-ot-|ics-|iot', '14-ot-ics-iot'),
+ (r'database|mysql|mariadb|postgres|mongodb|mssql|sql-server|redis|oracle-db', '10-databases'),
+ (r'kubernetes|docker|container|falco|kubelinter|grype|trivy|ecr|podman|openshift|tetragon|gke', '06-containers-k8s'),
+ (r'macos|mac-os|jamf', '04-macos'),
+ (r'windows|sysmon|powershell|lolbin|mimikatz|defender-asr|psexec', '01-windows-endpoint'),
+ (r'linux|auditd|suid|rootkit|systemd|ubuntu|rhel', '03-linux-unix'),
+ (r'active-directory|kerberos|ldap|okta|entra|identity|password|brute-force|credential|mfa|keycloak|vault', '02-identity-access'),
+ (r'aws|azure|gcp|google-cloud|google-workspace|office-365|microsoft-365|m365|cloud|github|gitlab|salesforce|snowflake|bedrock|oci|macie', '05-cloud-saas'),
+ (r'fortigate|firewall|pfsense|opnsense|mikrotik|vpn|palo-alto|cisco|network-device|meraki|unifi|sophos', '07-network-perimeter'),
+ (r'suricata|zeek|\bids\b|nids|honeypot|nmap|network-traffic|packet', '08-ndr-ids'),
+ (r'web|apache|nginx|waf|modsecurity|sql-injection|wordpress|drupal|webshell|php|iis', '09-web-apps-waf'),
+ (r'vulnerab|snyk|nuclei|openvas|nessus|end-of-life|inventory|shadow-it|patch|dependency-track', '13-vulnerability-mgmt'),
+ (r'proxmox|vmware|backup|veeam|synology|nas-|hyper-v|esxi', '15-infra-virt-storage-backup'),
+ (r'dns|email|phishing|mail|mimecast', '16-dns-email'),
+ (r'yara|clamav|defender|edr|antivirus|file-integrity|fim|bitdefender|eset|sentinelone|admin-by-request', '11-endpoint-security-edr'),
+ (r'agent|manager|wazuh-|tuning|custom-rules|active-response|alert|ossec|rsyslog|syslog|integrator|decoders|elastic-stack|opensearch|security-configuration-assessment|migrating|servicenow|android|root-user', '21-wazuh-platform-ops'),
+]
+
+def blog_area(slug_):
+    for rx, area in BLOG_AREAS:
+        if re.search(rf'(?:^|-)(?:{rx})', slug_): return area   # a palavra-chave tem de começar num token do slug
+    return '20-attck-multiplatform'
+
 EXCLUDE = [
+ (r'^adampielak/wazuh-scripts-resource$', r'^wazuh\.blog/(rules|decoders)/', 'substituído pela captura direta do blog da Wazuh (snapshots/wazuh-blog): um artigo por pasta, IDs originais e link para o artigo'),
  (r'^MedNamouchi/SIEM-MikroTik-Wazuh-Graylog$', r'^phase1-eve-ng/', 'versão de laboratório substituída pela de produção (phase2)'),
  (r'^patt502090/', r'wazuh-docker/', 'cópia de configuração do wazuh-docker'),
  (r'^zz-security/wazuh-ruleset$', r'.*', 'cópia de um ruleset oficial antigo (4050 IDs oficiais)'),
@@ -293,6 +323,9 @@ def slug(s):
     return re.sub(r'[^a-z0-9]+', '-', s.lower()).strip('-')
 
 def classify(repo, path):
+    if repo == 'wazuh.com/blog':
+        post = path.split('/')[0]
+        return blog_area(post), post[:80], None
     for rr, pr, why in EXCLUDE:
         if re.search(rr, repo) and re.search(pr, path):
             return None, None, why

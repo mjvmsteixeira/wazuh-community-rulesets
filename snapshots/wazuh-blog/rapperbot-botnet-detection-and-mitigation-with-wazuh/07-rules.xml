@@ -1,0 +1,29 @@
+<group name="syscheck,">
+    <rule id="100300" level="1">
+        <if_sid>550</if_sid>
+        <field name="file">/home/</field>
+        <description>File modified in /home/* directory.</description>
+    </rule>
+    <rule id="100301" level="1">
+        <if_sid>554</if_sid>
+        <field name="file">/home/</field>
+        <description>File added to /home/* directory.</description>
+    </rule>
+</group>
+
+<group name="yara,">
+    <rule id="108000" level="0">
+        <decoded_as>yara_decoder</decoded_as>
+        <description>Yara grouping rule</description>
+    </rule>
+    <rule id="108001" level="12">
+        <if_sid>108000</if_sid>
+        <match>wazuh-yara: INFO - Scan result: </match>
+        <description>File "$(yara_scanned_file)" is a RapperBot malware. Yara rule: $(yara_rule)</description>
+    </rule>
+    <rule id="108002" level="12">
+        <if_sid>108000</if_sid>
+        <match>wazuh-yara: INFO - Successfully removed threat: </match>
+        <description>Successfully removed RapperBot malware "$(yara_scanned_file)". YARA rule: $(yara_rule)</description>
+    </rule>
+</group>

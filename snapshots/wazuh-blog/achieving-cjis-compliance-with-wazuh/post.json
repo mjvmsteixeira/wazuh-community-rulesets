@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/achieving-cjis-compliance-with-wazuh/",
+ "title": "Achieving CJIS compliance with Wazuh",
+ "published": "2024-08-21",
+ "modified": "2024-08-21",
+ "files": {
+  "01-config.xml": "e5eecc052a57240e",
+  "02-config.xml": "1f01e22199bd33dc",
+  "03-config.xml": "32922632c38b473d"
+ }
+}

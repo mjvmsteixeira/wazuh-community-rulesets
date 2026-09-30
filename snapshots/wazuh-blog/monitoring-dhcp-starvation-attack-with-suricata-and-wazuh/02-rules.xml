@@ -1,0 +1,10 @@
+<group name="detect_dhcp_starvation_attack,">
+  <rule id="100005" level="12">
+    <if_sid>86601</if_sid>
+    <match>Too many DHCP DISCOVER packets</match>
+    <description>A DHCP starvation attack detected.</description>
+    <mitre>
+      <id>T1498</id>
+    </mitre>
+  </rule>
+</group>

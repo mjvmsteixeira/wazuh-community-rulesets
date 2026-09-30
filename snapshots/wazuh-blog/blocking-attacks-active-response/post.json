@@ -1,0 +1,14 @@
+{
+ "url": "https://wazuh.com/blog/blocking-attacks-active-response/",
+ "title": "Blocking attacks with Active Response | Wazuh |",
+ "published": "2016-05-19",
+ "modified": "2023-02-28",
+ "files": {
+  "01-config.xml": "54ea1d94d87f5f21",
+  "02-config.xml": "4aac94a44893d82d",
+  "03-config.xml": "86c8d1846cd37eeb",
+  "04-config.xml": "86c8d1846cd37eeb",
+  "05-config.xml": "d3249330325b6ed4",
+  "06-config.xml": "4f07e9704b1dbf1c"
+ }
+}

@@ -1,0 +1,9 @@
+<ossec_config>  
+<remote>
+    <connection>syslog</connection>
+    <port><PORT></port>
+    <protocol><PROTOCOL></protocol>
+    <allowed-ips><ALLOWED_IP></allowed-ips>
+    <local_ip><WAZUH_MANAGER_IP></local_ip>
+  </remote>
+</ossec_config>

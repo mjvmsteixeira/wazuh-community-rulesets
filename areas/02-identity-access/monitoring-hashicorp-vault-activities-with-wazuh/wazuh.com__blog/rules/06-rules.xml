@@ -1,0 +1,31 @@
+ <!-- Vault seal base rule-->
+  <rule id="100620" level="0">
+    <decoded_as>vault-seal</decoded_as>
+    <description>Vault Active Response logs.</description>
+  </rule>
+
+  <!-- Active response confirmation: vault-seal.sh logged SUCCESS.-->
+  <rule id="100621" level="12">
+    <if_sid>100620</if_sid>
+    <field name="vault_seal_level">SUCCESS</field>
+    <description>Vault sealed by active response. Immediate investigation required.</description>
+    <group>service_availability,active_response,</group>
+    <mitre>
+      <id>T1537</id>
+    </mitre>
+  </rule>
+
+  <!-- Active response failure: vault-seal.sh could not seal Vault. -->
+  <rule id="100622" level="14">
+    <if_sid>100620</if_sid>
+    <field name="vault_seal_level">ERROR</field>
+    <description>Active response failed to seal Vault. Manual intervention required.</description>
+    <group>service_availability,active_response,</group>
+  </rule>
+
+  <rule id="100623" level="3">
+    <if_sid>100620</if_sid>
+    <field name="vault_seal_level">INFO</field>
+    <description>Vault Active Response: $(vault_seal_message)</description>
+    <group>service_availability,active_response,</group>
+  </rule>

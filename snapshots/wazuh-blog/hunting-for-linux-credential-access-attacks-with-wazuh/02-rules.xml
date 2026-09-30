@@ -1,0 +1,55 @@
+<group name="cred_access,">
+<!--Detect access to offline password storing files-->
+  <rule id="100110" level="7">
+    <if_sid>80700</if_sid>
+    <list field="audit.key" lookup="match_key_value" check_value="passwd">etc/lists/audit-keys</list>
+    <description>File access - The file $(audit.file.name) was accessed</description>
+    <group>audit_command,</group>
+    <mitre>
+      <id>T1003.008</id>
+    </mitre>
+  </rule>
+
+  <rule id="100120" level="10">
+    <if_sid>80700</if_sid>
+    <list field="audit.key" lookup="match_key_value" check_value="shadow">etc/lists/audit-keys</list>
+    <description>Possible adversary activity - $(audit.file.name) was accessed</description>
+    <group>audit_command,</group>
+    <mitre>
+      <id>T1003.008</id>
+    </mitre>
+  </rule>
+
+<!--Detecting suspicious activities related to unsecured credentials -->
+  <rule id="100131" level="0">
+    <if_sid>80700</if_sid>
+    <list field="audit.key" lookup="match_key_value" check_value="ssh">etc/lists/audit-keys</list>
+    <description>Possible adversary activity - $(audit.file.name) was accessed</description>
+    <group>audit_command,</group>
+  </rule>
+
+  <rule id="100132" level="0">
+    <if_sid>80700</if_sid>
+    <list field="audit.key" lookup="match_key_value" check_value="history">etc/lists/audit-keys</list>
+    <description>Possible adversary activity - $(audit.file.name) was accessed</description>
+    <group>audit_command,</group>
+  </rule>
+
+  <rule id="100133" level="0">
+    <if_sid>80700</if_sid>
+    <field name="audit.exe" type="pcre2">/usr/bin/*grep</field>
+    <field name="audit.execve.a2">cred|password|login</field>
+    <description>Possible adversary activity - $(audit.file.name) was accessed</description>
+    <group>audit_command,</group>
+  </rule>
+
+  <rule id="100130" level="10">
+    <if_sid>100131, 100132, 100133</if_sid>
+    <description>Possible adversary activity - searching for previously used credentials in system files</description>
+    <group>audit_command,</group>
+    <mitre>
+      <id>T1552.001</id>
+    </mitre>
+  </rule>
+
+</group>

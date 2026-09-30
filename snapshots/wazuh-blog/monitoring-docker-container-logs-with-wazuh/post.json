@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/monitoring-docker-container-logs-with-wazuh/",
+ "title": "Monitoring Docker container logs with Wazuh",
+ "published": "2022-02-17",
+ "modified": "2026-09-30",
+ "files": {
+  "01-config.xml": "83adc70e0f78df73",
+  "02-decoders.xml": "9036f4e356c7970a",
+  "03-rules.xml": "4fc3b096e77be15b"
+ }
+}

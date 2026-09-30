@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/detecting-vulnerabilities-in-container-images-using-amazon-ecr/",
+ "title": "Detecting vulnerabilities in container images using Amazon ECR",
+ "published": "2024-01-04",
+ "modified": "2024-06-25",
+ "files": {
+  "01-config.xml": "a9961cc264f668a6",
+  "02-rules.xml": "dbd3a098a6204565"
+ }
+}

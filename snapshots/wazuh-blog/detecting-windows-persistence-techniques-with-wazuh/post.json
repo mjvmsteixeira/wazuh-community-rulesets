@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/detecting-windows-persistence-techniques-with-wazuh/",
+ "title": "Detecting Windows persistence techniques with Wazuh",
+ "published": "2025-04-30",
+ "modified": "2025-04-30",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-config.xml": "34942e8dea665d9b",
+  "03-config.xml": "a875f5c479a03da3"
+ }
+}

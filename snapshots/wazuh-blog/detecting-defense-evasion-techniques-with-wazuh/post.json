@@ -1,0 +1,12 @@
+{
+ "url": "https://wazuh.com/blog/detecting-defense-evasion-techniques-with-wazuh/",
+ "title": "Detecting defense evasion techniques with Wazuh",
+ "published": "2025-08-26",
+ "modified": "2025-08-26",
+ "files": {
+  "01-config.xml": "d8bb7c738a1397bf",
+  "02-rules.xml": "36465a3de6458577",
+  "03-rules.xml": "dd26ee0c78f701d9",
+  "04-rules.xml": "5dd8a038d57b9ba7"
+ }
+}

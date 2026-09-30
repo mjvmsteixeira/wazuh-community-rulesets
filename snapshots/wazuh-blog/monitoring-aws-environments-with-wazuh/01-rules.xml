@@ -1,0 +1,7 @@
+<group name="amazon,">
+  <rule id="100002" level="4">
+    <if_sid>80301</if_sid>
+    <field name="aws.description">EC2 instance has an unprotected port which is being probed by a known malicious host.</field>
+    <description>Guard Duty custom rule: $(aws.description)</description>
+  </rule>
+</group>

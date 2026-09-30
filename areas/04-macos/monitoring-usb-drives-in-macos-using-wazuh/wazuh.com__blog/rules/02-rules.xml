@@ -1,0 +1,17 @@
+<!-- rules for USB drives in macOS -->
+<group name="macOS,usb-detect,">
+
+  <!-- rule for connected USB drives -->
+  <rule id="111060" level="7">
+    <decoded_as>json</decoded_as>
+    <field name="eventType">^USBConnected$</field>
+    <description>macOS: USB drive $(deviceInfo.productName) was connected.</description>
+  </rule>
+  
+  <!-- rule for disconnected USB drives -->
+  <rule id="111062" level="7">
+    <decoded_as>json</decoded_as>
+    <field name="eventType">^USBDisconnected$</field>
+    <description>macOS: USB drive $(deviceInfo.productName) was disconnected.</description>
+  </rule>
+</group>

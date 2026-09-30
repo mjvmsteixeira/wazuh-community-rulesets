@@ -1,0 +1,13 @@
+{
+ "url": "https://wazuh.com/blog/detecting-threats-using-inventory-data/",
+ "title": "Threat hunting using inventory data collected by Wazuh",
+ "published": "2024-05-09",
+ "modified": "2025-05-21",
+ "files": {
+  "01-rules.xml": "15e15b1ef60115fd",
+  "02-config.xml": "05847fd59c96ec29",
+  "03-config.xml": "fa6fc822e29563c5",
+  "04-rules.xml": "da079e3fd6e3cac2",
+  "05-rules.xml": "c29cc6396135093f"
+ }
+}

@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/monitoring-network-devices/",
+ "title": "Monitoring network devices with Wazuh",
+ "published": "2024-01-19",
+ "modified": "2024-07-08",
+ "files": {
+  "01-config.xml": "c5053b69247f44e8",
+  "02-decoders.xml": "576f0f98f1e6861e",
+  "03-rules.xml": "288c1c8d3bd2315f"
+ }
+}

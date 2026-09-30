@@ -47,7 +47,7 @@ for i, f in enumerate(folders):
                 files.append([kind, os.path.relpath(p, fo), content(p)])
     s = src.get(f['source'], {}); v = val.get(fo, {}); c = coll.get(fo, {}); q = rcov.get(fo, {})
     packs.append({
-        'f': fo, 'a': f['area'], 't': f['topic'], 's': f['source'], 'url': s.get('url', ''), 'commit': s.get('commit', ''),
+        'f': fo, 'a': f['area'], 't': f['topic'], 's': f['source'], 'url': f.get('origin_url') or s.get('url', ''), 'commit': s.get('commit', ''),
         'lic': s.get('license', ''), 'last': s.get('last_commit', ''), 'r': int(f['rules']), 'd': int(f['decoders']),
         'sa': f['standalone'] == 'True', 'ok': v.get('loads_ok') == 'True', 'w': int(v.get('warnings') or 0),
         'err': v.get('first_error', ''), 'warn': v.get('first_warning', ''), 'dex': dex.get(fo, ''), 'repl': sorted(repl.get(fo, ())),

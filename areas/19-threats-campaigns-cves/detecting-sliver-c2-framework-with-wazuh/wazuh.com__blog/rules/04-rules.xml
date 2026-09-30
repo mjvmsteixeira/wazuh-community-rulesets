@@ -1,0 +1,25 @@
+<group name="syscheck,">
+  <rule id="100770" level="7">
+    <if_sid>550</if_sid>
+    <field name="file">C:\\Users\\<USER_NAME>\\Downloads</field>
+    <description>File modified in C:\Users\<USER_NAME>\Downloads directory.</description>
+  </rule>
+  <rule id="100771" level="7">
+    <if_sid>554</if_sid>
+    <field name="file">C:\\Users\\<USER_NAME>\\Downloads</field>
+    <description>File added to C:\Users\<USER_NAME>\Downloads  directory.</description>
+  </rule>
+</group>
+
+<group name="yara,">
+  <rule id="100880" level="0">
+    <decoded_as>yara_decoder</decoded_as>
+    <description>Yara grouping rule</description>
+  </rule>
+
+  <rule id="100881" level="12">
+    <if_sid>100880</if_sid>
+    <match>wazuh-yara: INFO - Scan result: </match>
+    <description>File "$(yara_scanned_file)" is a positive match. Yara rule: $(yara_rule)</description>
+  </rule>
+</group>

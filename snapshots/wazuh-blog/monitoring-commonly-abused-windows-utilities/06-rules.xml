@@ -1,0 +1,28 @@
+<group name="schtasks">
+  <rule id="100651" level="7">
+    <if_sid>61603</if_sid>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)SCHTASKS\s+/CREATE|SCHTASKS.EXE\s+/CREATE</field>
+    <description>schtasks attempted to create a new task: $(win.eventdata.commandLine).</description>
+    <mitre>
+      <id>T1053.005</id>
+    </mitre>
+  </rule>
+ 
+  <rule id="100652" level="7">
+    <if_sid>100651</if_sid>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)\/XML\s.+.XML</field>
+    <description>schtasks created a new task using an XML file: $(win.eventdata.commandLine).</description>
+    <mitre>
+      <id>T1053.005</id>
+    </mitre>
+  </rule>
+ 
+  <rule id="100653" level="7">
+    <if_sid>61603</if_sid>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)SCHTASKS\s+/Delete|SCHTASKS.EXE\s+/Delete</field>
+    <description>schtasks attempted to delete a scheduled task: $(win.eventdata.commandLine).</description>
+    <mitre>
+      <id>T1053.005</id>
+    </mitre>
+  </rule>
+</group>

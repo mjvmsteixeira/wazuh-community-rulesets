@@ -1,0 +1,12 @@
+{
+ "url": "https://wazuh.com/blog/detecting-dns-spoofing-attacks-with-wazuh/",
+ "title": "Detecting DNS spoofing attacks with Wazuh",
+ "published": "2026-05-07",
+ "modified": "2026-05-07",
+ "files": {
+  "01-config.xml": "7008718a1464fbf2",
+  "02-decoders.xml": "084d3ec0f4a152f8",
+  "03-config.xml": "f8cfa55c394def0b",
+  "04-rules.xml": "db2577e7f3985d0a"
+ }
+}

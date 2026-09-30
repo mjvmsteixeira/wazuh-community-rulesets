@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/detecting-windows-attacks-with-microsoft-defender-asr-and-wazuh/",
+ "title": "Detecting Windows attacks with Microsoft Defender ASR and Wazuh",
+ "published": "2026-09-10",
+ "modified": "2026-09-10",
+ "files": {
+  "01-config.xml": "ba952ad8890b499b",
+  "02-rules.xml": "861c28fb39b469a1"
+ }
+}

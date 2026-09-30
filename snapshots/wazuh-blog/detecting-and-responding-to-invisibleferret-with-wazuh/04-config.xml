@@ -1,0 +1,12 @@
+<command>
+  <name>remove-threat</name>
+  <executable>remove-threat.py</executable>
+  <timeout_allowed>yes</timeout_allowed>
+</command>
+
+<active-response>
+  <disabled>no</disabled>
+  <command>remove-threat</command>
+  <location>local</location>
+  <rules_id>100510</rules_id>
+</active-response>

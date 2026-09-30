@@ -1,0 +1,7 @@
+<group name="office_365,">
+  <rule id="100002" level="5">
+    <location>office_365</location>
+    <description>$(office_365.Workload) $(office_365.Operation) operation.</description>
+    <options>no_full_log</options>
+  </rule>
+</group>

@@ -1,0 +1,77 @@
+<group name="sharphound">
+<!-- This rule detects the organization name, SpecterOps in the binary.-->
+<rule id="111151" level="7">
+  <if_sid>61603</if_sid>
+  <field name="win.eventdata.company" type="pcre2">^SpecterOps$</field>
+  <description>Possible Bloodhound activity: Sharphound binary executed. </description>
+  <mitre>
+    <id>T1033</id>
+  </mitre>
+</rule>
+<!-- This rule detects the CollectionMethods flag, sometimes specified when running the executable.-->
+<rule id="111152" level="12">
+  <if_sid>61603</if_sid>
+  <field name="win.eventdata.parentImage" type="pcre2">(?i)[c-z]:\\\\Windows\\\\System32\\\\.+\\\\(powershell|cmd)\.exe</field>
+  <field name="win.eventdata.commandLine" type="pcre2">(?i)((--CollectionMethods\s)((.+){1,12})|(\s(--Loop)))</field>
+  <description>Possible Bloodhound activity: CollectionMethods flag detected.</description>
+  <mitre>
+    <id>T1059.00</id>
+    <id>T1033</id>
+  </mitre>
+</rule>  
+<!-- This rule detects the launch of the SharpHound PowerShell cmdlet.-->
+<rule id="111153" level="12">
+  <if_sid>61603</if_sid>
+  <field name="win.eventdata.parentImage" type="pcre2">(?i)[c-z]:\\\\Windows\\\\System32\\\\.+\\\\(powershell|cmd)\.exe</field>
+  <field name="win.eventdata.commandLine" type="pcre2">(?i)((invoke-bloodhound\s)|(get-bloodHounddata\s))</field>
+  <description>Possible Bloodhound activity: Sharphound Powershell cmdlet detected. </description>
+  <mitre>
+    <id>T1059.00</id>
+    <id>T1033</id>
+  </mitre>
+</rule>
+<!-- This rule detects attempts made by an executable to query LDAP-->
+<rule id="111154" timeframe="1" level="3">
+  <if_sid>61605</if_sid>
+  <field name="win.eventdata.image" type="pcre2">(?i)^[c-z](([^\\]+?)(.*)(\.exe|ps1)$)</field>
+  <field name="win.eventdata.destinationPort" type="pcre2">^389$</field>
+  <description>LDAP query detected by $(win.eventdata.image) binary on $(name) host.</description>
+  <mitre>
+    <id>T1560</id>
+  </mitre>
+</rule>
+<!-- This rule detects the creation of JSON files containing sensitive AD information
+ obtained by the ingestor from the AD-->
+<rule id="111155" timeframe="2" frequency="2" level="7">
+  <if_sid>61613</if_sid>
+  <field name="win.eventdata.image" type="pcre2">\.exe</field>
+  <field name="win.eventdata.targetFilename" type="pcre2">(?i)([^\\]+?)(_computers\.json$|_domains\.json$|_ous\.json$|_users\.json$|_groups\.json$|_containers\.json$|_gpos\.json$)</field>
+  <description>Possible Bloodhound activity detected: $(win.eventdata.targetFilename) file created by $(win.eventdata.image).</description>
+  <mitre>
+    <id>T1036</id>
+  </mitre>
+</rule>
+<!-- This rule detects the creation of a zip file by an executable binary-->
+<rule id="111156" level="3">
+  <if_sid>61613</if_sid>
+  <field name="win.eventdata.image" type="pcre2">\.exe</field>
+  <field name="win.eventdata.targetFilename" type="pcre2">(?i)[c-z]:\\.*?([^\\]+\.(zip))$</field>
+  <description>Zip file created: compressed data $(win.eventdata.targetFilename) created by $(win.eventdata.image).</description>
+  <mitre>
+    <id>T1560</id>
+  </mitre>
+</rule>
+</group>
+<group name="nullsession-connection">
+<!-- This rule detects attempts to enumerate DC through null session connections.-->
+<rule id="111157" frequency="2" timeframe="3" level="5">
+  <if_sid>60103</if_sid>
+  <field name="win.system.eventID" type="pcre2">^5145$</field>
+  <field name="win.eventdata.relativeTargetName" type="pcre2">^srvsvc|lsarpc|samr$</field>
+  <field name="win.eventdata.subjectUserName" type="pcre2">^(?!.*\$$).*$</field>
+  <description> Possible Network Service enumeration by $(win.eventdata.subjectUserName) targeting $(win.eventdata.relativeTargetName).</description>
+  <mitre>
+    <id>T1087</id>
+  </mitre>
+</rule>
+</group>

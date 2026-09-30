@@ -1,0 +1,6 @@
+<group name="dns_query,maltiverse_hostname_test,">
+  <rule id="111041" level="5">
+    <decoded_as>maltiverse_hostname</decoded_as>
+    <description> The server $(identifier) making a DNS query.</description>
+  </rule>
+</group>

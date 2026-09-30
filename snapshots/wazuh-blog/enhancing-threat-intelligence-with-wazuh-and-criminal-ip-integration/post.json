@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/enhancing-threat-intelligence-with-wazuh-and-criminal-ip-integration/",
+ "title": "Enhancing threat intelligence with Wazuh and Criminal IP integration",
+ "published": "2025-01-23",
+ "modified": "2025-01-23",
+ "files": {
+  "01-config.xml": "f85f36e0a15eb3c8",
+  "02-rules.xml": "89e3f26900143bf8",
+  "03-config.xml": "a0d1adda802e5daf"
+ }
+}

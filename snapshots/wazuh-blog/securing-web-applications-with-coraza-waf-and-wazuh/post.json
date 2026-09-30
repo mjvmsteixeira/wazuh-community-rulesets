@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/securing-web-applications-with-coraza-waf-and-wazuh/",
+ "title": "Securing web applications with Coraza WAF and Wazuh",
+ "published": "2026-09-17",
+ "modified": "2026-09-17",
+ "files": {
+  "01-config.xml": "8333fb40cdc3a92c",
+  "02-rules.xml": "b64d174247503fe4"
+ }
+}

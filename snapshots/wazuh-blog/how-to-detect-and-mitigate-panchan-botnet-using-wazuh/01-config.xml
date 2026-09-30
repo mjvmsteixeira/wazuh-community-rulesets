@@ -1,0 +1,33 @@
+<agent_config os="linux">
+<!-- Panchan outbound SSH brute force -->
+  <localfile>
+    <log_format>full_command</log_format>
+    <command>ss -nputw | grep -c ':22 ' | awk -F: '$0 > 4'</command>
+    <alias>Checking outbound SSH</alias>
+    <frequency>60</frequency>
+  </localfile>
+
+<!-- Panchan listening on port 1919 -->
+  <localfile>
+    <log_format>full_command</log_format>
+    <command>netstat -lno | grep ':1919 '</command>
+    <alias>Detecting possible botnet communication</alias>
+    <frequency>60</frequency>
+  </localfile>
+
+<!-- Panchan binary path -->
+  <localfile>
+    <log_format>full_command</log_format>
+    <command>find /.* -maxdepth 1 -type f -name xinetd</command>
+    <alias>Finding Panchan binary path</alias>
+    <frequency>43200</frequency>
+  </localfile>
+
+<!-- Panchan persistence -->
+  <localfile>
+    <log_format>full_command</log_format>
+    <command>systemctl list-units --full -all | grep "systemd-worker.service"</command>
+    <alias>Detecting Panchan persistence service</alias>
+    <frequency>60</frequency>
+  </localfile>
+</agent_config>

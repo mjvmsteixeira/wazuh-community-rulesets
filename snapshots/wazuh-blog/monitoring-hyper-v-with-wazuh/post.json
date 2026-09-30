@@ -1,0 +1,12 @@
+{
+ "url": "https://wazuh.com/blog/monitoring-hyper-v-with-wazuh/",
+ "title": "Monitoring Hyper-V with Wazuh",
+ "published": "2025-06-03",
+ "modified": "2025-06-03",
+ "files": {
+  "01-config.xml": "72963256a66a510c",
+  "02-rules.xml": "6a608b4c482e6103",
+  "03-rules.xml": "26009ce1d9b4d869",
+  "04-config.xml": "698c2e9c3d42825b"
+ }
+}

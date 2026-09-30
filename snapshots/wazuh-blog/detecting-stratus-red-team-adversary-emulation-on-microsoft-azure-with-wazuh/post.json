@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/detecting-stratus-red-team-adversary-emulation-on-microsoft-azure-with-wazuh/",
+ "title": "Detecting Stratus Red Team adversary emulation on Microsoft Azure with Wazuh",
+ "published": "2026-06-25",
+ "modified": "2026-06-25",
+ "files": {
+  "01-config.xml": "0b6199fcbbac2929",
+  "02-rules.xml": "fcfe178a0f724a71"
+ }
+}

@@ -1,0 +1,11 @@
+<ossec_config>
+  <syscheck>
+    <directories check_all="yes" realtime="yes" report_changes="yes">/etc/cron.d</directories>
+    <directories check_all="yes" realtime="yes" report_changes="yes">/etc/cron.daily</directories>
+    <directories check_all="yes" realtime="yes" report_changes="yes">/etc/cron.hourly</directories>
+    <directories check_all="yes" realtime="yes" report_changes="yes">/etc/cron.weekly</directories>
+    <directories check_all="yes" realtime="yes" report_changes="yes">/etc/cron.monthly</directories>
+    <directories check_all="yes" realtime="yes" report_changes="yes">/var/spool/cron/crontabs</directories>
+    <file>/etc/crontab</file>
+  </syscheck>
+</ossec_config>

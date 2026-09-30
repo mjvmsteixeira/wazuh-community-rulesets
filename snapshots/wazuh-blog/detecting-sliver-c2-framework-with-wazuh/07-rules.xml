@@ -1,0 +1,8 @@
+<group name="mtls-port,">
+<!-- Command monitoring rule for specific Sliver C2 port communication -->
+  <rule id="107002" level="10">
+    <if_sid>530</if_sid>
+    <match>ossec: output: 'Detecting possible Sliver communication'</match>
+    <description>Possible Sliver C2 activity: Detected port 8888 listening.</description>
+  </rule>
+</group>

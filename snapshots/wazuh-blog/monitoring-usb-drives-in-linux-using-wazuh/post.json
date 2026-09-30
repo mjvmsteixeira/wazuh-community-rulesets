@@ -1,0 +1,12 @@
+{
+ "url": "https://wazuh.com/blog/monitoring-usb-drives-in-linux-using-wazuh/",
+ "title": "Monitoring USB drives in Linux using Wazuh",
+ "published": "2023-12-13",
+ "modified": "2024-07-08",
+ "files": {
+  "01-config.xml": "65c4be8287cdb472",
+  "02-rules.xml": "5ab5bcdd47ec076c",
+  "03-config.xml": "4b9ca5ed552413f1",
+  "04-rules.xml": "e1c92fc52a7f9f2c"
+ }
+}

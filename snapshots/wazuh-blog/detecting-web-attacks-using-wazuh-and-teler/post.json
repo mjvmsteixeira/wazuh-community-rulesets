@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/detecting-web-attacks-using-wazuh-and-teler/",
+ "title": "Detecting web attacks using Wazuh and teler",
+ "published": "2022-10-28",
+ "modified": "2024-06-10",
+ "files": {
+  "01-config.xml": "fe4823669d05190a",
+  "02-rules.xml": "28947fc3ca4b1389"
+ }
+}

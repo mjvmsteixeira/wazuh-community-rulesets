@@ -1,0 +1,35 @@
+<!-- Blocos de resposta extraídos, sem alterações, de wazuh.com/blog:achieving-cjis-compliance-with-wazuh/01-config.xml @ b4b3f986b301 -->
+<integration>
+  <name>slack</name>
+  <hook_url>https://hooks.slack.com/services/...</hook_url> 
+  <level>10</level>
+  <group>multiple_drops,authentication_failures</group>
+  <alert_format>json</alert_format>
+  <options>{"pretext": "Custom Title"}</options> 
+</integration>
+
+<integration>
+  <name>virustotal</name>
+  <api_key>API_KEY</api_key> 
+  <group>syscheck</group>
+  <alert_format>json</alert_format>
+  <timeout>30</timeout>
+  <retries>5</retries>
+</integration>
+
+<integration>
+  <name>maltiverse</name>
+  <hook_url>https://api.maltiverse.com</hook_url>
+  <api_key>API_KEY</api_key> 
+  <alert_format>json</alert_format>
+</integration>
+
+<integration>
+  <name>custom-integration</name>
+  <hook_url>WEBHOOK</hook_url>
+  <level>10</level>
+  <group>multiple_drops,authentication_failures</group>
+  <api_key>APIKEY</api_key> 
+  <alert_format>json</alert_format>
+  <options>{"data": "Custom data"}</options> 
+</integration>

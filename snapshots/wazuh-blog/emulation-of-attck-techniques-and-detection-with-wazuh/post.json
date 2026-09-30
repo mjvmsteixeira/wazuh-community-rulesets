@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/emulation-of-attck-techniques-and-detection-with-wazuh/",
+ "title": "Emulation of ATT&CK techniques and detection with Wazuh",
+ "published": "2022-03-07",
+ "modified": "2026-09-30",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-rules.xml": "8c535bab5c19f9e1"
+ }
+}

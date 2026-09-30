@@ -1,0 +1,14 @@
+{
+ "url": "https://wazuh.com/blog/detecting-and-responding-to-bqtlock-ransomware-with-wazuh/",
+ "title": "Detecting and responding to BQTLock ransomware with Wazuh",
+ "published": "2026-04-16",
+ "modified": "2026-04-16",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-rules.xml": "24466961c2a594f4",
+  "03-config.xml": "2890d607b746d89f",
+  "04-rules.xml": "58606d0d5d62d7d5",
+  "05-config.xml": "05d169e780f3a965",
+  "06-rules.xml": "0b747724fd6212b6"
+ }
+}

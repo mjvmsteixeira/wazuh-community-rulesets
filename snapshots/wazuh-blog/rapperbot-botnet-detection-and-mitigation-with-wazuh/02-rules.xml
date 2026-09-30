@@ -1,0 +1,35 @@
+<group name="local,syslog,sshd,">
+    <!-- RapperBot brute forcing on SSH port -->
+    <rule id="100011" level="12">
+        <if_sid>530</if_sid>
+        <match>ossec: output: 'ss listening SSH outbounds'</match>
+        <description>Outbound SSH brute force attack to several Linux endpoints.</description>
+    </rule>
+
+    <!-- RapperBot communication with C2 server -->
+    <rule id="100016" level="12">
+        <if_sid>530</if_sid>
+        <match>ossec: output: 'ss listening C2 server port'</match>
+        <description>Possible RapperBot malware communication with C2 server detected.</description>
+    </rule>
+
+    <!-- RapperBot superuser creation -->
+    <rule id="100020" level="12">
+        <if_sid>530</if_sid>
+        <match>ossec: output: 'check root user creation'</match>
+        <description>[User Creation]: Possible RapperBot malware detected.</description>
+        <mitre>
+            <id>T1053.003</id>
+        </mitre>
+    </rule>
+
+    <!-- RapperBot cron job for superuser creation -->
+    <rule id="100022" level="12">
+        <if_sid>530</if_sid>
+        <match>ossec: output: 'check cron job for root user creation'</match>
+        <description>[Cron Job Created to Add User]: Possible RapperBot malware detected.</description>
+        <mitre>
+            <id>T1053.003</id>
+        </mitre>
+    </rule>
+</group>

@@ -1,0 +1,15 @@
+<group name="sourceusers,">
+
+  <rule id="100500" level="7">
+    <if_sid>80253</if_sid>
+    <list field="aws.sourceIPAddress" lookup="address_match_key">etc/lists/trusted-ips</list>
+    <description>Successful AWS Management Console login from trusted IP $(aws.sourceIPAddress) by IAM user $(aws.userIdentity.userName)</description>
+  </rule>
+
+ <rule id="100501" level="12">
+    <if_sid>80253</if_sid>
+    <list field="aws.sourceIPAddress" lookup="not_address_match_key">etc/lists/trusted-ips</list>
+    <description>Successful AWS Management Console login from untrusted IP $(aws.sourceIPAddress) by IAM user $(aws.userIdentity.userName)</description>
+  </rule>
+
+</group>

@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/integrating-servicenow-with-wazuh/",
+ "title": "Integrating ServiceNow with Wazuh",
+ "published": "2025-08-19",
+ "modified": "2025-08-19",
+ "files": {
+  "01-config.xml": "7c24b9f3fc359bb3",
+  "02-rules.xml": "0fa262beff0a9d09"
+ }
+}

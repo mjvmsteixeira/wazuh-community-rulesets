@@ -1,0 +1,9 @@
+{
+ "url": "https://wazuh.com/blog/using-wazuh-and-thehive-for-threat-protection-and-incident-response/",
+ "title": "Wazuh and TheHive: Protection and incident response",
+ "published": "2022-04-06",
+ "modified": "2026-09-30",
+ "files": {
+  "01-config.xml": "4b9fd7224d5fdf54"
+ }
+}

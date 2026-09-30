@@ -1,0 +1,13 @@
+<!-- Blocos de resposta extraídos, sem alterações, de wazuh.com/blog:monitoring-windows-task-scheduler-to-detect-attack-persistence/03-config.xml @ b4b3f986b301 -->
+<command>
+   <name>analyze-scheduled-task</name>
+   <executable>analyze-scheduled-task.cmd</executable>
+   <timeout_allowed>no</timeout_allowed>
+</command>
+
+<active-response>
+   <disabled>no</disabled>
+   <command>analyze-scheduled-task</command>
+   <location>local</location>
+   <rules_id>115006</rules_id>
+</active-response>

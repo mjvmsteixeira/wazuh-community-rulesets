@@ -1,0 +1,13 @@
+{
+ "url": "https://wazuh.com/blog/detecting-and-responding-to-funklocker-ransomware-with-wazuh/",
+ "title": "Detecting and responding to Funklocker ransomware with Wazuh",
+ "published": "2025-11-20",
+ "modified": "2025-11-20",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-rules.xml": "6ef720bd2491aa54",
+  "03-decoders.xml": "13193c3c92948d98",
+  "04-rules.xml": "e3abc50ee5b898cb",
+  "05-config.xml": "75facb5664140475"
+ }
+}

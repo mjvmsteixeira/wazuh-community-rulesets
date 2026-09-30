@@ -1,0 +1,9 @@
+{
+ "url": "https://wazuh.com/blog/integrating-eset-protect-hub-with-wazuh/",
+ "title": "Integrating ESET PROTECT Hub with Wazuh",
+ "published": "2025-07-03",
+ "modified": "2025-07-11",
+ "files": {
+  "01-config.xml": "4ea0bfcb0ba79cc8"
+ }
+}

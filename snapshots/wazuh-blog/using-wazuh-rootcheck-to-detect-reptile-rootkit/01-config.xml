@@ -1,0 +1,22 @@
+<agent_config os="linux">
+ 
+  <!-- Shared agent configuration here -->
+ 
+  <rootcheck>
+    <disabled>no</disabled>
+    <check_unixaudit>yes</check_unixaudit>
+    <check_files>yes</check_files>
+    <check_dev>yes</check_dev>
+    <check_sys>yes</check_sys>
+    <check_pids>yes</check_pids>
+    <check_ports>yes</check_ports>
+    <check_if>yes</check_if>
+    <ignore type="sregex">^/etc/</ignore>
+    <scanall>yes</scanall>
+ 
+    <frequency>1800</frequency>
+ 
+    <rootkit_files>etc/shared/rootkit_files.txt</rootkit_files>
+  </rootcheck>
+ 
+</agent_config>

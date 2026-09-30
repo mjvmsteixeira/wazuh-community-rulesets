@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/file-integrity-monitoring-windows-user-groups/",
+ "title": "File Integrity Monitoring and Windows security policies",
+ "published": "2016-05-03",
+ "modified": "2024-06-04",
+ "files": {
+  "01-decoders.xml": "0a8a6dbd673eb22c",
+  "02-rules.xml": "10d6d3ff5566eab9"
+ }
+}

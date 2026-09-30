@@ -1,0 +1,13 @@
+<group name="performance_metric,">
+<!-- Network traffic sent/received -->
+ <rule id="100100" level="3">
+  <decoded_as>network_check</decoded_as>
+  <description>Network metrics: $(network_in) bytes inbound | $(network_out) bytes outbound</description>
+ </rule>
+
+<!-- Disk usage -->
+ <rule id="100200" level="3">
+  <decoded_as>disk_health_check</decoded_as>
+  <description>Disk usage metrics: $(disk_usage_%)% of storage is in use</description>
+ </rule>
+</group>

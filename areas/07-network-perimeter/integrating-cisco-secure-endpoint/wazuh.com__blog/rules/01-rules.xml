@@ -1,0 +1,32 @@
+<group name="ciscoendpoint,">
+
+  <rule id="110010" level="3">
+    <location>ciscoendpoint</location>
+    <description>Cisco Secure Endpoint: $(ciscoendpoint.event_type).</description>
+  </rule>
+
+  <rule id="110011" level="6">
+    <if_sid>110010</if_sid>
+    <field name="ciscoendpoint.severity">Low</field>
+    <description>Cisco Secure Endpoint: $(ciscoendpoint.event_type).</description>
+  </rule>
+
+  <rule id="110012" level="9">
+    <if_sid>110010</if_sid>
+    <field name="ciscoendpoint.severity">Medium</field>
+    <description>Cisco Secure Endpoint: $(ciscoendpoint.event_type).</description>
+  </rule>
+
+  <rule id="110013" level="12">
+    <if_sid>110010</if_sid>
+    <field name="ciscoendpoint.severity">High</field>
+    <description>Cisco Secure Endpoint: $(ciscoendpoint.event_type).</description>
+  </rule>
+
+  <rule id="110014" level="15">
+    <if_sid>110010</if_sid>
+    <field name="ciscoendpoint.severity">Critical</field>
+    <description>Cisco Secure Endpoint: $(ciscoendpoint.event_type).</description>
+  </rule>
+
+</group>

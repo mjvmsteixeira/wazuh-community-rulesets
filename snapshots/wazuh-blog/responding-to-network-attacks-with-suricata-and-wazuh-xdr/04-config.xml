@@ -1,0 +1,7 @@
+<ossec_config>
+  <command>
+    <name>firewall-drop</name>
+    <executable>firewall-drop</executable>
+    <timeout_allowed>yes</timeout_allowed>
+  </command>
+</ossec_config>

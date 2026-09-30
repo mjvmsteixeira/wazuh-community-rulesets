@@ -1,0 +1,7 @@
+<remote>
+  <connection>syslog</connection>
+  <port>514</port>
+  <protocol>udp</protocol>
+  <allowed-ips>192.168.0.0/24</allowed-ips>
+  <local_ip>192.168.0.200</local_ip>
+</remote>

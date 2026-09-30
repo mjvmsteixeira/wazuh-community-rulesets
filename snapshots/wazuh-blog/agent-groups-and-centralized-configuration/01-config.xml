@@ -1,0 +1,8 @@
+<agent_config>
+   <syscheck>
+     <frequency>300</frequency>
+     <directories check_all="yes" report_changes="yes" whodata="yes">
+C:\Program Files (x86)\ossec-agent\ossec.conf</directories>
+
+   </syscheck>
+</agent_config>

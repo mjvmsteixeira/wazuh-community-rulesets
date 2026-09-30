@@ -1,0 +1,7 @@
+<agent_config os="linux">
+    <syscheck>
+        <directories check_all="yes" realtime="yes" report_changes="yes">/etc/</directories>
+        <directories check_all="yes" realtime="yes" report_changes="yes">/home/*/.ssh/</directories>
+        <directories check_all="yes" realtime="yes" report_changes="yes">/root/.ssh/</directories>
+    </syscheck>
+</agent_config>

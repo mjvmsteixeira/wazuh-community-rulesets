@@ -1,0 +1,36 @@
+<group name= "syscheck,">
+
+  <rule id="100050" level="7">
+    <if_sid>550</if_sid>
+    <field name="file">C:\\Users\\administrator\\Downloads</field>
+    <description>File modified in C:\Users\administrator\Downloads directory.</description>
+  </rule>
+
+  <rule id="100051" level="7">
+    <if_sid>554</if_sid>
+    <field name="file">C:\\Users\\administrator\\Downloads</field>
+    <description>File added to C:\Users\administrator\Downloads  directory.</description>
+  </rule>
+
+</group>
+
+<group name="yara,">
+
+  <rule id="100052" level="0">
+    <decoded_as>yara_decoder</decoded_as>
+    <description>Yara grouping rule</description>
+  </rule>
+
+  <rule id="100053" level="12">
+    <if_sid>100052</if_sid>
+    <match>wazuh-yara: INFO - Scan result: </match>
+    <description>File "$(yara_scanned_file)" is a positive match. Yara rule: $(yara_rule)</description>
+  </rule>
+
+  <rule id="100054" level="12">
+    <if_sid>100053</if_sid>
+    <match>wazuh-yara: INFO - Scan result: RANSOM_Lockbit_Black_Packer</match>
+    <description>Successfully removed Lockbit 3.0 malware "$(yara_scanned_file)". YARA rule: $(yara_rule)</description>
+  </rule>
+
+</group>

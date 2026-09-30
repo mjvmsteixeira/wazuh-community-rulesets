@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/integrating-imperva-cloud-web-application-firewall-cwaf/",
+ "title": "Integrating Imperva cloud web application firewall (CWAF) with Wazuh",
+ "published": "2024-07-31",
+ "modified": "2024-07-31",
+ "files": {
+  "01-decoders.xml": "f90b32e37be7ab9e",
+  "02-rules.xml": "7fb32def0a75cc92",
+  "03-config.xml": "86c7cb1af686d211"
+ }
+}

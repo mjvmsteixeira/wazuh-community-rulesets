@@ -1,0 +1,6 @@
+<ossec_config>
+  <localfile>
+    <location>/var/log/audit/audit.log</location>
+    <log_format>audit</log_format>
+  </localfile>
+</ossec_config>

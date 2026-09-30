@@ -1,0 +1,4 @@
+  <localfile>
+    <log_format>json</log_format>
+    <location>/var/log/hibp_breach_checks.log</location>
+  </localfile>

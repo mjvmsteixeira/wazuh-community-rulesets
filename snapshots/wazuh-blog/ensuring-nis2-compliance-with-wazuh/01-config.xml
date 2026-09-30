@@ -1,0 +1,5 @@
+<syscheck>
+  <directories check_all="yes" report_changes="yes" realtime="yes">/root</directories>
+  <directories check_all="yes" realtime="yes">/var/www/html</directories>
+  <ignore>/var/www/html/tmp</ignore>
+</syscheck>

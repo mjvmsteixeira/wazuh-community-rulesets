@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/monitoring-remote-openvpn-connections-with-geoip-and-wazuh-xdr/",
+ "title": "Monitoring remote OpenVPN connections",
+ "published": "2023-01-26",
+ "modified": "2024-06-14",
+ "files": {
+  "01-config.xml": "1f704cf8fd1e4ef6",
+  "02-decoders.xml": "147d043f1613c9c6",
+  "03-rules.xml": "e57117e33b2709c2"
+ }
+}

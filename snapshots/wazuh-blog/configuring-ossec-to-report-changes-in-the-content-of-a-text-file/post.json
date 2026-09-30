@@ -1,0 +1,9 @@
+{
+ "url": "https://wazuh.com/blog/configuring-ossec-to-report-changes-in-the-content-of-a-text-file/",
+ "title": "Configuring OSSEC to report file changes",
+ "published": "2016-05-03",
+ "modified": "2023-06-09",
+ "files": {
+  "01-config.xml": "f9eca3459e3871b2"
+ }
+}

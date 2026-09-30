@@ -1,0 +1,18 @@
+<var name="CriticalFolders">C:\\\\Critical_Folder|C:\\\\Critical_Folder2</var>
+
+<group name="windows, windows_security,">
+  <rule id="100111" level="0">
+     <if_sid>60103</if_sid>
+     <field name="win.system.eventID">^4663$</field>
+     <field name="win.eventdata.objectName">$CriticalFolders</field>
+     <description>Object access information into critical folders</description>     
+     <options>no_full_log</options>
+  </rule>
+
+  <rule id="100112" level="10">
+     <if_sid>100111</if_sid>
+     <time>5pm - 8am</time>
+     <description>$(win.eventdata.subjectUserName) accessed $(win.eventdata.objectName) folder out of office hours.</description>    
+     <options>no_full_log</options>
+  </rule>
+</group>

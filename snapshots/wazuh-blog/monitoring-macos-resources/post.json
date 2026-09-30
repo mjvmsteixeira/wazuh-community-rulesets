@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/monitoring-macos-resources/",
+ "title": "Monitoring macOS resources with Wazuh",
+ "published": "2023-06-29",
+ "modified": "2025-11-26",
+ "files": {
+  "01-config.xml": "5e32580d0fd2443e",
+  "02-decoders.xml": "de1508c6e6931eac",
+  "03-rules.xml": "bd81d110c2378aec"
+ }
+}

@@ -1,0 +1,9 @@
+{
+ "url": "https://wazuh.com/blog/integrating-admin-by-request-abr-with-wazuh/",
+ "title": "Integrating Admin By Request (ABR) with Wazuh",
+ "published": "2025-09-03",
+ "modified": "2025-11-26",
+ "files": {
+  "01-rules.xml": "dd64a598cb40a357"
+ }
+}

@@ -1,0 +1,62 @@
+<group name="gcp,cloud,">  
+
+  <!--GCP service account impersonation-->
+  <rule id="100111" level="12">
+    <if_sid>65043</if_sid>
+    <field name="gcp.protoPayload.methodName">GenerateAccessToken</field>
+    <field name="gcp.protoPayload.status.message" type="pcre2">PERMISSION_DENIED</field>
+    <description>GCP service account impersonation detected on $(gcp.resource.labels.email_id).</description>
+    <mitre>
+      <id>T1098</id>
+  </mitre>
+  </rule>
+  
+  
+  <!--GCP service account key creation-->
+  <rule id="100112" level="12">
+    <if_sid>65071</if_sid>
+    <field name="gcp.protoPayload.methodName">google.iam.admin.v\d.CreateServiceAccountKey$</field>
+    <field name="gcp.protoPayload.serviceName">iam.googleapis.com</field>
+    <field name="gcp.protoPayload.response.name" type="pcre2">key</field>
+    <description>GCP service account key creation detected.</description>
+    <mitre>
+      <id>T1098.004</id>
+    </mitre>
+  </rule>
+  
+  
+  <!--External user invited to a GCP project-->
+  <rule id="100113" level="12">
+    <if_sid>65042</if_sid>
+    <field name="gcp.protoPayload.request.@type">type.googleapis.com/google.iam.v1.SetIamPolicyRequest</field>
+    <match>Add</match>
+    <description>An external user was invited to the project $(gcp.resource.labels.project_id).</description>
+    <mitre>
+      <id>T1098.003</id>
+    </mitre>
+  </rule>
+    
+
+  <!--Compute disk exfiltration by sharing-->
+  <rule id="100114" level="5">
+    <if_sid>65042</if_sid>
+    <field name="gcp.protoPayload.methodName">v\d.compute.disks.insert$</field>
+    <field name="gcp.protoPayload.request.@type">type.googleapis.com/compute.disks.insert$</field>
+    <description>The user $(gcp.protoPayload.authenticationInfo.principalEmail) created the compute disk $(gcp.protoPayload.resourceName).</description>
+    <mitre>
+      <id>T1578.001</id>
+    </mitre>
+  </rule>
+    
+  <rule id="100115" level="12">
+    <if_sid>65042</if_sid>
+    <field name="gcp.protoPayload.methodName">v\d.compute.disks.setIamPolicy$</field>
+    <field name="gcp.protoPayload.request.@type">type.googleapis.com/compute.disks.setIamPolicy$</field>
+    <description>IAM policy change detected on the compute disk $(gcp.protoPayload.resourceName).</description>
+    <mitre>
+      <id>T1530</id>
+    </mitre>
+  </rule>
+
+
+</group>

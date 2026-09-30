@@ -1,0 +1,6 @@
+ <integration>
+    <name>slack</name>
+    <hook_url><SLACK_WEBHOOK_URL></hook_url>
+    <alert_format>json</alert_format>
+    <group>phishing</group>
+  </integration>

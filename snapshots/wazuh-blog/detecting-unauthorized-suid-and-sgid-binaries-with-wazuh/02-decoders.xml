@@ -1,0 +1,5 @@
+<decoder name="suid-check">
+  <prematch>^suid-check: </prematch>
+  <regex offset="after_prematch">WARNING unauthorized SUID/SGID binary: (\S+)</regex>
+  <order>binary_path</order>
+</decoder>

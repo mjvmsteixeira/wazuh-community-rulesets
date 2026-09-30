@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/monitoring-aws-managed-microsoft-active-directory/",
+ "title": "Monitoring AWS Managed Microsoft Active Directory with Wazuh",
+ "published": "2024-02-22",
+ "modified": "2024-06-06",
+ "files": {
+  "01-config.xml": "40ced2e03944f6f0",
+  "02-decoders.xml": "c9ea825baf458f87",
+  "03-rules.xml": "1ffa99f12e77574a"
+ }
+}

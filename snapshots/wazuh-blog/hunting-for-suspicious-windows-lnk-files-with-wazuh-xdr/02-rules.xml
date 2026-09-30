@@ -1,0 +1,18 @@
+<group name="syscheck,">
+  <!-- Rule that detects .lnk file intrusion into endpoint. -->
+  <rule id="110000" level="7">
+    <if_sid>554</if_sid>
+    <field name="file" type="pcre2">(?i).lnk$</field>
+    <description>Windows shortcut "$(file)" has been added.</description>
+    <mitre>
+      <id>T1492</id>
+    </mitre>
+  </rule>
+
+  <!-- Rule that detects .lnk file modification on endpoint. -->
+  <rule id="110001" level="7">
+    <if_sid>550</if_sid>
+    <field name="file" type="pcre2">(?i).lnk$</field>
+    <description>Windows shortcut "$(file)" has been modified.</description>
+  </rule>
+</group>

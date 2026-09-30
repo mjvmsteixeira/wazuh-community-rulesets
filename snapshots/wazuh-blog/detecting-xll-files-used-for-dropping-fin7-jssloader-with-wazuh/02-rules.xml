@@ -1,0 +1,33 @@
+<group name="malware_detection,fin7,">
+  <rule id="100002" level="0">
+    <if_sid>61609</if_sid>
+    <field name="win.eventdata.image" type="pcre2">(?i)excel.exe</field>
+    <description>Application $(win.eventdata.imageLoaded) loaded by excel.exe.</description>
+    <mitre>
+      <id>T1204</id>
+      <id>T1137</id>
+    </mitre>
+  </rule>
+ 
+  <rule id="100003" level="3">
+    <if_sid>100002</if_sid>
+    <field name="win.eventdata.imageLoaded" type="pcre2">(?i)(.xll|.xla|.xlam)</field>
+    <description>Add-in $(win.eventdata.originalFileName) loaded by excel.exe.</description>
+    <mitre>
+      <id>T1137</id>
+      <id>T1137.001</id>
+    </mitre>
+  </rule>
+ 
+  <rule id="100004" level="7">
+    <if_sid>100003</if_sid>
+    <field name="win.eventdata.signed" type="pcre2">^false$</field>
+    <description>Unsigned add-in $(win.eventdata.originalFileName) loaded by excel.exe. Possible malicious activity.</description>
+    <mitre>
+      <id>T1204</id>
+      <id>T1204.002</id>
+      <id>T1137</id>
+      <id>T1137.001</id>
+    </mitre>
+  </rule>
+</group>

@@ -1,0 +1,4 @@
+ <ruleset>
+    <!-- User-defined ruleset -->
+    <list>etc/lists/BQTLock-hashes</list>
+  </ruleset>

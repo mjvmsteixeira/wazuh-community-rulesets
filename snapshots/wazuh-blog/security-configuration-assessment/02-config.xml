@@ -1,0 +1,5 @@
+<sca>
+  <policies>
+    <policy>/var/ossec/etc/shared/nginx_audit.yml</policy>
+  </policies>
+</sca>

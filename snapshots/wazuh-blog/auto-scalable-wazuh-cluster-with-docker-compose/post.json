@@ -1,0 +1,10 @@
+{
+ "url": "https://wazuh.com/blog/auto-scalable-wazuh-cluster-with-docker-compose/",
+ "title": "Auto-scalable Wazuh Cluster with Docker-Compose",
+ "published": "2019-08-30",
+ "modified": "2023-02-17",
+ "files": {
+  "01-config.xml": "d30be0f7738e2ad3",
+  "02-config.xml": "c27bb0f2ca0e8b5a"
+ }
+}

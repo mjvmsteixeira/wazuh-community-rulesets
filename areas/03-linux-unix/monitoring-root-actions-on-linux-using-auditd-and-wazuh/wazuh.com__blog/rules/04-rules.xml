@@ -1,0 +1,6 @@
+<rule id="100010" level="8">
+    <if_sid>100002</if_sid>
+    <list field="audit.command" lookup="match_key">etc/lists/kernel_control_commands</list>
+    <description>Audit: [Kernel modification] ($(audit.command)) Executed with loginuid user $(audit.auid): $(audit.execve.a0) $(audit.execve.a1) $(audit.execve.a2) </description>
+    <group>audit_command,</group>
+</rule>

@@ -1,0 +1,7 @@
+<!-- System call rules -->
+<rule id="80792" level="3">
+     <if_sid>80700</if_sid>
+     <list field="audit.key" lookup="match_key_value" check_value="command">etc/lists/audit-keys</list>
+     <description>Audit: Command: $(audit.exe)</description>
+     <group>audit_command,gdpr_IV_30.1.g,</group>
+</rule>

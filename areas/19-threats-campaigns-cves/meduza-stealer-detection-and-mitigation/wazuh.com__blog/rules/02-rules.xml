@@ -1,0 +1,56 @@
+<group name="meduza_stealer,sysmon,">
+
+  <!-- Rogue a.exe file creation -->
+  <rule id="100020" level="12">
+	<if_sid>61617</if_sid>
+	<field name="win.eventdata.image" type="pcre2">\.exe</field>
+	<field name="win.eventdata.targetFilename" type="pcre2">(?i)([\\]+?)(a\.exe$)</field>
+	<description>Potential Meduza Stealer activity detected: a.exe created at $(win.eventdata.targetFilename) by $(win.eventdata.image).</description>
+	<mitre>
+  	  <id>T1036</id>
+	</mitre>
+  </rule>
+
+  <!-- Rogue a.exe:extractor.dll file creation -->
+  <rule id="100021" level="12">
+	<if_sid>61613</if_sid>
+	<field name="win.eventdata.image" type="pcre2">\.exe</field>
+	<field name="win.eventdata.targetFilename" type="pcre2">(?i)([\\]+?)(a\.exe\:extractor\.dll$)</field>
+	<description>Potential Meduza Stealer activity detected: DLL $(win.eventdata.targetFilename) created by a.exe and injected on $(win.system.computer).</description>
+  </rule>
+
+  <!-- Registry object created -->
+  <rule id="100023" level="12">
+	<if_sid>61614</if_sid>
+	<field name="win.eventdata.image" type="pcre2">(?i)[c-z]:\\\\Windows\\\\system32\\\\(consent\.exe$|svchost\.exe$)</field>
+	<field name="win.eventdata.targetObject" type="pcre2" >HKU\\\\.+\\\\Software\\\\Microsoft\\\\SystemCertificates\\\\CA\\\\Certificates</field>
+	<field name="win.eventdata.eventType" type="pcre2" >^CreateKey$</field>
+	<description>Potential Meduza Stealer activity detected:  $(win.eventdata.image) dumps credentials to $(win.eventdata.targetObject).</description>
+	<mitre>
+  	  <id>T1130</id>
+	</mitre>
+  </rule>
+
+  <!-- File system permission weakness -->
+  <rule id="100024" level="12">
+	<if_sid>61613</if_sid>
+	<field name="win.eventdata.image" type="pcre2">(?i)[c-z]:\\\\Windows\\\\system32\\\\svchost\.exe</field>
+	<field name="win.eventdata.targetFilename" type="pcre2">(?i)[c-z]:\\\\Windows\\\\Prefetch\\\\(EBD41D486952EDDAA670358497F33)(-.+\.pf$)</field>
+	<description>Potential Meduza Stealer activity detected:$(win.eventdata.targetFilename) created by $(win.eventdata.image).</description>
+	<mitre>
+  	  <id>T1047</id>
+	</mitre>
+  </rule>
+
+ <!-- Suspicious command execution -->
+ <rule id="100025" level="12" >
+	<if_sid>61603</if_sid>
+	<field name="win.eventdata.parentCommandLine" type="pcre2">(?i)[c-z]:\\\\Windows\\\\System32\\\\svchost\.exe\s-k\sWerSvcGroup</field>
+	<field name="win.eventdata.commandLine" type="pcre2">(?i)[c-z]:\\\\Windows\\\\system32\\\\WerFault\.exe\s-pss\s-s\s\d+\s-p\s\d+\s-ip\s\d+</field>
+	<description>Potential Meduza Stealer activity detected: suspicious command execution $(win.eventdata.commandLine).</description>
+	<mitre>
+  	  <id>T1546.008</id>
+ 	</mitre>
+ </rule>
+
+</group>

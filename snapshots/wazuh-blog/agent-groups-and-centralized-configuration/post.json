@@ -1,0 +1,13 @@
+{
+ "url": "https://wazuh.com/blog/agent-groups-and-centralized-configuration/",
+ "title": "Wazuh agent groups and centralized configuration",
+ "published": "2024-03-01",
+ "modified": "2025-05-21",
+ "files": {
+  "01-config.xml": "201bb9d87d080cf8",
+  "02-config.xml": "1904f6a97aee49a2",
+  "03-config.xml": "b8b5639ce6b35c98",
+  "04-decoders.xml": "e56d7425eccacfe7",
+  "05-rules.xml": "74c2c262f6406968"
+ }
+}

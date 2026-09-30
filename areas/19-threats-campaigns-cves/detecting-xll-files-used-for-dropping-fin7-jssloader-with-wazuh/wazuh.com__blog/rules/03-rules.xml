@@ -1,0 +1,17 @@
+<group name="malware_detection,fin7,">
+  <rule id="100005" level="0">
+    <if_sid>61600</if_sid>
+    <field name="win.eventdata.image" type="pcre2">(?i)excel.exe</field>
+    <field name="win.system.eventID" type="pcre2">^22$</field>
+    <description>Excel made a network request.</description>
+  </rule>
+ 
+  <rule id="100006" level="15">
+    <if_sid>100005</if_sid>
+    <field name="win.eventdata.queryName" type="pcre2">(?i)(physiciansofficenews.com|thechinastyle.com|divorceradio.com)</field>
+    <description>Excel made a network request to JSSLoader dropper domains.</description>
+    <mitre>
+      <id>T1105</id>
+    </mitre>
+  </rule>
+</group>

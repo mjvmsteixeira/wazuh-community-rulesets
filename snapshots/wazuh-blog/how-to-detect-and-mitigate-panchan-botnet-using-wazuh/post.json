@@ -1,0 +1,14 @@
+{
+ "url": "https://wazuh.com/blog/how-to-detect-and-mitigate-panchan-botnet-using-wazuh/",
+ "title": "How to detect and mitigate Panchan botnet using Wazuh",
+ "published": "2022-09-15",
+ "modified": "2024-06-07",
+ "files": {
+  "01-config.xml": "cb10c7649fb2f430",
+  "02-rules.xml": "3a249c5aea730fed",
+  "03-rules.xml": "9870b71e33e186cb",
+  "04-config.xml": "e9e9852050f17896",
+  "05-decoders.xml": "a70ea3463dce8cda",
+  "06-rules.xml": "9ce2852357137f66"
+ }
+}

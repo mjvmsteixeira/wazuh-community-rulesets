@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/enhancing-data-security-with-the-wazuh-open-source-fim/",
+ "title": "Enhancing data security with the Wazuh open source FIM",
+ "published": "2024-01-30",
+ "modified": "2024-06-04",
+ "files": {
+  "01-config.xml": "be1d31445c0a1718",
+  "02-config.xml": "9883405f38adaf1e",
+  "03-config.xml": "4d07f0d8220c3f1c"
+ }
+}

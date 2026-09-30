@@ -1,0 +1,13 @@
+{
+ "url": "https://wazuh.com/blog/blx-stealer-detection-and-response-using-wazuh/",
+ "title": "BLX stealer detection and response using Wazuh",
+ "published": "2024-12-11",
+ "modified": "2024-12-11",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-rules.xml": "0e376b21a2f4bc8d",
+  "03-decoders.xml": "d1770d52705afe3e",
+  "04-rules.xml": "94908d6acb78b2aa",
+  "05-config.xml": "a8f475ba32835a0f"
+ }
+}

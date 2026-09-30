@@ -1,0 +1,10 @@
+  <rule id="111050" level="12">
+    <if_group>sysmon_event7</if_group>
+    <field name="win.eventdata.user" type="pcre2">(?i)^NT AUTHORITY\\+SYSTEM$</field>
+    <field name="win.eventdata.image" type="pcre2">(?i)^(?!.*\\+(Windows|Program Files|Program Files \(x86\)|ProgramData\\+Microsoft\\+Windows Defender)\\+).+$</field>
+    <description>SYSTEM-privileged process running from a non-standard, potentially user-writable directory - possible exploitation of weak permissions on a scheduled task, service, or similar SYSTEM-run mechanism ($(win.eventdata.image)).</description>
+    <options>no_full_log</options>
+    <mitre>
+      <id>T1053.005</id>
+    </mitre>
+  </rule>

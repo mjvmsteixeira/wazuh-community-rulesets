@@ -1,0 +1,9 @@
+<!-- Grype container vulnerability scanner script -->
+<wodle name="command">
+  <disabled>no</disabled>
+  <command>/var/ossec/custom-script/grype_scan.sh</command>
+  <interval>5d</interval>
+  <ignore_output>no</ignore_output>
+  <run_on_start>yes</run_on_start>
+  <timeout>0</timeout>
+</wodle>

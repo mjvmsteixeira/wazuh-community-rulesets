@@ -1,0 +1,9 @@
+{
+ "url": "https://wazuh.com/blog/exploring-security-alerting-options-for-improved-threat-detection-in-wazuh-part-2/",
+ "title": "Exploring security alerting options for improved threat detection in Wazuh - Part 2",
+ "published": "2024-08-08",
+ "modified": "2024-08-09",
+ "files": {
+  "01-config.xml": "916bf076c0d2db74"
+ }
+}

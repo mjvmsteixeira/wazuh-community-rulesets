@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/detecting-phishing-attacks-with-wazuh-and-shuffle/",
+ "title": "Detecting phishing attacks with Wazuh and Shuffle",
+ "published": "2026-04-01",
+ "modified": "2026-04-01",
+ "files": {
+  "01-rules.xml": "3085e35a0a9a6355",
+  "02-config.xml": "1d498107bce47204",
+  "03-config.xml": "e2b7b8df1bf96a17"
+ }
+}

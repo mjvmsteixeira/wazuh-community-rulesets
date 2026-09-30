@@ -1,0 +1,5 @@
+<decoder name="disk-usage">
+    <prematch>^disk-usage: </prematch>
+    <regex offset="after_prematch">(\S+)\s*\t*(\S+)\s*\t*(\S+)\s*\t*(\S+)\s*\t*(\S+)%\s*\t*(\S+)</regex>
+    <order>filesystem, size, used, available, usage, mnt</order>
+</decoder>

@@ -1,0 +1,17 @@
+<group name="syscheck,strrat_detection_rule,">
+<!-- STRRAT creates a scheduled task called Skype -->
+  <rule id="100054" level="0">
+    <if_sid>530</if_sid>
+    <match>^ossec: output: 'finding_skype'</match>
+    <description>A scheduled task called Skype is created</description>
+  </rule>
+<!-- STRRAT maintains persistence -->
+  <rule id="100055" level="12" ignore="720">
+    <if_sid>100054</if_sid>
+    <match type="pcre2">(?i)Skype.+running</match>
+    <description>Possible STRRAT malware detected. Malware has achieved persistence</description>
+    <mitre>
+      <id>T1547.001</id>
+    </mitre>
+  </rule>
+</group>

@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/monitoring-postgresql-database-with-wazuh/",
+ "title": "Monitoring PostgreSQL database with Wazuh",
+ "published": "2024-04-04",
+ "modified": "2024-06-25",
+ "files": {
+  "01-config.xml": "c46461d953dd1ead",
+  "02-decoders.xml": "d5568cf8dec2716b",
+  "03-rules.xml": "aa6cb3cda1e8ae9f"
+ }
+}

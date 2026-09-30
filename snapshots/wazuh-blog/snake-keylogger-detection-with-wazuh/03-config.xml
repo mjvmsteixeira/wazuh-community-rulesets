@@ -1,0 +1,7 @@
+<ossec_config>
+  <sca>
+    <policies>
+      <policy>C:\Program Files (x86)\sca_policies\snake_keylogger_check.yml</policy>
+    </policies>
+  </sca>
+</ossec_config>

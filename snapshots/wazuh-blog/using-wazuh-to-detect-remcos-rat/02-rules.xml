@@ -1,0 +1,30 @@
+<group name="windows,sysmon,">
+ <!-- Remcos RAT drops a file -->
+ <rule id="100030" level="12">
+    <if_sid>92204</if_sid>
+    <match type="pcre2">(eqvkptgalnkxk7m.dll|install.vbs)</match>
+    <description>Possible Remcos RAT detected. File dropped on $(win.system.computer).</description>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+ </rule>
+ <!-- Remcos RAT creates a registry key -->
+ <rule id="100032" level="10">
+    <if_sid>61614</if_sid>
+    <match type="pcre2">(?i)(Remcos|hpsupport)-[a-zA-Z0-9]*</match>
+    <field name="win.eventdata.eventType" type="pcre2">^CreateKey$</field>
+    <description>Possible Remcos RAT detected. Registry key created on $(win.system.computer).</description>
+    <mitre>
+      <id>T1112</id>
+    </mitre>
+ </rule>
+ <!-- Remcos RAT capturing keystrokes -->
+ <rule id="100034" level="12" >
+    <if_sid>61613</if_sid>
+    <field name="win.eventdata.targetFilename" type="pcre2">(?i)\\\\AppData\\\\Roaming.+logs.dat</field>
+    <description>Possible Remcos RAT detected. Keystrokes are being captured on $(win.system.computer).</description>
+    <mitre>
+      <id>T1056.001</id>
+     </mitre>
+ </rule>
+</group>

@@ -1,0 +1,13 @@
+{
+ "url": "https://wazuh.com/blog/detecting-and-responding-mamona-ransomware-with-wazuh/",
+ "title": "Detecting and responding Mamona ransomware with Wazuh",
+ "published": "2025-07-01",
+ "modified": "2025-11-26",
+ "files": {
+  "01-config.xml": "3d5267bd69f65a6a",
+  "02-rules.xml": "8cf079715624f625",
+  "03-rules.xml": "c7cda5638e43e856",
+  "04-decoders.xml": "13193c3c92948d98",
+  "05-config.xml": "23ba6c45e0df02e9"
+ }
+}

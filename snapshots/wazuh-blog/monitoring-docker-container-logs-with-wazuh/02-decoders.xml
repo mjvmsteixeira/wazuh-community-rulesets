@@ -1,0 +1,27 @@
+<decoder name="docker_log_decoder">
+  <program_name>^docker</program_name>
+</decoder>
+
+<decoder name="docker_log_decoder_2">
+  <parent>docker_log_decoder</parent>
+  <regex offset="after_parent">(\d*.\d*.\d*.\d*)</regex>
+  <order>srcip</order>
+</decoder>
+
+<decoder name="docker_log_decoder_2">
+  <parent>docker_log_decoder</parent>
+  <regex offset="after_parent">(\d*/\w*/\d*)</regex>
+  <order>date</order>
+</decoder>
+
+<decoder name="docker_log_decoder_2">
+  <parent>docker_log_decoder</parent>
+  <regex offset="after_parent">(\d*:\d*:\d*)</regex>
+  <order>time</order>
+</decoder>
+
+<decoder name="docker_log_decoder_2">
+  <parent>docker_log_decoder</parent>
+  <regex offset="after_parent">("\w*\s/\s\w*/\d.\d"\s\d*)</regex>
+  <order>web_action</order>
+</decoder>

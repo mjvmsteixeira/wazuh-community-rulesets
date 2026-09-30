@@ -1,0 +1,6 @@
+<!-- Blocos de resposta extraídos, sem alterações, de wazuh.com/blog:incident-management-with-wazuh-and-rootly/02-config.xml @ b4b3f986b301 -->
+<integration>
+    <name>custom-rootly</name>
+    <level>12</level> 
+    <alert_format>json</alert_format>
+  </integration>

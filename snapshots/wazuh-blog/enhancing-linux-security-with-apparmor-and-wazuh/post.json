@@ -1,0 +1,9 @@
+{
+ "url": "https://wazuh.com/blog/enhancing-linux-security-with-apparmor-and-wazuh/",
+ "title": "Enhancing Linux security with AppArmor and Wazuh",
+ "published": "2025-05-29",
+ "modified": "2025-05-29",
+ "files": {
+  "01-rules.xml": "b69cfd5ff42cd3cf"
+ }
+}

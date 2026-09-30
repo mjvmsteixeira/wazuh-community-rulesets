@@ -1,0 +1,13 @@
+{
+ "url": "https://wazuh.com/blog/detecting-and-responding-to-greenblood-ransomware-with-wazuh/",
+ "title": "Detecting and responding to GreenBlood ransomware with Wazuh",
+ "published": "2026-03-12",
+ "modified": "2026-03-17",
+ "files": {
+  "01-config.xml": "40048ea2ceb88d59",
+  "02-rules.xml": "1cbbdfc9c4f9a750",
+  "03-decoders.xml": "13193c3c92948d98",
+  "04-rules.xml": "8257cadb1eec6f8d",
+  "05-config.xml": "63691240787e31bf"
+ }
+}

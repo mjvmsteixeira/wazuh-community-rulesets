@@ -1,0 +1,13 @@
+{
+ "url": "https://wazuh.com/blog/responding-to-network-attacks-with-suricata-and-wazuh-xdr/",
+ "title": "Responding to network attacks with Suricata and Wazuh XDR",
+ "published": "2022-11-11",
+ "modified": "2024-06-10",
+ "files": {
+  "01-config.xml": "692fdbef98df28b6",
+  "02-decoders.xml": "c9a645431d8efcbc",
+  "03-rules.xml": "44a1238a7099432b",
+  "04-config.xml": "d3abe3afa2b9edf0",
+  "05-config.xml": "c427703c83f46efa"
+ }
+}

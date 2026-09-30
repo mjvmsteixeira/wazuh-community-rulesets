@@ -1,0 +1,6 @@
+<ossec_config>
+  <syscheck>
+    <disabled>no</disabled>
+    <directories check_all="yes" realtime="yes">MONITORED_DIRECTORY_PATH</directories>
+  </syscheck>
+</ossec_config>

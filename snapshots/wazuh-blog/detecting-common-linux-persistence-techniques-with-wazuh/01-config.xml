@@ -1,0 +1,8 @@
+<ossec_config>
+  <syscheck>
+    <directories check_all="yes" realtime="yes">/root/.ssh/</directories>
+    <directories check_all="yes" realtime="yes">/home/*/.ssh/</directories>
+    <directories check_all="yes" realtime="yes">/var/*/.ssh/</directories>
+    <directories check_all="yes" realtime="yes">/etc/ssh/sshd_config</directories>
+  </syscheck>
+</ossec_config>

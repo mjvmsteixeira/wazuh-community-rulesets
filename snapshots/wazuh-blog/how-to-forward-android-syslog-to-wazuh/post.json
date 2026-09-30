@@ -1,0 +1,11 @@
+{
+ "url": "https://wazuh.com/blog/how-to-forward-android-syslog-to-wazuh/",
+ "title": "How to forward Android syslog to Wazuh",
+ "published": "2019-10-10",
+ "modified": "2023-02-17",
+ "files": {
+  "01-config.xml": "4ee56d75a37eaf29",
+  "02-decoders.xml": "aa62105f4a55e167",
+  "03-rules.xml": "d23a63d0a1aa7581"
+ }
+}
