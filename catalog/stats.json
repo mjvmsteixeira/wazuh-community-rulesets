@@ -1,32 +1,32 @@
 {
  "generated": "2026-09-29",
  "official_reference": "wazuh/wazuh v4.14.8 ruleset",
- "sources_listed": 123,
- "sources_cloned": 121,
+ "sources_listed": 126,
+ "sources_cloned": 124,
  "sources_failed": [
   "CitraIT/wazuh_decoders_and_rules",
   "Ghost47-coder/Wazuh-Rules"
  ],
- "sources_included": 112,
- "files": 1340,
- "rules": 16333,
+ "sources_included": 115,
+ "files": 1343,
+ "rules": 16373,
  "decoders": 5298,
  "rule_entries_dup_in_folder": 716,
- "unique_rule_ids": 9097,
+ "unique_rule_ids": 9114,
  "id_conflicts": 1867,
  "id_conflicts_community": 1854,
  "id_conflicts_official_collision": 10,
  "id_conflicts_official_multi_overwrite": 3,
- "deps_missing": 24,
+ "deps_missing": 23,
  "deps_same_source_other_folder": 74,
- "deps_cross_source": 56,
+ "deps_cross_source": 57,
  "cdb_lists": {
   "copiada da fonte": 31,
   "em falta": 33,
   "oficial": 3
  },
- "folders": 296,
- "folders_standalone": 252,
+ "folders": 299,
+ "folders_standalone": 255,
  "test_files_copied": 134,
  "excluded_files": 206,
  "decoders_detail": {
@@ -45,23 +45,23 @@
  "mitre": {
   "inválido": 118,
   "normalizado": 2842,
-  "sem mitre": 8153,
-  "válido": 5220
+  "sem mitre": 8176,
+  "válido": 5237
  },
  "response": {
-  "definitions": 107,
+  "definitions": 109,
   "by_status": {
    "ignorado": 2,
-   "ok": 82,
-   "partido": 23
+   "ok": 83,
+   "partido": 24
   },
   "by_kind": {
    "active-response": 48,
-   "integration": 59
+   "integration": 61
   },
   "destructive": 14,
   "destructive_without_allowlist": 12,
-  "copied": 37,
+  "copied": 39,
   "playbook_docs": {
    "ADORSYS-GIS/wazuh-playbook — procedimental (por rule.id/técnica)": 3,
    "ADORSYS-GIS/wazuh-playbook — remediação SCA (por check)": 71,
@@ -90,12 +90,12 @@
   "sigma_only_with_high": 20
  },
  "collection": {
-  "folders_with_agent_groups": 103,
+  "folders_with_agent_groups": 104,
   "folders_default_only": 5,
-  "folders_with_manager_requirements": 114,
-  "folders_with_undefined": 111,
-  "declared_files": 309,
-  "declared_entries": 634,
+  "folders_with_manager_requirements": 116,
+  "folders_with_undefined": 112,
+  "declared_files": 313,
+  "declared_entries": 638,
   "unassigned_files": 38,
   "groups": 67
  },
@@ -107,7 +107,7 @@
   "overwrite estrutural": 4
  },
  "decoder_replacement_files": 13,
- "rules_outside_custom_range": 6344,
+ "rules_outside_custom_range": 6362,
  "per_area": {
   "01-windows-endpoint": {
    "rules": 5273,
@@ -165,9 +165,9 @@
    "sources": 12
   },
   "12-threat-intel": {
-   "rules": 168,
+   "rules": 189,
    "decoders": 5,
-   "sources": 9
+   "sources": 10
   },
   "13-vulnerability-mgmt": {
    "rules": 52,
@@ -190,9 +190,9 @@
    "sources": 9
   },
   "17-ai-llm": {
-   "rules": 34,
+   "rules": 36,
    "decoders": 1,
-   "sources": 2
+   "sources": 3
   },
   "18-compliance-frameworks": {
    "rules": 212,
@@ -200,9 +200,9 @@
    "sources": 3
   },
   "19-threats-campaigns-cves": {
-   "rules": 47,
+   "rules": 64,
    "decoders": 0,
-   "sources": 5
+   "sources": 6
   },
   "20-attck-multiplatform": {
    "rules": 1423,

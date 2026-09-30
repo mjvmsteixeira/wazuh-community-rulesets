@@ -23,7 +23,7 @@ An agent can be in several groups (`win-sysmon` + `win-powershell` + `pack-...`)
 | Group | OS | Entries | Folders served | Origin | `verify-agent-conf` |
 |---|---|---:|---:|---|---|
 | [`linux-apache`](linux-apache/agent.conf) | linux | 1 | 13 | declared by the source, inferred | yes |
-| [`linux-auditd`](linux-auditd/agent.conf) | linux | 1 | 20 | declared by the source, inferred | yes |
+| [`linux-auditd`](linux-auditd/agent.conf) | linux | 1 | 21 | declared by the source, inferred | yes |
 | [`linux-docker`](linux-docker/agent.conf) | linux | 1 | 4 | declared by the source, inferred | yes |
 | [`linux-nginx`](linux-nginx/agent.conf) | linux | 1 | 2 | declared by the source, inferred | yes |
 | [`linux-suricata`](linux-suricata/agent.conf) | linux | 1 | 5 | declared by the source, inferred | yes |

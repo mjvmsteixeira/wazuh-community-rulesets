@@ -1,0 +1,5 @@
+<!-- Blocos de configuração extraídos, sem alterações, de mym0us3r/Detect-Quartet-of-Linux-local-root-vulns-with-Wazuh:README.md @ 43517fede680 -->
+<localfile>
+  <log_format>audit</log_format>
+  <location>/var/log/audit/audit.log</location>
+</localfile>

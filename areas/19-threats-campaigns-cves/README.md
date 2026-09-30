@@ -10,6 +10,7 @@ Specific malware, APTs and CVEs.
 | cve-2026-43284-dirty-frag | [mym0us3r/DIRTY-FRAG-Detection-with-Wazuh-4.14.4](https://github.com/mym0us3r/DIRTY-FRAG-Detection-with-Wazuh-4.14.4) | 9 | 0 | yes | yes | `linux-auditd` | 50% of 2 techniques | — | MIT | 2026-05-17 | — |
 | hoaxshell | [TheMuntu/Wazuh-Detection](https://github.com/TheMuntu/Wazuh-Detection) | 4 | 0 | yes | yes | `win-sysmon` | 100% of 1 techniques | — | NONE | 2024-11-01 | — |
 | judol-gambling-seo | [bayusky/wazuh-custom-rules-and-decoders](https://github.com/bayusky/wazuh-custom-rules-and-decoders) | 2 | 0 | yes | yes | — | 67% of 3 techniques | 1 ok (0 containment) | GPL-2.0 | 2026-03-07 | — |
+| lpe-quartet-2026 | [mym0us3r/Detect-Quartet-of-Linux-local-root-vulns-with-Wazuh](https://github.com/mym0us3r/Detect-Quartet-of-Linux-local-root-vulns-with-Wazuh) | 17 | 0 | yes | yes | `linux-auditd` | 100% of 1 techniques | — | MIT | 2026-09-29 | — |
 | raspberry-robin-worms | [TheMuntu/Wazuh-Detection](https://github.com/TheMuntu/Wazuh-Detection) | 6 | 0 | yes | yes | `win-sysmon` | 40% of 5 techniques | — | NONE | 2024-11-01 | — |
 | redline-infostealer | [TheMuntu/Wazuh-Detection](https://github.com/TheMuntu/Wazuh-Detection) | 5 | 0 | yes | yes | `win-sysmon` | 80% of 5 techniques | — | NONE | 2024-11-01 | — |
 

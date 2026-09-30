@@ -25,4 +25,4 @@ areas/15-infra-virt-storage-backup/synology/st0rm-cr0w__wazuh-synology-dsm-nas-d
 areas/15-infra-virt-storage-backup/synology/wazuh__integrations,14,14,0,0,0,0,0,0,0,0,comentário
 areas/16-dns-email/bind/od55__wazuh-local-ruleset,2,2,0,0,0,0,0,0,0,0,comentário
 areas/16-dns-email/pi-hole/Tomo-9925__wazuh-pi-hole-decoder-and-rules,1,0,0,1,0,0,0,0,0,0,comentário
-areas/18-compliance-frameworks/nist-csf-2.0/Sbharadwaj05__Wazuh-NIST-Rules-Set,103,94,9,0,0,0,6,3,0,0,benign;trigger
+areas/18-compliance-frameworks/nist-csf-2.0/Sbharadwaj05__Wazuh-NIST-Rules-Set,103,94,9,0,0,0,7,2,0,0,benign;trigger

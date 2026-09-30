@@ -231,6 +231,9 @@ MAP = [
  (r'^(Dinas-Kominfo)', r'.*', '19-threats-campaigns-cves', 'cl-sta-1087'),
  (r'^mym0us3r/COPY', r'.*', '19-threats-campaigns-cves', 'cve-2026-31431-copy-fail'),
  (r'^mym0us3r/DIRTY', r'.*', '19-threats-campaigns-cves', 'cve-2026-43284-dirty-frag'),
+ (r'^mym0us3r/Detect-Quartet', r'.*', '19-threats-campaigns-cves', 'lpe-quartet-2026'),
+ (r'^shahidakhter786/', r'.*', '12-threat-intel', 'criminalip'),
+ (r'^AnonymousWP/', r'.*', '17-ai-llm', 'chatgpt'),
  (r'^hrHVN/', r'.*', '90-misc', 'minecraft'),
  # --- 2026-09-29: fontes de decoders acrescentadas
  (r'^Halino/Wazuh-Sophos$', r'.*', '07-network-perimeter', 'sophos-firewall'),

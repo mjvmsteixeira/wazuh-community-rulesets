@@ -6,7 +6,7 @@ A registry of the community Wazuh rule and decoder collections (4.x XML format) 
 
 **[Open the search page](https://mjvmsteixeira.github.io/wazuh-community-rulesets/)** to browse packs, rules, decoders, techniques and playbooks, copy files, and generate an install script for your manager.
 
-> ⚠️ **Do not load everything at once on a manager.** 1867 rule IDs conflict between sources (see [`catalog/id_conflicts.csv`](catalog/id_conflicts.csv)); combining sources requires renumbering first. Not every folder works on its own: **252 of 296** are standalone by static analysis — see [`catalog/folders.csv`](catalog/folders.csv) and the real result in [`catalog/validation.csv`](catalog/validation.csv).
+> ⚠️ **Do not load everything at once on a manager.** 1867 rule IDs conflict between sources (see [`catalog/id_conflicts.csv`](catalog/id_conflicts.csv)); combining sources requires renumbering first. Not every folder works on its own: **255 of 299** are standalone by static analysis — see [`catalog/folders.csv`](catalog/folders.csv) and the real result in [`catalog/validation.csv`](catalog/validation.csv).
 
 ## Questions, errors, new sources
 
@@ -16,23 +16,23 @@ A registry of the community Wazuh rule and decoder collections (4.x XML format) 
 
 | | |
 |---|---:|
-| Sources listed / cloned | 123 / 121 |
-| Sources included | 112 |
-| XML files | 1340 |
-| Rules (entries) | 16333 (716 repeat an ID already in the same folder) |
+| Sources listed / cloned | 126 / 124 |
+| Sources included | 115 |
+| XML files | 1343 |
+| Rules (entries) | 16373 (716 repeat an ID already in the same folder) |
 | Decoders | 5298 |
-| Distinct rule IDs | 9097 |
+| Distinct rule IDs | 9114 |
 | Conflicting IDs | 1867: 1854 between community sources, 10 collisions with official IDs without `overwrite`, 3 official IDs rewritten by several sources |
-| Missing dependencies (`if_sid`, `decoded_as`, `parent`) | 24 |
-| Dependencies in another folder of the same source / in another source | 74 / 56 |
+| Missing dependencies (`if_sid`, `decoded_as`, `parent`) | 23 |
+| Dependencies in another folder of the same source / in another source | 74 / 57 |
 | CDB lists referenced | 67: 31 copied from the source, 3 official, 33 missing |
-| Standalone folders (static analysis) | 252 of 296 |
-| Folders that load in `wazuh-analysisd -t` (v4.14.8) | 258 of 296 (225 without warnings) |
+| Standalone folders (static analysis) | 255 of 299 |
+| Folders that load in `wazuh-analysisd -t` (v4.14.8) | 261 of 299 (228 without warnings) |
 | Root / child decoders | 639 / 4659 (43 root names colliding between sources; 17 with an official name) |
 | Fields produced by decoders | 2918 distinct names; 305 mapped to ECS (35% of uses) |
-| Log samples in `wazuh-logtest` | 372 in 27 folders: 256 ok, 27 shadowed by another decoder, 18 not decoded, 6 expected rule did not fire, 3 false positives |
-| Rules with a valid MITRE technique | 8062 (2842 only after normalizing Sigma tags/groups) |
-| Source responses (active response + integrations) | 107: 82 ok, 23 broken, 2 ignored by Wazuh; 14 destructive (12 without allowlist) |
+| Log samples in `wazuh-logtest` | 372 in 27 folders: 256 ok, 27 shadowed by another decoder, 18 not decoded, 7 expected rule did not fire, 2 false positives |
+| Rules with a valid MITRE technique | 8079 (2842 only after normalizing Sigma tags/groups) |
+| Source responses (active response + integrations) | 109: 83 ok, 24 broken, 2 ignored by Wazuh; 14 destructive (12 without allowlist) |
 | Techniques with level ≥ 12 rules | 335: 151 without playbook, 324 without working automated containment |
 | Model agent groups | 67 (67 valid in `verify-agent-conf`) |
 | SigmaHQ reference | 3760 rules, 381 techniques (43 only in Sigma) |
@@ -54,14 +54,14 @@ Reference: **wazuh/wazuh v4.14.8 ruleset**.
 | [`09-web-apps-waf`](areas/09-web-apps-waf/) | Web attacks, WAF, proxies/LB, web and collaboration apps | 314 | 88 | 17 |
 | [`10-databases`](areas/10-databases/) | MySQL, MSSQL, PostgreSQL, MongoDB (auditing/DAM) | 57 | 26 | 3 |
 | [`11-endpoint-security-edr`](areas/11-endpoint-security-edr/) | Commercial EDR/AV/XDR, YARA, Osquery, EPM | 1536 | 165 | 12 |
-| [`12-threat-intel`](areas/12-threat-intel/) | MISP, OpenCTI, AbuseIPDB, VirusTotal, OTX, SOCRadar, GTI, domain reputation | 168 | 5 | 9 |
+| [`12-threat-intel`](areas/12-threat-intel/) | MISP, OpenCTI, AbuseIPDB, VirusTotal, OTX, SOCRadar, GTI, domain reputation | 189 | 5 | 10 |
 | [`13-vulnerability-mgmt`](areas/13-vulnerability-mgmt/) | Nessus, OpenVAS/Greenbone, Snyk, Nuclei, Lynis, asset inventory | 52 | 9 | 4 |
 | [`14-ot-ics-iot`](areas/14-ot-ics-iot/) | Modbus, DNP3, IEC-104, MQTT, OPC-UA, home automation | 46 | 25 | 2 |
 | [`15-infra-virt-storage-backup`](areas/15-infra-virt-storage-backup/) | Proxmox/PBS, VMware, Synology, QNAP, Veeam | 580 | 223 | 11 |
 | [`16-dns-email`](areas/16-dns-email/) | DNS (Pi-hole, Technitium), email and phishing (Mimecast, Zimbra, Abnormal, Sublime) | 70 | 112 | 9 |
-| [`17-ai-llm`](areas/17-ai-llm/) | AI services: Azure OpenAI/AI Foundry, AWS Bedrock, ChatGPT, Whisper | 34 | 1 | 2 |
+| [`17-ai-llm`](areas/17-ai-llm/) | AI services: Azure OpenAI/AI Foundry, AWS Bedrock, ChatGPT, Whisper | 36 | 1 | 3 |
 | [`18-compliance-frameworks`](areas/18-compliance-frameworks/) | Framework-mapped packs: NIST CSF 2.0, CJIS, ENS (RD 311/2022) | 212 | 6 | 3 |
-| [`19-threats-campaigns-cves`](areas/19-threats-campaigns-cves/) | Specific malware, APTs and CVEs | 47 | 0 | 5 |
+| [`19-threats-campaigns-cves`](areas/19-threats-campaigns-cves/) | Specific malware, APTs and CVEs | 64 | 0 | 6 |
 | [`20-attck-multiplatform`](areas/20-attck-multiplatform/) | Generic packs organized by ATT&CK tactics / multi-platform | 1423 | 285 | 8 |
 | [`21-wazuh-platform-ops`](areas/21-wazuh-platform-ops/) | Manager health, exclusions/tuning, active response, inventory, agents | 287 | 10 | 5 |
 | [`90-misc`](areas/90-misc/) | Very specific cases (games, local ERPs, internal policies) | 30 | 4 | 3 |
@@ -72,13 +72,13 @@ Reference: **wazuh/wazuh v4.14.8 ruleset**.
 - **3** official IDs are overwritten by more than one source with different content: loading those sources together makes the last one win (`other_overwriters` column).
 - **154** rules intentionally `overwrite` official rules (4 change the `if_sid`/`if_group`/`decoded_as` chain, 54 only the level).
 - **13** decoder files are named like an official file or redefine official decoder names. Tested in `validation.csv` (`decoder_exclude` column): irrelevant (fails) in 2, required in 2, do not use in 6, optional in 3 folders — decoders named like an official one add to it, so excluding the official file can break loading.
-- **6344** rules use IDs outside the recommended custom range (100000–120000).
+- **6362** rules use IDs outside the recommended custom range (100000–120000).
 
 Details in [`catalog/official_overlap.csv`](catalog/official_overlap.csv) and [`catalog/decoder_replacements.csv`](catalog/decoder_replacements.csv).
 
 ## Collection and agent groups
 
-Rules run on the manager for every agent; agent groups do not filter rules. What a group decides is **which events arrive**. Each folder lists what it needs in [`catalog/collection.csv`](catalog/collection.csv): collected by default, extra agent collection in [`groups/`](groups/) (103 folders), manager requirements such as cloud wodles, modules, integrations and `<remote>` syslog (114 folders), or still to be defined (111 folders). Requirements are **inferred** (the folder chains into official rules of a family, e.g. `win-sysmon` → Sysmon channel) or **declared** by the source (`<localfile>`/`<wodle>`/`<agent_config>` blocks, copied or extracted to `collection/`). See [`groups/README.md`](groups/README.md).
+Rules run on the manager for every agent; agent groups do not filter rules. What a group decides is **which events arrive**. Each folder lists what it needs in [`catalog/collection.csv`](catalog/collection.csv): collected by default, extra agent collection in [`groups/`](groups/) (104 folders), manager requirements such as cloud wodles, modules, integrations and `<remote>` syslog (116 folders), or still to be defined (112 folders). Requirements are **inferred** (the folder chains into official rules of a family, e.g. `win-sysmon` → Sysmon channel) or **declared** by the source (`<localfile>`/`<wodle>`/`<agent_config>` blocks, copied or extracted to `collection/`). See [`groups/README.md`](groups/README.md).
 
 ## Response and playbooks
 
@@ -148,7 +148,7 @@ Run on a case-sensitive filesystem (Linux, or a case-sensitive APFS volume on ma
 
 ## Licenses
 
-67 of the 112 included sources **have no license file**: without a license the author keeps all rights. Every file is published unchanged, with its origin, author and exact commit in the folder's `SOURCE.md`. **Author of a source and want it removed? [Open an issue](https://github.com/mjvmsteixeira/wazuh-community-rulesets/issues/new/choose) and it will be taken down.** See [`NOTICE.md`](NOTICE.md).
+67 of the 115 included sources **have no license file**: without a license the author keeps all rights. Every file is published unchanged, with its origin, author and exact commit in the folder's `SOURCE.md`. **Author of a source and want it removed? [Open an issue](https://github.com/mjvmsteixeira/wazuh-community-rulesets/issues/new/choose) and it will be taken down.** See [`NOTICE.md`](NOTICE.md).
 
 ## Roadmap
 

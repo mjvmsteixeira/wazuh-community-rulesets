@@ -215,6 +215,7 @@ areas/11-endpoint-security-edr/trend-micro/Hasitha9796__wazuh-custom-decoders,Ha
 areas/11-endpoint-security-edr/withsecure/fredycibersec__wazuh-stuff,fredycibersec/wazuh-stuff,,,,,decoders próprios de texto: definir <localfile> ou <remote> syslog,0,0,0,0
 areas/12-threat-intel/abuseipdb/wazuh__integrations,wazuh/integrations,dec:json:1,,,integration custom-abuseipdb,eventos JSON: definir o <localfile> json com a localização do ficheiro,1,2,0,0
 areas/12-threat-intel/alienvault-otx/wazuh__integrations,wazuh/integrations,dec:json:1;syslog:1,syslog,,integration custom-alienvault,eventos JSON: definir o <localfile> json com a localização do ficheiro,1,1,0,0
+areas/12-threat-intel/criminalip/shahidakhter786__wazuh-criminalip-integration,shahidakhter786/wazuh-criminalip-integration,dec:json:1,,,integration custom-criminalip,eventos JSON: definir o <localfile> json com a localização do ficheiro,1,1,0,0
 areas/12-threat-intel/google-threat-intelligence/wazuh__integrations,wazuh/integrations,,,pack-google-threat-intelligence,integration custom-gti,,2,4,0,1
 areas/12-threat-intel/malware-ip/adampielak__wazuh_custom_rules,adampielak/wazuh_custom_rules,sshd:2;win-security:2,sshd;win-security,,,,0,0,0,0
 areas/12-threat-intel/misp/MISP__wazuh-integration,MISP/wazuh-integration,dec:json:1,,,integration None,eventos JSON: definir o <localfile> json com a localização do ficheiro,1,2,0,2
@@ -265,6 +266,7 @@ areas/16-dns-email/zimbra/Lordkaly__wazuh-collection,Lordkaly/wazuh-collection,s
 areas/17-ai-llm/ai-exfil/calvinanglo__corpsec-ops-platform,calvinanglo/corpsec-ops-platform,dec:json:1,,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,0,0,0,0
 areas/17-ai-llm/azure-ai-foundry/wazuh__integrations,wazuh/integrations,dec:json:1,,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,0,0,0,0
 areas/17-ai-llm/azure-openai/wazuh__integrations,wazuh/integrations,dec:json:1,,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,0,0,0,0
+areas/17-ai-llm/chatgpt/AnonymousWP__Wazuh-ChatGPT-integration,AnonymousWP/Wazuh-ChatGPT-integration,sshd:1,sshd,,integration custom-chatgpt.py,,2,2,0,0
 areas/17-ai-llm/chatgpt/wazuh__integrations,wazuh/integrations,dec:json:1,,,integration custom-chatgpt,eventos JSON: definir o <localfile> json com a localização do ficheiro,1,1,0,0
 areas/17-ai-llm/whisper/wazuh__integrations,wazuh/integrations,dec:json:1,,,integration custom-whisper,eventos JSON: definir o <localfile> json com a localização do ficheiro,1,1,0,0
 areas/18-compliance-frameworks/cjis/TristanGNS__wazuh-cjis-rules,TristanGNS/wazuh-cjis-rules,msauth:18;dec:json:1;ossec:1,msauth,,,eventos JSON: definir o <localfile> json com a localização do ficheiro,0,0,0,0
@@ -276,6 +278,7 @@ areas/19-threats-campaigns-cves/cve-2026-31431-copy-fail/mym0us3r__COPY-FAIL-Det
 areas/19-threats-campaigns-cves/cve-2026-43284-dirty-frag/mym0us3r__DIRTY-FRAG-Detection-with-Wazuh-4.14.4,mym0us3r/DIRTY-FRAG-Detection-with-Wazuh-4.14.4,auditd:7,,linux-auditd,,,1,1,0,0
 areas/19-threats-campaigns-cves/hoaxshell/TheMuntu__Wazuh-Detection,TheMuntu/Wazuh-Detection,win-sysmon:1,,win-sysmon,,,0,0,0,0
 areas/19-threats-campaigns-cves/judol-gambling-seo/bayusky__wazuh-custom-rules-and-decoders,bayusky/wazuh-custom-rules-and-decoders,ossec:2,,,,,0,0,0,0
+areas/19-threats-campaigns-cves/lpe-quartet-2026/mym0us3r__Detect-Quartet-of-Linux-local-root-vulns-with-Wazuh,mym0us3r/Detect-Quartet-of-Linux-local-root-vulns-with-Wazuh,auditd:14,,linux-auditd,,,1,1,0,0
 areas/19-threats-campaigns-cves/raspberry-robin-worms/TheMuntu__Wazuh-Detection,TheMuntu/Wazuh-Detection,win-sysmon:4;sysmon:1;sysmon_id_1:1,,win-sysmon,,,0,0,0,0
 areas/19-threats-campaigns-cves/redline-infostealer/TheMuntu__Wazuh-Detection,TheMuntu/Wazuh-Detection,win-sysmon:4;sysmon_id_11:1,,win-sysmon,,,0,0,0,0
 areas/20-attck-multiplatform/attck-tactics/MORGADO01__wazuh-detection-rules,MORGADO01/wazuh-detection-rules,win-security:9;win-sysmon:7;syslog:5;sshd:4;auditd:3;ossec:3;win-application:3;firewall:2;msauth:2;pam:2;virustotal:2;dec:unix:1;wazuh:1;win-ms_logs:1,dec:unix;msauth;pam;sshd;syslog;win-application;win-ms_logs;win-security,linux-auditd;win-sysmon,integration virustotal;remote syslog,,0,0,0,0

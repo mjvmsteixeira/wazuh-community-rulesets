@@ -122,3 +122,7 @@ chrisandoryan/Wazoy
 horrorshow21/Wazuh-Unifi-UDMPFWLogs
 Maverick000011/wazuh-custom-decoders
 wheelert/wazuh-mikrotik
+# 2026-09-30: citados em artigos do blog da Wazuh
+mym0us3r/Detect-Quartet-of-Linux-local-root-vulns-with-Wazuh
+shahidakhter786/wazuh-criminalip-integration
+AnonymousWP/Wazuh-ChatGPT-integration

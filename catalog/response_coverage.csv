@@ -215,6 +215,7 @@ areas/11-endpoint-security-edr/trend-micro/Hasitha9796__wazuh-custom-decoders,Ha
 areas/11-endpoint-security-edr/withsecure/fredycibersec__wazuh-stuff,fredycibersec/wazuh-stuff,11-endpoint-security-edr,12,4,7,6,7,0,0,0,0,0
 areas/12-threat-intel/abuseipdb/wazuh__integrations,wazuh/integrations,12-threat-intel,10,0,0,0,0,0,3,0,1,0
 areas/12-threat-intel/alienvault-otx/wazuh__integrations,wazuh/integrations,12-threat-intel,14,0,0,0,0,0,1,0,0,0
+areas/12-threat-intel/criminalip/shahidakhter786__wazuh-criminalip-integration,shahidakhter786/wazuh-criminalip-integration,12-threat-intel,21,0,0,0,0,0,0,0,1,0
 areas/12-threat-intel/google-threat-intelligence/wazuh__integrations,wazuh/integrations,12-threat-intel,6,0,0,0,0,0,1,0,0,0
 areas/12-threat-intel/malware-ip/adampielak__wazuh_custom_rules,adampielak/wazuh_custom_rules,12-threat-intel,6,0,0,0,0,0,0,0,0,0
 areas/12-threat-intel/misp/MISP__wazuh-integration,MISP/wazuh-integration,12-threat-intel,6,0,0,0,0,0,2,0,0,0
@@ -265,6 +266,7 @@ areas/16-dns-email/zimbra/Lordkaly__wazuh-collection,Lordkaly/wazuh-collection,1
 areas/17-ai-llm/ai-exfil/calvinanglo__corpsec-ops-platform,calvinanglo/corpsec-ops-platform,17-ai-llm,14,3,1,1,1,0,2,2,0,1
 areas/17-ai-llm/azure-ai-foundry/wazuh__integrations,wazuh/integrations,17-ai-llm,6,0,0,0,0,0,0,0,0,0
 areas/17-ai-llm/azure-openai/wazuh__integrations,wazuh/integrations,17-ai-llm,4,0,0,0,0,0,0,0,0,0
+areas/17-ai-llm/chatgpt/AnonymousWP__Wazuh-ChatGPT-integration,AnonymousWP/Wazuh-ChatGPT-integration,17-ai-llm,2,0,0,0,0,0,1,0,0,0
 areas/17-ai-llm/chatgpt/wazuh__integrations,wazuh/integrations,17-ai-llm,3,0,0,0,0,0,1,0,0,0
 areas/17-ai-llm/whisper/wazuh__integrations,wazuh/integrations,17-ai-llm,7,0,0,0,0,0,0,0,0,0
 areas/18-compliance-frameworks/cjis/TristanGNS__wazuh-cjis-rules,TristanGNS/wazuh-cjis-rules,18-compliance-frameworks,133,0,0,0,0,0,0,0,0,0
@@ -276,6 +278,7 @@ areas/19-threats-campaigns-cves/cve-2026-31431-copy-fail/mym0us3r__COPY-FAIL-Det
 areas/19-threats-campaigns-cves/cve-2026-43284-dirty-frag/mym0us3r__DIRTY-FRAG-Detection-with-Wazuh-4.14.4,mym0us3r/DIRTY-FRAG-Detection-with-Wazuh-4.14.4,19-threats-campaigns-cves,9,9,2,1,2,0,0,0,0,0
 areas/19-threats-campaigns-cves/hoaxshell/TheMuntu__Wazuh-Detection,TheMuntu/Wazuh-Detection,19-threats-campaigns-cves,4,3,1,1,1,0,0,0,0,0
 areas/19-threats-campaigns-cves/judol-gambling-seo/bayusky__wazuh-custom-rules-and-decoders,bayusky/wazuh-custom-rules-and-decoders,19-threats-campaigns-cves,2,2,3,2,2,0,1,0,0,0
+areas/19-threats-campaigns-cves/lpe-quartet-2026/mym0us3r__Detect-Quartet-of-Linux-local-root-vulns-with-Wazuh,mym0us3r/Detect-Quartet-of-Linux-local-root-vulns-with-Wazuh,19-threats-campaigns-cves,17,17,1,1,1,0,0,0,0,0
 areas/19-threats-campaigns-cves/raspberry-robin-worms/TheMuntu__Wazuh-Detection,TheMuntu/Wazuh-Detection,19-threats-campaigns-cves,6,6,5,2,5,0,0,0,0,0
 areas/19-threats-campaigns-cves/redline-infostealer/TheMuntu__Wazuh-Detection,TheMuntu/Wazuh-Detection,19-threats-campaigns-cves,5,5,5,4,5,0,0,0,0,0
 areas/20-attck-multiplatform/attck-tactics/MORGADO01__wazuh-detection-rules,MORGADO01/wazuh-detection-rules,20-attck-multiplatform,69,50,42,24,36,0,0,0,0,0

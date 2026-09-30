@@ -4,32 +4,32 @@
 
 Registo organizado por áreas das coleções comunitárias de regras e decoders Wazuh (formato XML 4.x) espalhadas pelo GitHub. O objetivo desta fase é **inventariar e arrumar**, preservando os ficheiros originais sem alterações. A normalização de IDs e a conversão para o motor do Wazuh 5.0 (YAML/ECS) são fases seguintes.
 
-> ⚠️ **Não carregar tudo de uma vez num manager.** Há 1867 IDs de regra em conflito entre fontes (ver [`catalog/id_conflicts.csv`](catalog/id_conflicts.csv)); combinar fontes exige renumeração prévia. Nem todas as pastas funcionam sozinhas: só **252 de 296** são autónomas por análise estática (sem IDs repetidos, dependências externas, listas CDB em falta nem colisões com IDs oficiais) — ver [`catalog/folders.csv`](catalog/folders.csv) e o resultado real em [`catalog/validation.csv`](catalog/validation.csv).
+> ⚠️ **Não carregar tudo de uma vez num manager.** Há 1867 IDs de regra em conflito entre fontes (ver [`catalog/id_conflicts.csv`](catalog/id_conflicts.csv)); combinar fontes exige renumeração prévia. Nem todas as pastas funcionam sozinhas: só **255 de 299** são autónomas por análise estática (sem IDs repetidos, dependências externas, listas CDB em falta nem colisões com IDs oficiais) — ver [`catalog/folders.csv`](catalog/folders.csv) e o resultado real em [`catalog/validation.csv`](catalog/validation.csv).
 
 ## Números (2026-09-29)
 
 | | |
 |---|---:|
-| Fontes listadas / clonadas | 123 / 121 |
-| Fontes incluídas | 112 |
-| Ficheiros XML registados | 1340 |
-| Regras (entradas) | 16333 (das quais 716 repetem um ID já presente na mesma pasta) |
+| Fontes listadas / clonadas | 126 / 124 |
+| Fontes incluídas | 115 |
+| Ficheiros XML registados | 1343 |
+| Regras (entradas) | 16373 (das quais 716 repetem um ID já presente na mesma pasta) |
 | Decoders | 5298 |
-| IDs de regra distintos | 9097 |
+| IDs de regra distintos | 9114 |
 | IDs em conflito | 1867: 1854 entre fontes da comunidade, 10 colisões com IDs oficiais sem `overwrite`, 3 IDs oficiais reescritos por várias fontes |
-| Dependências em falta (`if_sid`, `decoded_as`, `parent`) | 24 |
+| Dependências em falta (`if_sid`, `decoded_as`, `parent`) | 23 |
 | Dependências noutra pasta da mesma fonte | 74 |
-| Dependências noutra fonte do pack | 56 |
+| Dependências noutra fonte do pack | 57 |
 | Listas CDB referidas | 67: 31 copiadas da fonte, 3 oficiais, 33 em falta |
-| Pastas autónomas (análise estática) | 252 de 296 |
-| Pastas que carregam em `wazuh-analysisd -t` (v4.14.8) | 258 de 296 (225 sem avisos) |
+| Pastas autónomas (análise estática) | 255 de 299 |
+| Pastas que carregam em `wazuh-analysisd -t` (v4.14.8) | 261 de 299 (228 sem avisos) |
 | Ficheiros de teste copiados | 134 |
 | Decoders raiz / filhos | 639 / 4659 (43 nomes de raiz em colisão entre fontes; 17 com nome oficial) |
 | Campos produzidos pelos decoders | 2918 nomes distintos; 305 com correspondência ECS (35% dos usos) |
-| Amostras de log no wazuh-logtest | 372 em 27 pastas: 256 ok, 27 sombreadas por outro decoder, 18 não descodificadas, 6 sem a regra esperada, 3 falsos positivos |
-| Configuração de recolha das fontes | 309 ficheiros, 634 entradas (38 ficheiros sem pasta atribuída) |
-| Regras com técnica MITRE válida | 8062 (2842 só depois de normalizar etiquetas Sigma/grupos; 118 com técnicas descontinuadas sem sucessor) |
-| Respostas das fontes (active response + integrações) | 107: 82 ok, 23 partidas, 2 ignoradas pelo Wazuh; 14 destrutivas (12 sem allowlist) |
+| Amostras de log no wazuh-logtest | 372 em 27 pastas: 256 ok, 27 sombreadas por outro decoder, 18 não descodificadas, 7 sem a regra esperada, 2 falsos positivos |
+| Configuração de recolha das fontes | 313 ficheiros, 638 entradas (38 ficheiros sem pasta atribuída) |
+| Regras com técnica MITRE válida | 8079 (2842 só depois de normalizar etiquetas Sigma/grupos; 118 com técnicas descontinuadas sem sucessor) |
+| Respostas das fontes (active response + integrações) | 109: 83 ok, 24 partidas, 2 ignoradas pelo Wazuh; 14 destrutivas (12 sem allowlist) |
 | Técnicas com regras de nível ≥ 12 | 335: 151 sem playbook, 78 sem contramedida CISA, 324 sem contenção automática a funcionar |
 | Grupos de agentes-modelo | 67 (67 válidos em `verify-agent-conf`) |
 | Ficheiros excluídos (cópias, temporários, duplicados) | 206 |
@@ -51,14 +51,14 @@ Referência para comparação: **wazuh/wazuh v4.14.8 ruleset**.
 | [`09-web-apps-waf`](areas/09-web-apps-waf/) | Ataques web, WAF, proxies/LB, aplicações web e de colaboração | 314 | 88 | 17 |
 | [`10-databases`](areas/10-databases/) | MySQL, MSSQL, PostgreSQL, MongoDB (auditoria/DAM) | 57 | 26 | 3 |
 | [`11-endpoint-security-edr`](areas/11-endpoint-security-edr/) | EDR/AV/XDR comerciais, YARA, Osquery, EPM | 1536 | 165 | 12 |
-| [`12-threat-intel`](areas/12-threat-intel/) | MISP, OpenCTI, AbuseIPDB, VirusTotal, OTX, SOCRadar, GTI, reputação de domínios | 168 | 5 | 9 |
+| [`12-threat-intel`](areas/12-threat-intel/) | MISP, OpenCTI, AbuseIPDB, VirusTotal, OTX, SOCRadar, GTI, reputação de domínios | 189 | 5 | 10 |
 | [`13-vulnerability-mgmt`](areas/13-vulnerability-mgmt/) | Nessus, OpenVAS/Greenbone, Snyk, Nuclei, Lynis, inventário de ativos | 52 | 9 | 4 |
 | [`14-ot-ics-iot`](areas/14-ot-ics-iot/) | Modbus, DNP3, IEC-104, MQTT, OPC-UA, domótica | 46 | 25 | 2 |
 | [`15-infra-virt-storage-backup`](areas/15-infra-virt-storage-backup/) | Proxmox/PBS, VMware, Synology, QNAP, Veeam | 580 | 223 | 11 |
 | [`16-dns-email`](areas/16-dns-email/) | DNS (Pi-hole, Technitium), email e phishing (Mimecast, Zimbra, Abnormal, Sublime) | 70 | 112 | 9 |
-| [`17-ai-llm`](areas/17-ai-llm/) | Serviços de IA: Azure OpenAI/AI Foundry, AWS Bedrock, ChatGPT, Whisper | 34 | 1 | 2 |
+| [`17-ai-llm`](areas/17-ai-llm/) | Serviços de IA: Azure OpenAI/AI Foundry, AWS Bedrock, ChatGPT, Whisper | 36 | 1 | 3 |
 | [`18-compliance-frameworks`](areas/18-compliance-frameworks/) | Packs mapeados a frameworks: NIST CSF 2.0, CJIS, ENS (RD 311/2022) | 212 | 6 | 3 |
-| [`19-threats-campaigns-cves`](areas/19-threats-campaigns-cves/) | Malware, APTs e CVEs específicos | 47 | 0 | 5 |
+| [`19-threats-campaigns-cves`](areas/19-threats-campaigns-cves/) | Malware, APTs e CVEs específicos | 64 | 0 | 6 |
 | [`20-attck-multiplatform`](areas/20-attck-multiplatform/) | Packs genéricos organizados por táticas ATT&CK / multi-plataforma | 1423 | 285 | 8 |
 | [`21-wazuh-platform-ops`](areas/21-wazuh-platform-ops/) | Saúde do manager, exclusões/afinação, active response, inventário, agentes | 287 | 10 | 5 |
 | [`90-misc`](areas/90-misc/) | Casos muito específicos (jogos, ERPs locais, políticas internas) | 30 | 4 | 3 |
@@ -70,7 +70,7 @@ Referência para comparação: **wazuh/wazuh v4.14.8 ruleset**.
 - **154** regras fazem `overwrite` intencional de regras oficiais (4 alteram a cadeia `if_sid`/`if_group`/`decoded_as`, 54 só o nível).
 - **5** regras declaram `overwrite` sobre IDs que não existem no oficial.
 - **13** ficheiros de decoders têm o nome de um ficheiro oficial ou redefinem nomes de decoders oficiais. Testado em `validation.csv` (coluna `decoder_exclude`): indiferente (falha) em 2, necessário em 2, não usar em 6, opcional em 3 pastas — decoders com o nome de um oficial somam-se ao oficial, pelo que excluir o ficheiro oficial pode partir o carregamento.
-- **6344** regras usam IDs fora do intervalo recomendado para regras custom (100000–120000); o oficial já ocupa blocos em 150xxx, 184xxx–185xxx e 500xxx.
+- **6362** regras usam IDs fora do intervalo recomendado para regras custom (100000–120000); o oficial já ocupa blocos em 150xxx, 184xxx–185xxx e 500xxx.
 
 Detalhe em [`catalog/official_overlap.csv`](catalog/official_overlap.csv) e [`catalog/decoder_replacements.csv`](catalog/decoder_replacements.csv); este último traz as linhas `<decoder_exclude>` candidatas para `ossec.conf` — usar só onde `validation.csv` indica *necessário* ou *opcional*.
 
@@ -79,9 +79,9 @@ Detalhe em [`catalog/official_overlap.csv`](catalog/official_overlap.csv) e [`ca
 As regras correm no manager e aplicam-se a todos os agentes; os grupos de agentes não filtram regras. O que um grupo decide é **que eventos chegam** (`<localfile>`, wodles), e uma pasta só dispara se os eventos de que depende forem recolhidos. Por isso cada pasta tem em [`catalog/collection.csv`](catalog/collection.csv) o que exige:
 
 - **por omissão**: já recolhido pelo `ossec.conf` de um agente (canais Security/System/Application, syslog/journald do sistema);
-- **grupos de agente**: recolha extra no agente, em [`groups/`](groups/) — 103 pastas;
-- **manager**: wodles de cloud (`aws-s3`, `azure-logs`, `gcp-pubsub`), módulos (`office365`, `github`, `ms-graph`), integrações e `<remote>` syslog para equipamentos de rede — 114 pastas;
-- **por definir**: eventos JSON ou de texto cuja origem a fonte não documenta — 111 pastas.
+- **grupos de agente**: recolha extra no agente, em [`groups/`](groups/) — 104 pastas;
+- **manager**: wodles de cloud (`aws-s3`, `azure-logs`, `gcp-pubsub`), módulos (`office365`, `github`, `ms-graph`), integrações e `<remote>` syslog para equipamentos de rede — 116 pastas;
+- **por definir**: eventos JSON ou de texto cuja origem a fonte não documenta — 112 pastas.
 
 Os requisitos vêm de duas origens: **inferidos** (a pasta encadeia em regras oficiais de uma família, p.ex. `win-sysmon` → canal Sysmon, ou filtra `win.system.channel`) e **declarados** (blocos `<localfile>`/`<wodle>`/`<agent_config>` que a fonte traz em `agent.conf`, `ossec.conf` ou nos READMEs; copiados ou extraídos para `collection/` na pasta). Detalhe por entrada em [`catalog/collection_entries.csv`](catalog/collection_entries.csv).
 
@@ -228,7 +228,7 @@ Para acrescentar uma fonte: adicionar a `tools/sources.txt`, classificá-la em `
 
 ## Licenças
 
-67 das 112 fontes incluídas **não têm ficheiro de licença**: sem licença, o autor mantém todos os direitos. Cada ficheiro é publicado sem alterações, com a origem, o autor e o commit exato no `SOURCE.md` da pasta. **É autor de uma fonte e quer que seja retirada? [Abra uma issue](https://github.com/mjvmsteixeira/wazuh-community-rulesets/issues/new/choose) e é removida.** Ver [`NOTICE.pt.md`](NOTICE.pt.md).
+67 das 115 fontes incluídas **não têm ficheiro de licença**: sem licença, o autor mantém todos os direitos. Cada ficheiro é publicado sem alterações, com a origem, o autor e o commit exato no `SOURCE.md` da pasta. **É autor de uma fonte e quer que seja retirada? [Abra uma issue](https://github.com/mjvmsteixeira/wazuh-community-rulesets/issues/new/choose) e é removida.** Ver [`NOTICE.pt.md`](NOTICE.pt.md).
 
 ## Indicadores de qualidade
 

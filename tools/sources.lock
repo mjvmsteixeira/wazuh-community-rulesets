@@ -11,6 +11,7 @@ ADORSYS-GIS/wazuh-playbook a80e43a6ef319b3b7afc40ef16884bc1926345f1
 alextibor/wazuh-fortigate-rules-decoders 0045f355f816737d2d6b31abe7f88096c8fa0006
 alonsobsd/wazuh-freebsd-ruleset 830a91105a9fe4d38f78ef69cadcb522b19c7290
 angolo40/WazuhMikrotik ba5368b6ee38dc8fc20ad834b9b28267b8053158
+AnonymousWP/Wazuh-ChatGPT-integration b1f448ca8dd1c084b516f76f637fc65c8a0feb3f
 ArabMohammed/SOC-Notes 9a15e3e3c6e618399741d57d0dc6ddf71b1d3af1
 austinsonger/Incident-Playbook 70f9c4cf6dc20c9861f3bb69617bb49fc61f83cf
 AzizKpln/Fortigate-Rules 5412d7696a3a8f857b28a7fc861fdfc1f76e8768
@@ -77,6 +78,7 @@ mritsurgeon/wazuh 8e94955537cbef20fa53ee697ef1f0c57e9df71e
 MrRobInIT/Wazuh-Decoders-Rules f1c66a78ad1e2cdd936ce05f78b2fcda22bc3eac
 munazajamil/PowerShell-Attack-Detection-SIEM-Wazuh e83d80f5f493de283124e1bc57ab6e68b529b95f
 mym0us3r/COPY-FAIL-Detection-with-Wazuh-4.14.4 363bfeb1962e2ae893497d768a56c8406a7372db
+mym0us3r/Detect-Quartet-of-Linux-local-root-vulns-with-Wazuh 43517fede68092a8cf3f99121568c97ac1a558c9
 mym0us3r/DIRTY-FRAG-Detection-with-Wazuh-4.14.4 f7ea54493ab92d4c22f0f220f176058f38d28f32
 Myth799/cyber-sec-k8s-security-deployment b3897422bd6d5e70ddd4784b995ac7588e8ed221
 n00bsteam/Wazuh-Extended 2431706edd3dfc2f6e589e062ab58b76adb81c78
@@ -102,6 +104,7 @@ SanWieb/sigWah f3f6ab0dd17a6a7e8ef8336c1306a4f148ace31e
 Sbharadwaj05/ot-sentinel-rules 49252c86e50393f05d3a1696fab94ac4bfc0ffaa
 Sbharadwaj05/Wazuh-NIST-Rules-Set b152735c243afed18c484a21f403f48f95cab375
 SEA-NET/wazuh-rules-decoders e4245d671915ece22a9deedf1d78ae42f952e7c8
+shahidakhter786/wazuh-criminalip-integration 9732353583be8fc8a34dc356854b813bc74099f3
 Shivam2316/cs-shield-wazuh-monitoring f630c8b1392be498b3229e7be8e31a5e3ca812c5
 SigmaHQ/sigma 07ec293a51695cb1131a2e05260247872b31e1e1
 socfortress/Wazuh-Rules 66b70d6a380b2cffb625801da0b0ccb1933ed95d

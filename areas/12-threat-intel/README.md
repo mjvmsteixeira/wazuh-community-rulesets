@@ -6,6 +6,7 @@ MISP, OpenCTI, AbuseIPDB, VirusTotal, OTX, SOCRadar, GTI, domain reputation.
 |---|---|---:|---:|---|---|---|---|---|---|---|---:|
 | abuseipdb | [wazuh/integrations](https://github.com/wazuh/integrations) | 10 | 0 | yes | yes | manager: integration custom-abuseipdb; to be defined | no MITRE | 3 ok (0 containment), 1 broken | AGPL-3.0 | 2026-09-11 | — |
 | alienvault-otx | [wazuh/integrations](https://github.com/wazuh/integrations) | 14 | 0 | yes | yes | manager: integration custom-alienvault; to be defined | no MITRE | 1 ok (0 containment) | AGPL-3.0 | 2026-09-11 | — |
+| criminalip | [shahidakhter786/wazuh-criminalip-integration](https://github.com/shahidakhter786/wazuh-criminalip-integration) | 21 | 0 | yes | yes | manager: integration custom-criminalip; to be defined | no MITRE | 1 broken | MIT | 2024-08-20 | — |
 | google-threat-intelligence | [wazuh/integrations](https://github.com/wazuh/integrations) | 6 | 0 | yes | yes | `pack-google-threat-intelligence`; manager: integration custom-gti | no MITRE | 1 ok (0 containment) | AGPL-3.0 | 2026-09-11 | — |
 | malware-ip | [adampielak/wazuh_custom_rules](https://github.com/adampielak/wazuh_custom_rules) | 6 | 0 | no | yes (6 warnings) | default | no MITRE | — | NONE | 2026-06-16 | — |
 | misp | [MISP/wazuh-integration](https://github.com/MISP/wazuh-integration) | 6 | 0 | no | yes (1 warning) | manager: integration None; to be defined | no MITRE | 2 ok (0 containment) | NONE | 2025-10-06 | — |

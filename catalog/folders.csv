@@ -215,6 +215,7 @@ areas/11-endpoint-security-edr/trend-micro/Hasitha9796__wazuh-custom-decoders,Ha
 areas/11-endpoint-security-edr/withsecure/fredycibersec__wazuh-stuff,fredycibersec/wazuh-stuff,11-endpoint-security-edr,withsecure,2,12,19,0,0,0,0,0,0,0,0,0,True
 areas/12-threat-intel/abuseipdb/wazuh__integrations,wazuh/integrations,12-threat-intel,abuseipdb,1,10,0,0,0,0,0,0,0,0,0,0,True
 areas/12-threat-intel/alienvault-otx/wazuh__integrations,wazuh/integrations,12-threat-intel,alienvault-otx,1,14,0,0,0,0,0,0,0,0,0,0,True
+areas/12-threat-intel/criminalip/shahidakhter786__wazuh-criminalip-integration,shahidakhter786/wazuh-criminalip-integration,12-threat-intel,criminalip,1,21,0,0,0,0,0,0,0,0,0,0,True
 areas/12-threat-intel/google-threat-intelligence/wazuh__integrations,wazuh/integrations,12-threat-intel,google-threat-intelligence,1,6,0,0,0,0,0,0,0,0,0,0,True
 areas/12-threat-intel/malware-ip/adampielak__wazuh_custom_rules,adampielak/wazuh_custom_rules,12-threat-intel,malware-ip,1,6,0,0,0,0,0,0,0,0,1,0,False
 areas/12-threat-intel/misp/MISP__wazuh-integration,MISP/wazuh-integration,12-threat-intel,misp,1,6,0,1,1,0,0,0,0,0,0,0,False
@@ -265,6 +266,7 @@ areas/16-dns-email/zimbra/Lordkaly__wazuh-collection,Lordkaly/wazuh-collection,1
 areas/17-ai-llm/ai-exfil/calvinanglo__corpsec-ops-platform,calvinanglo/corpsec-ops-platform,17-ai-llm,ai-exfil,2,14,1,0,0,0,0,0,0,0,0,1,True
 areas/17-ai-llm/azure-ai-foundry/wazuh__integrations,wazuh/integrations,17-ai-llm,azure-ai-foundry,1,6,0,0,0,0,0,0,0,0,0,0,True
 areas/17-ai-llm/azure-openai/wazuh__integrations,wazuh/integrations,17-ai-llm,azure-openai,1,4,0,0,0,0,0,0,0,0,0,0,True
+areas/17-ai-llm/chatgpt/AnonymousWP__Wazuh-ChatGPT-integration,AnonymousWP/Wazuh-ChatGPT-integration,17-ai-llm,chatgpt,1,2,0,0,0,0,0,0,0,0,0,0,True
 areas/17-ai-llm/chatgpt/wazuh__integrations,wazuh/integrations,17-ai-llm,chatgpt,1,3,0,0,0,0,0,0,0,0,0,0,True
 areas/17-ai-llm/whisper/wazuh__integrations,wazuh/integrations,17-ai-llm,whisper,1,7,0,0,0,0,0,0,0,0,0,0,True
 areas/18-compliance-frameworks/cjis/TristanGNS__wazuh-cjis-rules,TristanGNS/wazuh-cjis-rules,18-compliance-frameworks,cjis,133,133,0,0,0,0,0,0,0,0,0,0,True
@@ -276,6 +278,7 @@ areas/19-threats-campaigns-cves/cve-2026-31431-copy-fail/mym0us3r__COPY-FAIL-Det
 areas/19-threats-campaigns-cves/cve-2026-43284-dirty-frag/mym0us3r__DIRTY-FRAG-Detection-with-Wazuh-4.14.4,mym0us3r/DIRTY-FRAG-Detection-with-Wazuh-4.14.4,19-threats-campaigns-cves,cve-2026-43284-dirty-frag,1,9,0,0,0,0,0,0,0,0,0,0,True
 areas/19-threats-campaigns-cves/hoaxshell/TheMuntu__Wazuh-Detection,TheMuntu/Wazuh-Detection,19-threats-campaigns-cves,hoaxshell,1,4,0,0,0,0,0,0,0,0,0,0,True
 areas/19-threats-campaigns-cves/judol-gambling-seo/bayusky__wazuh-custom-rules-and-decoders,bayusky/wazuh-custom-rules-and-decoders,19-threats-campaigns-cves,judol-gambling-seo,1,2,0,0,0,0,0,0,0,0,0,0,True
+areas/19-threats-campaigns-cves/lpe-quartet-2026/mym0us3r__Detect-Quartet-of-Linux-local-root-vulns-with-Wazuh,mym0us3r/Detect-Quartet-of-Linux-local-root-vulns-with-Wazuh,19-threats-campaigns-cves,lpe-quartet-2026,1,17,0,0,0,0,0,0,0,0,0,0,True
 areas/19-threats-campaigns-cves/raspberry-robin-worms/TheMuntu__Wazuh-Detection,TheMuntu/Wazuh-Detection,19-threats-campaigns-cves,raspberry-robin-worms,1,6,0,0,0,0,0,0,0,0,0,0,True
 areas/19-threats-campaigns-cves/redline-infostealer/TheMuntu__Wazuh-Detection,TheMuntu/Wazuh-Detection,19-threats-campaigns-cves,redline-infostealer,1,5,0,0,0,0,0,0,0,0,0,0,True
 areas/20-attck-multiplatform/attck-tactics/MORGADO01__wazuh-detection-rules,MORGADO01/wazuh-detection-rules,20-attck-multiplatform,attck-tactics,11,69,3,0,0,0,0,0,0,0,0,0,True
@@ -285,7 +288,7 @@ areas/20-attck-multiplatform/detection-engineering/Jeremy-Burgos__wazuh-detectio
 areas/20-attck-multiplatform/orangebox/OrangeBox-Labs__Wazuh,OrangeBox-Labs/Wazuh,20-attck-multiplatform,orangebox,5,53,0,0,0,0,0,0,0,6,0,0,True
 areas/20-attck-multiplatform/sigma-compiled/zshguy__tyrian-detection-pack,zshguy/tyrian-detection-pack,20-attck-multiplatform,sigma-compiled,1,104,0,0,0,0,0,0,0,0,0,0,True
 areas/20-attck-multiplatform/suricata-sysmon-fim/paolokappa__wazuh-siem-rules,paolokappa/wazuh-siem-rules,20-attck-multiplatform,suricata-sysmon-fim,1,274,0,0,0,0,0,1,0,0,1,0,False
-areas/20-attck-multiplatform/wazuh-blog-pack/adampielak__wazuh-scripts-resource,adampielak/wazuh-scripts-resource,20-attck-multiplatform,wazuh-blog-pack,2,751,257,0,0,0,0,43,15,0,10,0,False
+areas/20-attck-multiplatform/wazuh-blog-pack/adampielak__wazuh-scripts-resource,adampielak/wazuh-scripts-resource,20-attck-multiplatform,wazuh-blog-pack,2,751,257,0,0,0,0,44,14,0,10,0,False
 areas/21-wazuh-platform-ops/active-response/bayusky__wazuh-custom-rules-and-decoders,bayusky/wazuh-custom-rules-and-decoders,21-wazuh-platform-ops,active-response,1,2,0,0,0,0,0,0,0,0,0,0,True
 areas/21-wazuh-platform-ops/afinacao-ruido/phastier__wazuh,phastier/wazuh,21-wazuh-platform-ops,afinacao-ruido,4,29,8,0,0,0,7,0,0,0,0,0,False
 areas/21-wazuh-platform-ops/detect-new-agents/wazuh__integrations,wazuh/integrations,21-wazuh-platform-ops,detect-new-agents,1,1,0,0,0,0,0,0,0,0,0,0,True
