@@ -27,12 +27,12 @@ Registo organizado por áreas das coleções comunitárias de regras e decoders 
 | Decoders raiz / filhos | 660 / 4684 (42 nomes de raiz em colisão entre fontes; 17 com nome oficial) |
 | Campos produzidos pelos decoders | 2932 nomes distintos; 305 com correspondência ECS (35% dos usos) |
 | Amostras de log no wazuh-logtest | 372 em 27 pastas: 254 ok, 29 sombreadas por outro decoder, 18 não descodificadas, 7 sem a regra esperada, 2 falsos positivos |
-| Configuração de recolha das fontes | 364 ficheiros, 701 entradas (60 ficheiros sem pasta atribuída) |
+| Configuração de recolha das fontes | 365 ficheiros, 702 entradas (60 ficheiros sem pasta atribuída) |
 | Regras com técnica MITRE válida | 8197 (2845 só depois de normalizar etiquetas Sigma/grupos; 122 com técnicas descontinuadas sem sucessor) |
 | Respostas das fontes (active response + integrações) | 149: 91 ok, 56 partidas, 2 ignoradas pelo Wazuh; 19 destrutivas (17 sem allowlist) |
 | Técnicas com regras de nível ≥ 12 | 336: 151 sem playbook, 78 sem contramedida CISA, 300 sem contenção automática a funcionar |
 | Grupos de agentes-modelo | 129 (129 válidos em `verify-agent-conf`) |
-| Ficheiros excluídos (cópias, temporários, duplicados) | 255 |
+| Ficheiros excluídos (cópias, temporários, duplicados) | 256 |
 
 Referência para comparação: **wazuh/wazuh v4.14.8 ruleset**.
 
@@ -83,7 +83,7 @@ Comportamento medido no `wazuh-analysisd` v4.14.8: os filhos de um mesmo pai (`i
 - O modelo é verificado no motor por `tools/model_checks.py` (28 de 28 cenários; [`catalog/engine_model.csv`](catalog/engine_model.csv)). As regras com `<time>`/`<weekday>` usam o relógio do manager, não a hora do evento: os testes arrancam o manager ao meio-dia de um dia útil, para o resultado não depender da hora a que correm. Uma regex com um carácter não-ASCII deu resultados diferentes em arm64 e amd64: há 19 regras com condições assim, e o resultado delas depende da arquitetura do manager.
 - **268** pais têm filhos em fontes diferentes (10341 regras; 70 com apanha-tudo; 148 pais com o mesmo ID definido de forma diferente em várias fontes); 140 pares de pastas em que uma silencia a outra se forem instaladas juntas ([`catalog/sibling_parents.csv`](catalog/sibling_parents.csv)). O cesto da página aplica este modelo à seleção.
 - Amostras sintéticas (`tools/synth.py`): um evento por regra, gerado a partir das condições da regra e da cadeia de pais (eventos JSON no `wazuh-logtest`; eventos Windows EventChannel injetados na fila do `wazuh-analysisd`, que o logtest não descodifica). 3083 de 3550 confirmadas pelo motor em 172 pastas (1469 de 1850 Windows); 30 acabaram numa regra oficial em vez da regra da pasta ([`catalog/synthetic_tests.csv`](catalog/synthetic_tests.csv)). Só as confirmadas entram no teste de pares.
-- Prova empírica (`tools/combo_test.py`): 150 pares de pastas carregados juntos, 4425 amostras repetidas; 421 mudaram de dono (6 por decoder, 72 por regra irmã, 333 por conflito de ID: o mesmo ID, ou um antepassado na cadeia `if_sid`, definido nas duas pastas) em 62 pares; 1 pares não carregam juntos ([`catalog/combo_summary.csv`](catalog/combo_summary.csv), [`catalog/combo_tests.csv`](catalog/combo_tests.csv)).
+- Prova empírica (`tools/combo_test.py`): 150 pares de pastas carregados juntos, 4418 amostras repetidas; 444 mudaram de dono (6 por decoder, 72 por regra irmã, 356 por conflito de ID: o mesmo ID, ou um antepassado na cadeia `if_sid`, definido nas duas pastas) em 62 pares; 1 pares não carregam juntos ([`catalog/combo_summary.csv`](catalog/combo_summary.csv), [`catalog/combo_tests.csv`](catalog/combo_tests.csv)).
 
 ## Recolha e grupos de agentes
 
