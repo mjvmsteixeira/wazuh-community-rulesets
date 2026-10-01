@@ -46,7 +46,8 @@ jobs:
         run: |
           git add catalog/combo_tests.csv catalog/combo_summary.csv README.md README.pt.md site
           if git diff --cached --quiet; then echo "sem alterações"; exit 0; fi
-          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+          # commit em nome do mantenedor (o GitHub atribui-o pela conta do email noreply), não do bot
+          git -c user.name="mjvmsteixeira" -c user.email="185609735+mjvmsteixeira@users.noreply.github.com" \
             commit -m "combo_test semanal: pares de pastas carregados juntos"
           git push origin HEAD:main
           gh workflow run pages.yml --ref main
