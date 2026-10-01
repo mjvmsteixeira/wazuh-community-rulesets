@@ -547,28 +547,41 @@ wcsv('decoder_fields.csv', field_rows, ['field', 'uses', 'folders', 'static', 'n
 # Um apanha-tudo de nível 0 é avaliado antes de todas as irmãs com alerta.
 def lvl(r): return int(r['level']) if (r['level'] or '').isdigit() else 0
 def ek(r): return (0 if lvl(r) == 0 else 1, -lvl(r))   # ordem de avaliação, sem a ordem de carregamento
-# if_group: o motor pendura a regra como filha de TODAS as regras cujos grupos correspondem (OS_Match, sem distinguir
-# maiúsculas; os grupos incluem os <group name> envolventes). Verificado em tools/model_checks.py (issue #1: a 40112,
-# if_group authentication_success, é irmã de qualquer filha da 5715). Um padrão 'a,b' exige os dois grupos; '|' alterna.
-def group_match(pat, groups):
-    gs = ','.join(groups).lower()
-    return any(all(tok in gs for tok in alt.strip('^$').lower().split(',') if tok) for alt in pat.split('|') if alt.strip())
+# if_group: o motor (rules_list.c _AddtoRule) pendura a regra como filha de todas as regras JÁ CARREGADAS cuja string de grupos
+# (<group name> + <group>, sem separador) satisfaz OS_WordMatch(padrão): '|' alterna; '^' ancora ao início; o resto é substring
+# literal sem distinguir maiúsculas — a vírgula e o '$' são literais ("windows,sysmon" exige essa sequência, nessa ordem).
+# Uma alternativa vazia ("a|") corresponde a tudo. Uma regra só com if_matched_sid/if_matched_group usa-os como aresta de pai.
+# Os ficheiros em <rule_exclude> do ossec.conf por omissão nunca carregam. Verificado em tools/model_checks.py.
+from parse_ruleset import REFERENCE_RULE_EXCLUDE
+RULE_EXCLUDED = {rid for rid, o in off_rule.items() if o['file'] in REFERENCE_RULE_EXCLUDE}
+def group_match(pat, group_str):
+    gs = group_str.lower()
+    return any(alt == '' or (gs.startswith(alt[1:].lower()) if alt.startswith('^') else alt.lower() in gs) for alt in pat.split('|'))
+off_order = [rid for rid, _ in sorted(off_rule.items(), key=lambda kv: (kv[1]['file'], kv[1]['seq'])) if rid not in RULE_EXCLUDED]
+off_pos = {rid: i for i, rid in enumerate(off_order)}
 _gp = {}
-def group_parents(pat):   # regras oficiais com grupos correspondentes
-    if pat not in _gp: _gp[pat] = [rid for rid, o in off_rule.items() if group_match(pat, o['groups'])]
-    return _gp[pat]
+def group_parents(pat, before=None):   # regras oficiais com grupos correspondentes, carregadas antes da posição `before` (None = todas)
+    k = (pat, before)
+    if k not in _gp: _gp[k] = [rid for rid in (off_order if before is None else off_order[:before]) if group_match(pat, off_rule[rid]['group_str'])]
+    return _gp[k]
+def parent_sids(r):    # pais por ID: if_sid; só sem if_sid nem if_group, o if_matched_sid
+    return split_ids(r['parent_sid']) or ([] if r['parent_group'] else split_ids(r['if_matched_sid']))
+def parent_pattern(r):   # padrão de grupo que serve de aresta: if_group; só sem if_sid nem if_group, o if_matched_group
+    return '' if r['parent_sid'] else (r['parent_group'] or ('' if r['if_matched_sid'] else r['if_matched_group']))
 off_children = defaultdict(list)   # pai -> regras oficiais filhas
 for rid, r in off_rule.items():
-    for p_ in split_ids(r['if_sid']): off_children[('if_sid', p_)].append(r)
-    for g in [x.strip() for x in r['if_group'].split(',') if x.strip()]: off_children[('if_group', g)].append(r)
-    if r['parent_group'] and not r['parent_sid']:
-        for p_ in group_parents(r['parent_group']):
+    if rid in RULE_EXCLUDED: continue
+    for p_ in parent_sids(r): off_children[('if_sid', p_)].append(r)
+    pat = parent_pattern(r)
+    if pat:
+        off_children[('if_group', pat)].append(r)
+        for p_ in group_parents(pat, off_pos[rid]):
             if p_ != rid: off_children[('if_sid', p_)].append(r)
 sib = defaultdict(lambda: defaultdict(list))   # pai -> pasta -> regras filhas
 for f in files:
     for r in f['rules']:
-        for p_ in split_ids(r['if_sid']): sib[('if_sid', p_)][f['folder']].append(r)
-        for g in [x.strip() for x in r['if_group'].split(',') if x.strip()]: sib[('if_group', g)][f['folder']].append(r)
+        for p_ in parent_sids(r): sib[('if_sid', p_)][f['folder']].append(r)
+        if parent_pattern(r): sib[('if_group', parent_pattern(r))][f['folder']].append(r)
 sib_rows, silences_official = [], []
 sib_keys, ca_keys, sil_pairs = set(), set(), set()
 for (kind, parent), by_fo in sorted(sib.items()):
@@ -589,14 +602,14 @@ for (kind, parent), by_fo in sorted(sib.items()):
     if kind == 'if_group':
         for fo, rs in by_fo.items():
             for r in rs:
-                if not is_catchall(r) or not r['parent_group'] or r['parent_sid']: continue
+                if not is_catchall(r) or not parent_pattern(r): continue
                 lost = {}
-                for p_ in group_parents(r['parent_group']):
+                for p_ in group_parents(parent_pattern(r)):
                     sib_off = off_children.get(('if_sid', p_), [])
                     if any(is_catchall(o) and ek(o) <= ek(r) for o in sib_off if o['id'] != r['id']): continue
                     for o in sib_off:
                         if o['id'] != r['id'] and ek(o) > ek(r): lost[o['id']] = o
-                if lost: silences_official.append({'rule': r['id'], 'level': lvl(r), 'parent': f'if_group {parent} ({len(group_parents(r["parent_group"]))} pais)', 'folder': fo,
+                if lost: silences_official.append({'rule': r['id'], 'level': lvl(r), 'parent': f'if_group {parent} ({len(group_parents(parent_pattern(r)))} pais)', 'folder': fo,
                                                    'official_silenced': len(lost), 'silenced_ids': ';'.join(sorted(lost)),
                                                    'silenced_alerting': sum(1 for o in lost.values() if lvl(o) > 0),
                                                    'examples': '; '.join(f"{o['id']} (nível {o['level']}): {o['description'][:60]}" for o in sorted(lost.values(), key=lvl, reverse=True)[:5])})
@@ -630,15 +643,14 @@ for (kind, parent), by_fo in sorted(sib.items()):
 # sombra condicional: uma irmã oficial avaliada antes (nível 0, nível superior, ou igual — o oficial carrega primeiro) cujas
 # condições dependem do contexto (correlação, horário, primeira vez) e não do conteúdo: nessas situações fica com o evento
 # e a regra do pack não alerta; o wazuh-analysisd -t não avisa (issue #1: 40112 face a uma filha de 5715)
-cond_rows = []
+cond_rows, seen = [], set()   # um ID repetido na mesma pasta não duplica a linha
 for f in files:
     for r in f['rules']:
         if lvl(r) == 0: continue
-        seen = set()
-        for p_ in split_ids(r['parent_sid']) or [x for x in group_parents(r['parent_group']) if r['parent_group']][:50]:
+        for p_ in parent_sids(r) or (group_parents(parent_pattern(r)) if parent_pattern(r) else [])[:50]:
             for o in off_children.get(('if_sid', p_), []):
-                if o['id'] in seen or o['id'] == r['id'] or not o['context'] or ek(o) > ek(r): continue
-                seen.add(o['id'])
+                if (f['folder'], r['id'], o['id']) in seen or o['id'] == r['id'] or not o['context'] or ek(o) > ek(r): continue
+                seen.add((f['folder'], r['id'], o['id']))
                 cond_rows.append({'rule': r['id'], 'level': lvl(r), 'folder': f['folder'], 'parent': p_, 'official_rule': o['id'],
                                   'official_level': lvl(o), 'condition': o['context'], 'official_description': o['description'][:100]})
 cond_rows.sort(key=lambda x: (x['folder'], int(x['rule']) if x['rule'].isdigit() else 0, x['official_rule']))

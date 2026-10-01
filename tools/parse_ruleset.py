@@ -28,6 +28,10 @@ def norm(el):
 
 # elementos que restringem uma regra para além do pai (if_sid/if_group): sem nenhum, a regra apanha todos os eventos do pai
 # e silencia os irmãos avaliados depois dela. decoded_as conta: num filho restringe ao decoder do evento, que pode não ser o do pai
+# ficheiros que o ossec.conf por omissão do wazuh-manager exclui (<rule_exclude>): nunca carregam. Conferido em cada push
+# por tools/model_checks.py (cenário rule_exclude-referencia), que lê o ossec.conf da imagem
+REFERENCE_RULE_EXCLUDE = ['0215-policy_rules.xml']
+
 CONDITIONS = {'match', 'regex', 'field', 'srcip', 'dstip', 'srcport', 'dstport', 'user', 'program_name', 'hostname', 'url', 'id',
               'action', 'status', 'extra_data', 'location', 'time', 'weekday', 'list', 'protocol', 'system_name', 'data', 'srcgeoip',
               'dstgeoip', 'category', 'decoded_as', 'if_fts', 'compiled_rule', 'check_diff', 'if_matched_regex'}
@@ -71,6 +75,13 @@ def parse_file(path):
             # regex com caracteres não-ASCII: o motor deu resultados diferentes em arm64 e amd64 (tools/model_checks.py)
             'non_ascii': any(isinstance(c.tag, str) and c.tag in ('field', 'match', 'regex') and c.text and not c.text.isascii() for c in r),
             'parent_sid': ','.join(txt(r, 'if_sid')), 'parent_group': '|'.join(txt(r, 'if_group')),   # só as arestas de pai
+            # if_matched_* só criam aresta de pai quando a regra não tem if_sid nem if_group (rules.c 1662-1678)
+            'if_matched_sid': ','.join(txt(r, 'if_matched_sid')), 'if_matched_group': '|'.join(txt(r, 'if_matched_group')),
+            # string de grupos como o motor a constrói (rules.c 418/573): <group name> + cada <group>, concatenados SEM separador.
+            # É sobre ela que o if_group é avaliado (OS_WordMatch: substring sem maiúsculas, '|' alterna, '^' ancora ao início)
+            'group_str': (r.getparent().get('name', '') if r.getparent() is not None and r.getparent().tag == 'group' else '')
+                         + ''.join((g.text or '').replace('\n', '') for g in r.findall('group')),
+            'seq': len(out['rules']),   # posição no ficheiro: o if_group só se pendura em regras já carregadas
             'decoded_as': ','.join(txt(r, 'decoded_as')),
             'mitre': sorted(set(m for m in mitre if m)),
             'overwrite': r.get('overwrite') == 'yes',

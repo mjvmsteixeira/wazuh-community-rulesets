@@ -30,20 +30,20 @@
  "test_files_copied": 134,
  "excluded_files": 255,
  "siblings": {
-  "shared_parents": 274,
-  "rules_involved": 10359,
+  "shared_parents": 268,
+  "rules_involved": 10341,
   "parents_with_catchall": 70,
   "non_ascii_condition_rules": 19,
-  "conditional_shadows": 2705,
-  "conditional_shadow_rules": 852,
-  "conditional_shadow_folders": 45,
+  "conditional_shadows": 3229,
+  "conditional_shadow_rules": 921,
+  "conditional_shadow_folders": 48,
   "dominated_catchalls": 14,
   "catchall_rules": 74,
-  "ambiguous_parents": 154,
-  "catchalls_silencing_official": 27,
+  "ambiguous_parents": 148,
+  "catchalls_silencing_official": 26,
   "official_rules_silenced": 67,
   "folders_silencing_official": 12,
-  "folder_pairs": 141
+  "folder_pairs": 140
  },
  "decoders_detail": {
   "roots": 660,

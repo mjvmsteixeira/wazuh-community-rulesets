@@ -1,4 +1,5 @@
 case,proves,expected,got,verdict,sequence,warnings
+rule_exclude-referencia,o <rule_exclude> do ossec.conf da imagem é o que o build assume (parse_ruleset.REFERENCE_RULE_EXCLUDE),0215-policy_rules.xml,0215-policy_rules.xml,ok,,
 nivel-maior-primeiro,"entre irmãs, o nível mais alto é avaliado primeiro",100011,100011:10,ok,100011:10,
 empate-nome-ficheiro,"em empate de nível, ganha o ficheiro carregado primeiro (nome), não o ID",100021,100021:5,ok,100021:5,
 nivel-0-primeiro,"uma irmã de nível 0 é avaliada antes das irmãs com alerta, mesmo de nível 12",100030,100030:0,ok,100030:0,
@@ -9,4 +10,20 @@ if_group-sem-correlacao,"issue #1: sem as falhas antes, a filha de 5715 dispara"
 if_group-nivel-13,issue #1: a nível 13 a filha de 5715 passa à frente da 40112,100080,100080:13,ok,5760:5 5760:5 5760:5 5760:5 5760:5 5760:5 5760:5 5763:10 100080:13,
 if_matched_sid-controlo,"uma regra só com if_matched_sid (sem if_sid) é filha da regra referida: ao N-ésimo evento em que esta é a regra final, substitui-a",100061,100061:10,ok,5760:5 5760:5 100061:10 5760:5 5760:5 100061:10,
 if_matched_sid-irma,um apanha-tudo filho da regra referida silencia a de correlação: fica com o evento e a referida deixa de ser a final (não conta),100060,100060:0,ok,100060:0 100060:0 100060:0 100060:0 100060:0 100060:0,
+if_group-virgula-adjacente,"""a,b"" é substring literal: liga só se os grupos estiverem adjacentes e nessa ordem",100101,100101:14,ok,100101:14,
+if_group-virgula-ordem,"""b,a"", com os dois grupos presentes por outra ordem, não liga",5715,5715:3,ok,5715:3,"WARNING: (7610): Group 'authentication_success,sshd' was not found. Invalid 'if_group'. Rule '100102' will be ignored."
+if_group-prefixo,"""^"" ancora ao início da string de grupos, onde vem primeiro o <group name> envolvente",100104,100104:14,ok,100104:14,WARNING: (7610): Group '^authentication_success' was not found. Invalid 'if_group'. Rule '100105' will be ignored.
+if_group-dolar-literal,"""$"" é literal, não ancora ao fim",5715,5715:3,ok,5715:3,WARNING: (7610): Group 'authentication_success$' was not found. Invalid 'if_group'. Rule '100109' will be ignored.
+if_group-substring-maiusculas,"substring sem distinguir maiúsculas: ""SSH"" liga a ""sshd""",100107,100107:14,ok,100107:14,
+if_group-sem-separador,"<group name=""wcr""> + <group>mygrp,</group> dá a string ""wcrmygrp,""",100112,100112:14,ok,100112:14,
+if_group-ordem-de-carga,if_group só se pendura em regras já carregadas: pai em b.xml e filha em a.xml não ligam,100115,100115:4,ok,100115:4,
+if_group-ordem-de-carga-controlo,controlo: pai em a.xml e filha em b.xml ligam,100114,100114:14,ok,100114:14,
+10100-nao-e-filha-de-5715,"a 10100 (0020, if_group authentication_success) carrega antes da 5715 (0095), por isso não é sua filha",5715,5715:3,ok,5715:3,
+if_fts-controlo,if_fts funciona no logtest: dispara no 1.º login e não no 2.º,5715,5715:3,ok,100222:14 5715:3,
+rule_exclude-0215,o ossec.conf por omissão exclui 0215-policy_rules.xml: as 17101/17102 (horário) nunca carregam,5715,5715:3,ok,5715:3,
+apanha-tudo-10001,"catálogo: o apanha-tudo 10001 do OrangeBox (nível 13, if_sid 5715) fica à frente da 40112",10001,10001:13,ok,5760:5 5760:5 5760:5 5760:5 5760:5 5760:5 5760:5 5763:10 10001:13,
+correlacao-nao-cumprida,com 2 falhas (a 40112 precisa de 8) a avaliação continua e a filha do pack dispara,100231,100231:9,ok,5760:5 5760:5 100231:9,
+if_matched_sid-com-if_sid,com if_sid=P1 e if_matched_sid=P2 a regra é filha só de P1,100243,100243:10,ok,100242:6 100242:6 100242:6 100243:10,
+if_matched_group-como-aresta,"uma regra só com if_matched_group pendura-se, como um if_group, nas regras já carregadas com o grupo",100272,100272:10,ok,100271:4 100272:10 100272:10,
+if_matched_group-alvo-de-if_matched_sid,uma regra que é alvo de um if_matched_sid só alimenta a contagem por ID: a de grupo nunca a conta,100281,100281:4,ok,100281:4 100281:4 100281:4,
 regex-nao-ascii,uma regex OS_Regex com um carácter não-ASCII (traço –): o resultado depende da arquitetura da imagem,,100090:8,observação,100090:8,

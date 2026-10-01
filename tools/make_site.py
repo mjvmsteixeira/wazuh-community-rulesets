@@ -115,9 +115,9 @@ for r in C('conditional_shadows.csv'):
     if r['folder'] not in pack_idx: continue
     e = offcond.setdefault(pack_idx[r['folder']], [set(), {}, []])
     e[0].add(r['rule'])
-    for c in r['condition'].split(';'): e[1][c] = e[1].get(c, 0) + 1
+    for c in r['condition'].split(';'): e[1].setdefault(c, set()).add(r['rule'])   # regras (não linhas) por condição
     if len(e[2]) < 40: e[2].append([r['rule'], int(r['level']), r['official_rule'], int(r['official_level']), r['condition']])
-offcond = {k: [len(v[0]), v[1], v[2]] for k, v in offcond.items()}
+offcond = {k: [len(v[0]), {c: len(s) for c, s in v[1].items()}, v[2]] for k, v in offcond.items()}
 meta = {'stats': stats, 'sib': sib, 'offsil': offsil, 'offcond': offcond, 'combo': combo, 'areas': AREAS, 'areas_en': AREAS_EN, 'packs': packs, 'rules': rules, 'decs': decs, 'dcoll': dcoll, 'dfields': dfields, 'dtests': dtests, 'techs': techs, 'pbs': pbs,
         'resps': resps, 'groups': groups, 'sigma': sigma_only, 'conflicts': conflicts,
         'sources': [[r['repo'], r['license'], r['status'], r['last_commit'], int(r['rules'] or 0)] for r in C('sources.csv')]}

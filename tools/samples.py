@@ -75,6 +75,14 @@ def samples(folder):
 RUNNER = r'''
 import os, re, sys, json, socket, struct, shutil, subprocess, time, glob
 O = '/var/ossec'
+# relógio fixo: <time>/<weekday> usam o relógio do manager (não a hora do evento) e o resultado mudaria com a hora a que o
+# teste corre. O analysisd arranca com um fuso POSIX que põe a hora local ao meio-dia, de um dia útil quando está a menos
+# de 24 h (o máximo de um fuso POSIX); um fuso por nome é ignorado no chroot do analysisd, por isso usa-se o deslocamento
+import datetime as _dt
+_now = _dt.datetime.now(_dt.timezone.utc)
+_noon = [h for h in range(-24, 25) if (_now + _dt.timedelta(hours=h)).hour == 12]
+_off = min(_noon, key=lambda h: ((_now + _dt.timedelta(hours=h)).weekday() >= 5, abs(h)))
+os.environ['TZ'] = f'WCR{-_off:+d}'
 def q(ev, fmt):
     s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM); s.settimeout(20); s.connect(O + '/queue/sockets/logtest')
     m = json.dumps({"version": 1, "command": "log_processing", "parameters": {"event": ev, "log_format": fmt, "location": "wcr"}}).encode()

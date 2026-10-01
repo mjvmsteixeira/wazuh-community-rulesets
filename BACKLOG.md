@@ -19,6 +19,15 @@ Só sobre as fontes **adotadas**, como artefacto à parte (os originais continua
 
 Converter os decoders XML para YAML/ECS e as regras para o novo motor, a partir do pack derivado (ver `catalog/decoder_fields.csv` para o mapa ECS).
 
+## Avaliar antes de responder à issue #1
+
+O caso da issue está reproduzido e a semântica do `if_group` está medida e verificada em cada push (`tools/model_checks.py`, cenários `if_group-*`, `if_matched_*`, `rule_exclude-*`). Ainda em aberto:
+
+- **Sombra condicional por horário:** o motor usa o relógio do manager, não a hora do evento; dá para testar arrancando o analysisd com `TZ`. Falta o cenário (precisa de `TZ` e de incluir o `0215-policy_rules.xml`, excluído por omissão).
+- **Sombra condicional por correlação:** testada no motor só nos casos 40112 e 10001; as restantes são previsão estática. Falta o gerador de sequências sintéticas (ver lacunas).
+- **Cenários com eventos Windows** no verificador do modelo (apanha-tudo por `if_group sysmon_event1`, 101101): provados à mão pela revisão, falta a injeção EventChannel no runner do `model_checks.py`.
+- **Linhas de log do autor:** aceitar e acrescentar como teste com logs reais (os cenários usam linhas sintéticas de sshd).
+
 ## Lacunas conhecidas
 
 - **Amostras sintéticas para cadeias syslog** (decoders com `prematch`/`regex`): hoje só JSON e Windows EventChannel. Exige inverter a cadeia de decoders; cobriria fortigate, cisco, etc.

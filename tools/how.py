@@ -51,10 +51,10 @@ def texts(n, lang):
                   'A página de pesquisa avisa quando um pack pode silenciar outras regras. Esta página explica como esses avisos são calculados e até onde cada um está provado.'),
         'h_siblings': L('Sibling rules', 'Regras irmãs'), 'h_load': L('Load order', 'Ordem de carregamento'), 'h_proof': L('How much is proven', 'Quanto está provado'),
         'h_warnings': L('Reading the warnings', 'Como ler os avisos'), 'h_findings': L('What the tests found', 'O que os testes encontraram'),
-        'sib_p1': L('Rules that hang off the same parent (<code>if_sid</code>, or <code>if_group</code> on any rule that has the group) compete for each event, and only one wins. '
+        'sib_p1': L('Rules that hang off the same parent (<code>if_sid</code>, or <code>if_group</code> on every rule already loaded whose groups contain the pattern) compete for each event, and only one wins. '
                     'Measured on the engine: <b>level-0</b> siblings are evaluated first, then the others by <b>level, highest first</b>, and on a tie by <b>the file loaded first</b>. '
                     'A rule with no conditions of its own (a <i>catch-all</i>) always matches, so it takes every event that reaches it, and the siblings after it never alert. <code>wazuh-analysisd -t</code> does not warn.',
-                    'Regras penduradas no mesmo pai (<code>if_sid</code>, ou <code>if_group</code> em qualquer regra que tenha o grupo) disputam cada evento, e só uma ganha. '
+                    'Regras penduradas no mesmo pai (<code>if_sid</code>, ou <code>if_group</code> em todas as regras já carregadas cujos grupos contêm o padrão) disputam cada evento, e só uma ganha. '
                     'Medido no motor: as irmãs de <b>nível 0</b> são avaliadas primeiro, depois as outras por <b>nível, o mais alto primeiro</b>, e em empate ganha <b>o ficheiro carregado primeiro</b>. '
                     'Uma regra sem condições próprias (um <i>apanha-tudo</i>) corresponde sempre, por isso fica com todos os eventos que lhe chegam, e as irmãs depois dela não alertam. O <code>wazuh-analysisd -t</code> não avisa.'),
         'sib_p2': L('Try it with a real Sysmon event and two real packs. Tick and untick the packs to see the evaluation order change.',
