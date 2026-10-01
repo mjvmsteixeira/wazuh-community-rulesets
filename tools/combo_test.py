@@ -12,7 +12,7 @@ Os ficheiros têm o nome que o script de instalação da página lhes dá (prefi
 O modo --auto escreve catalog/combo_tests.csv e catalog/combo_summary.csv.
 """
 import os, re, csv, json, argparse, subprocess, tempfile, collections
-from samples import samples, RUNNER, pack_prefix
+from samples import samples, RUNNER, pack_prefix, PLATFORM
 from synth import synthetic
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -130,7 +130,7 @@ else:
           for p in plan: fh.write(json.dumps(p['job']) + '\n')
       open(os.path.join(tmp, 'runner.py'), 'w').write(RUNNER)
       subprocess.run(['docker', 'rm', '-f', NAME], capture_output=True)
-      subprocess.run(['docker', 'run', '-d', '--init', '--name', NAME, '--ulimit', 'nofile=458752:458752', '--entrypoint', 'sleep', a.image, 'infinity'],
+      subprocess.run(['docker', 'run', '-d', '--init', '--platform', PLATFORM, '--name', NAME, '--ulimit', 'nofile=458752:458752', '--entrypoint', 'sleep', a.image, 'infinity'],
                      check=True, capture_output=True)
       try:
           for src, dst in ((os.path.join(ROOT, 'areas'), '/tmp/areas'), (os.path.join(tmp, 'plan.jsonl'), '/tmp/plan.jsonl'),

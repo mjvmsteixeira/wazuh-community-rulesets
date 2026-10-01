@@ -953,6 +953,7 @@ stats = {
     'excluded_files': len(excluded) + len(dups),
     'siblings': {'shared_parents': len(sib_rows), 'rules_involved': len(sib_keys),
                  'parents_with_catchall': sum(1 for r in sib_rows if r['catchall_rules']),
+                 'non_ascii_condition_rules': sum(1 for f in files for r in f['rules'] if r.get('non_ascii')),
                  'conditional_shadows': len(cond_rows), 'conditional_shadow_rules': len({(x['folder'], x['rule']) for x in cond_rows}),
                  'conditional_shadow_folders': len({x['folder'] for x in cond_rows}),
                  'dominated_catchalls': sum(len(r['dominated_catchalls'].split(' | ')) for r in sib_rows if r['dominated_catchalls']),

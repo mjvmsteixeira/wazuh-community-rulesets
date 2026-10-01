@@ -9,6 +9,7 @@ Uso: python3 tools/model_checks.py [--image wazuh/wazuh-manager:4.14.8]
 Escreve catalog/engine_model.csv. Sai com 1 se algum cenário com resultado esperado não o der.
 """
 import os, csv, json, argparse, subprocess, tempfile
+from samples import PLATFORM
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 stats = json.load(open(os.path.join(ROOT, 'catalog/stats.json')))
@@ -48,6 +49,8 @@ CASES = [
      {'a.xml': G(R(100060, 0, "<if_sid>5760</if_sid>")),
       'b.xml': G(R(100061, 10, '<if_matched_sid>5760</if_matched_sid><same_source_ip />', ' frequency="3" timeframe="120"'))},
      [FAIL.format(i) for i in range(1, 7)], '100060'),
+    ('regex-nao-ascii', 'uma regex OS_Regex com um carácter não-ASCII (traço –): o resultado depende da arquitetura da imagem',
+     {'a.xml': G(R(100090, 8, '<if_sid>5715</if_sid><regex>for adm–in</regex>'))}, [OK.replace('for admin', 'for adm–in')], 'observar'),
 ]
 
 RUNNER = r'''
@@ -92,7 +95,7 @@ with tempfile.TemporaryDirectory() as tmp:
         for name, why, files, events, want in CASES: fh.write(json.dumps({'name': name, 'files': files, 'events': events}) + '\n')
     open(os.path.join(tmp, 'runner.py'), 'w').write(RUNNER)
     subprocess.run(['docker', 'rm', '-f', NAME], capture_output=True)
-    subprocess.run(['docker', 'run', '-d', '--init', '--name', NAME, '--ulimit', 'nofile=458752:458752', '--entrypoint', 'sleep', a.image, 'infinity'],
+    subprocess.run(['docker', 'run', '-d', '--init', '--platform', PLATFORM, '--name', NAME, '--ulimit', 'nofile=458752:458752', '--entrypoint', 'sleep', a.image, 'infinity'],
                    check=True, capture_output=True)
     try:
         for f in ('cases.jsonl', 'runner.py'): subprocess.run(['docker', 'cp', os.path.join(tmp, f), f'{NAME}:/tmp/{f}'], check=True, capture_output=True)

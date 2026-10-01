@@ -68,6 +68,8 @@ def parse_file(path):
             'groups': sorted(set(g.strip() for g in groups)),
             'if_sid': ','.join(txt(r, 'if_sid') + txt(r, 'if_matched_sid')),
             'if_group': ','.join(txt(r, 'if_group') + txt(r, 'if_matched_group')),
+            # regex com caracteres não-ASCII: o motor deu resultados diferentes em arm64 e amd64 (tools/model_checks.py)
+            'non_ascii': any(isinstance(c.tag, str) and c.tag in ('field', 'match', 'regex') and c.text and not c.text.isascii() for c in r),
             'parent_sid': ','.join(txt(r, 'if_sid')), 'parent_group': '|'.join(txt(r, 'if_group')),   # só as arestas de pai
             'decoded_as': ','.join(txt(r, 'decoded_as')),
             'mitre': sorted(set(m for m in mitre if m)),

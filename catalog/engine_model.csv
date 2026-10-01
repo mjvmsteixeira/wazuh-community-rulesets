@@ -9,3 +9,4 @@ if_group-sem-correlacao,"issue #1: sem as falhas antes, a filha de 5715 dispara"
 if_group-nivel-13,issue #1: a nível 13 a filha de 5715 passa à frente da 40112,100080,100080:13,ok,5760:5 5760:5 5760:5 5760:5 5760:5 5760:5 5760:5 5763:10 100080:13,
 if_matched_sid-controlo,"uma regra só com if_matched_sid (sem if_sid) é filha da regra referida: ao N-ésimo evento em que esta é a regra final, substitui-a",100061,100061:10,ok,5760:5 5760:5 100061:10 5760:5 5760:5 100061:10,
 if_matched_sid-irma,um apanha-tudo filho da regra referida silencia a de correlação: fica com o evento e a referida deixa de ser a final (não conta),100060,100060:0,ok,100060:0 100060:0 100060:0 100060:0 100060:0 100060:0,
+regex-nao-ascii,uma regex OS_Regex com um carácter não-ASCII (traço –): o resultado depende da arquitetura da imagem,,100090:8,observação,100090:8,

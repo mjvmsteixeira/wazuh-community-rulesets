@@ -6,6 +6,11 @@ import os, re, glob, configparser
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MAX_SAMPLES = 400   # por pasta
+# arquitetura da imagem do wazuh-manager: a nativa (emular amd64 num Mac arm64 é ~50x mais lento). O motor só divergiu
+# entre arm64 e amd64 em regex com caracteres não-ASCII (tools/model_checks.py, regex-nao-ascii); o gerador sintético
+# não gera amostras para essas regras, para os resultados locais e do CI (amd64) coincidirem
+import platform as _pf
+PLATFORM = os.environ.get('WCR_PLATFORM') or ('linux/arm64' if _pf.machine().lower() in ('arm64', 'aarch64') else 'linux/amd64')
 
 # prefixo que o script de instalação da página dá aos ficheiros de cada pack (packPrefix() em site_template.html):
 # slug(tópico + '-' + repositório), com um hash FNV-1a da pasta quando dois packs dariam o mesmo prefixo. O wazuh-analysisd

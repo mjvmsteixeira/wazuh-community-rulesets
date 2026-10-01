@@ -33,6 +33,7 @@
   "shared_parents": 274,
   "rules_involved": 10359,
   "parents_with_catchall": 70,
+  "non_ascii_condition_rules": 19,
   "conditional_shadows": 2705,
   "conditional_shadow_rules": 852,
   "conditional_shadow_folders": 45,

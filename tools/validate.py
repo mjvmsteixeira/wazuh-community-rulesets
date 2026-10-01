@@ -9,7 +9,7 @@ Cada pasta é testada sozinha: rules/, decoders/ e lists/ da pasta. Se a pasta t
 testa com e sem os <decoder_exclude> e regista qual das duas configurações carrega (coluna decoder_exclude).
 """
 import os, re, csv, json, base64, argparse, subprocess, tempfile
-from samples import pack_prefix
+from samples import pack_prefix, PLATFORM
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 stats = json.load(open(os.path.join(ROOT, 'catalog/stats.json')))
@@ -75,7 +75,7 @@ with tempfile.TemporaryDirectory() as tmp:
                    and AGENT_CONF_RE.match(open(os.path.join(dp, f), errors='ignore').read()))
     open(os.path.join(tmp, 'agentconf.txt'), 'w').write(''.join(c + '\n' for c in confs))
     subprocess.run(['docker', 'rm', '-f', NAME], capture_output=True)
-    subprocess.run(['docker', 'run', '-d', '--init', '--name', NAME, '--ulimit', 'nofile=458752:458752', '--entrypoint', 'sleep', a.image, 'infinity'], check=True, capture_output=True)
+    subprocess.run(['docker', 'run', '-d', '--init', '--platform', PLATFORM, '--name', NAME, '--ulimit', 'nofile=458752:458752', '--entrypoint', 'sleep', a.image, 'infinity'], check=True, capture_output=True)
     try:
         for src, dst in ((os.path.join(ROOT, 'areas'), '/tmp/areas'), (os.path.join(ROOT, 'groups'), '/tmp/groups'),
                          (os.path.join(tmp, 'manifest.tsv'), '/tmp/manifest.tsv'), (os.path.join(tmp, 'agentconf.txt'), '/tmp/agentconf.txt'),

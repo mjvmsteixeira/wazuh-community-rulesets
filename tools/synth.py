@@ -179,6 +179,7 @@ def conditions(rs):
                 if d not in ('windows_eventchannel', 'json'): raise Unsat('decoder ' + d)
             elif tag in ('field', 'match', 'regex'):
                 neg, txt = c.get('negate') == 'yes', c.text or ''
+                if not txt.isascii(): raise Unsat('não-ASCII: o resultado depende da arquitetura')
                 if (c.get('type') or ('osmatch' if tag == 'match' else '')).lower() == 'osmatch' and txt.startswith('!'):
                     neg, txt = not neg, txt[1:]   # OS_Match: '!' no início nega
                 p, f = to_py(c, txt)
