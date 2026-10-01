@@ -190,6 +190,9 @@ const LANG = '__LANG__';
 const REPO = 'https://github.com/mjvmsteixeira/wazuh-community-rulesets';
 // ---------- i18n: English is the source; PT holds the Portuguese version of every visible string
 const PT = {
+  'correlation': 'correlação', 'time of day': 'horário', 'first time seen': 'primeira vez', 'e.g.': 'p.ex.', '{n} rules': '{n} regras',
+  'Rules that lose events to official siblings in some situations': 'Regras que perdem eventos para irmãs oficiais em certas situações',
+  'An official sibling of the same parent is evaluated first and has conditions that depend on context, not on the event: repeated events (correlation), the time of day, or a first occurrence. When they hold, the official rule takes the event and this rule does not alert. wazuh-analysisd -t does not warn about it.': 'Uma irmã oficial do mesmo pai é avaliada primeiro e tem condições que dependem do contexto, não do evento: eventos repetidos (correlação), a hora do dia ou uma primeira ocorrência. Quando se cumprem, a regra oficial fica com o evento e esta não alerta. O wazuh-analysisd -t não avisa.',
   'Tested together: {n} of the chosen pairs': 'Testados juntos: {n} dos pares escolhidos',
   'tools/combo_test.py loaded these pairs together in wazuh-logtest and replayed their log samples.': 'O tools/combo_test.py carregou estes pares juntos no wazuh-logtest e repetiu as amostras de log.',
   '{s} of {n} samples changed owner (decoder {d}, sibling rule {r}, ID conflict {i}, lost alert {l})': '{s} de {n} amostras mudaram de dono (decoder {d}, regra irmã {r}, conflito de ID {i}, alerta perdido {l})',
@@ -709,6 +712,7 @@ async function showPack(i, tab = 'resumo', rule = null) {
     body = `${!p.ok ? `<div class="alert"><b>${_('Does not load in wazuh-analysisd')}</b>${esc(p.err)}</div>` : ''}
       ${p.ok && p.w ? `<div class="alert warn"><b>${_('Loads with warnings ')}</b>${esc(p.warn)}</div>` : ''}
       ${offsilAlert([i])}
+      ${condAlert([i])}
       ${p.lic === 'NONE' ? `<div class="alert warn"><b>${_('No license')}</b>${_('The author published no license: internal use only; do not redistribute.')}</div>` : ''}
       ${p.dex === 'não usar' ? `<div class="alert info"><b>decoder_exclude</b>${_('Do not exclude the matching official file: this pack\'s decoders add to the official ones and excluding it breaks loading.')}</div>` : ''}
       ${p.dex === 'necessário' ? `<div class="alert info"><b>${_('decoder_exclude required')}</b>${p.repl.map(x => `&lt;decoder_exclude&gt;ruleset/decoders/${esc(x)}&lt;/decoder_exclude&gt;`).join('<br>')}</div>` : ''}
@@ -879,6 +883,14 @@ fi`);
   if (mgr.size) out.push(`\n${_('# ===== Manager requirements (configure separately in ossec.conf):')}\n${[...mgr].map(g => '#   ' + g).join('\n')}`);
   return out.join('\n') + '\n';
 }
+function condAlert(idxs) {
+  // irmãs oficiais avaliadas antes, com condições de contexto: ficam com o evento só nessas situações (issue #1)
+  const hits = idxs.filter(i => (D.offcond || {})[i]);
+  if (!hits.length) return '';
+  const CN = {'correlação': _('correlation'), 'horário': _('time of day'), 'primeira vez': _('first time seen')};
+  return `<div class="alert warn"><b>${_('Rules that lose events to official siblings in some situations')}</b>${_('An official sibling of the same parent is evaluated first and has conditions that depend on context, not on the event: repeated events (correlation), the time of day, or a first occurrence. When they hold, the official rule takes the event and this rule does not alert. wazuh-analysisd -t does not warn about it.')}<ul>${hits.map(i => { const [n, by, ex] = D.offcond[i];
+    return `<li>${esc(D.packs[i].t + ' · ' + D.packs[i].s)}: ${_('{n} rules', {n})} (${Object.entries(by).map(([k, v]) => `${esc(CN[k] || k)} ${v}`).join(', ')}), ${_('e.g.')} ${ex.slice(0, 3).map(([r, l, o, ol]) => `${esc(r)}@${l} → ${esc(o)}@${ol}`).join(', ')}</li>`; }).join('')}</ul></div>`;
+}
 function offsilAlert(idxs) {
   const hits = idxs.filter(i => D.offsil[i]);
   if (!hits.length) return '';
@@ -913,6 +925,7 @@ function renderCart() {
   ${c.lists.length ? `<div class="alert warn"><b>${_('CDB lists with the same name')}</b>${c.lists.map(([l, v]) => `${esc(l)} (${v.map(esc).join(' / ')})`).join(', ')} ${_('— the last one written wins.')}</div>` : ''}
   ${c.dcol.length ? `<div class="alert"><b>${_('{n} root decoders with the same name between the chosen packs', {n: c.dcol.length})}</b>${_('Both stay active with no error, but the children of both hang off the same name and run in load order: a log can be parsed by the children of the other pack (different fields) and the rules that expect the fields of this pack stop matching:')} ${c.dcol.slice(0, 15).map(([n, ps]) => `${esc(n)} (${ps.map(x => esc(D.packs[x].s)).join(' / ')})`).join(', ')}</div>` : ''}
   ${offsilAlert(sel.map(([, i]) => i))}
+  ${condAlert(sel.map(([, i]) => i))}
   ${comboAlert(sel.map(([, i]) => i))}
   ${sibAlerts(c.sibs)}
   ${c.need.length ? `<div class="alert info"><b>${_('Dependencies in other packs')}</b>${_('The chosen packs use rules or decoders that live in other packs:')} ${c.need.map(x => `<button class="btn small" data-add="${x}">+ ${esc(D.packs[x].t)} · ${esc(D.packs[x].s)}</button>`).join(' ')}</div>` : ''}

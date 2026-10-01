@@ -68,6 +68,7 @@ def parse_file(path):
             'groups': sorted(set(g.strip() for g in groups)),
             'if_sid': ','.join(txt(r, 'if_sid') + txt(r, 'if_matched_sid')),
             'if_group': ','.join(txt(r, 'if_group') + txt(r, 'if_matched_group')),
+            'parent_sid': ','.join(txt(r, 'if_sid')), 'parent_group': '|'.join(txt(r, 'if_group')),   # só as arestas de pai
             'decoded_as': ','.join(txt(r, 'decoded_as')),
             'mitre': sorted(set(m for m in mitre if m)),
             'overwrite': r.get('overwrite') == 'yes',
@@ -76,6 +77,10 @@ def parse_file(path):
             'n_conds': sum(1 for c in r if isinstance(c.tag, str) and c.tag in CONDITIONS) + bool(r.get('maxsize')),   # maxsize também restringe
             'correlation': bool(r.get('frequency') or any(isinstance(c.tag, str) and (c.tag.startswith(('same_', 'different_', 'not_same_'))
                                 or c.tag in ('if_matched_sid', 'if_matched_group')) for c in r)),
+            # condições que dependem do contexto e não do conteúdo do evento: uma irmã com elas pode ficar com eventos de outra
+            'context': ';'.join(k for k, ok in (('correlação', bool(r.get('frequency')) or any(isinstance(c.tag, str) and (c.tag.startswith(('same_', 'different_', 'not_same_')) or c.tag in ('if_matched_sid', 'if_matched_group')) for c in r)),
+                                               ('horário', r.find('time') is not None or r.find('weekday') is not None),
+                                               ('primeira vez', r.find('if_fts') is not None)) if ok),
             'hash': hashlib.sha1(norm(r).encode()).hexdigest()[:12],
         })
     for d in root.iter('decoder'):

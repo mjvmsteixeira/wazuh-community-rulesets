@@ -547,10 +547,23 @@ wcsv('decoder_fields.csv', field_rows, ['field', 'uses', 'folders', 'static', 'n
 # Um apanha-tudo de nível 0 é avaliado antes de todas as irmãs com alerta.
 def lvl(r): return int(r['level']) if (r['level'] or '').isdigit() else 0
 def ek(r): return (0 if lvl(r) == 0 else 1, -lvl(r))   # ordem de avaliação, sem a ordem de carregamento
+# if_group: o motor pendura a regra como filha de TODAS as regras cujos grupos correspondem (OS_Match, sem distinguir
+# maiúsculas; os grupos incluem os <group name> envolventes). Verificado em tools/model_checks.py (issue #1: a 40112,
+# if_group authentication_success, é irmã de qualquer filha da 5715). Um padrão 'a,b' exige os dois grupos; '|' alterna.
+def group_match(pat, groups):
+    gs = ','.join(groups).lower()
+    return any(all(tok in gs for tok in alt.strip('^$').lower().split(',') if tok) for alt in pat.split('|') if alt.strip())
+_gp = {}
+def group_parents(pat):   # regras oficiais com grupos correspondentes
+    if pat not in _gp: _gp[pat] = [rid for rid, o in off_rule.items() if group_match(pat, o['groups'])]
+    return _gp[pat]
 off_children = defaultdict(list)   # pai -> regras oficiais filhas
 for rid, r in off_rule.items():
     for p_ in split_ids(r['if_sid']): off_children[('if_sid', p_)].append(r)
     for g in [x.strip() for x in r['if_group'].split(',') if x.strip()]: off_children[('if_group', g)].append(r)
+    if r['parent_group'] and not r['parent_sid']:
+        for p_ in group_parents(r['parent_group']):
+            if p_ != rid: off_children[('if_sid', p_)].append(r)
 sib = defaultdict(lambda: defaultdict(list))   # pai -> pasta -> regras filhas
 for f in files:
     for r in f['rules']:
@@ -563,7 +576,7 @@ for (kind, parent), by_fo in sorted(sib.items()):
     offk = off_children.get((kind, parent), [])
     # o oficial carrega antes do pack: em empate é avaliado primeiro
     def off_dominates(r): return any(is_catchall(o) and ek(o) <= ek(r) for o in offk if o['id'] != r['id'])
-    for fo, rs in by_fo.items():
+    for fo, rs in by_fo.items() if kind == 'if_sid' else ():   # if_group: resolvido abaixo, pai a pai
         for r in rs:
             if not is_catchall(r) or off_dominates(r): continue
             lost = [o for o in offk if o['id'] != r['id'] and ek(o) > ek(r)]
@@ -573,6 +586,20 @@ for (kind, parent), by_fo in sorted(sib.items()):
                                                'official_silenced': len(lost), 'silenced_ids': ';'.join(sorted(o['id'] for o in lost)),
                                                'silenced_alerting': sum(1 for o in lost if lvl(o) > 0),
                                                'examples': '; '.join(f"{o['id']} (nível {o['level']}): {o['description'][:60]}" for o in sorted(lost, key=lvl, reverse=True)[:5])})
+    if kind == 'if_group':
+        for fo, rs in by_fo.items():
+            for r in rs:
+                if not is_catchall(r) or not r['parent_group'] or r['parent_sid']: continue
+                lost = {}
+                for p_ in group_parents(r['parent_group']):
+                    sib_off = off_children.get(('if_sid', p_), [])
+                    if any(is_catchall(o) and ek(o) <= ek(r) for o in sib_off if o['id'] != r['id']): continue
+                    for o in sib_off:
+                        if o['id'] != r['id'] and ek(o) > ek(r): lost[o['id']] = o
+                if lost: silences_official.append({'rule': r['id'], 'level': lvl(r), 'parent': f'if_group {parent} ({len(group_parents(r["parent_group"]))} pais)', 'folder': fo,
+                                                   'official_silenced': len(lost), 'silenced_ids': ';'.join(sorted(lost)),
+                                                   'silenced_alerting': sum(1 for o in lost.values() if lvl(o) > 0),
+                                                   'examples': '; '.join(f"{o['id']} (nível {o['level']}): {o['description'][:60]}" for o in sorted(lost.values(), key=lvl, reverse=True)[:5])})
     if len(srcs) < 2: continue
     if kind == 'if_sid':
         owners = {repo_of_folder[fo] for fo in id_folders.get(parent, ())}
@@ -600,6 +627,22 @@ for (kind, parent), by_fo in sorted(sib.items()):
                                             for fo, rs in sorted(by_fo.items())),
                      'official_children': ','.join(sorted({o['id'] + '@' + str(lvl(o)) + ('*' if is_catchall(o) else '') for o in offk})),
                      'dominated_catchalls': ' | '.join(dominated)})
+# sombra condicional: uma irmã oficial avaliada antes (nível 0, nível superior, ou igual — o oficial carrega primeiro) cujas
+# condições dependem do contexto (correlação, horário, primeira vez) e não do conteúdo: nessas situações fica com o evento
+# e a regra do pack não alerta; o wazuh-analysisd -t não avisa (issue #1: 40112 face a uma filha de 5715)
+cond_rows = []
+for f in files:
+    for r in f['rules']:
+        if lvl(r) == 0: continue
+        seen = set()
+        for p_ in split_ids(r['parent_sid']) or [x for x in group_parents(r['parent_group']) if r['parent_group']][:50]:
+            for o in off_children.get(('if_sid', p_), []):
+                if o['id'] in seen or o['id'] == r['id'] or not o['context'] or ek(o) > ek(r): continue
+                seen.add(o['id'])
+                cond_rows.append({'rule': r['id'], 'level': lvl(r), 'folder': f['folder'], 'parent': p_, 'official_rule': o['id'],
+                                  'official_level': lvl(o), 'condition': o['context'], 'official_description': o['description'][:100]})
+cond_rows.sort(key=lambda x: (x['folder'], int(x['rule']) if x['rule'].isdigit() else 0, x['official_rule']))
+wcsv('conditional_shadows.csv', cond_rows, ['rule', 'level', 'folder', 'parent', 'official_rule', 'official_level', 'condition', 'official_description'])
 sib_rows.sort(key=lambda r: (-r['folders'], r['kind'], r['parent']))
 wcsv('catchall_silences_official.csv', sorted(silences_official, key=lambda r: (-r['official_silenced'], r['folder'], r['rule'])),
      ['rule', 'level', 'parent', 'folder', 'official_silenced', 'silenced_alerting', 'silenced_ids', 'examples'])
@@ -910,6 +953,8 @@ stats = {
     'excluded_files': len(excluded) + len(dups),
     'siblings': {'shared_parents': len(sib_rows), 'rules_involved': len(sib_keys),
                  'parents_with_catchall': sum(1 for r in sib_rows if r['catchall_rules']),
+                 'conditional_shadows': len(cond_rows), 'conditional_shadow_rules': len({(x['folder'], x['rule']) for x in cond_rows}),
+                 'conditional_shadow_folders': len({x['folder'] for x in cond_rows}),
                  'dominated_catchalls': sum(len(r['dominated_catchalls'].split(' | ')) for r in sib_rows if r['dominated_catchalls']),
                  'catchall_rules': len(ca_keys),
                  'ambiguous_parents': sum(1 for r in sib_rows if r['ambiguous_parent']),

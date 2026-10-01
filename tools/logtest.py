@@ -107,8 +107,7 @@ for p in plan:
             if 'error' in r or not res: continue
             v = ('ok' if r['rule'] == exp['rule'] else 'outra regra da pasta' if r['rule'] in rules_by_folder[fo]
                  else 'regra oficial' if r['rule'] and r['rule'] in OFF_RULES else 'outra regra' if r['rule'] else 'nenhuma regra')
-            if v != 'ok' and exp.get('hint'): v = 'campo inexistente'
-            synth_rows.append({'folder': fo, 'rule': exp['rule'], 'format': exp['fmt'], 'verdict': v, 'note': exp.get('hint', ''), 'fired_rule': r['rule'],
+            synth_rows.append({'folder': fo, 'rule': exp['rule'], 'format': exp['fmt'], 'verdict': v, 'fired_rule': r['rule'],
                                'fired_level': r.get('level', ''), 'decoder': r['decoder'],
                                'fields': ','.join(r.get('fields', [])), 'log': log})
             continue

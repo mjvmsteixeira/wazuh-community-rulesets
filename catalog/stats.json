@@ -33,12 +33,15 @@
   "shared_parents": 274,
   "rules_involved": 10359,
   "parents_with_catchall": 70,
+  "conditional_shadows": 2705,
+  "conditional_shadow_rules": 852,
+  "conditional_shadow_folders": 45,
   "dominated_catchalls": 14,
   "catchall_rules": 74,
   "ambiguous_parents": 154,
-  "catchalls_silencing_official": 20,
-  "official_rules_silenced": 37,
-  "folders_silencing_official": 10,
+  "catchalls_silencing_official": 27,
+  "official_rules_silenced": 67,
+  "folders_silencing_official": 12,
   "folder_pairs": 141
  },
  "decoders_detail": {

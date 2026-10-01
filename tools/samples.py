@@ -95,23 +95,28 @@ _c = re.sub(r'<log_alert_level>\d+</log_alert_level>', '<log_alert_level>1</log_
 open('/tmp/etc.orig/ossec.conf', 'w').write(_c)
 ALERTS = O + '/logs/alerts/alerts.json'
 def inject(evs):
-    """evs: [(tag, payload)] -> {tag: alerta}. Espera até não chegarem alertas novos durante 3 s (máximo 60 s)."""
-    open(ALERTS, 'a').close(); start = os.path.getsize(ALERTS)
-    s = socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM); s.connect(O + '/queue/sockets/queue')
-    for tag, ev in evs: s.send(('f:EventChannel:' + ev).encode()); time.sleep(0.002)
-    s.close()
-    got, last, t0, size = {}, time.time(), time.time(), start
-    # pelo menos 10 s (o primeiro alerta pode demorar) e depois até 3 s sem alertas novos; no máximo 120 s
-    while (time.time() - t0 < 10 or time.time() - last < 3) and time.time() - t0 < 120:
-        time.sleep(0.3)
-        if os.path.getsize(ALERTS) != size: size = os.path.getsize(ALERTS); last = time.time()
-    with open(ALERTS, errors='replace') as fh:
-        fh.seek(start)
-        for line in fh:
-            try: a = json.loads(line)
-            except ValueError: continue
-            tag = (((a.get('data') or {}).get('win') or {}).get('eventdata') or {}).get('wcrId')
-            if tag: got[tag] = a
+    """evs: [(tag, payload)] -> {tag: alerta}. Espera pelo menos 10 s e depois até 3 s sem alertas novos (máximo 120 s).
+    Duas passagens: com muitos eventos seguidos a fila do analysisd pode descartar algum, por isso os que não deram
+    alerta são reenviados uma vez (uma regra que de facto não dispara continua sem alerta)."""
+    got = {}
+    for attempt in range(2):
+        todo = [(tag, ev) for tag, ev in evs if tag not in got]
+        if not todo: break
+        open(ALERTS, 'a').close(); start = os.path.getsize(ALERTS)
+        s = socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM); s.connect(O + '/queue/sockets/queue')
+        for tag, ev in todo: s.send(('f:EventChannel:' + ev).encode()); time.sleep(0.005)
+        s.close()
+        last, t0, size = time.time(), time.time(), start
+        while (time.time() - t0 < 10 or time.time() - last < 3) and time.time() - t0 < 120:
+            time.sleep(0.3)
+            if os.path.getsize(ALERTS) != size: size = os.path.getsize(ALERTS); last = time.time()
+        with open(ALERTS, errors='replace') as fh:
+            fh.seek(start)
+            for line in fh:
+                try: a = json.loads(line)
+                except ValueError: continue
+                tag = (((a.get('data') or {}).get('win') or {}).get('eventdata') or {}).get('wcrId')
+                if tag: got[tag] = a
     return got
 for line in open('/tmp/plan.jsonl'):
     job = json.loads(line); fo = job['folder']

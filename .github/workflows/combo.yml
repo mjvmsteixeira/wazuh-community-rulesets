@@ -31,6 +31,7 @@ jobs:
         run: |
           python3 tools/build.py --src .cache/src --official .cache/official/ruleset --out .
           python3 tools/validate.py
+          python3 tools/model_checks.py
           python3 tools/logtest.py
           python3 tools/check_regression.py --ref HEAD
       - name: Pares de pastas carregados juntos

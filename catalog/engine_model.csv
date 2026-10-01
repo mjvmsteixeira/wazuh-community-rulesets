@@ -1,0 +1,11 @@
+case,proves,expected,got,verdict,sequence,warnings
+nivel-maior-primeiro,"entre irmãs, o nível mais alto é avaliado primeiro",100011,100011:10,ok,100011:10,
+empate-nome-ficheiro,"em empate de nível, ganha o ficheiro carregado primeiro (nome), não o ID",100021,100021:5,ok,100021:5,
+nivel-0-primeiro,"uma irmã de nível 0 é avaliada antes das irmãs com alerta, mesmo de nível 12",100030,100030:0,ok,100030:0,
+apanha-tudo-silencia,uma irmã sem condições corresponde sempre e fica com o evento,100040,100040:7,ok,100040:7,
+id-repetido,um ID repetido fica com a definição do ficheiro carregado primeiro; a outra não existe,100050:4,100050:4,ok,100050:4,WARNING: (7612): Rule ID '100050' is duplicated. Only the first occurrence will be considered.
+if_group-e-irma,issue #1: a 40112 (if_group authentication_success) é irmã de uma filha de 5715 e ganha-lhe com nível 12,40112,40112:12,ok,5760:5 5760:5 5760:5 5760:5 5760:5 5760:5 5760:5 5763:10 40112:12,
+if_group-sem-correlacao,"issue #1: sem as falhas antes, a filha de 5715 dispara",100080,100080:9,ok,100080:9,
+if_group-nivel-13,issue #1: a nível 13 a filha de 5715 passa à frente da 40112,100080,100080:13,ok,5760:5 5760:5 5760:5 5760:5 5760:5 5760:5 5760:5 5763:10 100080:13,
+if_matched_sid-controlo,"uma regra só com if_matched_sid (sem if_sid) é filha da regra referida: ao N-ésimo evento em que esta é a regra final, substitui-a",100061,100061:10,ok,5760:5 5760:5 100061:10 5760:5 5760:5 100061:10,
+if_matched_sid-irma,um apanha-tudo filho da regra referida silencia a de correlação: fica com o evento e a referida deixa de ser a final (não conta),100060,100060:0,ok,100060:0 100060:0 100060:0 100060:0 100060:0 100060:0,

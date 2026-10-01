@@ -29,6 +29,8 @@ jobs:
         run: python3 tools/build.py --src .cache/src --official .cache/official/ruleset --out .
       - name: wazuh-analysisd -t e verify-agent-conf por pasta
         run: python3 tools/validate.py
+      - name: Modelo de avaliação do motor (cenários controlados)
+        run: python3 tools/model_checks.py
       - name: Amostras de log no wazuh-logtest
         run: python3 tools/logtest.py
       - name: Sem regressões face ao commit anterior

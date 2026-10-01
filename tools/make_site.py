@@ -109,7 +109,16 @@ for r in C('combo_summary.csv'):
     if len(fs) == 2 and all(f in pack_idx for f in fs) and r['loaded_together'] == 'True':
         combo[','.join(map(str, sorted(pack_idx[f] for f in fs)))] = [int(r['samples']), int(r['shadowed']), int(r['sombreado (decoder)']),
             int(r['sombreado (regra irmã)']), int(r['conflito de ID']), int(r['perdeu o alerta']), sorted(set(ctests.get(r['combo'], [])))[:4]]
-meta = {'stats': stats, 'sib': sib, 'offsil': offsil, 'combo': combo, 'areas': AREAS, 'areas_en': AREAS_EN, 'packs': packs, 'rules': rules, 'decs': decs, 'dcoll': dcoll, 'dfields': dfields, 'dtests': dtests, 'techs': techs, 'pbs': pbs,
+# sombra condicional: {pasta: [[n regras, {condição: n}, [[regra, nível, regra oficial, nível, condição]] (até 40)]]}
+offcond = {}
+for r in C('conditional_shadows.csv'):
+    if r['folder'] not in pack_idx: continue
+    e = offcond.setdefault(pack_idx[r['folder']], [set(), {}, []])
+    e[0].add(r['rule'])
+    for c in r['condition'].split(';'): e[1][c] = e[1].get(c, 0) + 1
+    if len(e[2]) < 40: e[2].append([r['rule'], int(r['level']), r['official_rule'], int(r['official_level']), r['condition']])
+offcond = {k: [len(v[0]), v[1], v[2]] for k, v in offcond.items()}
+meta = {'stats': stats, 'sib': sib, 'offsil': offsil, 'offcond': offcond, 'combo': combo, 'areas': AREAS, 'areas_en': AREAS_EN, 'packs': packs, 'rules': rules, 'decs': decs, 'dcoll': dcoll, 'dfields': dfields, 'dtests': dtests, 'techs': techs, 'pbs': pbs,
         'resps': resps, 'groups': groups, 'sigma': sigma_only, 'conflicts': conflicts,
         'sources': [[r['repo'], r['license'], r['status'], r['last_commit'], int(r['rules'] or 0)] for r in C('sources.csv')]}
 enc = lambda o: base64.b64encode(gzip.compress(json.dumps(o, ensure_ascii=False, separators=(',', ':')).encode(), 9, mtime=0)).decode()

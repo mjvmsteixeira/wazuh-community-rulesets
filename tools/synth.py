@@ -265,10 +265,7 @@ def synthetic(folder):
                 if kind == 'eventchannel':
                     # sem alerta (nível 0) a injeção não se confirma pelo alerts.json
                     if matches or int(r.get('level')) < 1: raise Unsat('match em Windows / nível 0')
-                    # o decoder põe a 1.ª letra de cada Data Name em minúscula: um campo com maiúscula nunca existe
-                    bad = sorted(n for n in fields if n.startswith('win.eventdata.') and n.split('.', 2)[2][:1].isupper())
-                    hint = f"campo {bad[0]} nunca existe: o decoder produz win.eventdata.{bad[0].split('.', 2)[2][:1].lower()}{bad[0].split('.', 2)[2][1:]}" if bad else ''
-                    out.append((eventchannel(fields, tag), {'kind': 'sintética', 'rule': rid, 'fmt': 'eventchannel', 'tag': tag, 'hint': hint}, 'sintética'))
+                    out.append((eventchannel(fields, tag), {'kind': 'sintética', 'rule': rid, 'fmt': 'eventchannel', 'tag': tag}, 'sintética'))
                 elif kind == 'json':
                     out.append((json_event(fields, matches, tag), {'kind': 'sintética', 'rule': rid, 'fmt': 'json', 'tag': tag}, 'sintética'))
                 else: continue
