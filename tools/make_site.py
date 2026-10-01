@@ -82,7 +82,7 @@ groups = [[g['group'], g['os'], int(g['entries']), g['origin'], [pack_idx[x] for
            content(f"groups/{g['group']}/agent.conf"), gval.get(g['group'])] for g in C('groups.csv')]
 conflicts = {r['id']: r['type'] for r in C('id_conflicts.csv')}
 
-# regras irmãs: [pai, tipo, dono, pai ambíguo, {pasta: [[id, nível, apanha-tudo]]}, [[id, nível] dos filhos oficiais]]
+# regras irmãs: [pai, tipo, dono, pai ambíguo, {pasta: [[id, nível, apanha-tudo]]}, [[id, nível, apanha-tudo] dos filhos oficiais]]
 def kids(s):
     out = []
     for x in filter(None, s.split(',')):
@@ -94,7 +94,7 @@ for r in C('sibling_parents.csv'):
     for part in r['children'].split(' | '):
         fo, ids = part.split(': ', 1)
         if fo in pack_idx: ch[pack_idx[fo]] = kids(ids)
-    sib.append([r['parent'], r['kind'], r['owner'], r['ambiguous_parent'] == 'True', ch, [k[:2] for k in kids(r['official_children'])]])
+    sib.append([r['parent'], r['kind'], r['owner'], r['ambiguous_parent'] == 'True', ch, kids(r['official_children'])])
 # apanha-tudo que silenciam regras oficiais com a pasta instalada sozinha: {pasta: [[regra, nível, pai, n, exemplos]]}
 offsil = {}
 for r in C('catchall_silences_official.csv'):

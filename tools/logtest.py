@@ -10,7 +10,8 @@ Amostras (por pasta):
 Só se testam pastas que carregam (catalog/validation.csv). Escreve catalog/decoder_tests.csv e catalog/decoder_test_summary.csv.
 """
 import os, re, csv, json, glob, argparse, subprocess, tempfile, collections
-from samples import samples, RUNNER
+from samples import samples, RUNNER, pack_prefix
+from synth import synthetic
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 stats = json.load(open(os.path.join(ROOT, 'catalog/stats.json')))
@@ -33,18 +34,20 @@ plan = []
 for fo, v in sorted(val.items()):
     if a.only and not re.search(a.only, fo): continue
     ss = samples(fo)
-    if not ss: continue
-    plan.append({'folder': fo, 'ok': v['loads_ok'] == 'True',
+    sy = synthetic(fo) if v['loads_ok'] == 'True' else []
+    if not ss and not sy: continue
+    plan.append({'folder': fo, 'ok': v['loads_ok'] == 'True', 'n_real': len(ss), 'prefix': pack_prefix(fo),
                  'excludes': sorted(excl.get(fo, ())) if v.get('decoder_exclude') in ('necessário',) else [],
-                 'samples': [{'log': s[0], 'fmt': 'json' if s[0].lstrip().startswith('{') else 'syslog'} for s in ss], 'meta': ss})
+                 'samples': [{'log': s[0], 'fmt': 'json' if s[0].lstrip().startswith('{') else 'syslog'} for s in ss] +
+                            [{'log': s[0], 'fmt': s[1]['fmt'], 'tag': s[1]['tag']} for s in sy], 'meta': ss + sy})
 
 
 
-rows, summary = [], []
+rows, summary, synth_rows = [], [], []
 with tempfile.TemporaryDirectory() as tmp:
     with open(os.path.join(tmp, 'plan.jsonl'), 'w') as fh:
         for p in plan:
-            if p['ok']: fh.write(json.dumps({k: p[k] for k in ('folder', 'excludes', 'samples')}) + '\n')
+            if p['ok']: fh.write(json.dumps({k: p[k] for k in ('folder', 'prefix', 'excludes', 'samples')}) + '\n')
     open(os.path.join(tmp, 'runner.py'), 'w').write(RUNNER)
     subprocess.run(['docker', 'rm', '-f', NAME], capture_output=True)
     subprocess.run(['docker', 'run', '-d', '--init', '--name', NAME, '--ulimit', 'nofile=458752:458752', '--entrypoint', 'sleep', a.image, 'infinity'], check=True, capture_output=True)
@@ -64,6 +67,8 @@ with tempfile.TemporaryDirectory() as tmp:
 
 got = {j['folder']: (j['results'] if j.get('loaded', True) else None) for j in map(json.loads, out.splitlines())}
 
+OFF_RULES = set(re.findall(r'<rule\s+id="(\d+)"', ' '.join(
+    open(f, errors='ignore').read() for f in glob.glob(os.path.join(ROOT, '.cache/official/ruleset/rules/*.xml')))))
 OFF_DECS = set(re.findall(r'<decoder\s+name="([^"]+)"', ' '.join(
     open(f, errors='ignore').read() for f in glob.glob(os.path.join(ROOT, '.cache/official/ruleset/decoders/*.xml')))))
 
@@ -97,6 +102,16 @@ for p in plan:
     fo, res = p['folder'], got.get(p['folder'])
     cnt = collections.Counter()
     for i, (log, exp, origin) in enumerate(p['meta']):
+        if exp['kind'] == 'sintética':
+            r = res[i] if res else {}
+            if 'error' in r or not res: continue
+            v = ('ok' if r['rule'] == exp['rule'] else 'outra regra da pasta' if r['rule'] in rules_by_folder[fo]
+                 else 'regra oficial' if r['rule'] and r['rule'] in OFF_RULES else 'outra regra' if r['rule'] else 'nenhuma regra')
+            if v != 'ok' and exp.get('hint'): v = 'campo inexistente'
+            synth_rows.append({'folder': fo, 'rule': exp['rule'], 'format': exp['fmt'], 'verdict': v, 'note': exp.get('hint', ''), 'fired_rule': r['rule'],
+                               'fired_level': r.get('level', ''), 'decoder': r['decoder'],
+                               'fields': ','.join(r.get('fields', [])), 'log': log})
+            continue
         if res is None:
             v, why, r = 'não testado', 'a pasta não carrega no wazuh-analysisd', {}
         else:
@@ -105,13 +120,17 @@ for p in plan:
         rows.append({'folder': fo, 'origin': origin, 'kind': exp['kind'], 'case': exp.get('case', ''), 'log': log[:500], 'verdict': v, 'why': why,
                      'decoder': r.get('decoder', ''), 'parent': r.get('parent', ''), 'fields': ','.join(r.get('fields', [])),
                      'rule': r.get('rule', ''), 'level': r.get('level', '')})
-    summary.append({'folder': fo, 'samples': len(p['meta']), 'ok': cnt['ok'],
+    if not p['n_real']: continue
+    summary.append({'folder': fo, 'samples': p['n_real'], 'ok': cnt['ok'],
                     'failed': sum(n for k, n in cnt.items() if k not in ('ok', 'não testado')), 'not_tested': cnt['não testado'],
                     **{k: cnt[k] for k in ('sombreado', 'não descodificado', 'regra não disparou', 'falso positivo', 'diferente do esperado', 'erro')},
                     'sources': ';'.join(sorted({m[1]['kind'] for m in p['meta']}))})
 
-for name, data in (('decoder_tests.csv', rows), ('decoder_test_summary.csv', summary)):
+for name, data in (('decoder_tests.csv', rows), ('decoder_test_summary.csv', summary), ('synthetic_tests.csv', synth_rows)):
+    if not data: continue
     with open(os.path.join(ROOT, 'catalog', name), 'w', newline='') as fh:
         w = csv.DictWriter(fh, fieldnames=list(data[0].keys())); w.writeheader(); w.writerows(data)
 tot = collections.Counter(r['verdict'] for r in rows)
 print(f"{len(summary)} pastas com amostras, {len(rows)} amostras: {dict(tot)}; imagem {a.image}")
+st = collections.Counter((r['format'], r['verdict']) for r in synth_rows)
+print(f"sintéticas: {len(synth_rows)} em {len({r['folder'] for r in synth_rows})} pastas: {dict(st)}")

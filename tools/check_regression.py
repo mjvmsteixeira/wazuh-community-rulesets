@@ -25,6 +25,7 @@ CHECKS = {
     'pastas que carregam': ('validation.csv', lambda r: r['folder'], lambda r: r['loads_ok'] == 'True'),
     'agent.conf válidos': ('validation_agent_conf.csv', lambda r: r['file'], lambda r: r['ok'] == 'True'),
     'amostras de log ok': ('decoder_tests.csv', lambda r: (r['folder'], r['origin'], r['log']), lambda r: r['verdict'] == 'ok'),
+    'amostras sintéticas confirmadas': ('synthetic_tests.csv', lambda r: (r['folder'], r['rule'], r['log']), lambda r: r['verdict'] == 'ok'),
 }
 fail = False
 for label, (name, key, good) in CHECKS.items():

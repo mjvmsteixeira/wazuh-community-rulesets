@@ -194,7 +194,7 @@ const PT = {
   'tools/combo_test.py loaded these pairs together in wazuh-logtest and replayed their log samples.': 'O tools/combo_test.py carregou estes pares juntos no wazuh-logtest e repetiu as amostras de log.',
   '{s} of {n} samples changed owner (decoder {d}, sibling rule {r}, ID conflict {i}, lost alert {l})': '{s} de {n} amostras mudaram de dono (decoder {d}, regra irmã {r}, conflito de ID {i}, alerta perdido {l})',
   '{n} samples, none changed': '{n} amostras, nenhuma mudou',
-  'These packs add a child rule with no conditions of its own and a higher level than official siblings of the same parent: it takes those events and the official detections stop alerting. wazuh-analysisd -t does not warn about it.': 'Estes packs acrescentam uma regra filha sem condições próprias e com nível acima de irmãs oficiais do mesmo pai: fica com esses eventos e as deteções oficiais deixam de alertar. O wazuh-analysisd -t não avisa.',
+  'These packs add a child rule with no conditions of its own that is evaluated before official siblings of the same parent (level 0, or a higher level): it takes those events and the official detections stop alerting. wazuh-analysisd -t does not warn about it.': 'Estes packs acrescentam uma regra filha sem condições próprias que é avaliada antes de irmãs oficiais do mesmo pai (nível 0, ou nível acima): fica com esses eventos e as deteções oficiais deixam de alertar. O wazuh-analysisd -t não avisa.',
   '(latent: the pack does not load today)': '(latente: o pack hoje não carrega)',
   'COMMUNITY · 4.x': 'COMUNIDADE · 4.x', 'search packs, rules, decoders, techniques, playbooks…': 'pesquisar packs, regras, decoders, técnicas, playbooks…',
   'Search': 'Pesquisar', 'Theme': 'Tema', 'Toggle theme': 'Alternar tema', 'Install': 'Instalar', 'LOADING DATA': 'A CARREGAR DADOS',
@@ -204,9 +204,9 @@ const PT = {
   'Validated with <code>wazuh-analysisd -t</code>, <code>verify-agent-conf</code> and <code>wazuh-logtest</code> on the reference wazuh-manager.': 'Validado com <code>wazuh-analysisd -t</code>, <code>verify-agent-conf</code> e <code>wazuh-logtest</code> no wazuh-manager de referência.',
   'Questions, errors or suggestions: <a href="{issues}" target="_blank" rel="noopener">open an issue</a>. Author of a source and want it removed? Open an issue and it will be taken down.': 'Dúvidas, erros ou sugestões: <a href="{issues}" target="_blank" rel="noopener">abrir uma issue</a>. É autor de uma fonte e quer que seja retirada? Abra uma issue e é removida.',
   'Coverage': 'Cobertura',
-  'Measured on wazuh-analysisd 4.14.8: sibling rules are evaluated by level (highest first) and, on equal level, by load order (installed file names, alphabetical); the first one that matches takes the event. A child rule with no conditions of its own always matches, so it silences the siblings below its level.': 'Medido no wazuh-analysisd 4.14.8: as regras irmãs são avaliadas por nível (mais alto primeiro) e, em empate, pela ordem de carregamento (nomes dos ficheiros instalados, por ordem alfabética); a primeira que corresponder fica com o evento. Uma regra filha sem condições próprias corresponde sempre, por isso silencia os irmãos abaixo do seu nível.',
+  'Measured on wazuh-analysisd 4.14.8: level-0 sibling rules are evaluated first, then the others by level (highest first); on equal level, by load order (file name, across official and installed files); the first one that matches takes the event. A child rule with no conditions of its own always matches, so it silences every sibling evaluated after it.': 'Medido no wazuh-analysisd 4.14.8: as regras irmãs de nível 0 são avaliadas primeiro, depois as outras por nível (o mais alto primeiro); em empate, pela ordem de carregamento (nome do ficheiro, entre oficiais e instalados); a primeira que corresponder fica com o evento. Uma regra filha sem condições próprias corresponde sempre, por isso silencia todas as irmãs avaliadas depois dela.',
   '{a} rule {r} (catch-all, level {l}) silences {b}: {lost}': '{a}: a regra {r} (apanha-tudo, nível {l}) silencia {b}: {lost}',
-  'Each pack validates on its own, but installed together the sibling with the highest level (then the first loaded) takes the events both match, and the other does not alert. Overlap is only possible, not certain: confirm with <code>tools/combo_test.py</code> (replays each pack\'s log samples with the packs loaded together). Shown as rule@level.': 'Cada pack valida sozinho, mas instalados juntos o irmão com o nível mais alto (e, em empate, o primeiro carregado) fica com os eventos que ambos apanham, e o outro não alerta. A sobreposição é possível, não certa: confirmar com <code>tools/combo_test.py</code> (repete as amostras de cada pack com os packs carregados juntos). Mostrado como regra@nível.',
+  'Each pack validates on its own, but installed together the sibling evaluated first (level 0, then the highest level, then the first loaded) takes the events both match, and the other does not alert. Overlap is only possible, not certain: confirm with <code>tools/combo_test.py</code> (replays each pack\'s log samples with the packs loaded together). Shown as rule@level.': 'Cada pack valida sozinho, mas instalados juntos o irmão avaliado primeiro (nível 0, depois o nível mais alto, depois o primeiro carregado) fica com os eventos que ambos apanham, e o outro não alerta. A sobreposição é possível, não certa: confirmar com <code>tools/combo_test.py</code> (repete as amostras de cada pack com os packs carregados juntos). Mostrado como regra@nível.',
   'Packs that silence official Wazuh rules, even installed alone': 'Packs que silenciam regras oficiais da Wazuh, mesmo instalados sozinhos',
   'These packs add a child rule with no conditions of its own and a higher level than official siblings of the same parent: it takes those events and the official detections stop alerting. The pack loads and validates normally.': 'Estes packs acrescentam uma regra filha sem condições próprias e com nível acima de irmãs oficiais do mesmo pai: fica com esses eventos e as deteções oficiais deixam de alertar. O pack carrega e valida normalmente.',
   'rule {r} (level {l}, {p}) silences {n} official rules, e.g. {ex}': 'a regra {r} (nível {l}, {p}) silencia {n} regras oficiais, p.ex. {ex}', 'official parent': 'pai oficial',
@@ -785,17 +785,24 @@ function cartConflicts(sel) {
   // modelo medido no wazuh-analysisd 4.14.8: irmãos avaliados por nível decrescente e, em empate, pela ordem de carregamento
   // (ficheiros de etc/rules por ordem alfabética, i.e. pelo prefixo do pack); o primeiro que corresponder fica com o evento.
   // Um apanha-tudo (sem condições) corresponde sempre: silencia irmãos de nível inferior e os de igual nível carregados depois.
+  const rank = new Map([...idxs].sort((a, b) => packPrefix(D.packs[a]) + '__' < packPrefix(D.packs[b]) + '__' ? -1 : 1).map((x, n) => [x, n]));
   const sibs = D.sib.map(([parent, kind, owner, amb, ch, offc]) => {
     const ps = Object.keys(ch).map(Number).filter(x => idxs.has(x));
     if (ps.length < 2 || new Set(ps.map(x => D.packs[x].s)).size < 2) return null;
     // o nome do ficheiro instalado é `${prefixo}__${ficheiro}`: ordenar pelo nome completo ('-' < '_' em strcmp)
     const order = ps.slice().sort((a, b) => packPrefix(D.packs[a]) + '__' < packPrefix(D.packs[b]) + '__' ? -1 : 1);
-    // ordem de avaliação: nível decrescente; em empate, os oficiais (carregados primeiro) e depois a ordem dos packs
-    const ev = [...offc.map(([rid, rl]) => [-1, rid, rl, false]),
-                ...order.flatMap(x => ch[x].map(([rid, rl, isCa]) => [x, rid, rl, isCa]))]
-      .map((e, n) => [...e, n]).sort((a, b) => b[2] - a[2] || a[4] - b[4]);
+    // um ID definido em vários packs só fica com a definição carregada primeiro: as outras não chegam a existir
+    const dropped = (x, rid) => [...(byId.get(rid) || [])].some(y => y !== x && rank.get(y) < rank.get(x));
+    // ordem de avaliação medida: irmãs de nível 0 primeiro, depois nível decrescente; em empate, a ordem de carregamento
+    // (nome do ficheiro: os oficiais antes dos packs, que têm prefixo alfabético, e os packs pela ordem do prefixo)
+    const ek = l => l === 0 ? -1e9 : -l;
+    const ev = [...offc.map(([rid, rl, isCa]) => [-1, rid, rl, isCa]),
+                ...order.flatMap(x => ch[x].filter(([rid]) => !dropped(x, rid)).map(([rid, rl, isCa]) => [x, rid, rl, isCa]))]
+      .map((e, n) => [...e, n]).sort((a, b) => ek(a[2]) - ek(b[2]) || a[4] - b[4]);
     // o primeiro apanha-tudo na ordem de avaliação fica com todos os eventos do pai: tudo o que vem depois não é avaliado
-    const k = ev.findIndex(e => e[0] >= 0 && e[3] && e[2] > 0);
+    // (se for oficial, os packs nunca chegam a ser avaliados neste pai e não há sombra entre eles)
+    const k0 = ev.findIndex(e => e[3]);
+    const k = k0 >= 0 && ev[k0][0] >= 0 ? k0 : -1;
     const silences = [];   // [pack que silencia, regra apanha-tudo, nível, pack silenciado, [regra@nível]]
     if (k >= 0) {
       const [x, cid, cl] = ev[k];
@@ -840,13 +847,18 @@ mkdir -p "$OSSEC/etc/rules" "$OSSEC/etc/decoders" "$OSSEC/etc/lists"
     const pre = packPrefix(p);
     out.push(`\n# ===== ${p.t} · ${p.s} @ ${p.commit} ${_('(license: {l})', {l: p.lic})}`);
     if (!p.ok) out.push(`${_('# WARNING: this pack does NOT load on its own:')} ${p.err.replace(/\n/g, ' ')}`);
+    // listas CDB do pack em etc/lists/<prefixo>/: não se sobrepõem às de outro pack nem às oficiais (p.ex. audit-keys);
+    // as referências <list>etc/lists/x</list> das regras do pack são reescritas para o novo caminho
+    const own = p.files.filter(f => f[0] === 'lists').map(f => f[1].replace(/^lists\//, ''));
+    const relist = s => own.reduce((acc, l) => acc.replace(new RegExp(`(<list\\b[^>]*>\\s*)etc/lists/${l.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(\\s*</list>)`, 'g'), `$1etc/lists/${pre}/${l}$2`), s);
     for (const [kind, rel, idx] of p.files) {
       if (!['rules', 'decoders', 'lists'].includes(kind)) continue;
-      const name = kind === 'lists' ? rel.replace(/^lists\//, '') : `${pre}__${rel.split('/').pop()}`;
+      const name = kind === 'lists' ? `${pre}/${rel.replace(/^lists\//, '')}` : `${pre}__${rel.split('/').pop()}`;
       if (kind === 'lists') lists.add(name);
       const dest = `$OSSEC/etc/${kind}/${name}`;
-      if (kind === 'lists' && name.includes('/')) out.push(`mkdir -p "$(dirname "${dest}")"`);
-      out.push(`cat > "${dest}" <<'WCR_EOF_${idx}'\n${F[idx].replace(/\n$/, '')}\nWCR_EOF_${idx}`);
+      if (kind === 'lists') out.push(`mkdir -p "$(dirname "${dest}")"`);
+      const body = kind === 'rules' ? relist(F[idx]) : F[idx];
+      out.push(`cat > "${dest}" <<'WCR_EOF_${idx}'\n${body.replace(/\n$/, '')}\nWCR_EOF_${idx}`);
     }
     if (p.dex === 'necessário') p.repl.forEach(x => excl.add(x));
     p.grp.forEach(g => groups.add(g)); p.mgr.forEach(m => mgr.add(m));
@@ -870,7 +882,7 @@ fi`);
 function offsilAlert(idxs) {
   const hits = idxs.filter(i => D.offsil[i]);
   if (!hits.length) return '';
-  return `<div class="alert"><b>${_('Packs that silence official Wazuh rules, even installed alone')}</b>${_('These packs add a child rule with no conditions of its own and a higher level than official siblings of the same parent: it takes those events and the official detections stop alerting. wazuh-analysisd -t does not warn about it.')}<ul>${hits.map(i => D.offsil[i].map(([r, l, parent, n, ex]) => `<li>${esc(D.packs[i].t + ' · ' + D.packs[i].s)}: ${_('rule {r} (level {l}, {p}) silences {n} official rules, e.g. {ex}', {r: esc(r), l, p: esc(parent), n, ex: esc(ex.length > 160 ? ex.slice(0, 160) + '…' : ex)})}${D.packs[i].ok ? '' : ` <span class="pct">${_('(latent: the pack does not load today)')}</span>`}</li>`).join('')).join('')}</ul></div>`;
+  return `<div class="alert"><b>${_('Packs that silence official Wazuh rules, even installed alone')}</b>${_('These packs add a child rule with no conditions of its own that is evaluated before official siblings of the same parent (level 0, or a higher level): it takes those events and the official detections stop alerting. wazuh-analysisd -t does not warn about it.')}<ul>${hits.map(i => D.offsil[i].map(([r, l, parent, n, ex]) => `<li>${esc(D.packs[i].t + ' · ' + D.packs[i].s)}: ${_('rule {r} (level {l}, {p}) silences {n} official rules, e.g. {ex}', {r: esc(r), l, p: esc(parent), n, ex: esc(ex.length > 160 ? ex.slice(0, 160) + '…' : ex)})}${D.packs[i].ok ? '' : ` <span class="pct">${_('(latent: the pack does not load today)')}</span>`}</li>`).join('')).join('')}</ul></div>`;
 }
 function comboAlert(idxs) {
   // resultado do tools/combo_test.py para os pares do cesto que foram testados juntos
@@ -886,9 +898,9 @@ function sibAlerts(sibs) {
   const name = x => esc(D.packs[x].t + ' · ' + D.packs[x].s);
   const hard = sibs.filter(s => s.silences.length), amb = sibs.filter(s => s.amb), soft = sibs.filter(s => !s.silences.length);
   const li = s => `<li><code>${esc(s.kind)} ${esc(s.parent)}</code>${s.owner === 'oficial' ? ` <span class="pct">(${_('official parent')})</span>` : ''}: ${s.ps.map(x => `${name(x)} [${esc(s.ch[x].map(([r, l]) => r + '@' + l).join(', '))}]`).join(' · ')}</li>`;
-  return `${hard.length ? `<div class="alert"><b>${_('{n} parent rules where a pack will silence another', {n: hard.length})}</b>${_('Measured on wazuh-analysisd 4.14.8: sibling rules are evaluated by level (highest first) and, on equal level, by load order (installed file names, alphabetical); the first one that matches takes the event. A child rule with no conditions of its own always matches, so it silences the siblings below its level.')}<ul>${hard.slice(0, 12).flatMap(s => s.silences.map(([x, cid, cl, y, lost]) => `<li><code>${esc(s.kind)} ${esc(s.parent)}</code>: ${_('{a} rule {r} (catch-all, level {l}) silences {b}: {lost}', {a: name(x), r: esc(cid), l: cl, b: name(y), lost: esc(lost.join(', '))})}</li>`)).join('')}</ul></div>` : ''}
+  return `${hard.length ? `<div class="alert"><b>${_('{n} parent rules where a pack will silence another', {n: hard.length})}</b>${_('Measured on wazuh-analysisd 4.14.8: level-0 sibling rules are evaluated first, then the others by level (highest first); on equal level, by load order (file name, across official and installed files); the first one that matches takes the event. A child rule with no conditions of its own always matches, so it silences every sibling evaluated after it.')}<ul>${hard.slice(0, 12).flatMap(s => s.silences.map(([x, cid, cl, y, lost]) => `<li><code>${esc(s.kind)} ${esc(s.parent)}</code>: ${_('{a} rule {r} (catch-all, level {l}) silences {b}: {lost}', {a: name(x), r: esc(cid), l: cl, b: name(y), lost: esc(lost.join(', '))})}</li>`)).join('')}</ul></div>` : ''}
   ${amb.length ? `<div class="alert"><b>${_('{n} ambiguous parents', {n: amb.length})}</b>${_('The parent ID is defined differently in several sources: installed together, these children may hang off the wrong parent rule.')}<ul>${amb.slice(0, 12).map(li).join('')}</ul></div>` : ''}
-  ${soft.length ? `<div class="alert warn"><b>${_('{n} parent rules shared between the chosen packs', {n: soft.length})}</b>${_('Each pack validates on its own, but installed together the sibling with the highest level (then the first loaded) takes the events both match, and the other does not alert. Overlap is only possible, not certain: confirm with <code>tools/combo_test.py</code> (replays each pack\'s log samples with the packs loaded together). Shown as rule@level.')}<ul>${soft.slice(0, 12).map(li).join('')}</ul>${soft.length > 12 ? `<span class="pct">+${soft.length - 12}</span>` : ''}</div>` : ''}`;
+  ${soft.length ? `<div class="alert warn"><b>${_('{n} parent rules shared between the chosen packs', {n: soft.length})}</b>${_('Each pack validates on its own, but installed together the sibling evaluated first (level 0, then the highest level, then the first loaded) takes the events both match, and the other does not alert. Overlap is only possible, not certain: confirm with <code>tools/combo_test.py</code> (replays each pack\'s log samples with the packs loaded together). Shown as rule@level.')}<ul>${soft.slice(0, 12).map(li).join('')}</ul>${soft.length > 12 ? `<span class="pct">+${soft.length - 12}</span>` : ''}</div>` : ''}`;
 }
 function renderCart() {
   const sel = cartPacks();

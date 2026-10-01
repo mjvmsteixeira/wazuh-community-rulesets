@@ -13,7 +13,7 @@ Linux/BSD: auditd, Sysmon for Linux, LKRG, journald, LPE, reverse shells.
 | detection-engineering | [Jeremy-Burgos/wazuh-detection-engineering](https://github.com/Jeremy-Burgos/wazuh-detection-engineering) | 24 | 2 | no | no | `linux-auditd`; to be defined | 100% of 6 techniques | 1 ok (0 containment), 1 broken | MIT | 2026-04-10 | — |
 | enhancing-linux-security-with-apparmor-and-wazuh | [wazuh.com/blog](https://wazuh.com/blog/) | 3 | 0 | yes | yes | — | 100% of 1 techniques | 1 ok (0 containment), 3 broken | © Wazuh, Inc. (blog; origem citada) | 2026-09-24 | — |
 | freebsd | [alonsobsd/wazuh-freebsd-ruleset](https://github.com/alonsobsd/wazuh-freebsd-ruleset) | 10 | 4 | yes | yes | to be defined | 100% of 2 techniques | — | BSD | 2026-01-11 | — |
-| hunting-for-linux-credential-access-attacks-with-wazuh | [wazuh.com/blog](https://wazuh.com/blog/) | 6 | 0 | yes | yes (14 warnings) | `linux-auditd` | 100% of 2 techniques | — | © Wazuh, Inc. (blog; origem citada) | 2026-09-24 | — |
+| hunting-for-linux-credential-access-attacks-with-wazuh | [wazuh.com/blog](https://wazuh.com/blog/) | 6 | 0 | yes | yes | `linux-auditd` | 100% of 2 techniques | — | © Wazuh, Inc. (blog; origem citada) | 2026-09-24 | — |
 | journald | [phastier/wazuh](https://github.com/phastier/wazuh) | 14 | 24 | yes | yes | to be defined | no MITRE | — | NONE | 2026-09-02 | — |
 | linux-attck | [captainobvious-sec/wazuh-field-notes](https://github.com/captainobvious-sec/wazuh-field-notes) | 40 | 0 | yes | yes | `linux-auditd`, `pack-linux-attck` | 63% of 35 techniques | — | MIT | 2026-09-14 | — |
 | linux-custom | [Hasitha9796/wazuh-custom-decoders](https://github.com/Hasitha9796/wazuh-custom-decoders) | 0 | 2 | yes | yes | to be defined | no MITRE | — | NONE | 2025-05-31 | — |

@@ -73,7 +73,7 @@ def parse_file(path):
             'overwrite': r.get('overwrite') == 'yes',
             'lists': sorted({(l.text or '').strip() for l in r.iter('list') if (l.text or '').strip()}),
             'channels': sorted({c for f in r.iter('field') if f.get('name') == 'win.system.channel' for c in channels(f.text)}),
-            'n_conds': sum(1 for c in r if isinstance(c.tag, str) and c.tag in CONDITIONS),
+            'n_conds': sum(1 for c in r if isinstance(c.tag, str) and c.tag in CONDITIONS) + bool(r.get('maxsize')),   # maxsize também restringe
             'correlation': bool(r.get('frequency') or any(isinstance(c.tag, str) and (c.tag.startswith(('same_', 'different_', 'not_same_'))
                                 or c.tag in ('if_matched_sid', 'if_matched_group')) for c in r)),
             'hash': hashlib.sha1(norm(r).encode()).hexdigest()[:12],

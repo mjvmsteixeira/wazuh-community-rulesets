@@ -32,13 +32,14 @@
  "siblings": {
   "shared_parents": 274,
   "rules_involved": 10359,
-  "parents_with_catchall": 58,
-  "catchall_rules": 64,
+  "parents_with_catchall": 70,
+  "dominated_catchalls": 14,
+  "catchall_rules": 74,
   "ambiguous_parents": 154,
-  "catchalls_silencing_official": 13,
-  "official_rules_silenced": 19,
-  "folders_silencing_official": 7,
-  "folder_pairs": 112
+  "catchalls_silencing_official": 20,
+  "official_rules_silenced": 37,
+  "folders_silencing_official": 10,
+  "folder_pairs": 141
  },
  "decoders_detail": {
   "roots": 660,

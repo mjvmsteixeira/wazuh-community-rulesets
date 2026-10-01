@@ -1,0 +1,51 @@
+# Camada 2 das regras irmãs: carrega pares de pastas juntos no wazuh-logtest (tools/combo_test.py, ~30 min) e repete as
+# amostras reais e sintéticas de cada uma. Não corre em cada push (é longo): corre todas as semanas e à mão, e grava no main
+# catalog/combo_*.csv, os README e a página, que depois é republicada.
+name: combo
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 6 * * 1'   # segunda-feira, depois do registo
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: combo
+  cancel-in-progress: false
+
+jobs:
+  combo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - name: Fontes no commit fixado
+        run: ./tools/fetch.sh
+      - name: Imagem do wazuh-manager de referência
+        run: docker pull -q "wazuh/wazuh-manager:$(awk -F'"' '/OFFICIAL_TAG:-/ {sub(/.*OFFICIAL_TAG:-v/, ""); sub(/}.*/, ""); print; exit}' tools/fetch.sh)"
+      - name: Build, validação e amostras (pré-requisitos do combo)
+        run: |
+          python3 tools/build.py --src .cache/src --official .cache/official/ruleset --out .
+          python3 tools/validate.py
+          python3 tools/logtest.py
+          python3 tools/check_regression.py --ref HEAD
+      - name: Pares de pastas carregados juntos
+        run: python3 tools/combo_test.py --auto
+      - name: Documentação e página
+        run: |
+          python3 tools/make_docs.py .
+          python3 tools/make_site.py .
+      - name: Gravar no main e republicar a página
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git add catalog/combo_tests.csv catalog/combo_summary.csv README.md README.pt.md site
+          if git diff --cached --quiet; then echo "sem alterações"; exit 0; fi
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            commit -m "combo_test semanal: pares de pastas carregados juntos"
+          git push origin HEAD:main
+          gh workflow run pages.yml --ref main

@@ -27,10 +27,10 @@ A registry of the community Wazuh rule and decoder collections (4.x XML format) 
 | Dependencies in another folder of the same source / in another source | 102 / 6 |
 | CDB lists referenced | 82: 31 copied from the source, 4 official, 47 missing |
 | Standalone folders (static analysis) | 405 of 479 |
-| Folders that load in `wazuh-analysisd -t` (v4.14.8) | 409 of 479 (291 without warnings) |
+| Folders that load in `wazuh-analysisd -t` (v4.14.8) | 410 of 479 (365 without warnings) |
 | Root / child decoders | 660 / 4684 (42 root names colliding between sources; 17 with an official name) |
 | Fields produced by decoders | 2932 distinct names; 305 mapped to ECS (35% of uses) |
-| Log samples in `wazuh-logtest` | 372 in 27 folders: 256 ok, 27 shadowed by another decoder, 18 not decoded, 7 expected rule did not fire, 2 false positives |
+| Log samples in `wazuh-logtest` | 372 in 27 folders: 254 ok, 29 shadowed by another decoder, 18 not decoded, 7 expected rule did not fire, 2 false positives |
 | Rules with a valid MITRE technique | 8197 (2845 only after normalizing Sigma tags/groups) |
 | Source responses (active response + integrations) | 149: 91 ok, 56 broken, 2 ignored by Wazuh; 19 destructive (17 without allowlist) |
 | Techniques with level ≥ 12 rules | 336: 151 without playbook, 300 without working automated containment |
@@ -71,18 +71,19 @@ Reference: **wazuh/wazuh v4.14.8 ruleset**.
 - **19** rules reuse an official ID without `overwrite="yes"` (startup warning; only one definition stays active).
 - **3** official IDs are overwritten by more than one source with different content: loading those sources together makes the last one win (`other_overwriters` column).
 - **155** rules intentionally `overwrite` official rules (4 change the `if_sid`/`if_group`/`decoded_as` chain, 55 only the level).
-- **14** decoder files are named like an official file or redefine official decoder names. Tested in `validation.csv` (`decoder_exclude` column): irrelevant (fails) in 3, required in 2, do not use in 6, optional in 3 folders — decoders named like an official one add to it, so excluding the official file can break loading.
+- **14** decoder files are named like an official file or redefine official decoder names. Tested in `validation.csv` (`decoder_exclude` column): irrelevant (fails) in 2, required in 2, do not use in 7, optional in 3 folders — decoders named like an official one add to it, so excluding the official file can break loading.
 - **5417** rules use IDs outside the recommended custom range (100000–120000).
 
 Details in [`catalog/official_overlap.csv`](catalog/official_overlap.csv) and [`catalog/decoder_replacements.csv`](catalog/decoder_replacements.csv).
 
 ## Sibling rules (children of the same parent)
 
-Measured on `wazuh-analysisd` v4.14.8: children of the same parent (`if_sid`/`if_group`) are evaluated by **level, highest first**, and on equal level by **load order** (official ruleset first, then `etc/rules` by file name; the ID does not matter); the first one that matches takes the event. A child **with no conditions of its own** (*catch-all*) always matches and silences lower-level siblings — official rules included, with the folder installed alone — and `wazuh-analysisd -t` does not warn about it.
+Measured on `wazuh-analysisd` v4.14.8: **level-0 children** of the same parent (`if_sid`/`if_group`) **are evaluated first**, then the rest by **level, highest first**; on equal level by **load order**, which is the file-name order across the whole set (official and `etc/rules` mixed; the ID does not matter). The first one that matches takes the event. A child **with no conditions of its own** (*catch-all*) always matches and silences every sibling evaluated after it — official rules included, with the folder installed alone — and `wazuh-analysisd -t` does not warn about it. An ID repeated in two files keeps only the definition loaded first; the other does not exist (not even under its parent). That is why the page's script and the tests install each file as `<pack-prefix>__<file>`: an original name such as `02-rules.xml` would load before the official files and the official `if_sid` would fail.
 
-- **13** catch-all rules in 7 folders silence **19** official rules ([`catalog/catchall_silences_official.csv`](catalog/catchall_silences_official.csv)).
-- **274** parents have children in different sources (10359 rules; 58 with a catch-all; 154 parents whose ID is defined differently in several sources); 112 folder pairs where one silences the other when installed together ([`catalog/sibling_parents.csv`](catalog/sibling_parents.csv)). The page's cart applies this model to the selection.
-- Empirical proof (`tools/combo_test.py`): 150 folder pairs loaded together, 3533 samples replayed; 445 changed owner (6 by decoder, 14 by a sibling rule, 425 by an ID conflict: the same ID, or an ancestor in the `if_sid` chain, defined in both folders) in 64 pairs; 0 pairs do not load together ([`catalog/combo_summary.csv`](catalog/combo_summary.csv), [`catalog/combo_tests.csv`](catalog/combo_tests.csv)).
+- **20** catch-all rules in 10 folders silence **37** official rules ([`catalog/catchall_silences_official.csv`](catalog/catchall_silences_official.csv)).
+- **274** parents have children in different sources (10359 rules; 70 with a catch-all; 154 parents whose ID is defined differently in several sources); 141 folder pairs where one silences the other when installed together ([`catalog/sibling_parents.csv`](catalog/sibling_parents.csv)). The page's cart applies this model to the selection.
+- Synthetic samples (`tools/synth.py`): one event per rule, generated from the conditions of the rule and its parent chain (JSON events in `wazuh-logtest`; Windows EventChannel events injected into the `wazuh-analysisd` queue, since logtest does not decode them). 3085 of 3552 confirmed by the engine in 172 folders (1470 of 1851 Windows); 11 ended on an official rule instead of the folder's rule; 142 Windows rules use a capitalized field (`win.eventdata.TargetFilename`) that the decoder never produces, so they never fire ([`catalog/synthetic_tests.csv`](catalog/synthetic_tests.csv)). Only confirmed ones are used in the pair test.
+- Empirical proof (`tools/combo_test.py`): 150 folder pairs loaded together, 4425 samples replayed; 421 changed owner (6 by decoder, 72 by a sibling rule, 333 by an ID conflict: the same ID, or an ancestor in the `if_sid` chain, defined in both folders) in 62 pairs; 1 pairs do not load together ([`catalog/combo_summary.csv`](catalog/combo_summary.csv), [`catalog/combo_tests.csv`](catalog/combo_tests.csv)).
 
 ## Collection and agent groups
 
@@ -148,7 +149,7 @@ pip install -r requirements.txt
 python3 tools/build.py --src .cache/src --official .cache/official/ruleset --out .
 python3 tools/validate.py        # requires Docker (wazuh-analysisd -t, verify-agent-conf)
 python3 tools/logtest.py         # requires Docker (log samples in wazuh-logtest)
-python3 tools/combo_test.py --auto   # requires Docker (folder pairs loaded together; ~1 h)
+python3 tools/combo_test.py --auto   # requires Docker (folder pairs loaded together; ~30 min; runs weekly in CI)
 python3 tools/make_docs.py .
 python3 tools/make_site.py .
 ```

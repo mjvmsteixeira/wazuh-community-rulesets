@@ -12,7 +12,8 @@ Os ficheiros têm o nome que o script de instalação da página lhes dá (prefi
 O modo --auto escreve catalog/combo_tests.csv e catalog/combo_summary.csv.
 """
 import os, re, csv, json, argparse, subprocess, tempfile, collections
-from samples import samples, RUNNER
+from samples import samples, RUNNER, pack_prefix
+from synth import synthetic
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 C = lambda n: list(csv.DictReader(open(os.path.join(ROOT, 'catalog', n))))
@@ -31,6 +32,11 @@ NAME = 'wcr-combo'
 folders = {r['folder']: r for r in C('folders.csv')}
 val = {r['folder']: r for r in C('validation.csv')}
 alone = {(r['folder'], r['log']): r for r in C('decoder_tests.csv')}
+# amostras sintéticas confirmadas pelo motor (tools/logtest.py): contam como 'ok' quando a pasta sozinha dispara a regra
+if os.path.exists(os.path.join(ROOT, 'catalog', 'synthetic_tests.csv')):
+    for r in C('synthetic_tests.csv'):
+        alone[(r['folder'], r['log'][:500])] = {**r, 'rule': r['fired_rule'], 'parent': '', 'verdict': 'ok' if r['verdict'] == 'ok' else 'x'}
+def all_samples(fo): return samples(fo) + synthetic(fo)
 ids, decs = collections.defaultdict(set), collections.defaultdict(set)
 first_parent = {}   # (pasta, id) -> pais if_sid, para seguir a cadeia de antepassados
 rparents = collections.defaultdict(set)   # (pasta, id) -> pais diretos ('if_sid 5715', 'if_group x')
@@ -49,18 +55,11 @@ for r in C('decoder_replacements.csv'):
     if val.get(fo, {}).get('decoder_exclude') == 'necessário': excl[fo].update(x for x in r['official_files'].split(';') if x)
 
 def slug(s): return re.sub(r'[^a-z0-9]+', '-', s.lower()).strip('-')
-def base_prefix(f): return slug(f['topic'] + '-' + f['source'].split('/')[1])[:60]
-def fnv(s):
-    h = 0x811c9dc5
-    for c in s.encode(): h = ((h ^ c) * 0x01000193) & 0xffffffff
-    return f'{h:08x}'
-prefix_count = collections.Counter(base_prefix(f) for f in folders.values())
-def prefix(fo):   # igual a packPrefix() da página: slug(tópico + '-' + repositório), com hash da pasta se colidir
-    b = base_prefix(folders[fo]); return b[:51] + '-' + fnv(fo) if prefix_count[b] > 1 else b
+def prefix(fo): return pack_prefix(fo)
 _ok = {}
 def ok_samples(fo):
     """Amostras que, com a pasta sozinha, terminaram numa regra ou decoder da própria pasta (as que podem ser roubadas)."""
-    if fo not in _ok: _ok[fo] = [s for s in samples(fo) if (fo, s[0][:500]) in alone and alone[(fo, s[0][:500])]['verdict'] == 'ok']
+    if fo not in _ok: _ok[fo] = [s for s in all_samples(fo) if (fo, s[0][:500]) in alone and alone[(fo, s[0][:500])]['verdict'] == 'ok']
     return _ok[fo]
 def pick(fo, other):
     """Amostras de fo a repetir com other: primeiro as que acabam numa regra filha de um pai partilhado com other ou num decoder
@@ -104,8 +103,9 @@ plan = []
 for combo in combos():
     meta, ss = [], []
     for fo in combo:
-        for s in (pick(fo, [x for x in combo if x != fo]) if a.auto else samples(fo)):
-            meta.append((fo, s)); ss.append({'log': s[0], 'fmt': 'json' if s[0].lstrip().startswith('{') else 'syslog'})
+        for s in (pick(fo, [x for x in combo if x != fo]) if a.auto else all_samples(fo)):
+            meta.append((fo, s)); ss.append({'log': s[0], 'fmt': s[1].get('fmt') or ('json' if s[0].lstrip().startswith('{') else 'syslog'),
+                                             'tag': s[1].get('tag', '')})
     if not ss: continue
     plan.append({'combo': combo, 'meta': meta,
                  'job': {'folder': ' + '.join(combo), 'parts': [{'path': fo, 'prefix': prefix(fo)} for fo in combo],
@@ -162,7 +162,7 @@ for p in plan:
     for i, (fo, s) in enumerate(p['meta']):
         base = alone.get((fo, s[0][:500]), {})
         b_rule, b_dec = base.get('rule', ''), base.get('decoder', '')
-        b_fields = set(filter(None, base.get('fields', '').split(','))) if base else None
+        b_fields = set(filter(None, base['fields'].split(','))) if 'fields' in base else None
         others = [x for x in combo if x != fo]
         dup = ids[fo] & set().union(*(ids[x] for x in others))   # IDs definidos nas duas pastas: só vale a 1.ª definição carregada
         if not res.get('loaded'):

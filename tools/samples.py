@@ -7,6 +7,26 @@ import os, re, glob, configparser
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MAX_SAMPLES = 400   # por pasta
 
+# prefixo que o script de instalação da página dá aos ficheiros de cada pack (packPrefix() em site_template.html):
+# slug(tópico + '-' + repositório), com um hash FNV-1a da pasta quando dois packs dariam o mesmo prefixo. O wazuh-analysisd
+# ordena TODOS os ficheiros de regras/decoders (oficiais e de etc/) pelo nome: instalar com o nome original (p.ex. 02-rules.xml)
+# carrega-os antes dos oficiais e os if_sid oficiais falham (7617). Os testes instalam como o script, com o prefixo.
+def _slug(s): return re.sub(r'[^a-z0-9]+', '-', s.lower()).strip('-')
+def _fnv(s):
+    h = 0x811c9dc5
+    for c in s.encode(): h = ((h ^ c) * 0x01000193) & 0xffffffff
+    return f'{h:08x}'
+_prefixes = None
+def pack_prefix(folder):
+    global _prefixes
+    if _prefixes is None:
+        import csv, collections
+        fs = list(csv.DictReader(open(os.path.join(ROOT, 'catalog', 'folders.csv'))))
+        base = {f['folder']: _slug(f['topic'] + '-' + f['source'].split('/')[1])[:60] for f in fs}
+        n = collections.Counter(base.values())
+        _prefixes = {fo: b[:51] + '-' + _fnv(fo) if n[b] > 1 else b for fo, b in base.items()}
+    return _prefixes[folder]
+
 LOG_RE = re.compile(r'^\s*(<\d{1,3}>)?\s*((\w{3}\s+\d{1,2}\s\d\d:\d\d:\d\d)|(\d{4}-\d\d-\d\d[T ]\d\d:\d\d)|(\{".{20,})|(.*CEF:\d\|)|'
                     r'(.*\bdate=\d{4}-\d\d-\d\d.*\btime=)|(.*\blogver=)|(type=\w+ msg=audit\())')
 PLACEHOLDER = re.compile(r'<[a-z_]{1,12}>|X{2}:X{2}|\.\.\.$')
@@ -48,7 +68,7 @@ def samples(folder):
     return uniq[:MAX_SAMPLES]
 
 RUNNER = r'''
-import os, sys, json, socket, struct, shutil, subprocess, time, glob
+import os, re, sys, json, socket, struct, shutil, subprocess, time, glob
 O = '/var/ossec'
 def q(ev, fmt):
     s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM); s.settimeout(20); s.connect(O + '/queue/sockets/logtest')
@@ -69,22 +89,52 @@ def stop():
     else:
         subprocess.run(['pkill', '-9', '-x', 'wazuh-analysisd']); time.sleep(0.5)
 subprocess.run([O + '/bin/wazuh-db']); time.sleep(1)
+# amostras eventchannel: injetadas na fila do analysisd (como o agente faz) e lidas do alerts.json; alertar a partir do nível 1
+_c = open('/tmp/etc.orig/ossec.conf').read()
+_c = re.sub(r'<log_alert_level>\d+</log_alert_level>', '<log_alert_level>1</log_alert_level>', _c).replace('<jsonout_output>no</jsonout_output>', '<jsonout_output>yes</jsonout_output>')
+open('/tmp/etc.orig/ossec.conf', 'w').write(_c)
+ALERTS = O + '/logs/alerts/alerts.json'
+def inject(evs):
+    """evs: [(tag, payload)] -> {tag: alerta}. Espera até não chegarem alertas novos durante 3 s (máximo 60 s)."""
+    open(ALERTS, 'a').close(); start = os.path.getsize(ALERTS)
+    s = socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM); s.connect(O + '/queue/sockets/queue')
+    for tag, ev in evs: s.send(('f:EventChannel:' + ev).encode()); time.sleep(0.002)
+    s.close()
+    got, last, t0, size = {}, time.time(), time.time(), start
+    # pelo menos 10 s (o primeiro alerta pode demorar) e depois até 3 s sem alertas novos; no máximo 120 s
+    while (time.time() - t0 < 10 or time.time() - last < 3) and time.time() - t0 < 120:
+        time.sleep(0.3)
+        if os.path.getsize(ALERTS) != size: size = os.path.getsize(ALERTS); last = time.time()
+    with open(ALERTS, errors='replace') as fh:
+        fh.seek(start)
+        for line in fh:
+            try: a = json.loads(line)
+            except ValueError: continue
+            tag = (((a.get('data') or {}).get('win') or {}).get('eventdata') or {}).get('wcrId')
+            if tag: got[tag] = a
+    return got
 for line in open('/tmp/plan.jsonl'):
     job = json.loads(line); fo = job['folder']
     stop(); shutil.rmtree(O + '/etc'); shutil.copytree('/tmp/etc.orig', O + '/etc', symlinks=True)
     extra = ''
     # uma ou várias pastas; com prefixo, os ficheiros têm o nome que o script de instalação lhes dá (e a mesma ordem de carregamento)
-    for part in job.get('parts') or [{'path': fo, 'prefix': ''}]:
+    for part in job.get('parts') or [{'path': fo, 'prefix': job.get('prefix', '')}]:
         src = '/tmp/areas/' + part['path'].split('/', 1)[1]
+        # com prefixo, como o script de instalação: listas em etc/lists/<prefixo>/ e referências das regras reescritas
+        lp = part['prefix'] + '/' if part['prefix'] else ''
+        own = [os.path.relpath(f, src + '/lists') for f in sorted(glob.glob(f'{src}/lists/**', recursive=True)) if os.path.isfile(f)]
         for kind in ('rules', 'decoders'):
             for f in sorted(glob.glob(f'{src}/{kind}/*.xml')):
                 name = (part['prefix'] + '__' if part['prefix'] else '') + os.path.basename(f)
-                shutil.copy(f, f'{O}/etc/{kind}/{name}')
-        for f in sorted(glob.glob(f'{src}/lists/**', recursive=True)):
-            if os.path.isfile(f):
-                rel = os.path.relpath(f, src + '/lists'); os.makedirs(os.path.dirname(f'{O}/etc/lists/{rel}'), exist_ok=True)
-                shutil.copy(f, f'{O}/etc/lists/{rel}')
-                if f'<list>etc/lists/{rel}</list>' not in extra: extra += f'<list>etc/lists/{rel}</list>'
+                if not (kind == 'rules' and lp and own):
+                    shutil.copy(f, f'{O}/etc/{kind}/{name}'); continue
+                body = open(f, encoding='utf-8', errors='surrogateescape').read()
+                for l in own: body = re.sub(r'(<list\b[^>]*>\s*)etc/lists/' + re.escape(l) + r'(\s*</list>)', r'\g<1>etc/lists/' + lp + l + r'\g<2>', body)
+                open(f'{O}/etc/{kind}/{name}', 'w', encoding='utf-8', errors='surrogateescape').write(body)
+        for rel in own:
+            d = f'{O}/etc/lists/{lp}{rel}'; os.makedirs(os.path.dirname(d), exist_ok=True)
+            shutil.copy(f'{src}/lists/{rel}', d)
+            if f'<list>etc/lists/{lp}{rel}</list>' not in extra: extra += f'<list>etc/lists/{lp}{rel}</list>'
     extra += ''.join(f'<decoder_exclude>ruleset/decoders/{x}</decoder_exclude>' for x in job['excludes'])
     if extra:
         c = open(O + '/etc/ossec.conf').read().replace('<decoder_dir>etc/decoders</decoder_dir>', '<decoder_dir>etc/decoders</decoder_dir>' + extra, 1)
@@ -107,7 +157,15 @@ for line in open('/tmp/plan.jsonl'):
     if not loaded:
         print(json.dumps({'folder': fo, 'loaded': False, 'errors': errs[:5], 'results': []}), flush=True); continue
     fails = 0
+    ec = [(s['tag'], s['log']) for s in job['samples'] if s['fmt'] == 'eventchannel']
+    ec_got = inject(ec) if ec else {}
     for s in job['samples']:
+        if s['fmt'] == 'eventchannel':
+            a = ec_got.get(s['tag']) or {}
+            rule = a.get('rule') or {}
+            res.append({'decoder': (a.get('decoder') or {}).get('name', ''), 'parent': (a.get('decoder') or {}).get('parent', ''),
+                        'fields': sorted(flat(a.get('data'))), 'rule': rule.get('id', ''), 'level': rule.get('level', ''), 'alert': bool(rule)})
+            continue
         if fails >= 3:   # o analysisd caiu: não esperar o timeout em cada amostra que falta
             res.append({'error': 'analysisd deixou de responder'}); continue
         try:

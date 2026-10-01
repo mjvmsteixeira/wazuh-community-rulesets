@@ -55,7 +55,7 @@ Firewalls, routers, switches, VPN, NAC (FortiGate, Sophos, MikroTik, UniFi, Mera
 | sangfor-fw | [Maverick000011/wazuh-custom-decoders](https://github.com/Maverick000011/wazuh-custom-decoders) | 0 | 11 | yes | yes | manager: remote syslog | no MITRE | — | NONE | 2026-09-02 | — |
 | sophos-firewall | [Halino/Wazuh-Sophos](https://github.com/Halino/Wazuh-Sophos) | 60 | 99 | yes | no | manager: remote syslog | 82% of 11 techniques | — | NONE | 2026-02-10 | — |
 | sophos-firewall | [JoernSchoenyan/Sophos-Wazuh-SOC](https://github.com/JoernSchoenyan/Sophos-Wazuh-SOC) | 60 | 112 | yes | yes | manager: remote syslog | 100% of 4 techniques | — | GPL-2.0 | 2026-09-16 | — |
-| sophos-firewall | [Sparxx95/Wazuh-Sophos-WAF-IDP](https://github.com/Sparxx95/Wazuh-Sophos-WAF-IDP) | 9 | 28 | yes | yes (15 warnings) | manager: remote syslog | no MITRE | — | NONE | 2025-08-07 | — |
+| sophos-firewall | [Sparxx95/Wazuh-Sophos-WAF-IDP](https://github.com/Sparxx95/Wazuh-Sophos-WAF-IDP) | 9 | 28 | yes | yes | manager: remote syslog | no MITRE | — | NONE | 2025-08-07 | — |
 | stormshield | [FryggFR/Wazuh-Stormshield](https://github.com/FryggFR/Wazuh-Stormshield) | 12 | 52 | yes | yes | manager: remote syslog | 100% of 2 techniques | — | NONE | 2024-03-12 | — |
 | stormshield | [Kaitsejo/Decoder](https://github.com/Kaitsejo/Decoder) | 0 | 9 | yes | yes | manager: remote syslog | no MITRE | — | NONE | 2024-11-28 | — |
 | stormshield | [grandir66/wazuh-multivendor-installer](https://github.com/grandir66/wazuh-multivendor-installer) | 42 | 1 | yes | yes | to be defined | 83% of 6 techniques | — | NONE | 2026-09-06 | — |

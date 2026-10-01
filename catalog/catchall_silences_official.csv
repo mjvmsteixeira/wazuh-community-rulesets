@@ -1,14 +1,21 @@
-rule,level,parent,folder,official_silenced,silenced_ids,examples
-100310,12,if_sid 510,areas/18-compliance-frameworks/ens-rd311-2022/fredycibersec__ENS-Wazuh-integration,6,512;513;514;516;521;522,521 (nível 11): Possible kernel level rootkit; 513 (nível 9): Windows malware detected.; 512 (nível 3): Windows Audit event.; 516 (nível 3): System Audit event.; 514 (nível 2): Windows application monitor event.
-100002,10,if_sid 18107,areas/18-compliance-frameworks/cjis/TristanGNS__wazuh-cjis-rules,2,18119;18260,18119 (nível 3): Windows: First time this user logged in this system.; 18260 (nível 3): IIS NetworkCleartext Logon Success
-300062,6,if_group sysmon_event8,areas/01-windows-endpoint/offense-lab-windows/0xbad53c__wazuh-detection-rules,1,92402,92402 (nível 3): Possible code injection by $(win.eventdata.sourceImage) on $
-101101,5,if_sid 61603,areas/01-windows-endpoint/sysmon/mdnahidmondol__wazuh-AuditD-Sysmon-rules,1,92032,92032 (nível 3): Suspicious Windows cmd shell execution
-101103,5,if_sid 61605,areas/01-windows-endpoint/sysmon/mdnahidmondol__wazuh-AuditD-Sysmon-rules,1,92110,92110 (nível 4): Detected WinRM activity from $(win.eventdata.sourceIp) to $(
-101113,5,if_sid 61615,areas/01-windows-endpoint/sysmon/mdnahidmondol__wazuh-AuditD-Sysmon-rules,1,92308,92308 (nível 3): Possible COM Hijacking evidence found in registry under $(wi
-100811,10,if_sid 5301,areas/05-cloud-saas/corpsec-gws-intune/calvinanglo__corpsec-ops-platform,1,5302,5302 (nível 9): User missed the password to change UID to root.
-100811,10,if_sid 5303,areas/05-cloud-saas/corpsec-gws-intune/calvinanglo__corpsec-ops-platform,1,5305,5305 (nível 4): First time (su) is executed by user.
-100203,10,if_sid 5710,areas/18-compliance-frameworks/ens-rd311-2022/fredycibersec__ENS-Wazuh-integration,1,5758,5758 (nível 8): Maximum authentication attempts exceeded.
-100330,3,if_sid 80700,areas/18-compliance-frameworks/ens-rd311-2022/fredycibersec__ENS-Wazuh-integration,1,80701,80701 (nível 1): Auditd: Daemon Start / Resume.
-100500,9,if_sid 5716,areas/18-compliance-frameworks/ens-rd311-2022/fredycibersec__ENS-Wazuh-integration,1,5760,5760 (nível 5): sshd: authentication failed.
-110001,5,if_sid 31108,areas/21-wazuh-platform-ops/how-to-configure-rsyslog-client-to-send-events-to-wazuh/wazuh.com__blog,1,31509,31509 (nível 3): CMS (WordPress or Joomla) login attempt.
-100002,9,if_sid 516,areas/21-wazuh-platform-ops/root-user-access-monitoring-with-ossec/wazuh.com__blog,1,519,519 (nível 7): System Audit: Vulnerable web application found.
+rule,level,parent,folder,official_silenced,silenced_alerting,silenced_ids,examples
+100513,0,if_sid 30101,areas/09-web-apps-waf/web-attacks/MORGADO01__wazuh-detection-rules,9,9,30105;30106;30107;30109;30110;30115;30117;30118;30120,"30120 (nível 12): Apache: without resources to run.; 30117 (nível 10): Apache: Invalid URI, file name too long.; 30109 (nível 9): Apache: Attempt to login using a non-existent user.; 30107 (nível 6): Apache: Code Red attack.; 30118 (nível 6): ModSecurity: Access attempt blocked."
+100310,12,if_sid 510,areas/18-compliance-frameworks/ens-rd311-2022/fredycibersec__ENS-Wazuh-integration,6,6,512;513;514;516;521;522,521 (nível 11): Possible kernel level rootkit; 513 (nível 9): Windows malware detected.; 512 (nível 3): Windows Audit event.; 516 (nível 3): System Audit event.; 514 (nível 2): Windows application monitor event.
+100513,0,if_sid 31101,areas/09-web-apps-waf/web-attacks/MORGADO01__wazuh-detection-rules,3,3,31151;31166;31167,31151 (nível 10): Multiple web server 400 error codes from same source ip.; 31166 (nível 6): Shellshock attack attempt; 31167 (nível 6): Shellshock attack attempt
+100900,0,if_sid 5716,areas/20-attck-multiplatform/attck-tactics/MORGADO01__wazuh-detection-rules,3,3,5720;5760;99904,5720 (nível 10): sshd: Multiple authentication failures.; 99904 (nível 9): sshd: Authentication failed from a malicious IP address $(sr; 5760 (nível 5): sshd: authentication failed.
+110020,0,if_sid 4715,areas/07-network-perimeter/cisco-ios/wazuh__integrations,2,2,4721;4722,4721 (nível 3): Cisco IOS: Router configuration changed; 4722 (nível 3): Cisco IOS: Successful login to the router
+100002,10,if_sid 18107,areas/18-compliance-frameworks/cjis/TristanGNS__wazuh-cjis-rules,2,2,18119;18260,18119 (nível 3): Windows: First time this user logged in this system.; 18260 (nível 3): IIS NetworkCleartext Logon Success
+100900,0,if_sid 5710,areas/20-attck-multiplatform/attck-tactics/MORGADO01__wazuh-detection-rules,2,2,5712;5758,5712 (nível 10): sshd: brute force trying to get access to the system. Non ex; 5758 (nível 8): Maximum authentication attempts exceeded.
+100901,0,if_sid 5710,areas/20-attck-multiplatform/attck-tactics/MORGADO01__wazuh-detection-rules,2,2,5712;5758,5712 (nível 10): sshd: brute force trying to get access to the system. Non ex; 5758 (nível 8): Maximum authentication attempts exceeded.
+300062,6,if_group sysmon_event8,areas/01-windows-endpoint/offense-lab-windows/0xbad53c__wazuh-detection-rules,1,1,92402,92402 (nível 3): Possible code injection by $(win.eventdata.sourceImage) on $
+101101,5,if_sid 61603,areas/01-windows-endpoint/sysmon/mdnahidmondol__wazuh-AuditD-Sysmon-rules,1,1,92032,92032 (nível 3): Suspicious Windows cmd shell execution
+101103,5,if_sid 61605,areas/01-windows-endpoint/sysmon/mdnahidmondol__wazuh-AuditD-Sysmon-rules,1,1,92110,92110 (nível 4): Detected WinRM activity from $(win.eventdata.sourceIp) to $(
+101113,5,if_sid 61615,areas/01-windows-endpoint/sysmon/mdnahidmondol__wazuh-AuditD-Sysmon-rules,1,1,92308,92308 (nível 3): Possible COM Hijacking evidence found in registry under $(wi
+100811,10,if_sid 5301,areas/05-cloud-saas/corpsec-gws-intune/calvinanglo__corpsec-ops-platform,1,1,5302,5302 (nível 9): User missed the password to change UID to root.
+100811,10,if_sid 5303,areas/05-cloud-saas/corpsec-gws-intune/calvinanglo__corpsec-ops-platform,1,1,5305,5305 (nível 4): First time (su) is executed by user.
+100203,10,if_sid 5710,areas/18-compliance-frameworks/ens-rd311-2022/fredycibersec__ENS-Wazuh-integration,1,1,5758,5758 (nível 8): Maximum authentication attempts exceeded.
+100330,3,if_sid 80700,areas/18-compliance-frameworks/ens-rd311-2022/fredycibersec__ENS-Wazuh-integration,1,1,80701,80701 (nível 1): Auditd: Daemon Start / Resume.
+100500,9,if_sid 5716,areas/18-compliance-frameworks/ens-rd311-2022/fredycibersec__ENS-Wazuh-integration,1,1,5760,5760 (nível 5): sshd: authentication failed.
+100900,0,if_sid 5503,areas/20-attck-multiplatform/attck-tactics/MORGADO01__wazuh-detection-rules,1,1,5551,5551 (nível 10): PAM: Multiple failed logins in a small period of time.
+110001,5,if_sid 31108,areas/21-wazuh-platform-ops/how-to-configure-rsyslog-client-to-send-events-to-wazuh/wazuh.com__blog,1,1,31509,31509 (nível 3): CMS (WordPress or Joomla) login attempt.
+100002,9,if_sid 516,areas/21-wazuh-platform-ops/root-user-access-monitoring-with-ossec/wazuh.com__blog,1,1,519,519 (nível 7): System Audit: Vulnerable web application found.

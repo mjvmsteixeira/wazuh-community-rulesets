@@ -9,6 +9,7 @@ Cada pasta é testada sozinha: rules/, decoders/ e lists/ da pasta. Se a pasta t
 testa com e sem os <decoder_exclude> e regista qual das duas configurações carrega (coluna decoder_exclude).
 """
 import os, re, csv, json, base64, argparse, subprocess, tempfile
+from samples import pack_prefix
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 stats = json.load(open(os.path.join(ROOT, 'catalog/stats.json')))
@@ -32,15 +33,19 @@ cp -a data_tmp/exclusion/var/ossec/etc/. etc/
 rm -f etc/rules/local_rules.xml etc/decoders/local_decoder.xml
 chown -R wazuh:wazuh etc
 cp -a etc /tmp/etc.orig
-while IFS=$'\t' read -r folder mode excludes; do
+while IFS=$'\t' read -r folder mode pre excludes; do
   rm -rf etc && cp -a /tmp/etc.orig etc
   src="/tmp/areas/$folder"
-  [ -d "$src/rules" ] && cp "$src"/rules/*.xml etc/rules/
-  [ -d "$src/decoders" ] && cp "$src"/decoders/*.xml etc/decoders/
+  # como o script de instalação da página: <prefixo>__<ficheiro> e listas em etc/lists/<prefixo>/ (referências reescritas)
+  for k in rules decoders; do
+    [ -d "$src/$k" ] && for f in "$src"/$k/*.xml; do [ -e "$f" ] && cp "$f" "etc/$k/${pre}__$(basename "$f")"; done
+  done
   extra=""
   if [ -d "$src/lists" ]; then
     while read -r l; do
-      mkdir -p "etc/lists/$(dirname "$l")"; cp "$src/lists/$l" "etc/lists/$l"; extra="$extra<list>etc/lists/$l</list>"
+      mkdir -p "etc/lists/$pre/$(dirname "$l")"; cp "$src/lists/$l" "etc/lists/$pre/$l"; extra="$extra<list>etc/lists/$pre/$l</list>"
+      le=$(printf '%s' "$l" | sed 's/[.[\*^$/]/\\&/g')
+      sed -i "s#\(<list\b[^>]*>[[:space:]]*\)etc/lists/$le\([[:space:]]*</list>\)#\1etc/lists/$pre/$l\2#g" etc/rules/"${pre}"__*.xml 2>/dev/null || true
     done < <(cd "$src/lists" && find . -type f | sed 's#^\./##' | sort)
   fi
   for x in $excludes; do extra="$extra<decoder_exclude>ruleset/decoders/$x</decoder_exclude>"; done
@@ -62,8 +67,8 @@ AGENT_CONF_RE = re.compile(r'^\s*(<!--.*?-->\s*)*<agent_config\b', re.S)
 with tempfile.TemporaryDirectory() as tmp:
     with open(os.path.join(tmp, 'manifest.tsv'), 'w') as fh:
         for fo in folders:
-            fh.write(f"{fo.removeprefix('areas/')}\tsem\t\n")
-            if fo in excl: fh.write(f"{fo.removeprefix('areas/')}\tcom\t{' '.join(sorted(excl[fo]))}\n")
+            fh.write(f"{fo.removeprefix('areas/')}\tsem\t{pack_prefix(fo)}\t\n")
+            if fo in excl: fh.write(f"{fo.removeprefix('areas/')}\tcom\t{pack_prefix(fo)}\t{' '.join(sorted(excl[fo]))}\n")
     open(os.path.join(tmp, 'inner.sh'), 'w').write(INNER)
     confs = sorted(os.path.relpath(os.path.join(dp, f), ROOT) for top in ('groups', 'areas') for dp, dn, fn in os.walk(os.path.join(ROOT, top))
                    for f in fn if (top == 'groups' or '/collection/' in dp + '/') and not f.endswith('.extracted.xml')

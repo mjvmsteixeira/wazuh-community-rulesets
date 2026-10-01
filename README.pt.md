@@ -22,11 +22,11 @@ Registo organizado por áreas das coleções comunitárias de regras e decoders 
 | Dependências noutra fonte do pack | 6 |
 | Listas CDB referidas | 82: 31 copiadas da fonte, 4 oficiais, 47 em falta |
 | Pastas autónomas (análise estática) | 405 de 479 |
-| Pastas que carregam em `wazuh-analysisd -t` (v4.14.8) | 409 de 479 (291 sem avisos) |
+| Pastas que carregam em `wazuh-analysisd -t` (v4.14.8) | 410 de 479 (365 sem avisos) |
 | Ficheiros de teste copiados | 134 |
 | Decoders raiz / filhos | 660 / 4684 (42 nomes de raiz em colisão entre fontes; 17 com nome oficial) |
 | Campos produzidos pelos decoders | 2932 nomes distintos; 305 com correspondência ECS (35% dos usos) |
-| Amostras de log no wazuh-logtest | 372 em 27 pastas: 256 ok, 27 sombreadas por outro decoder, 18 não descodificadas, 7 sem a regra esperada, 2 falsos positivos |
+| Amostras de log no wazuh-logtest | 372 em 27 pastas: 254 ok, 29 sombreadas por outro decoder, 18 não descodificadas, 7 sem a regra esperada, 2 falsos positivos |
 | Configuração de recolha das fontes | 364 ficheiros, 701 entradas (60 ficheiros sem pasta atribuída) |
 | Regras com técnica MITRE válida | 8197 (2845 só depois de normalizar etiquetas Sigma/grupos; 122 com técnicas descontinuadas sem sucessor) |
 | Respostas das fontes (active response + integrações) | 149: 91 ok, 56 partidas, 2 ignoradas pelo Wazuh; 19 destrutivas (17 sem allowlist) |
@@ -69,18 +69,19 @@ Referência para comparação: **wazuh/wazuh v4.14.8 ruleset**.
 - **3** IDs oficiais são reescritos com `overwrite` por mais do que uma fonte, com conteúdo diferente: carregar essas fontes em conjunto faz valer a última carregada (coluna `other_overwriters`).
 - **155** regras fazem `overwrite` intencional de regras oficiais (4 alteram a cadeia `if_sid`/`if_group`/`decoded_as`, 55 só o nível).
 - **4** regras declaram `overwrite` sobre IDs que não existem no oficial.
-- **14** ficheiros de decoders têm o nome de um ficheiro oficial ou redefinem nomes de decoders oficiais. Testado em `validation.csv` (coluna `decoder_exclude`): indiferente (falha) em 3, necessário em 2, não usar em 6, opcional em 3 pastas — decoders com o nome de um oficial somam-se ao oficial, pelo que excluir o ficheiro oficial pode partir o carregamento.
+- **14** ficheiros de decoders têm o nome de um ficheiro oficial ou redefinem nomes de decoders oficiais. Testado em `validation.csv` (coluna `decoder_exclude`): indiferente (falha) em 2, necessário em 2, não usar em 7, opcional em 3 pastas — decoders com o nome de um oficial somam-se ao oficial, pelo que excluir o ficheiro oficial pode partir o carregamento.
 - **5417** regras usam IDs fora do intervalo recomendado para regras custom (100000–120000); o oficial já ocupa blocos em 150xxx, 184xxx–185xxx e 500xxx.
 
 Detalhe em [`catalog/official_overlap.csv`](catalog/official_overlap.csv) e [`catalog/decoder_replacements.csv`](catalog/decoder_replacements.csv); este último traz as linhas `<decoder_exclude>` candidatas para `ossec.conf` — usar só onde `validation.csv` indica *necessário* ou *opcional*.
 
 ## Regras irmãs (filhas do mesmo pai)
 
-Comportamento medido no `wazuh-analysisd` v4.14.8: os filhos de um mesmo pai (`if_sid`/`if_group`) são avaliados por **nível decrescente** e, em empate, pela **ordem de carregamento** (ruleset oficial primeiro, depois `etc/rules` por nome de ficheiro; o ID não conta); o primeiro que corresponder fica com o evento. Uma filha **sem condições próprias** (*apanha-tudo*) corresponde sempre e silencia as irmãs de nível inferior — incluindo regras oficiais, com a pasta instalada sozinha — e o `wazuh-analysisd -t` não avisa.
+Comportamento medido no `wazuh-analysisd` v4.14.8: os filhos de um mesmo pai (`if_sid`/`if_group`) de **nível 0 são avaliados primeiro**, depois os restantes por **nível decrescente**; em empate, pela **ordem de carregamento**, que é a ordem do nome do ficheiro em todo o conjunto (oficiais e `etc/rules` misturados; o ID não conta). O primeiro que corresponder fica com o evento. Uma filha **sem condições próprias** (*apanha-tudo*) corresponde sempre e silencia todas as irmãs avaliadas depois dela — incluindo regras oficiais, com a pasta instalada sozinha — e o `wazuh-analysisd -t` não avisa. Um ID repetido em dois ficheiros fica só com a definição carregada primeiro; a outra não existe (nem pendurada no pai). Por isso o script da página e os testes instalam cada ficheiro como `<prefixo-do-pack>__<ficheiro>`: um nome original como `02-rules.xml` carregaria antes dos oficiais e os `if_sid` oficiais falhariam.
 
-- **13** regras apanha-tudo em 7 pastas silenciam **19** regras oficiais ([`catalog/catchall_silences_official.csv`](catalog/catchall_silences_official.csv)).
-- **274** pais têm filhos em fontes diferentes (10359 regras; 58 com apanha-tudo; 154 pais com o mesmo ID definido de forma diferente em várias fontes); 112 pares de pastas em que uma silencia a outra se forem instaladas juntas ([`catalog/sibling_parents.csv`](catalog/sibling_parents.csv)). O cesto da página aplica este modelo à seleção.
-- Prova empírica (`tools/combo_test.py`): 150 pares de pastas carregados juntos, 3533 amostras repetidas; 445 mudaram de dono (6 por decoder, 14 por regra irmã, 425 por conflito de ID: o mesmo ID, ou um antepassado na cadeia `if_sid`, definido nas duas pastas) em 64 pares; 0 pares não carregam juntos ([`catalog/combo_summary.csv`](catalog/combo_summary.csv), [`catalog/combo_tests.csv`](catalog/combo_tests.csv)).
+- **20** regras apanha-tudo em 10 pastas silenciam **37** regras oficiais ([`catalog/catchall_silences_official.csv`](catalog/catchall_silences_official.csv)).
+- **274** pais têm filhos em fontes diferentes (10359 regras; 70 com apanha-tudo; 154 pais com o mesmo ID definido de forma diferente em várias fontes); 141 pares de pastas em que uma silencia a outra se forem instaladas juntas ([`catalog/sibling_parents.csv`](catalog/sibling_parents.csv)). O cesto da página aplica este modelo à seleção.
+- Amostras sintéticas (`tools/synth.py`): um evento por regra, gerado a partir das condições da regra e da cadeia de pais (eventos JSON no `wazuh-logtest`; eventos Windows EventChannel injetados na fila do `wazuh-analysisd`, que o logtest não descodifica). 3085 de 3552 confirmadas pelo motor em 172 pastas (1470 de 1851 Windows); 11 acabaram numa regra oficial em vez da regra da pasta; 142 regras Windows usam um campo com maiúscula (`win.eventdata.TargetFilename`) que o decoder nunca produz e por isso nunca disparam ([`catalog/synthetic_tests.csv`](catalog/synthetic_tests.csv)). Só as confirmadas entram no teste de pares.
+- Prova empírica (`tools/combo_test.py`): 150 pares de pastas carregados juntos, 4425 amostras repetidas; 421 mudaram de dono (6 por decoder, 72 por regra irmã, 333 por conflito de ID: o mesmo ID, ou um antepassado na cadeia `if_sid`, definido nas duas pastas) em 62 pares; 1 pares não carregam juntos ([`catalog/combo_summary.csv`](catalog/combo_summary.csv), [`catalog/combo_tests.csv`](catalog/combo_tests.csv)).
 
 ## Recolha e grupos de agentes
 
@@ -172,6 +173,7 @@ catalog/
     decoder_test_summary.csv  por pasta: ok, sombreado, não descodificado, regra não disparou, falso positivo
     sibling_parents.csv  pais com filhos em fontes diferentes: filhos por pasta (id@nível, * = apanha-tudo), filhos oficiais
     catchall_silences_official.csv  regras apanha-tudo que silenciam regras oficiais irmãs
+    synthetic_tests.csv  amostras sintéticas (uma por regra) e a regra que o motor disparou com a pasta sozinha
     combo_tests.csv / combo_summary.csv  pares de pastas carregados juntos: cada amostra de log e o que mudou face à pasta sozinha
 site/index.html      página autónoma de pesquisa (abrir no browser, sem servidor): packs, regras, técnicas e playbooks,
                      respostas, grupos, lacunas; cesto de instalação que gera um script com verificação wazuh-analysisd -t
@@ -189,6 +191,7 @@ tools/
     logtest.py           corre as amostras de log de cada pasta no wazuh-logtest (Docker) e verifica decoder, campos e regra
     combo_test.py        carrega pastas juntas no wazuh-logtest e repete as amostras (sombreamento entre packs)
     samples.py           extração das amostras de log e script que corre dentro do contentor
+    synth.py             amostras sintéticas a partir das condições das regras (JSON e Windows EventChannel)
     fields.py            mapa de nomes de campo para ECS
     validate.py          carrega cada pasta num wazuh-manager em Docker (wazuh-analysisd -t) e valida os agent.conf (verify-agent-conf)
     responses.py         extração e classificação de active responses e integrações das fontes
@@ -211,7 +214,7 @@ pip install -r requirements.txt
 python3 tools/build.py --src .cache/src --official .cache/official/ruleset --out .
 python3 tools/validate.py        # opcional: requer Docker
 python3 tools/logtest.py         # opcional: requer Docker (amostras de log no wazuh-logtest)
-python3 tools/combo_test.py --auto   # opcional: requer Docker (pares de pastas carregados juntos; ~1 h)
+python3 tools/combo_test.py --auto   # opcional: requer Docker (pares de pastas carregados juntos; ~30 min; corre todas as semanas no CI)
 python3 tools/make_docs.py .
 python3 tools/make_site.py .     # site/index.html: pesquisa de packs, regras, playbooks e script de instalação
 ```
