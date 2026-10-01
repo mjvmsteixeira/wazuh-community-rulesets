@@ -70,7 +70,7 @@ with tempfile.TemporaryDirectory() as tmp:
                    and AGENT_CONF_RE.match(open(os.path.join(dp, f), errors='ignore').read()))
     open(os.path.join(tmp, 'agentconf.txt'), 'w').write(''.join(c + '\n' for c in confs))
     subprocess.run(['docker', 'rm', '-f', NAME], capture_output=True)
-    subprocess.run(['docker', 'run', '-d', '--name', NAME, '--ulimit', 'nofile=458752:458752', '--entrypoint', 'sleep', a.image, 'infinity'], check=True, capture_output=True)
+    subprocess.run(['docker', 'run', '-d', '--init', '--name', NAME, '--ulimit', 'nofile=458752:458752', '--entrypoint', 'sleep', a.image, 'infinity'], check=True, capture_output=True)
     try:
         for src, dst in ((os.path.join(ROOT, 'areas'), '/tmp/areas'), (os.path.join(ROOT, 'groups'), '/tmp/groups'),
                          (os.path.join(tmp, 'manifest.tsv'), '/tmp/manifest.tsv'), (os.path.join(tmp, 'agentconf.txt'), '/tmp/agentconf.txt'),

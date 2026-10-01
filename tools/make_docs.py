@@ -24,6 +24,12 @@ dd = s.get('decoders_detail', {})
 dt_path = os.path.join(ROOT, 'catalog/decoder_test_summary.csv')
 dts = list(csv.DictReader(open(dt_path))) if os.path.exists(dt_path) else []
 dt_tot = {k: sum(int(r[k]) for r in dts) for k in ('samples', 'ok', 'not_tested', 'sombreado', 'não descodificado', 'regra não disparou', 'falso positivo')} if dts else {}
+sb = s.get('siblings', {})
+cb_path = os.path.join(ROOT, 'catalog/combo_summary.csv')
+cbs = list(csv.DictReader(open(cb_path))) if os.path.exists(cb_path) else []
+cb = {'combos': len(cbs), 'samples': sum(int(r['samples']) for r in cbs), 'shadowed': sum(int(r['shadowed']) for r in cbs),
+      'with_shadow': sum(1 for r in cbs if int(r['shadowed'])), 'not_together': sum(1 for r in cbs if r['loaded_together'] != 'True'),
+      'dec': sum(int(r['sombreado (decoder)']) for r in cbs), 'sib': sum(int(r['sombreado (regra irmã)']) for r in cbs), 'conf': sum(int(r['conflito de ID']) for r in cbs)}
 rs = s.get('response', {}); ms = s.get('mitre', {})
 techs = list(csv.DictReader(open(os.path.join(ROOT, 'catalog/technique_coverage.csv'))))
 gap_rows = sorted([x for x in techs if int(x['rules_level12']) and not int(x['playbooks'])], key=lambda x: (-int(x['rules_level12']), x['technique']))[:15]
@@ -98,6 +104,14 @@ Referência para comparação: **{s['official_reference']}**.
 
 Detalhe em [`catalog/official_overlap.csv`](catalog/official_overlap.csv) e [`catalog/decoder_replacements.csv`](catalog/decoder_replacements.csv); este último traz as linhas `<decoder_exclude>` candidatas para `ossec.conf` — usar só onde `validation.csv` indica *necessário* ou *opcional*.
 
+## Regras irmãs (filhas do mesmo pai)
+
+Comportamento medido no `wazuh-analysisd` {s["official_reference"].split()[1]}: os filhos de um mesmo pai (`if_sid`/`if_group`) são avaliados por **nível decrescente** e, em empate, pela **ordem de carregamento** (ruleset oficial primeiro, depois `etc/rules` por nome de ficheiro; o ID não conta); o primeiro que corresponder fica com o evento. Uma filha **sem condições próprias** (*apanha-tudo*) corresponde sempre e silencia as irmãs de nível inferior — incluindo regras oficiais, com a pasta instalada sozinha — e o `wazuh-analysisd -t` não avisa.
+
+- **{sb.get('catchalls_silencing_official', 0)}** regras apanha-tudo em {sb.get('folders_silencing_official', 0)} pastas silenciam **{sb.get('official_rules_silenced', 0)}** regras oficiais ([`catalog/catchall_silences_official.csv`](catalog/catchall_silences_official.csv)).
+- **{sb.get('shared_parents', 0)}** pais têm filhos em fontes diferentes ({sb.get('rules_involved', 0)} regras; {sb.get('parents_with_catchall', 0)} com apanha-tudo; {sb.get('ambiguous_parents', 0)} pais com o mesmo ID definido de forma diferente em várias fontes); {sb.get('folder_pairs', 0)} pares de pastas em que uma silencia a outra se forem instaladas juntas ([`catalog/sibling_parents.csv`](catalog/sibling_parents.csv)). O cesto da página aplica este modelo à seleção.
+{f'''- Prova empírica (`tools/combo_test.py`): {cb["combos"]} pares de pastas carregados juntos, {cb["samples"]} amostras repetidas; {cb["shadowed"]} mudaram de dono ({cb["dec"]} por decoder, {cb["sib"]} por regra irmã, {cb["conf"]} por conflito de ID: o mesmo ID, ou um antepassado na cadeia `if_sid`, definido nas duas pastas) em {cb["with_shadow"]} pares; {cb["not_together"]} pares não carregam juntos ([`catalog/combo_summary.csv`](catalog/combo_summary.csv), [`catalog/combo_tests.csv`](catalog/combo_tests.csv)).''' if cbs else ''}
+
 ## Recolha e grupos de agentes
 
 As regras correm no manager e aplicam-se a todos os agentes; os grupos de agentes não filtram regras. O que um grupo decide é **que eventos chegam** (`<localfile>`, wodles), e uma pasta só dispara se os eventos de que depende forem recolhidos. Por isso cada pasta tem em [`catalog/collection.csv`](catalog/collection.csv) o que exige:
@@ -168,6 +182,9 @@ catalog/
     decoder_fields.csv   nomes de campo produzidos pelos decoders, usos, e campo ECS sugerido
     decoder_tests.csv    cada amostra de log (testes da fonte e exemplos nos comentários) no wazuh-logtest: decoder, campos, regra, veredito
     decoder_test_summary.csv  por pasta: ok, sombreado, não descodificado, regra não disparou, falso positivo
+    sibling_parents.csv  pais com filhos em fontes diferentes: filhos por pasta (id@nível, * = apanha-tudo), filhos oficiais
+    catchall_silences_official.csv  regras apanha-tudo que silenciam regras oficiais irmãs
+    combo_tests.csv / combo_summary.csv  pares de pastas carregados juntos: cada amostra de log e o que mudou face à pasta sozinha
 site/index.html      página autónoma de pesquisa (abrir no browser, sem servidor): packs, regras, técnicas e playbooks,
                      respostas, grupos, lacunas; cesto de instalação que gera um script com verificação wazuh-analysisd -t
 groups/<grupo>/agent.conf  grupos de agentes-modelo, prontos a copiar para etc/shared/<grupo>/ no manager
@@ -182,6 +199,8 @@ tools/
     fetch.sh             clona as fontes no commit do lock (UPDATE=1 avança para o HEAD) e o ruleset oficial para .cache/
     build.py             regenera areas/ e catalog/ (determinístico para o mesmo lock)
     logtest.py           corre as amostras de log de cada pasta no wazuh-logtest (Docker) e verifica decoder, campos e regra
+    combo_test.py        carrega pastas juntas no wazuh-logtest e repete as amostras (sombreamento entre packs)
+    samples.py           extração das amostras de log e script que corre dentro do contentor
     fields.py            mapa de nomes de campo para ECS
     validate.py          carrega cada pasta num wazuh-manager em Docker (wazuh-analysisd -t) e valida os agent.conf (verify-agent-conf)
     responses.py         extração e classificação de active responses e integrações das fontes
@@ -204,6 +223,7 @@ pip install -r requirements.txt
 python3 tools/build.py --src .cache/src --official .cache/official/ruleset --out .
 python3 tools/validate.py        # opcional: requer Docker
 python3 tools/logtest.py         # opcional: requer Docker (amostras de log no wazuh-logtest)
+python3 tools/combo_test.py --auto   # opcional: requer Docker (pares de pastas carregados juntos; ~1 h)
 python3 tools/make_docs.py .
 python3 tools/make_site.py .     # site/index.html: pesquisa de packs, regras, playbooks e script de instalação
 ```
@@ -414,6 +434,14 @@ Reference: **{s['official_reference']}**.
 
 Details in [`catalog/official_overlap.csv`](catalog/official_overlap.csv) and [`catalog/decoder_replacements.csv`](catalog/decoder_replacements.csv).
 
+## Sibling rules (children of the same parent)
+
+Measured on `wazuh-analysisd` {s["official_reference"].split()[1]}: children of the same parent (`if_sid`/`if_group`) are evaluated by **level, highest first**, and on equal level by **load order** (official ruleset first, then `etc/rules` by file name; the ID does not matter); the first one that matches takes the event. A child **with no conditions of its own** (*catch-all*) always matches and silences lower-level siblings — official rules included, with the folder installed alone — and `wazuh-analysisd -t` does not warn about it.
+
+- **{sb.get('catchalls_silencing_official', 0)}** catch-all rules in {sb.get('folders_silencing_official', 0)} folders silence **{sb.get('official_rules_silenced', 0)}** official rules ([`catalog/catchall_silences_official.csv`](catalog/catchall_silences_official.csv)).
+- **{sb.get('shared_parents', 0)}** parents have children in different sources ({sb.get('rules_involved', 0)} rules; {sb.get('parents_with_catchall', 0)} with a catch-all; {sb.get('ambiguous_parents', 0)} parents whose ID is defined differently in several sources); {sb.get('folder_pairs', 0)} folder pairs where one silences the other when installed together ([`catalog/sibling_parents.csv`](catalog/sibling_parents.csv)). The page's cart applies this model to the selection.
+{f'''- Empirical proof (`tools/combo_test.py`): {cb["combos"]} folder pairs loaded together, {cb["samples"]} samples replayed; {cb["shadowed"]} changed owner ({cb["dec"]} by decoder, {cb["sib"]} by a sibling rule, {cb["conf"]} by an ID conflict: the same ID, or an ancestor in the `if_sid` chain, defined in both folders) in {cb["with_shadow"]} pairs; {cb["not_together"]} pairs do not load together ([`catalog/combo_summary.csv`](catalog/combo_summary.csv), [`catalog/combo_tests.csv`](catalog/combo_tests.csv)).''' if cbs else ''}
+
 ## Collection and agent groups
 
 Rules run on the manager for every agent; agent groups do not filter rules. What a group decides is **which events arrive**. Each folder lists what it needs in [`catalog/collection.csv`](catalog/collection.csv): collected by default, extra agent collection in [`groups/`](groups/) ({cs.get('folders_with_agent_groups', 0)} folders), manager requirements such as cloud wodles, modules, integrations and `<remote>` syslog ({cs.get('folders_with_manager_requirements', 0)} folders), or still to be defined ({cs.get('folders_with_undefined', 0)} folders). Requirements are **inferred** (the folder chains into official rules of a family, e.g. `win-sysmon` → Sysmon channel) or **declared** by the source (`<localfile>`/`<wodle>`/`<agent_config>` blocks, copied or extracted to `collection/`). See [`groups/README.md`](groups/README.md).
@@ -449,7 +477,7 @@ areas/<NN-area>/<topic>/<owner>__<repo>/
 catalog/                          CSV/JSON catalog (sources, rules, decoders, conflicts, dependencies, validation, tests, coverage...)
 groups/<group>/agent.conf         model agent groups
 site/index.html  site/pt/         standalone search page (English and Portuguese)
-tools/                            fetch.sh, build.py, validate.py, logtest.py, make_docs.py, make_site.py and modules
+tools/                            fetch.sh, build.py, validate.py, logtest.py, combo_test.py, make_docs.py, make_site.py and modules
 ```
 
 ## Rebuild / update
@@ -460,6 +488,7 @@ pip install -r requirements.txt
 python3 tools/build.py --src .cache/src --official .cache/official/ruleset --out .
 python3 tools/validate.py        # requires Docker (wazuh-analysisd -t, verify-agent-conf)
 python3 tools/logtest.py         # requires Docker (log samples in wazuh-logtest)
+python3 tools/combo_test.py --auto   # requires Docker (folder pairs loaded together; ~1 h)
 python3 tools/make_docs.py .
 python3 tools/make_site.py .
 ```

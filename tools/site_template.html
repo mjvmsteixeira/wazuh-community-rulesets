@@ -190,6 +190,12 @@ const LANG = '__LANG__';
 const REPO = 'https://github.com/mjvmsteixeira/wazuh-community-rulesets';
 // ---------- i18n: English is the source; PT holds the Portuguese version of every visible string
 const PT = {
+  'Tested together: {n} of the chosen pairs': 'Testados juntos: {n} dos pares escolhidos',
+  'tools/combo_test.py loaded these pairs together in wazuh-logtest and replayed their log samples.': 'O tools/combo_test.py carregou estes pares juntos no wazuh-logtest e repetiu as amostras de log.',
+  '{s} of {n} samples changed owner (decoder {d}, sibling rule {r}, ID conflict {i}, lost alert {l})': '{s} de {n} amostras mudaram de dono (decoder {d}, regra irmã {r}, conflito de ID {i}, alerta perdido {l})',
+  '{n} samples, none changed': '{n} amostras, nenhuma mudou',
+  'These packs add a child rule with no conditions of its own and a higher level than official siblings of the same parent: it takes those events and the official detections stop alerting. wazuh-analysisd -t does not warn about it.': 'Estes packs acrescentam uma regra filha sem condições próprias e com nível acima de irmãs oficiais do mesmo pai: fica com esses eventos e as deteções oficiais deixam de alertar. O wazuh-analysisd -t não avisa.',
+  '(latent: the pack does not load today)': '(latente: o pack hoje não carrega)',
   'COMMUNITY · 4.x': 'COMUNIDADE · 4.x', 'search packs, rules, decoders, techniques, playbooks…': 'pesquisar packs, regras, decoders, técnicas, playbooks…',
   'Search': 'Pesquisar', 'Theme': 'Tema', 'Toggle theme': 'Alternar tema', 'Install': 'Instalar', 'LOADING DATA': 'A CARREGAR DADOS',
   'Curated by': 'Curado por', 'Back to the top and search': 'Voltar ao topo e pesquisar',
@@ -197,7 +203,20 @@ const PT = {
   'Original source files, unchanged, each with its origin and pinned commit; respect each source\'s license (NONE = no license: internal use only).': 'Ficheiros originais das fontes, sem alterações, cada um com a origem e o commit fixado; respeitar a licença de cada fonte (NONE = sem licença: só uso interno).',
   'Validated with <code>wazuh-analysisd -t</code>, <code>verify-agent-conf</code> and <code>wazuh-logtest</code> on the reference wazuh-manager.': 'Validado com <code>wazuh-analysisd -t</code>, <code>verify-agent-conf</code> e <code>wazuh-logtest</code> no wazuh-manager de referência.',
   'Questions, errors or suggestions: <a href="{issues}" target="_blank" rel="noopener">open an issue</a>. Author of a source and want it removed? Open an issue and it will be taken down.': 'Dúvidas, erros ou sugestões: <a href="{issues}" target="_blank" rel="noopener">abrir uma issue</a>. É autor de uma fonte e quer que seja retirada? Abra uma issue e é removida.',
-  'Coverage': 'Cobertura', 'filter active · click to clear': 'filtro ativo · clicar para limpar', 'Clear this filter': 'Limpar este filtro', 'filter: decoders with unmapped fields': 'filtro: decoders com campos sem correspondência',
+  'Coverage': 'Cobertura',
+  'Measured on wazuh-analysisd 4.14.8: sibling rules are evaluated by level (highest first) and, on equal level, by load order (installed file names, alphabetical); the first one that matches takes the event. A child rule with no conditions of its own always matches, so it silences the siblings below its level.': 'Medido no wazuh-analysisd 4.14.8: as regras irmãs são avaliadas por nível (mais alto primeiro) e, em empate, pela ordem de carregamento (nomes dos ficheiros instalados, por ordem alfabética); a primeira que corresponder fica com o evento. Uma regra filha sem condições próprias corresponde sempre, por isso silencia os irmãos abaixo do seu nível.',
+  '{a} rule {r} (catch-all, level {l}) silences {b}: {lost}': '{a}: a regra {r} (apanha-tudo, nível {l}) silencia {b}: {lost}',
+  'Each pack validates on its own, but installed together the sibling with the highest level (then the first loaded) takes the events both match, and the other does not alert. Overlap is only possible, not certain: confirm with <code>tools/combo_test.py</code> (replays each pack\'s log samples with the packs loaded together). Shown as rule@level.': 'Cada pack valida sozinho, mas instalados juntos o irmão com o nível mais alto (e, em empate, o primeiro carregado) fica com os eventos que ambos apanham, e o outro não alerta. A sobreposição é possível, não certa: confirmar com <code>tools/combo_test.py</code> (repete as amostras de cada pack com os packs carregados juntos). Mostrado como regra@nível.',
+  'Packs that silence official Wazuh rules, even installed alone': 'Packs que silenciam regras oficiais da Wazuh, mesmo instalados sozinhos',
+  'These packs add a child rule with no conditions of its own and a higher level than official siblings of the same parent: it takes those events and the official detections stop alerting. The pack loads and validates normally.': 'Estes packs acrescentam uma regra filha sem condições próprias e com nível acima de irmãs oficiais do mesmo pai: fica com esses eventos e as deteções oficiais deixam de alertar. O pack carrega e valida normalmente.',
+  'rule {r} (level {l}, {p}) silences {n} official rules, e.g. {ex}': 'a regra {r} (nível {l}, {p}) silencia {n} regras oficiais, p.ex. {ex}', 'official parent': 'pai oficial',
+  '{n} parent rules where a pack will silence another': '{n} regras-pai em que um pack vai silenciar outro',
+  'A child rule with no conditions of its own takes every event of the parent; the sibling rules of the packs loaded after it never alert. Load order follows the installed file names (alphabetical).': 'Uma regra filha sem condições próprias apanha todos os eventos do pai; as regras irmãs dos packs carregados depois dela nunca alertam. A ordem de carregamento segue os nomes dos ficheiros instalados (alfabética).',
+  '{a} (catch-all) silences {b}': '{a} (apanha-tudo) silencia {b}',
+  '{n} ambiguous parents': '{n} pais ambíguos',
+  'The parent ID is defined differently in several sources: installed together, these children may hang off the wrong parent rule.': 'O ID do pai está definido de forma diferente em várias fontes: instalados juntos, estes filhos podem ficar pendurados na regra-pai errada.',
+  '{n} parent rules shared between the chosen packs': '{n} regras-pai partilhadas entre os packs escolhidos',
+  'Each pack validates on its own, but installed together the first sibling that matches takes the event and the others do not alert. Overlap is only possible, not certain: confirm with <code>tools/combo_test.py</code> (replays each pack\'s log samples with the packs loaded together).': 'Cada pack valida sozinho, mas instalados juntos o primeiro irmão que corresponder fica com o evento e os outros não alertam. A sobreposição é possível, não certa: confirmar com <code>tools/combo_test.py</code> (repete as amostras de cada pack com os packs carregados juntos).', 'filter active · click to clear': 'filtro ativo · clicar para limpar', 'Clear this filter': 'Limpar este filtro', 'filter: decoders with unmapped fields': 'filtro: decoders com campos sem correspondência',
   'Children only': 'Só filhos', 'Roots with an official name': 'Raízes com nome oficial', 'With fields not mapped to ECS': 'Com campos sem correspondência ECS',
   'Any OS': 'Qualquer SO', 'Any type': 'Qualquer tipo', 'Shared (win-*, linux-*, osquery)': 'Partilhados (win-*, linux-*, osquery)', 'Pack-specific (pack-*)': 'Específicos de um pack (pack-*)',
   'Any origin': 'Qualquer origem', 'Origin': 'Origem', 'Show the matching items': 'Mostrar os itens correspondentes', 'see list': 'ver lista',
@@ -221,7 +240,7 @@ const PT = {
   '{n} rules': '{n} regras', 'Level': 'Nível', 'Description': 'Descrição', 'Pack': 'Pack', 'Conflict': 'Conflito', 'No results.': 'Sem resultados.',
   'source IP': 'IP de origem', 'destination IP': 'IP de destino', 'user': 'utilizador', 'source port': 'porto de origem', 'action': 'ação', 'process': 'processo', 'URL': 'URL',
   'ROOT': 'RAIZ', 'child': 'filho', 'no ECS match': 'sem correspondência ECS', 'OFFICIAL NAME': 'NOME OFICIAL', 'COLLIDES ×{n}': 'COLIDE ×{n}',
-  'The sources\' decoders: how they identify the log, the regex engine and the fields they produce (hover a field to see the suggested ECS field). Root decoders with the same name in another source or in the official ruleset shadow each other: the first one loaded takes the log.': 'Os decoders das fontes: como identificam o log, o motor de regex e os campos que produzem (passar o rato sobre um campo mostra o campo ECS sugerido). Decoders raiz com o mesmo nome noutra fonte ou no oficial sombreiam-se: o primeiro carregado apanha o log.',
+  'The sources\' decoders: how they identify the log, the regex engine and the fields they produce (hover a field to see the suggested ECS field). Root decoders with the same name in another source or in the official ruleset shadow each other: their children share the name and the first one loaded that matches extracts the fields.': 'Os decoders das fontes: como identificam o log, o motor de regex e os campos que produzem (passar o rato sobre um campo mostra o campo ECS sugerido). Decoders raiz com o mesmo nome noutra fonte ou no oficial sombreiam-se: os filhos partilham o nome e o primeiro carregado que corresponder extrai os campos.',
   'decoders (root / children)': 'decoders (raiz / filhos)', 'root names colliding between sources': 'raízes que colidem entre fontes', 'root names of an official decoder': 'raízes com nome de um decoder oficial',
   'distinct field names (with ECS)': 'nomes de campo distintos (com ECS)', '{n} mapped · {p}% of uses': '{n} com correspondência · {p}% dos usos',
   'Same concept, different names': 'O mesmo conceito, nomes diferentes', 'Concept (ECS)': 'Conceito (ECS)', 'Names used by the decoders (uses)': 'Nomes usados nos decoders (usos)',
@@ -275,7 +294,7 @@ const PT = {
   'No rule IDs repeated between the chosen packs': 'Sem IDs repetidos entre os packs escolhidos', 'Validation on the manager still applies.': 'Continua a valer a validação no manager.',
   'Collision with official IDs': 'Colisão com IDs oficiais', 'reuse official ruleset IDs without overwrite.': 'reutilizam IDs do ruleset oficial sem overwrite.',
   'CDB lists with the same name': 'Listas CDB com o mesmo nome', '— the last one written wins.': '— a última escrita ganha.',
-  '{n} root decoders with the same name between the chosen packs': '{n} decoders raiz com o mesmo nome entre os packs escolhidos', 'The first one loaded takes the log and the other goes silent, with no error:': 'O primeiro carregado apanha o log e o outro fica mudo, sem erro:',
+  '{n} root decoders with the same name between the chosen packs': '{n} decoders raiz com o mesmo nome entre os packs escolhidos', 'Both stay active with no error, but the children of both hang off the same name and run in load order: a log can be parsed by the children of the other pack (different fields) and the rules that expect the fields of this pack stop matching:': 'Ficam ambos ativos, sem erro, mas os filhos dos dois ligam-se ao mesmo nome e correm por ordem de carregamento: um log pode ser extraído pelos filhos do outro pack (campos diferentes) e as regras que esperam os campos deste pack deixam de corresponder:',
   'Dependencies in other packs': 'Dependências noutros packs', 'The chosen packs use rules or decoders that live in other packs:': 'Os packs escolhidos usam regras ou decoders que vivem noutros packs:',
   'Packs that do not load on their own': 'Packs que não carregam isoladamente', '— internal use only.': '— só uso interno.', 'Remove': 'Tirar',
   'Generate install script': 'Gerar script de instalação', 'Generating…': 'A gerar…', 'Empty cart': 'Esvaziar cesto', 'Download .sh': 'Descarregar .sh', 'Script': 'Script',
@@ -502,7 +521,7 @@ function renderDecs() {
   const S = D.stats.decoders_detail || {};
   const variants = CONCEPTS.map(([ecs, label]) => { const v = D.dfields.filter(f => f[3] === ecs).sort((a, b) => b[1] - a[1]);
     return v.length ? `<tr><td><b>${_(label)}</b><br><code>${ecs}</code></td><td>${v.slice(0, 8).map(f => `<code>${esc(f[0])}</code> <span class="pct">${f[1]}</span>`).join(' · ')}${v.length > 8 ? ` · +${v.length - 8}` : ''}</td></tr>` : ''; }).join('');
-  return `<p class="lead">${_('The sources\' decoders: how they identify the log, the regex engine and the fields they produce (hover a field to see the suggested ECS field). Root decoders with the same name in another source or in the official ruleset shadow each other: the first one loaded takes the log.')}</p>
+  return `<p class="lead">${_('The sources\' decoders: how they identify the log, the regex engine and the fields they produce (hover a field to see the suggested ECS field). Root decoders with the same name in another source or in the official ruleset shadow each other: their children share the name and the first one loaded that matches extracts the fields.')}</p>
   <div class="kpis">
     ${kpiLink(`${S.roots}/${S.children}`, _('decoders (root / children)'), '', ['decs', {status: 'root'}, 'decs-table'], st === 'root')}
     ${kpiLink(S.root_collisions_between_sources, _('root names colliding between sources'), 'bad', ['decs', {status: 'col'}, 'decs-table'], st === 'col')}
@@ -689,6 +708,7 @@ async function showPack(i, tab = 'resumo', rule = null) {
   if (tab === 'resumo') {
     body = `${!p.ok ? `<div class="alert"><b>${_('Does not load in wazuh-analysisd')}</b>${esc(p.err)}</div>` : ''}
       ${p.ok && p.w ? `<div class="alert warn"><b>${_('Loads with warnings ')}</b>${esc(p.warn)}</div>` : ''}
+      ${offsilAlert([i])}
       ${p.lic === 'NONE' ? `<div class="alert warn"><b>${_('No license')}</b>${_('The author published no license: internal use only; do not redistribute.')}</div>` : ''}
       ${p.dex === 'não usar' ? `<div class="alert info"><b>decoder_exclude</b>${_('Do not exclude the matching official file: this pack\'s decoders add to the official ones and excluding it breaks loading.')}</div>` : ''}
       ${p.dex === 'necessário' ? `<div class="alert info"><b>${_('decoder_exclude required')}</b>${p.repl.map(x => `&lt;decoder_exclude&gt;ruleset/decoders/${esc(x)}&lt;/decoder_exclude&gt;`).join('<br>')}</div>` : ''}
@@ -761,9 +781,45 @@ function cartConflicts(sel) {
   sel.forEach(([p]) => p.files.filter(f => f[0] === 'lists').forEach(f => { if (!lists.has(f[1])) lists.set(f[1], []); lists.get(f[1]).push(p.t); }));
   const dcol = Object.entries(D.dcoll).map(([n, c]) => [n, c.p.filter(x => idxs.has(x))]).filter(([, ps]) => ps.length > 1);
   const need = new Set(); sel.forEach(([p]) => p.needs.forEach(x => { if (!idxs.has(x)) need.add(x); }));
-  return {cross, off, lists: [...lists].filter(([, v]) => v.length > 1), dcol, need: [...need]};
+  // irmãs: o mesmo pai com filhos em várias das pastas escolhidas (de fontes diferentes)
+  // modelo medido no wazuh-analysisd 4.14.8: irmãos avaliados por nível decrescente e, em empate, pela ordem de carregamento
+  // (ficheiros de etc/rules por ordem alfabética, i.e. pelo prefixo do pack); o primeiro que corresponder fica com o evento.
+  // Um apanha-tudo (sem condições) corresponde sempre: silencia irmãos de nível inferior e os de igual nível carregados depois.
+  const sibs = D.sib.map(([parent, kind, owner, amb, ch, offc]) => {
+    const ps = Object.keys(ch).map(Number).filter(x => idxs.has(x));
+    if (ps.length < 2 || new Set(ps.map(x => D.packs[x].s)).size < 2) return null;
+    // o nome do ficheiro instalado é `${prefixo}__${ficheiro}`: ordenar pelo nome completo ('-' < '_' em strcmp)
+    const order = ps.slice().sort((a, b) => packPrefix(D.packs[a]) + '__' < packPrefix(D.packs[b]) + '__' ? -1 : 1);
+    // ordem de avaliação: nível decrescente; em empate, os oficiais (carregados primeiro) e depois a ordem dos packs
+    const ev = [...offc.map(([rid, rl]) => [-1, rid, rl, false]),
+                ...order.flatMap(x => ch[x].map(([rid, rl, isCa]) => [x, rid, rl, isCa]))]
+      .map((e, n) => [...e, n]).sort((a, b) => b[2] - a[2] || a[4] - b[4]);
+    // o primeiro apanha-tudo na ordem de avaliação fica com todos os eventos do pai: tudo o que vem depois não é avaliado
+    const k = ev.findIndex(e => e[0] >= 0 && e[3] && e[2] > 0);
+    const silences = [];   // [pack que silencia, regra apanha-tudo, nível, pack silenciado, [regra@nível]]
+    if (k >= 0) {
+      const [x, cid, cl] = ev[k];
+      for (const y of order) {
+        if (D.packs[y].s === D.packs[x].s) continue;
+        const lost = ev.slice(k + 1).filter(e => e[0] === y).map(e => e[1] + '@' + e[2]);
+        if (lost.length) silences.push([x, cid, cl, y, lost]);
+      }
+    }
+    // pai ambíguo só se o cesto tiver mais do que uma definição do ID do pai
+    return {parent, kind, owner, amb: amb && (byId.get(parent)?.size || 0) > 1, ps: order, ch, silences};
+  }).filter(Boolean);
+  return {cross, off, lists: [...lists].filter(([, v]) => v.length > 1), dcol, need: [...need], sibs};
 }
 const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+// prefixo dos ficheiros instalados: tópico + repositório; se dois packs dariam o mesmo prefixo (mesmo nome de repositório
+// noutro autor, ou a mesma fonte em várias áreas), acrescenta um hash FNV-1a da pasta para os ficheiros não se sobreporem
+const fnv = s => { let h = 0x811c9dc5; for (const c of new TextEncoder().encode(s)) h = Math.imul(h ^ c, 0x01000193) >>> 0; return h.toString(16).padStart(8, '0'); };
+const basePrefix = p => slug(p.t + '-' + p.s.split('/')[1]).slice(0, 60);
+let prefixCount;
+const packPrefix = p => {
+  if (!prefixCount) { prefixCount = new Map(); D.packs.forEach(q => prefixCount.set(basePrefix(q), (prefixCount.get(basePrefix(q)) || 0) + 1)); }
+  const b = basePrefix(p); return prefixCount.get(b) > 1 ? b.slice(0, 51) + '-' + fnv(p.f) : b;
+};
 async function buildScript(sel) {
   const F = await files();
   const out = [`#!/usr/bin/env bash
@@ -781,7 +837,7 @@ mkdir -p "$OSSEC/etc/rules" "$OSSEC/etc/decoders" "$OSSEC/etc/lists"
 `];
   const lists = new Set(), excl = new Set(), groups = new Set(), mgr = new Set();
   for (const [p] of sel) {
-    const pre = slug(p.t + '-' + p.s.split('/')[1]).slice(0, 60);
+    const pre = packPrefix(p);
     out.push(`\n# ===== ${p.t} · ${p.s} @ ${p.commit} ${_('(license: {l})', {l: p.lic})}`);
     if (!p.ok) out.push(`${_('# WARNING: this pack does NOT load on its own:')} ${p.err.replace(/\n/g, ' ')}`);
     for (const [kind, rel, idx] of p.files) {
@@ -811,6 +867,29 @@ fi`);
   if (mgr.size) out.push(`\n${_('# ===== Manager requirements (configure separately in ossec.conf):')}\n${[...mgr].map(g => '#   ' + g).join('\n')}`);
   return out.join('\n') + '\n';
 }
+function offsilAlert(idxs) {
+  const hits = idxs.filter(i => D.offsil[i]);
+  if (!hits.length) return '';
+  return `<div class="alert"><b>${_('Packs that silence official Wazuh rules, even installed alone')}</b>${_('These packs add a child rule with no conditions of its own and a higher level than official siblings of the same parent: it takes those events and the official detections stop alerting. wazuh-analysisd -t does not warn about it.')}<ul>${hits.map(i => D.offsil[i].map(([r, l, parent, n, ex]) => `<li>${esc(D.packs[i].t + ' · ' + D.packs[i].s)}: ${_('rule {r} (level {l}, {p}) silences {n} official rules, e.g. {ex}', {r: esc(r), l, p: esc(parent), n, ex: esc(ex.length > 160 ? ex.slice(0, 160) + '…' : ex)})}${D.packs[i].ok ? '' : ` <span class="pct">${_('(latent: the pack does not load today)')}</span>`}</li>`).join('')).join('')}</ul></div>`;
+}
+function comboAlert(idxs) {
+  // resultado do tools/combo_test.py para os pares do cesto que foram testados juntos
+  const hits = [];
+  for (const a of idxs) for (const b of idxs) if (a < b) { const c = (D.combo || {})[a + ',' + b]; if (c) hits.push([a, b, c]); }
+  if (!hits.length) return '';
+  const bad = hits.filter(([, , c]) => c[1]);
+  const name = x => esc(D.packs[x].t + ' · ' + D.packs[x].s);
+  return `<div class="alert ${bad.length ? '' : 'info'}"><b>${_('Tested together: {n} of the chosen pairs', {n: hits.length})}</b>${_('tools/combo_test.py loaded these pairs together in wazuh-logtest and replayed their log samples.')}<ul>${hits.map(([a, b, c]) => `<li>${name(a)} + ${name(b)}: ${c[1] ? _('{s} of {n} samples changed owner (decoder {d}, sibling rule {r}, ID conflict {i}, lost alert {l})', {s: c[1], n: c[0], d: c[2], r: c[3], i: c[4], l: c[5]}) + (c[6].length && LANG === 'pt' ? `<br><span class="pct">${esc(c[6].join(' · '))}</span>` : '') : _('{n} samples, none changed', {n: c[0]})}</li>`).join('')}</ul></div>`;
+}
+function sibAlerts(sibs) {
+  if (!sibs.length) return '';
+  const name = x => esc(D.packs[x].t + ' · ' + D.packs[x].s);
+  const hard = sibs.filter(s => s.silences.length), amb = sibs.filter(s => s.amb), soft = sibs.filter(s => !s.silences.length);
+  const li = s => `<li><code>${esc(s.kind)} ${esc(s.parent)}</code>${s.owner === 'oficial' ? ` <span class="pct">(${_('official parent')})</span>` : ''}: ${s.ps.map(x => `${name(x)} [${esc(s.ch[x].map(([r, l]) => r + '@' + l).join(', '))}]`).join(' · ')}</li>`;
+  return `${hard.length ? `<div class="alert"><b>${_('{n} parent rules where a pack will silence another', {n: hard.length})}</b>${_('Measured on wazuh-analysisd 4.14.8: sibling rules are evaluated by level (highest first) and, on equal level, by load order (installed file names, alphabetical); the first one that matches takes the event. A child rule with no conditions of its own always matches, so it silences the siblings below its level.')}<ul>${hard.slice(0, 12).flatMap(s => s.silences.map(([x, cid, cl, y, lost]) => `<li><code>${esc(s.kind)} ${esc(s.parent)}</code>: ${_('{a} rule {r} (catch-all, level {l}) silences {b}: {lost}', {a: name(x), r: esc(cid), l: cl, b: name(y), lost: esc(lost.join(', '))})}</li>`)).join('')}</ul></div>` : ''}
+  ${amb.length ? `<div class="alert"><b>${_('{n} ambiguous parents', {n: amb.length})}</b>${_('The parent ID is defined differently in several sources: installed together, these children may hang off the wrong parent rule.')}<ul>${amb.slice(0, 12).map(li).join('')}</ul></div>` : ''}
+  ${soft.length ? `<div class="alert warn"><b>${_('{n} parent rules shared between the chosen packs', {n: soft.length})}</b>${_('Each pack validates on its own, but installed together the sibling with the highest level (then the first loaded) takes the events both match, and the other does not alert. Overlap is only possible, not certain: confirm with <code>tools/combo_test.py</code> (replays each pack\'s log samples with the packs loaded together). Shown as rule@level.')}<ul>${soft.slice(0, 12).map(li).join('')}</ul>${soft.length > 12 ? `<span class="pct">+${soft.length - 12}</span>` : ''}</div>` : ''}`;
+}
 function renderCart() {
   const sel = cartPacks();
   if (!sel.length) return `<p class="lead">${_('The cart is empty. Open a pack and use "Add to cart".')}</p><div class="empty">${_('No pack selected.')}</div>`;
@@ -820,7 +899,10 @@ function renderCart() {
   ${c.cross.length ? `<div class="alert"><b>${_('{n} rule IDs repeated between the chosen packs', {n: c.cross.length})}</b>${_('Only the first definition of each ID stays active. Remove one of the packs or renumber before installing:')} ${c.cross.slice(0, 20).map(([id, s]) => `${esc(id)} (${s.map(x => esc(D.packs[x].t)).join(' / ')})`).join(', ')}${c.cross.length > 20 ? ' …' : ''}</div>` : `<div class="alert info"><b>${_('No rule IDs repeated between the chosen packs')}</b>${_('Validation on the manager still applies.')}</div>`}
   ${c.off.length ? `<div class="alert"><b>${_('Collision with official IDs')}</b>${c.off.map(esc).join(', ')} ${_('reuse official ruleset IDs without overwrite.')}</div>` : ''}
   ${c.lists.length ? `<div class="alert warn"><b>${_('CDB lists with the same name')}</b>${c.lists.map(([l, v]) => `${esc(l)} (${v.map(esc).join(' / ')})`).join(', ')} ${_('— the last one written wins.')}</div>` : ''}
-  ${c.dcol.length ? `<div class="alert"><b>${_('{n} root decoders with the same name between the chosen packs', {n: c.dcol.length})}</b>${_('The first one loaded takes the log and the other goes silent, with no error:')} ${c.dcol.slice(0, 15).map(([n, ps]) => `${esc(n)} (${ps.map(x => esc(D.packs[x].s)).join(' / ')})`).join(', ')}</div>` : ''}
+  ${c.dcol.length ? `<div class="alert"><b>${_('{n} root decoders with the same name between the chosen packs', {n: c.dcol.length})}</b>${_('Both stay active with no error, but the children of both hang off the same name and run in load order: a log can be parsed by the children of the other pack (different fields) and the rules that expect the fields of this pack stop matching:')} ${c.dcol.slice(0, 15).map(([n, ps]) => `${esc(n)} (${ps.map(x => esc(D.packs[x].s)).join(' / ')})`).join(', ')}</div>` : ''}
+  ${offsilAlert(sel.map(([, i]) => i))}
+  ${comboAlert(sel.map(([, i]) => i))}
+  ${sibAlerts(c.sibs)}
   ${c.need.length ? `<div class="alert info"><b>${_('Dependencies in other packs')}</b>${_('The chosen packs use rules or decoders that live in other packs:')} ${c.need.map(x => `<button class="btn small" data-add="${x}">+ ${esc(D.packs[x].t)} · ${esc(D.packs[x].s)}</button>`).join(' ')}</div>` : ''}
   ${notOk.length ? `<div class="alert"><b>${_('Packs that do not load on their own')}</b>${notOk.map(([p]) => esc(p.t + ' · ' + p.s)).join(', ')}</div>` : ''}
   ${noLic.length ? `<div class="alert warn"><b>${_('No license')}</b>${noLic.map(([p]) => esc(p.s)).join(', ')} ${_('— internal use only.')}</div>` : ''}

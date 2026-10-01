@@ -26,6 +26,12 @@ def norm(el):
     s = etree.tostring(el, encoding='unicode')
     return re.sub(r'\s+', ' ', s).strip()
 
+# elementos que restringem uma regra para além do pai (if_sid/if_group): sem nenhum, a regra apanha todos os eventos do pai
+# e silencia os irmãos avaliados depois dela. decoded_as conta: num filho restringe ao decoder do evento, que pode não ser o do pai
+CONDITIONS = {'match', 'regex', 'field', 'srcip', 'dstip', 'srcport', 'dstport', 'user', 'program_name', 'hostname', 'url', 'id',
+              'action', 'status', 'extra_data', 'location', 'time', 'weekday', 'list', 'protocol', 'system_name', 'data', 'srcgeoip',
+              'dstgeoip', 'category', 'decoded_as', 'if_fts', 'compiled_rule', 'check_diff', 'if_matched_regex'}
+
 def channels(expr):
     """Canais EventChannel concretos numa expressão de <field name="win.system.channel"> ('^Security$|^System$' -> Security, System)."""
     out = []
@@ -67,6 +73,9 @@ def parse_file(path):
             'overwrite': r.get('overwrite') == 'yes',
             'lists': sorted({(l.text or '').strip() for l in r.iter('list') if (l.text or '').strip()}),
             'channels': sorted({c for f in r.iter('field') if f.get('name') == 'win.system.channel' for c in channels(f.text)}),
+            'n_conds': sum(1 for c in r if isinstance(c.tag, str) and c.tag in CONDITIONS),
+            'correlation': bool(r.get('frequency') or any(isinstance(c.tag, str) and (c.tag.startswith(('same_', 'different_', 'not_same_'))
+                                or c.tag in ('if_matched_sid', 'if_matched_group')) for c in r)),
             'hash': hashlib.sha1(norm(r).encode()).hexdigest()[:12],
         })
     for d in root.iter('decoder'):

@@ -29,6 +29,17 @@
  "folders_standalone": 405,
  "test_files_copied": 134,
  "excluded_files": 255,
+ "siblings": {
+  "shared_parents": 274,
+  "rules_involved": 10359,
+  "parents_with_catchall": 58,
+  "catchall_rules": 64,
+  "ambiguous_parents": 154,
+  "catchalls_silencing_official": 13,
+  "official_rules_silenced": 19,
+  "folders_silencing_official": 7,
+  "folder_pairs": 112
+ },
  "decoders_detail": {
   "roots": 660,
   "children": 4684,

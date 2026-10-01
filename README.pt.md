@@ -74,6 +74,14 @@ Referência para comparação: **wazuh/wazuh v4.14.8 ruleset**.
 
 Detalhe em [`catalog/official_overlap.csv`](catalog/official_overlap.csv) e [`catalog/decoder_replacements.csv`](catalog/decoder_replacements.csv); este último traz as linhas `<decoder_exclude>` candidatas para `ossec.conf` — usar só onde `validation.csv` indica *necessário* ou *opcional*.
 
+## Regras irmãs (filhas do mesmo pai)
+
+Comportamento medido no `wazuh-analysisd` v4.14.8: os filhos de um mesmo pai (`if_sid`/`if_group`) são avaliados por **nível decrescente** e, em empate, pela **ordem de carregamento** (ruleset oficial primeiro, depois `etc/rules` por nome de ficheiro; o ID não conta); o primeiro que corresponder fica com o evento. Uma filha **sem condições próprias** (*apanha-tudo*) corresponde sempre e silencia as irmãs de nível inferior — incluindo regras oficiais, com a pasta instalada sozinha — e o `wazuh-analysisd -t` não avisa.
+
+- **13** regras apanha-tudo em 7 pastas silenciam **19** regras oficiais ([`catalog/catchall_silences_official.csv`](catalog/catchall_silences_official.csv)).
+- **274** pais têm filhos em fontes diferentes (10359 regras; 58 com apanha-tudo; 154 pais com o mesmo ID definido de forma diferente em várias fontes); 112 pares de pastas em que uma silencia a outra se forem instaladas juntas ([`catalog/sibling_parents.csv`](catalog/sibling_parents.csv)). O cesto da página aplica este modelo à seleção.
+- Prova empírica (`tools/combo_test.py`): 150 pares de pastas carregados juntos, 3533 amostras repetidas; 445 mudaram de dono (6 por decoder, 14 por regra irmã, 425 por conflito de ID: o mesmo ID, ou um antepassado na cadeia `if_sid`, definido nas duas pastas) em 64 pares; 0 pares não carregam juntos ([`catalog/combo_summary.csv`](catalog/combo_summary.csv), [`catalog/combo_tests.csv`](catalog/combo_tests.csv)).
+
 ## Recolha e grupos de agentes
 
 As regras correm no manager e aplicam-se a todos os agentes; os grupos de agentes não filtram regras. O que um grupo decide é **que eventos chegam** (`<localfile>`, wodles), e uma pasta só dispara se os eventos de que depende forem recolhidos. Por isso cada pasta tem em [`catalog/collection.csv`](catalog/collection.csv) o que exige:
@@ -162,6 +170,9 @@ catalog/
     decoder_fields.csv   nomes de campo produzidos pelos decoders, usos, e campo ECS sugerido
     decoder_tests.csv    cada amostra de log (testes da fonte e exemplos nos comentários) no wazuh-logtest: decoder, campos, regra, veredito
     decoder_test_summary.csv  por pasta: ok, sombreado, não descodificado, regra não disparou, falso positivo
+    sibling_parents.csv  pais com filhos em fontes diferentes: filhos por pasta (id@nível, * = apanha-tudo), filhos oficiais
+    catchall_silences_official.csv  regras apanha-tudo que silenciam regras oficiais irmãs
+    combo_tests.csv / combo_summary.csv  pares de pastas carregados juntos: cada amostra de log e o que mudou face à pasta sozinha
 site/index.html      página autónoma de pesquisa (abrir no browser, sem servidor): packs, regras, técnicas e playbooks,
                      respostas, grupos, lacunas; cesto de instalação que gera um script com verificação wazuh-analysisd -t
 groups/<grupo>/agent.conf  grupos de agentes-modelo, prontos a copiar para etc/shared/<grupo>/ no manager
@@ -176,6 +187,8 @@ tools/
     fetch.sh             clona as fontes no commit do lock (UPDATE=1 avança para o HEAD) e o ruleset oficial para .cache/
     build.py             regenera areas/ e catalog/ (determinístico para o mesmo lock)
     logtest.py           corre as amostras de log de cada pasta no wazuh-logtest (Docker) e verifica decoder, campos e regra
+    combo_test.py        carrega pastas juntas no wazuh-logtest e repete as amostras (sombreamento entre packs)
+    samples.py           extração das amostras de log e script que corre dentro do contentor
     fields.py            mapa de nomes de campo para ECS
     validate.py          carrega cada pasta num wazuh-manager em Docker (wazuh-analysisd -t) e valida os agent.conf (verify-agent-conf)
     responses.py         extração e classificação de active responses e integrações das fontes
@@ -198,6 +211,7 @@ pip install -r requirements.txt
 python3 tools/build.py --src .cache/src --official .cache/official/ruleset --out .
 python3 tools/validate.py        # opcional: requer Docker
 python3 tools/logtest.py         # opcional: requer Docker (amostras de log no wazuh-logtest)
+python3 tools/combo_test.py --auto   # opcional: requer Docker (pares de pastas carregados juntos; ~1 h)
 python3 tools/make_docs.py .
 python3 tools/make_site.py .     # site/index.html: pesquisa de packs, regras, playbooks e script de instalação
 ```

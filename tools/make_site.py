@@ -82,7 +82,34 @@ groups = [[g['group'], g['os'], int(g['entries']), g['origin'], [pack_idx[x] for
            content(f"groups/{g['group']}/agent.conf"), gval.get(g['group'])] for g in C('groups.csv')]
 conflicts = {r['id']: r['type'] for r in C('id_conflicts.csv')}
 
-meta = {'stats': stats, 'areas': AREAS, 'areas_en': AREAS_EN, 'packs': packs, 'rules': rules, 'decs': decs, 'dcoll': dcoll, 'dfields': dfields, 'dtests': dtests, 'techs': techs, 'pbs': pbs,
+# regras irmãs: [pai, tipo, dono, pai ambíguo, {pasta: [[id, nível, apanha-tudo]]}, [[id, nível] dos filhos oficiais]]
+def kids(s):
+    out = []
+    for x in filter(None, s.split(',')):
+        rid, rest = x.split('@'); out.append([rid, int(rest.rstrip('*')), rest.endswith('*')])
+    return out
+sib = []
+for r in C('sibling_parents.csv'):
+    ch = {}
+    for part in r['children'].split(' | '):
+        fo, ids = part.split(': ', 1)
+        if fo in pack_idx: ch[pack_idx[fo]] = kids(ids)
+    sib.append([r['parent'], r['kind'], r['owner'], r['ambiguous_parent'] == 'True', ch, [k[:2] for k in kids(r['official_children'])]])
+# apanha-tudo que silenciam regras oficiais com a pasta instalada sozinha: {pasta: [[regra, nível, pai, n, exemplos]]}
+offsil = {}
+for r in C('catchall_silences_official.csv'):
+    if r['folder'] in pack_idx: offsil.setdefault(pack_idx[r['folder']], []).append([r['rule'], int(r['level']), r['parent'], int(r['official_silenced']), r['examples']])
+# combo_test: pares de pastas carregados juntos e amostras que mudaram de dono {"i,j": [amostras, sombreadas, decoder, regra irmã, conflito de ID, perdeu, exemplos]}
+combo = {}
+ctests = {}
+for r in C('combo_tests.csv'):
+    if r['verdict'] in ('sombreado (decoder)', 'sombreado (regra irmã)', 'conflito de ID', 'perdeu o alerta'): ctests.setdefault(r['combo'], []).append(f"{r['verdict']}: {r['why']}")
+for r in C('combo_summary.csv'):
+    fs = r['combo'].split(' + ')
+    if len(fs) == 2 and all(f in pack_idx for f in fs) and r['loaded_together'] == 'True':
+        combo[','.join(map(str, sorted(pack_idx[f] for f in fs)))] = [int(r['samples']), int(r['shadowed']), int(r['sombreado (decoder)']),
+            int(r['sombreado (regra irmã)']), int(r['conflito de ID']), int(r['perdeu o alerta']), sorted(set(ctests.get(r['combo'], [])))[:4]]
+meta = {'stats': stats, 'sib': sib, 'offsil': offsil, 'combo': combo, 'areas': AREAS, 'areas_en': AREAS_EN, 'packs': packs, 'rules': rules, 'decs': decs, 'dcoll': dcoll, 'dfields': dfields, 'dtests': dtests, 'techs': techs, 'pbs': pbs,
         'resps': resps, 'groups': groups, 'sigma': sigma_only, 'conflicts': conflicts,
         'sources': [[r['repo'], r['license'], r['status'], r['last_commit'], int(r['rules'] or 0)] for r in C('sources.csv')]}
 enc = lambda o: base64.b64encode(gzip.compress(json.dumps(o, ensure_ascii=False, separators=(',', ':')).encode(), 9, mtime=0)).decode()

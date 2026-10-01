@@ -76,6 +76,14 @@ Reference: **wazuh/wazuh v4.14.8 ruleset**.
 
 Details in [`catalog/official_overlap.csv`](catalog/official_overlap.csv) and [`catalog/decoder_replacements.csv`](catalog/decoder_replacements.csv).
 
+## Sibling rules (children of the same parent)
+
+Measured on `wazuh-analysisd` v4.14.8: children of the same parent (`if_sid`/`if_group`) are evaluated by **level, highest first**, and on equal level by **load order** (official ruleset first, then `etc/rules` by file name; the ID does not matter); the first one that matches takes the event. A child **with no conditions of its own** (*catch-all*) always matches and silences lower-level siblings — official rules included, with the folder installed alone — and `wazuh-analysisd -t` does not warn about it.
+
+- **13** catch-all rules in 7 folders silence **19** official rules ([`catalog/catchall_silences_official.csv`](catalog/catchall_silences_official.csv)).
+- **274** parents have children in different sources (10359 rules; 58 with a catch-all; 154 parents whose ID is defined differently in several sources); 112 folder pairs where one silences the other when installed together ([`catalog/sibling_parents.csv`](catalog/sibling_parents.csv)). The page's cart applies this model to the selection.
+- Empirical proof (`tools/combo_test.py`): 150 folder pairs loaded together, 3533 samples replayed; 445 changed owner (6 by decoder, 14 by a sibling rule, 425 by an ID conflict: the same ID, or an ancestor in the `if_sid` chain, defined in both folders) in 64 pairs; 0 pairs do not load together ([`catalog/combo_summary.csv`](catalog/combo_summary.csv), [`catalog/combo_tests.csv`](catalog/combo_tests.csv)).
+
 ## Collection and agent groups
 
 Rules run on the manager for every agent; agent groups do not filter rules. What a group decides is **which events arrive**. Each folder lists what it needs in [`catalog/collection.csv`](catalog/collection.csv): collected by default, extra agent collection in [`groups/`](groups/) (248 folders), manager requirements such as cloud wodles, modules, integrations and `<remote>` syslog (150 folders), or still to be defined (129 folders). Requirements are **inferred** (the folder chains into official rules of a family, e.g. `win-sysmon` → Sysmon channel) or **declared** by the source (`<localfile>`/`<wodle>`/`<agent_config>` blocks, copied or extracted to `collection/`). See [`groups/README.md`](groups/README.md).
@@ -129,7 +137,7 @@ areas/<NN-area>/<topic>/<owner>__<repo>/
 catalog/                          CSV/JSON catalog (sources, rules, decoders, conflicts, dependencies, validation, tests, coverage...)
 groups/<group>/agent.conf         model agent groups
 site/index.html  site/pt/         standalone search page (English and Portuguese)
-tools/                            fetch.sh, build.py, validate.py, logtest.py, make_docs.py, make_site.py and modules
+tools/                            fetch.sh, build.py, validate.py, logtest.py, combo_test.py, make_docs.py, make_site.py and modules
 ```
 
 ## Rebuild / update
@@ -140,6 +148,7 @@ pip install -r requirements.txt
 python3 tools/build.py --src .cache/src --official .cache/official/ruleset --out .
 python3 tools/validate.py        # requires Docker (wazuh-analysisd -t, verify-agent-conf)
 python3 tools/logtest.py         # requires Docker (log samples in wazuh-logtest)
+python3 tools/combo_test.py --auto   # requires Docker (folder pairs loaded together; ~1 h)
 python3 tools/make_docs.py .
 python3 tools/make_site.py .
 ```

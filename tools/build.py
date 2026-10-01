@@ -277,6 +277,9 @@ for fo, fl in sorted(placed.items()):
 
 # ---------- escrever repositório
 # só regenera areas/, catalog/ e groups/ — nunca apaga tools/, README, etc.
+# exceto os resultados do combo_test (demora ~1 h, não corre no CI): mantêm-se até à próxima corrida manual
+KEEP = ('combo_tests.csv', 'combo_summary.csv')
+kept = {n: open(os.path.join(OUT, 'catalog', n), 'rb').read() for n in KEEP if os.path.exists(os.path.join(OUT, 'catalog', n))}
 for sub in ('areas', 'catalog', 'groups'):
     if os.path.exists(os.path.join(OUT, sub)): shutil.rmtree(os.path.join(OUT, sub))
 os.makedirs(OUT, exist_ok=True)
@@ -485,11 +488,15 @@ for fo, fl in sorted(placed.items()):
 
 # ---------- catálogo
 cat = os.path.join(OUT, 'catalog'); os.makedirs(cat)
+for n, b in kept.items(): open(os.path.join(cat, n), 'wb').write(b)
 def wcsv(name, rows, cols):
     with open(os.path.join(cat, name), 'w', newline='') as fh:
         w = csv.DictWriter(fh, fieldnames=cols, extrasaction='ignore'); w.writeheader(); w.writerows(rows)
 
 fold_id_count = {fo: Counter(r['id'] for f in fl for r in f['rules']) for fo, fl in placed.items()}
+def is_catchall(r):
+    """Filho sem nenhuma condição própria (nem correlação): apanha todos os eventos do pai e silencia os irmãos seguintes."""
+    return bool(r['if_sid'] or r['if_group']) and not r['n_conds'] and not r['correlation']
 att_active, att_replaced = mitre.load(os.path.join(OFF, 'mitre', 'enterprise-attack.json'))
 for f in files:
     for r in f['rules']:
@@ -500,7 +507,8 @@ for f in files:
         rule_rows.append({**r, 'groups': ','.join(r['groups']), 'mitre': ','.join(r['mitre']), 'lists': ','.join(r['lists']),
                           'channels': ';'.join(r['channels']), 'mitre_norm': ','.join(r['mitre_norm']),
                           'area': f['area'], 'topic': f['topic'], 'source': f['repo'], 'file': f['dest'],
-                          'conflict': conflict_type.get(r['id'], ''), 'dup_in_folder': fold_id_count[f['folder']][r['id']] > 1})
+                          'conflict': conflict_type.get(r['id'], ''), 'dup_in_folder': fold_id_count[f['folder']][r['id']] > 1,
+                          'catchall': is_catchall(r)})
     for d in f['decoders']:
         dec_rows.append({**d, 'fields': ','.join(d['fields']), 'regex_types': ','.join(d['regex_types']), 'root': not d['parent'],
                          'folder': f['folder'], 'area': f['area'], 'topic': f['topic'], 'source': f['repo'], 'file': f['dest'],
@@ -509,7 +517,7 @@ h2src = defaultdict(set)
 for r in rule_rows: h2src[r['hash']].add(r['source'])
 for r in rule_rows: r['same_rule_in'] = ';'.join(sorted(h2src[r['hash']] - {r['source']}))
 wcsv('rules.csv', rule_rows, ['id', 'level', 'description', 'mitre', 'mitre_norm', 'mitre_status', 'groups', 'if_sid', 'if_group', 'decoded_as', 'lists', 'channels',
-                              'frequency', 'overwrite', 'area', 'topic', 'source', 'file', 'conflict', 'dup_in_folder', 'same_rule_in', 'hash'])
+                              'frequency', 'overwrite', 'n_conds', 'catchall', 'area', 'topic', 'source', 'file', 'conflict', 'dup_in_folder', 'same_rule_in', 'hash'])
 wcsv('decoders.csv', dec_rows, ['name', 'parent', 'root', 'ident', 'plugin', 'regex_types', 'fields', 'official_name_clash', 'area', 'topic',
                                 'source', 'file', 'hash'])
 
@@ -520,7 +528,7 @@ for d in dec_rows:
 dcol_rows = [{'name': n, 'official': n in off_dec_names, 'folders': len(fs), 'sources': ';'.join(sorted({repo_of_folder[x] for x in fs})),
               'in': ';'.join(sorted(fs)),
               'effect': 'também existe no oficial: o oficial é carregado primeiro e apanha os logs que ambos reconhecem' if n in off_dec_names
-                        else 'carregar estas pastas juntas faz um decoder sombrear o outro (ganha o primeiro ficheiro carregado)'}
+                        else 'carregadas juntas, as raízes ficam ambas ativas mas os filhos dos dois ligam-se ao mesmo nome: o primeiro carregado que corresponder extrai os campos e o outro pack perde os seus'}
              for n, fs in sorted(root_folders.items()) if len({repo_of_folder[x] for x in fs}) > 1 or n in off_dec_names]
 wcsv('decoder_collisions.csv', dcol_rows, ['name', 'official', 'folders', 'sources', 'effect', 'in'])
 fcount, ffold = Counter(), defaultdict(set)
@@ -530,6 +538,65 @@ for d in dec_rows:
 field_rows = [{'field': k, 'uses': n, 'folders': len(ffold[k]), 'static': k in fld.STATIC, 'normalized_key': fld.key(k), 'ecs': fld.ecs(k)}
               for k, n in sorted(fcount.items(), key=lambda x: (-x[1], x[0]))]
 wcsv('decoder_fields.csv', field_rows, ['field', 'uses', 'folders', 'static', 'normalized_key', 'ecs'])
+
+# ---------- regras irmãs: filhos do mesmo pai. Comportamento medido no wazuh-analysisd 4.14.8: os irmãos são avaliados por
+# NÍVEL decrescente e, em empate, pela ordem de carregamento (ruleset oficial primeiro, depois etc/rules por nome de ficheiro);
+# o primeiro que corresponder fica com o evento. Um irmão sem condições próprias ("apanha-tudo") corresponde sempre e
+# silencia todos os irmãos de nível inferior (e os de igual nível carregados depois) — incluindo regras OFICIAIS, mesmo
+# com a pasta instalada sozinha.
+def lvl(r): return int(r['level']) if (r['level'] or '').isdigit() else 0
+off_children = defaultdict(list)   # pai -> regras oficiais filhas
+for rid, r in off_rule.items():
+    for p_ in split_ids(r['if_sid']): off_children[('if_sid', p_)].append(r)
+    for g in [x.strip() for x in r['if_group'].split(',') if x.strip()]: off_children[('if_group', g)].append(r)
+sib = defaultdict(lambda: defaultdict(list))   # pai -> pasta -> regras filhas
+for f in files:
+    for r in f['rules']:
+        for p_ in split_ids(r['if_sid']): sib[('if_sid', p_)][f['folder']].append(r)
+        for g in [x.strip() for x in r['if_group'].split(',') if x.strip()]: sib[('if_group', g)][f['folder']].append(r)
+sib_rows, silences_official = [], []
+sib_keys, ca_keys, sil_pairs = set(), set(), set()
+for (kind, parent), by_fo in sorted(sib.items()):
+    srcs = {repo_of_folder[fo] for fo in by_fo}
+    offk = [r for r in off_children.get((kind, parent), []) if lvl(r) > 0]
+    # apanha-tudo com nível > 0 que silencia filhos oficiais (o oficial carrega primeiro: só perde para nível estritamente maior)
+    for fo, rs in by_fo.items():
+        for r in rs:
+            if is_catchall(r) and lvl(r) > 0:
+                if r['overwrite'] and r['id'] in off_rule:   # reescreve a oficial: só conta o que passa a silenciar por subir o nível
+                    lost = [o for o in offk if o['id'] != r['id'] and lvl(r) > lvl(o) >= lvl(off_rule[r['id']])]
+                else:
+                    lost = [o for o in offk if lvl(o) < lvl(r)]
+                if lost: silences_official.append({'rule': r['id'], 'level': lvl(r), 'parent': f'{kind} {parent}', 'folder': fo,
+                                                   'official_silenced': len(lost), 'silenced_ids': ';'.join(sorted(o['id'] for o in lost)),
+                                                   'examples': '; '.join(f"{o['id']} (nível {o['level']}): {o['description'][:60]}" for o in sorted(lost, key=lvl, reverse=True)[:5])})
+    if len(srcs) < 2: continue
+    if kind == 'if_sid':
+        owners = {repo_of_folder[fo] for fo in id_folders.get(parent, ())}
+        owner = 'oficial' if parent in off_rule_ids else ('comunidade' if owners else 'inexistente')
+        # o mesmo ID de pai definido com conteúdo diferente em várias fontes: ao juntar pastas, o filho pode ficar pendurado no pai errado
+        ambiguous = parent not in off_rule_ids and conflict_type.get(parent) == 'comunidade'
+    else:
+        owner, ambiguous = ('oficial' if parent in {g for r in off_rule.values() for g in r['groups']} else 'comunidade'), False
+    rules_ = [r for rs in by_fo.values() for r in rs]
+    sib_keys.update((fo, r['id']) for fo, rs in by_fo.items() for r in rs)
+    ca_keys.update((fo, r['id']) for fo, rs in by_fo.items() for r in rs if is_catchall(r) and lvl(r) > 0)
+    for fo, rs in by_fo.items():   # pares de pastas de fontes diferentes em que um apanha-tudo de uma silencia filhos da outra
+        for c in (r for r in rs if is_catchall(r) and lvl(r) > 0):
+            for fo2, rs2 in by_fo.items():
+                if repo_of_folder[fo2] != repo_of_folder[fo] and any(lvl(x) <= lvl(c) for x in rs2): sil_pairs.add(tuple(sorted((fo, fo2))))
+    sib_rows.append({'parent': parent, 'kind': kind, 'owner': owner, 'ambiguous_parent': ambiguous,
+                     'folders': len(by_fo), 'sources': len(srcs), 'rules': len(rules_),
+                     'catchall_rules': sum(1 for r in rules_ if is_catchall(r) and lvl(r) > 0),
+                     'catchall_folders': ';'.join(sorted(fo for fo, rs in by_fo.items() if any(is_catchall(r) and lvl(r) > 0 for r in rs))),
+                     'children': ' | '.join(f"{fo}: {','.join(sorted({r['id'] + '@' + str(lvl(r)) + ('*' if is_catchall(r) else '') for r in rs}))}"
+                                            for fo, rs in sorted(by_fo.items())),
+                     'official_children': ','.join(sorted({o['id'] + '@' + str(lvl(o)) for o in offk}))})
+sib_rows.sort(key=lambda r: (-r['folders'], r['kind'], r['parent']))
+wcsv('catchall_silences_official.csv', sorted(silences_official, key=lambda r: (-r['official_silenced'], r['folder'], r['rule'])),
+     ['rule', 'level', 'parent', 'folder', 'official_silenced', 'silenced_ids', 'examples'])
+wcsv('sibling_parents.csv', sib_rows, ['parent', 'kind', 'owner', 'ambiguous_parent', 'folders', 'sources', 'rules', 'catchall_rules',
+                                       'catchall_folders', 'children', 'official_children'])
 wcsv('id_conflicts.csv', sorted(conflicts, key=lambda c: int(c['id']) if c['id'].isdigit() else 0),
      ['id', 'type', 'official_id', 'n_sources', 'n_variants', 'sources'])
 wcsv('dependencies.csv', deps, ['kind', 'missing', 'status', 'found_in', 'rule_id', 'repo', 'folder', 'file'])
@@ -833,6 +900,14 @@ stats = {
     'folders': len(fold_rows), 'folders_standalone': sum(1 for x in fold_rows if x['standalone']),
     'test_files_copied': sum(len(v) for v in folder_tests.values()),
     'excluded_files': len(excluded) + len(dups),
+    'siblings': {'shared_parents': len(sib_rows), 'rules_involved': len(sib_keys),
+                 'parents_with_catchall': sum(1 for r in sib_rows if r['catchall_rules']),
+                 'catchall_rules': len(ca_keys),
+                 'ambiguous_parents': sum(1 for r in sib_rows if r['ambiguous_parent']),
+                 'catchalls_silencing_official': len(silences_official),
+                 'official_rules_silenced': len({x for r in silences_official for x in r['silenced_ids'].split(';')}),
+                 'folders_silencing_official': len({r['folder'] for r in silences_official}),
+                 'folder_pairs': len(sil_pairs)},
     'decoders_detail': {'roots': sum(1 for d in dec_rows if d['root']), 'children': sum(1 for d in dec_rows if not d['root']),
                         'root_collisions_between_sources': sum(1 for r in dcol_rows if int(r['folders']) > 1 and len(r['sources'].split(';')) > 1),
                         'root_names_also_official': sum(1 for r in dcol_rows if r['official'] == True),
