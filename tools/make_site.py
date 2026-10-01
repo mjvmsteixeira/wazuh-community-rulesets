@@ -137,3 +137,5 @@ for lang, path, href, other, label in (('en', 'site/index.html', 'pt/', 'pt', 'P
     os.makedirs(os.path.dirname(os.path.join(ROOT, path)), exist_ok=True)
     open(os.path.join(ROOT, path), 'w').write(html)
     print(f"{path}: {len(html) / 1e6:.1f} MB ({len(packs)} packs, {len(rules)} regras, {len(contents)} ficheiros)")
+import how
+how.build(ROOT)

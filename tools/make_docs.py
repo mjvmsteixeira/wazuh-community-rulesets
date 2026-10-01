@@ -493,6 +493,7 @@ areas/<NN-area>/<topic>/<owner>__<repo>/
 catalog/                          CSV/JSON catalog (sources, rules, decoders, conflicts, dependencies, validation, tests, coverage...)
 groups/<group>/agent.conf         model agent groups
 site/index.html  site/pt/         standalone search page (English and Portuguese)
+site/how.html  site/pt/how.html  how the warnings are worked out and how far each one is proven
 tools/                            fetch.sh, build.py, validate.py, logtest.py, combo_test.py, make_docs.py, make_site.py and modules
 ```
 

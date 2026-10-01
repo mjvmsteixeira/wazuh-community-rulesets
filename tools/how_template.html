@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="{{lang}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{title}} · Wazuh Community Rulesets</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&family=Press+Start+2P&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+/* mesma paleta e tipografia da página de pesquisa (site_template.html); uma coluna de leitura com blocos de diagrama */
+:root {
+  --blue: #3585F9; --blue-2: #499CFE; --yellow: #FEDD0B; --ok: #36D399; --bad: #FF6B6B; --warn: #FFB547;
+  --bg: #0A0F1E; --bg-2: #0F1629; --panel: #131C33; --panel-2: #18233F; --line: #2A3A63; --text: #E6EDF7; --muted: #8FA3BF;
+  --shadow: #000; --code-bg: #070B16; --glow: 0 0 8px rgba(53,133,249,.55); --on-yellow: #292929; --hl: #3d3a12;
+  --pixel: 'Press Start 2P', 'Fira Mono', monospace; --mono: 'Fira Mono', ui-monospace, Menlo, monospace; --sans: 'Manrope', system-ui, sans-serif;
+  color-scheme: dark;
+}
+:root[data-theme="light"] {
+  --bg: #F6F6F6; --bg-2: #FFFFFF; --panel: #FFFFFF; --panel-2: #F0F4FB; --line: #B7C6D7; --text: #292929; --muted: #4F5E72;
+  --shadow: #2B2D34; --code-bg: #F7F8FA; --glow: none; --blue-2: #1F63C9; --bad: #C03636; --warn: #9A6514; --ok: #15803D; --hl: #FFF2A8;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) {
+  --bg: #F6F6F6; --bg-2: #FFFFFF; --panel: #FFFFFF; --panel-2: #F0F4FB; --line: #B7C6D7; --text: #292929; --muted: #4F5E72;
+  --shadow: #2B2D34; --code-bg: #F7F8FA; --glow: none; --blue-2: #1F63C9; --bad: #C03636; --warn: #9A6514; --ok: #15803D; --hl: #FFF2A8;
+  color-scheme: light;
+} }
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--text); font: 15px/1.6 var(--sans);
+  background-image: linear-gradient(var(--bg-2) 1px, transparent 1px), linear-gradient(90deg, var(--bg-2) 1px, transparent 1px); background-size: 24px 24px; }
+a { color: var(--blue-2); } a:hover { color: var(--yellow); }
+code { font: .9em var(--mono); }
+header { border-bottom: 3px solid var(--blue); background: var(--bg-2); position: sticky; top: 0; z-index: 20; }
+.bar { max-width: 1100px; margin: 0 auto; padding: 14px 16px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.logo { font: 16px/1.2 var(--pixel); color: var(--blue); text-shadow: var(--glow); letter-spacing: 1px; white-space: nowrap; text-decoration: none; }
+.logo b { color: var(--yellow); }
+.logo small { display: block; font: 9px var(--pixel); color: var(--muted); margin-top: 6px; letter-spacing: 0; }
+.sp { flex: 1 }
+.btn { font: 10px var(--pixel); color: var(--text); background: var(--panel-2); border: 2px solid var(--line); padding: 9px 12px; cursor: pointer;
+  box-shadow: 3px 3px 0 var(--shadow); white-space: nowrap; text-decoration: none; display: inline-block; }
+.btn:hover { border-color: var(--blue); color: var(--blue-2); }
+.btn[aria-pressed="true"] { background: var(--yellow); color: var(--on-yellow); border-color: var(--yellow); }
+.btn:focus-visible, input:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
+main { max-width: 1100px; margin: 0 auto; padding: 28px 16px 64px; display: grid; gap: 48px; }
+section { display: grid; gap: 16px; scroll-margin-top: 90px; }
+.read { max-width: 72ch; display: grid; gap: 10px; }
+h1 { font: 18px/1.5 var(--pixel); color: var(--yellow); text-shadow: var(--glow); margin: 0; text-wrap: balance; }
+h2 { font: 12px/1.6 var(--pixel); color: var(--blue); text-shadow: var(--glow); margin: 0; text-wrap: balance; }
+h3 { font: 800 16px/1.3 var(--sans); margin: 0; }
+p { margin: 0; }
+.lead { font-size: 17px; color: var(--muted); }
+.toc { display: flex; flex-wrap: wrap; gap: 8px; }
+.toc a { font: 9px var(--pixel); text-decoration: none; border: 2px solid var(--line); background: var(--panel); padding: 8px 10px; color: var(--text); box-shadow: 3px 3px 0 var(--shadow); }
+.toc a:hover { border-color: var(--blue); color: var(--blue-2); }
+.panel { background: var(--panel); border: 2px solid var(--line); box-shadow: 5px 5px 0 var(--shadow); padding: 16px; min-width: 0; }
+.muted { color: var(--muted); }
+/* simulador */
+.sim { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 0; padding: 0; }
+.sim > div { padding: 16px; display: grid; gap: 12px; align-content: start; min-width: 0; }
+.sim .left { border-right: 2px solid var(--line); }
+.event { font: 12.5px/1.55 var(--mono); background: var(--code-bg); border: 1px dashed var(--line); padding: 10px; overflow-wrap: anywhere; }
+.packs { display: grid; gap: 8px; }
+.packs label { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; font-size: 14px; line-height: 1.4; }
+.packs input { margin-top: 3px; accent-color: var(--blue); }
+.packs small { display: block; color: var(--muted); font-size: 12.5px; }
+.order { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; counter-reset: o; }
+.order li { display: grid; grid-template-columns: 22px 58px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 8px 10px; border: 1px solid var(--line); background: var(--bg-2); font-size: 13.5px; }
+.order li::before { counter-increment: o; content: counter(o); font: 700 12px var(--mono); color: var(--muted); }
+.order .lv { font: 700 12px var(--mono); padding: 3px 6px; text-align: center; border: 1px solid var(--line); }
+.order .who { font: 12px var(--mono); color: var(--muted); white-space: nowrap; }
+.order .desc { min-width: 0; }
+.order li.win { border-color: var(--yellow); box-shadow: inset 4px 0 0 var(--yellow); }
+.order li.lost { opacity: .5; }
+.order li.lost .desc { text-decoration: line-through; text-decoration-color: var(--bad); }
+.tag { font: 700 10px/1 var(--mono); padding: 3px 5px; margin-left: 6px; }
+.tag.ca { background: var(--yellow); color: var(--on-yellow); }
+.tag.of { border: 1px solid var(--muted); color: var(--muted); }
+.verdict { font-size: 14.5px; padding: 10px 12px; border-left: 4px solid var(--blue); background: var(--bg-2); }
+.verdict.bad { border-left-color: var(--bad); }
+/* ordem de carregamento */
+.files { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.files ol { margin: 0; padding-left: 24px; font: 12.5px/1.8 var(--mono); overflow-wrap: anywhere; }
+.files li.pk { color: var(--blue-2); font-weight: 700; }
+.files li.badf { color: var(--bad); font-weight: 700; }
+.toggles { display: flex; gap: 8px; flex-wrap: wrap; }
+/* camadas e números */
+.layers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.layers .panel { display: grid; gap: 8px; align-content: start; }
+.layers .q { font-style: italic; color: var(--muted); font-size: 14px; }
+dl { margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 12px; font-size: 14px; }
+dt { font: 700 14px var(--mono); color: var(--yellow); text-align: right; font-variant-numeric: tabular-nums; }
+:root[data-theme="light"] dt { color: var(--blue-2); }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) dt { color: var(--blue-2); } }
+dd { margin: 0; color: var(--muted); }
+/* achados e avisos */
+.finds { display: grid; gap: 12px; }
+.find { display: grid; grid-template-columns: 6px minmax(0, 1fr); gap: 14px; padding: 14px 16px 14px 0; }
+.find > span { background: var(--bad); }
+.find.w > span { background: var(--warn); }
+.find > div { display: grid; gap: 4px; }
+.find p:first-child { font-weight: 700; }
+.find p + p { color: var(--muted); font-size: 14px; }
+.tablewrap { overflow-x: auto; }
+table { width: 100%; min-width: 640px; border-collapse: collapse; background: var(--panel); border: 2px solid var(--line); box-shadow: 5px 5px 0 var(--shadow); }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 14px; }
+th { font: 700 11px var(--mono); letter-spacing: .5px; text-transform: uppercase; color: var(--yellow); background: var(--panel-2); }
+:root[data-theme="light"] th { color: var(--blue-2); }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) th { color: var(--blue-2); } }
+td.box { font-weight: 700; }
+/* tema claro: o amarelo e o azul da Wazuh não têm contraste sobre branco nos títulos */
+:root[data-theme="light"] h1, :root[data-theme="light"] .logo b { color: #8A6A00; }
+:root[data-theme="light"] h2, :root[data-theme="light"] .logo { color: #1F63C9; }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) h1, :root:not([data-theme="dark"]) .logo b { color: #8A6A00; }
+  :root:not([data-theme="dark"]) h2, :root:not([data-theme="dark"]) .logo { color: #1F63C9; } }
+footer { max-width: 1100px; margin: 0 auto; padding: 0 16px 40px; color: var(--muted); font-size: 13px; }
+@media (max-width: 760px) {
+  .sim, .files, .layers { grid-template-columns: 1fr; }
+  .sim .left { border-right: 0; border-bottom: 2px solid var(--line); }
+  .order li { grid-template-columns: 22px 52px minmax(0, 1fr); }
+  .order .who { grid-column: 3; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <a class="logo" href="./">WAZUH<b>//</b>RULESETS<small>{{title_up}}</small></a>
+    <span class="sp"></span>
+    <a class="btn" href="./">{{back}}</a>
+    <a class="btn" href="{{lang_href}}" hreflang="{{lang_other}}">{{lang_label}}</a>
+    <button class="btn" id="theme" type="button">{{theme}}</button>
+  </div>
+</header>
+<main>
+<section>
+  <div class="read">
+    <h1>{{title}}</h1>
+    <p class="lead">{{lead}}</p>
+  </div>
+  <nav class="toc" aria-label="{{toc}}">
+    <a href="#siblings">{{h_siblings}}</a><a href="#load-order">{{h_load}}</a><a href="#proof">{{h_proof}}</a><a href="#warnings">{{h_warnings}}</a><a href="#findings">{{h_findings}}</a>
+  </nav>
+</section>
+
+<section id="siblings">
+  <div class="read"><h2>{{h_siblings}}</h2><p>{{sib_p1}}</p><p class="muted">{{sib_p2}}</p></div>
+  <div class="panel sim">
+    <div class="left">
+      <div><h3>{{sim_event}}</h3><p class="muted" style="font-size:13px">{{sim_event_sub}}</p></div>
+      <div class="event">Image: C:\Windows\System32\calc.exe<br>ParentImage: C:\Windows\System32\cmd.exe<br>ParentCommandLine: cmd.exe /C calc.exe</div>
+      <div class="packs" role="group" aria-label="{{sim_packs}}">
+        <label><input type="checkbox" id="pk-off" checked disabled><span>{{sim_official}}<small>{{sim_official_sub}}</small></span></label>
+        <label><input type="checkbox" id="pk-soc"><span>socfortress / Wazuh-Rules<small>sysmon-eventchannel</small></span></label>
+        <label><input type="checkbox" id="pk-mdn" checked><span>mdnahidmondol / wazuh-AuditD-Sysmon-rules<small>{{sim_mdn_sub}}</small></span></label>
+      </div>
+    </div>
+    <div><h3>{{sim_order}}</h3><ol class="order" id="order"></ol><p class="verdict" id="verdict" aria-live="polite"></p></div>
+  </div>
+</section>
+
+<section id="load-order">
+  <div class="read"><h2>{{h_load}}</h2><p>{{load_p1}}</p><p class="muted">{{load_p2}}</p></div>
+  <div class="toggles" role="group">
+    <button class="btn" type="button" id="t-orig" aria-pressed="true">{{load_orig}}</button>
+    <button class="btn" type="button" id="t-pref" aria-pressed="false">{{load_pref}}</button>
+  </div>
+  <div class="files">
+    <div class="panel"><h3>{{load_read}}</h3><ol id="files"></ol></div>
+    <div class="panel"><h3>{{load_result}}</h3><p id="fileres" class="muted"></p></div>
+  </div>
+</section>
+
+<section id="proof">
+  <div class="read"><h2>{{h_proof}}</h2><p>{{proof_p}}</p></div>
+  <div class="layers">
+    <div class="panel"><h3>{{l0_t}}</h3><p class="q">{{l0_q}}</p><p>{{l0_p}}</p><dl>{{l0_dl}}</dl></div>
+    <div class="panel"><h3>{{l1_t}}</h3><p class="q">{{l1_q}}</p><p>{{l1_p}}</p><dl>{{l1_dl}}</dl></div>
+    <div class="panel"><h3>{{l2_t}}</h3><p class="q">{{l2_q}}</p><p>{{l2_p}}</p><dl>{{l2_dl}}</dl></div>
+    <div class="panel"><h3>{{l3_t}}</h3><p class="q">{{l3_q}}</p><p>{{l3_p}}</p><dl>{{l3_dl}}</dl></div>
+  </div>
+</section>
+
+<section id="warnings">
+  <div class="read"><h2>{{h_warnings}}</h2><p>{{warn_p}}</p></div>
+  <div class="tablewrap"><table><thead><tr><th>{{w_box}}</th><th>{{w_means}}</th><th>{{w_basis}}</th><th>{{w_do}}</th></tr></thead><tbody>{{warn_rows}}</tbody></table></div>
+</section>
+
+<section id="findings">
+  <div class="read"><h2>{{h_findings}}</h2><p>{{find_p}}</p></div>
+  <div class="finds">{{finds}}</div>
+</section>
+</main>
+<footer>{{foot}}</footer>
+<script>
+const T = {{js_text}};
+const $ = s => document.querySelector(s);
+const RULES = [
+  {id: '92032', lvl: 3, pack: 'off', who: T.official, d: 'Suspicious Windows cmd shell execution', match: true},
+  {id: '92036', lvl: 3, pack: 'off', who: T.official, d: 'net.exe started by a Windows cmd shell', match: false},
+  {id: '100100', lvl: 3, pack: 'soc', who: 'socfortress', d: 'Sysmon - Process creation by cmd.exe', match: true},
+  {id: '101101', lvl: 5, pack: 'mdn', who: 'mdnahidmondol', d: 'Sysmon - Event 1: Process creation', match: true, ca: true},
+];
+const LOAD = {off: 0, soc: 1, mdn: 2};   // 'sysmon-eventchannel-…' < 'sysmon-wazuh-auditd-…'
+function renderSim() {
+  const on = {off: true, soc: $('#pk-soc').checked, mdn: $('#pk-mdn').checked};
+  const dropped = on.soc && on.mdn;   // o socfortress também define o ID 101101 e carrega primeiro
+  const rs = RULES.filter(r => on[r.pack] && !(dropped && r.pack === 'mdn')).map((r, n) => ({...r, n}))
+    .sort((a, b) => ((a.lvl === 0 ? -1e9 : -a.lvl) - (b.lvl === 0 ? -1e9 : -b.lvl)) || (LOAD[a.pack] - LOAD[b.pack]) || (a.n - b.n));
+  const win = rs.find(r => r.match);
+  $('#order').innerHTML = rs.map(r => `<li class="${r === win ? 'win' : (rs.indexOf(r) > rs.indexOf(win) ? 'lost' : '')}"><span class="lv">${T.lvl} ${r.lvl}</span><span class="desc"><code>${r.id}</code> ${r.d}${r.ca ? `<span class="tag ca">${T.catchall}</span>` : ''}${r.pack === 'off' ? `<span class="tag of">${T.officialTag}</span>` : ''}</span><span class="who">${r.who}</span></li>`).join('');
+  const v = $('#verdict');
+  if (win.ca) {
+    const lost = rs.filter(r => r.match && r !== win);
+    v.className = 'verdict bad';
+    v.innerHTML = T.caWins.replace('{r}', `<code>${win.id}</code>`).replace('{lost}', lost.map(r => `<code>${r.id}</code>`).join(', '));
+  } else {
+    v.className = 'verdict';
+    v.innerHTML = T.wins.replace('{r}', `<code>${win.id}</code>`).replace('{who}', win.who) + (dropped ? ' ' + T.dropped : '');
+  }
+}
+['#pk-soc', '#pk-mdn'].forEach(s => $(s).addEventListener('change', renderSim));
+renderSim();
+const OFFICIAL = ['0010-rules_config.xml', '0015-ossec_rules.xml', '0020-syslog_rules.xml', '0095-sshd_rules.xml', '0575-win-base_rules.xml', '0580-win-security_rules.xml', '0595-win-sysmon_rules.xml'];
+function renderFiles(pref) {
+  const pack = pref ? 'how-to-monitor-folder-access-on-windows-blog__02-rules.xml' : '02-rules.xml';
+  const all = [...OFFICIAL.map(f => ({f, off: true})), {f: pack, off: false}].sort((a, b) => a.f < b.f ? -1 : 1);
+  $('#files').innerHTML = all.map(x => `<li class="${x.off ? '' : (pref ? 'pk' : 'badf')}">${x.f}</li>`).join('');
+  $('#fileres').innerHTML = pref ? T.loadPref : T.loadOrig;
+  $('#t-orig').setAttribute('aria-pressed', String(!pref)); $('#t-pref').setAttribute('aria-pressed', String(pref));
+}
+$('#t-orig').addEventListener('click', () => renderFiles(false));
+$('#t-pref').addEventListener('click', () => renderFiles(true));
+renderFiles(false);
+// tema: o mesmo interruptor e a mesma chave da página de pesquisa
+let t = null; try { t = localStorage.getItem('wcr-theme'); } catch (e) {}
+if (t) document.documentElement.dataset.theme = t;
+$('#theme').onclick = () => {
+  const cur = document.documentElement.dataset.theme || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  const nxt = cur === 'light' ? 'dark' : 'light'; document.documentElement.dataset.theme = nxt;
+  try { localStorage.setItem('wcr-theme', nxt); } catch (e) {}
+};
+</script>
+</body>
+</html>

@@ -111,6 +111,7 @@ p.lead { color: var(--muted); max-width: 900px; margin: 0 0 16px; font-family: v
 .alert.warn { border-color: var(--warn); background: rgba(255,181,71,.08); }
 .alert.info { border-color: var(--blue); background: rgba(53,133,249,.08); }
 .alert b { font: 700 12px var(--mono); display: block; margin-bottom: 4px; letter-spacing: .5px; text-transform: uppercase; }
+.alert b a.why { text-transform: none; font-weight: 400; letter-spacing: 0; margin-left: 8px; }
 .files { display: grid; grid-template-columns: 260px 1fr; gap: 14px; min-height: 400px; }
 .flist { border: 2px solid var(--line); background: var(--panel); max-height: 70vh; overflow: auto; }
 .flist button { display: block; width: 100%; text-align: left; font: 12px var(--mono); color: var(--text); background: none; border: 0; border-bottom: 1px solid var(--line); padding: 7px 9px; cursor: pointer; overflow-wrap: anywhere; }
@@ -152,6 +153,11 @@ footer p { margin: 0; line-height: 1.8; }
   .logo { font-size: 13px; } .grid { grid-template-columns: 1fr; } th, td { padding: 6px; }
   .hide-sm { display: none; }
 }
+/* tema claro: o amarelo e o azul da Wazuh não têm contraste sobre branco nos títulos */
+:root[data-theme="light"] h1, :root[data-theme="light"] .logo b { color: #8A6A00; }
+:root[data-theme="light"] h2, :root[data-theme="light"] .logo { color: #1F63C9; }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) h1, :root:not([data-theme="dark"]) .logo b { color: #8A6A00; }
+  :root:not([data-theme="dark"]) h2, :root:not([data-theme="dark"]) .logo { color: #1F63C9; } }
 @media (prefers-reduced-motion: reduce) { .drawer { transition: none; } .blink { animation: none; } }
 </style>
 </head>
@@ -161,6 +167,7 @@ footer p { margin: 0; line-height: 1.8; }
   <div class="bar">
     <div class="logo">WAZUH<b>//</b>RULESETS<small id="sub"></small></div>
     <label class="search"><span>&gt;</span><input id="q" type="search" autocomplete="off"><kbd>/</kbd></label>
+    <a class="btn" id="how" href="how.html"></a>
     <a class="btn" id="lang" href="../" hreflang="en">EN</a>
     <button class="btn" id="theme"></button>
     <button class="btn yellow" id="cartBtn"><span id="cartL"></span><span class="cart-n" id="cartN">0</span></button>
@@ -190,6 +197,7 @@ const LANG = 'pt';
 const REPO = 'https://github.com/mjvmsteixeira/wazuh-community-rulesets';
 // ---------- i18n: English is the source; PT holds the Portuguese version of every visible string
 const PT = {
+  'How it works': 'Como funciona', 'Why?': 'Porquê?',
   'correlation': 'correlação', 'time of day': 'horário', 'first time seen': 'primeira vez', 'e.g.': 'p.ex.', '{n} rules': '{n} regras',
   'Rules that lose events to official siblings in some situations': 'Regras que perdem eventos para irmãs oficiais em certas situações',
   'An official sibling of the same parent is evaluated first and has conditions that depend on context, not on the event: repeated events (correlation), the time of day, or a first occurrence. When they hold, the official rule takes the event and this rule does not alert. wazuh-analysisd -t does not warn about it.': 'Uma irmã oficial do mesmo pai é avaliada primeiro e tem condições que dependem do contexto, não do evento: eventos repetidos (correlação), a hora do dia ou uma primeira ocorrência. Quando se cumprem, a regra oficial fica com o evento e esta não alerta. O wazuh-analysisd -t não avisa.',
@@ -365,6 +373,7 @@ function statics() {
   document.title = 'Wazuh Community Rulesets';
   $('#sub').textContent = _('COMMUNITY · 4.x');
   $('#q').placeholder = _('search packs, rules, decoders, techniques, playbooks…'); $('#q').setAttribute('aria-label', _('Search'));
+  $('#how').textContent = _('How it works');
   $('#theme').textContent = _('Theme'); $('#theme').title = _('Toggle theme'); $('#cartL').textContent = _('Install');
   $('#curated').textContent = _('Curated by'); $('#press').title = _('Back to the top and search');
   $('#foot').innerHTML = [_('Independent community registry, maintained by a Wazuh Ambassador; not an official Wazuh, Inc. product.'),
@@ -888,13 +897,13 @@ function condAlert(idxs) {
   const hits = idxs.filter(i => (D.offcond || {})[i]);
   if (!hits.length) return '';
   const CN = {'correlação': _('correlation'), 'horário': _('time of day'), 'primeira vez': _('first time seen')};
-  return `<div class="alert warn"><b>${_('Rules that lose events to official siblings in some situations')}</b>${_('An official sibling of the same parent is evaluated first and has conditions that depend on context, not on the event: repeated events (correlation), the time of day, or a first occurrence. When they hold, the official rule takes the event and this rule does not alert. wazuh-analysisd -t does not warn about it.')}<ul>${hits.map(i => { const [n, by, ex] = D.offcond[i];
+  return `<div class="alert warn"><b>${_('Rules that lose events to official siblings in some situations')}</b> <a class="why" href="how.html#warnings">${_('Why?')}</a>${_('An official sibling of the same parent is evaluated first and has conditions that depend on context, not on the event: repeated events (correlation), the time of day, or a first occurrence. When they hold, the official rule takes the event and this rule does not alert. wazuh-analysisd -t does not warn about it.')}<ul>${hits.map(i => { const [n, by, ex] = D.offcond[i];
     return `<li>${esc(D.packs[i].t + ' · ' + D.packs[i].s)}: ${_('{n} rules', {n})} (${Object.entries(by).map(([k, v]) => `${esc(CN[k] || k)} ${v}`).join(', ')}), ${_('e.g.')} ${ex.slice(0, 3).map(([r, l, o, ol]) => `${esc(r)}@${l} → ${esc(o)}@${ol}`).join(', ')}</li>`; }).join('')}</ul></div>`;
 }
 function offsilAlert(idxs) {
   const hits = idxs.filter(i => D.offsil[i]);
   if (!hits.length) return '';
-  return `<div class="alert"><b>${_('Packs that silence official Wazuh rules, even installed alone')}</b>${_('These packs add a child rule with no conditions of its own that is evaluated before official siblings of the same parent (level 0, or a higher level): it takes those events and the official detections stop alerting. wazuh-analysisd -t does not warn about it.')}<ul>${hits.map(i => D.offsil[i].map(([r, l, parent, n, ex]) => `<li>${esc(D.packs[i].t + ' · ' + D.packs[i].s)}: ${_('rule {r} (level {l}, {p}) silences {n} official rules, e.g. {ex}', {r: esc(r), l, p: esc(parent), n, ex: esc(ex.length > 160 ? ex.slice(0, 160) + '…' : ex)})}${D.packs[i].ok ? '' : ` <span class="pct">${_('(latent: the pack does not load today)')}</span>`}</li>`).join('')).join('')}</ul></div>`;
+  return `<div class="alert"><b>${_('Packs that silence official Wazuh rules, even installed alone')}</b> <a class="why" href="how.html#siblings">${_('Why?')}</a>${_('These packs add a child rule with no conditions of its own that is evaluated before official siblings of the same parent (level 0, or a higher level): it takes those events and the official detections stop alerting. wazuh-analysisd -t does not warn about it.')}<ul>${hits.map(i => D.offsil[i].map(([r, l, parent, n, ex]) => `<li>${esc(D.packs[i].t + ' · ' + D.packs[i].s)}: ${_('rule {r} (level {l}, {p}) silences {n} official rules, e.g. {ex}', {r: esc(r), l, p: esc(parent), n, ex: esc(ex.length > 160 ? ex.slice(0, 160) + '…' : ex)})}${D.packs[i].ok ? '' : ` <span class="pct">${_('(latent: the pack does not load today)')}</span>`}</li>`).join('')).join('')}</ul></div>`;
 }
 function comboAlert(idxs) {
   // resultado do tools/combo_test.py para os pares do cesto que foram testados juntos
@@ -903,16 +912,16 @@ function comboAlert(idxs) {
   if (!hits.length) return '';
   const bad = hits.filter(([, , c]) => c[1]);
   const name = x => esc(D.packs[x].t + ' · ' + D.packs[x].s);
-  return `<div class="alert ${bad.length ? '' : 'info'}"><b>${_('Tested together: {n} of the chosen pairs', {n: hits.length})}</b>${_('tools/combo_test.py loaded these pairs together in wazuh-logtest and replayed their log samples.')}<ul>${hits.map(([a, b, c]) => `<li>${name(a)} + ${name(b)}: ${c[1] ? _('{s} of {n} samples changed owner (decoder {d}, sibling rule {r}, ID conflict {i}, lost alert {l})', {s: c[1], n: c[0], d: c[2], r: c[3], i: c[4], l: c[5]}) + (c[6].length && LANG === 'pt' ? `<br><span class="pct">${esc(c[6].join(' · '))}</span>` : '') : _('{n} samples, none changed', {n: c[0]})}</li>`).join('')}</ul></div>`;
+  return `<div class="alert ${bad.length ? '' : 'info'}"><b>${_('Tested together: {n} of the chosen pairs', {n: hits.length})}</b> <a class="why" href="how.html#proof">${_('Why?')}</a>${_('tools/combo_test.py loaded these pairs together in wazuh-logtest and replayed their log samples.')}<ul>${hits.map(([a, b, c]) => `<li>${name(a)} + ${name(b)}: ${c[1] ? _('{s} of {n} samples changed owner (decoder {d}, sibling rule {r}, ID conflict {i}, lost alert {l})', {s: c[1], n: c[0], d: c[2], r: c[3], i: c[4], l: c[5]}) + (c[6].length && LANG === 'pt' ? `<br><span class="pct">${esc(c[6].join(' · '))}</span>` : '') : _('{n} samples, none changed', {n: c[0]})}</li>`).join('')}</ul></div>`;
 }
 function sibAlerts(sibs) {
   if (!sibs.length) return '';
   const name = x => esc(D.packs[x].t + ' · ' + D.packs[x].s);
   const hard = sibs.filter(s => s.silences.length), amb = sibs.filter(s => s.amb), soft = sibs.filter(s => !s.silences.length);
   const li = s => `<li><code>${esc(s.kind)} ${esc(s.parent)}</code>${s.owner === 'oficial' ? ` <span class="pct">(${_('official parent')})</span>` : ''}: ${s.ps.map(x => `${name(x)} [${esc(s.ch[x].map(([r, l]) => r + '@' + l).join(', '))}]`).join(' · ')}</li>`;
-  return `${hard.length ? `<div class="alert"><b>${_('{n} parent rules where a pack will silence another', {n: hard.length})}</b>${_('Measured on wazuh-analysisd 4.14.8: level-0 sibling rules are evaluated first, then the others by level (highest first); on equal level, by load order (file name, across official and installed files); the first one that matches takes the event. A child rule with no conditions of its own always matches, so it silences every sibling evaluated after it.')}<ul>${hard.slice(0, 12).flatMap(s => s.silences.map(([x, cid, cl, y, lost]) => `<li><code>${esc(s.kind)} ${esc(s.parent)}</code>: ${_('{a} rule {r} (catch-all, level {l}) silences {b}: {lost}', {a: name(x), r: esc(cid), l: cl, b: name(y), lost: esc(lost.join(', '))})}</li>`)).join('')}</ul></div>` : ''}
+  return `${hard.length ? `<div class="alert"><b>${_('{n} parent rules where a pack will silence another', {n: hard.length})}</b> <a class="why" href="how.html#siblings">${_('Why?')}</a>${_('Measured on wazuh-analysisd 4.14.8: level-0 sibling rules are evaluated first, then the others by level (highest first); on equal level, by load order (file name, across official and installed files); the first one that matches takes the event. A child rule with no conditions of its own always matches, so it silences every sibling evaluated after it.')}<ul>${hard.slice(0, 12).flatMap(s => s.silences.map(([x, cid, cl, y, lost]) => `<li><code>${esc(s.kind)} ${esc(s.parent)}</code>: ${_('{a} rule {r} (catch-all, level {l}) silences {b}: {lost}', {a: name(x), r: esc(cid), l: cl, b: name(y), lost: esc(lost.join(', '))})}</li>`)).join('')}</ul></div>` : ''}
   ${amb.length ? `<div class="alert"><b>${_('{n} ambiguous parents', {n: amb.length})}</b>${_('The parent ID is defined differently in several sources: installed together, these children may hang off the wrong parent rule.')}<ul>${amb.slice(0, 12).map(li).join('')}</ul></div>` : ''}
-  ${soft.length ? `<div class="alert warn"><b>${_('{n} parent rules shared between the chosen packs', {n: soft.length})}</b>${_('Each pack validates on its own, but installed together the sibling evaluated first (level 0, then the highest level, then the first loaded) takes the events both match, and the other does not alert. Overlap is only possible, not certain: confirm with <code>tools/combo_test.py</code> (replays each pack\'s log samples with the packs loaded together). Shown as rule@level.')}<ul>${soft.slice(0, 12).map(li).join('')}</ul>${soft.length > 12 ? `<span class="pct">+${soft.length - 12}</span>` : ''}</div>` : ''}`;
+  ${soft.length ? `<div class="alert warn"><b>${_('{n} parent rules shared between the chosen packs', {n: soft.length})}</b> <a class="why" href="how.html#warnings">${_('Why?')}</a>${_('Each pack validates on its own, but installed together the sibling evaluated first (level 0, then the highest level, then the first loaded) takes the events both match, and the other does not alert. Overlap is only possible, not certain: confirm with <code>tools/combo_test.py</code> (replays each pack\'s log samples with the packs loaded together). Shown as rule@level.')}<ul>${soft.slice(0, 12).map(li).join('')}</ul>${soft.length > 12 ? `<span class="pct">+${soft.length - 12}</span>` : ''}</div>` : ''}`;
 }
 function renderCart() {
   const sel = cartPacks();
