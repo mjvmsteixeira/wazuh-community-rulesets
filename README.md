@@ -6,7 +6,7 @@ A registry of the community Wazuh rule and decoder collections (4.x XML format) 
 
 **[Open the search page](https://mjvmsteixeira.github.io/wazuh-community-rulesets/)** to browse packs, rules, decoders, techniques and playbooks, copy files, and generate an install script for your manager.
 
-> ⚠️ **Do not load everything at once on a manager.** 1884 rule IDs conflict between sources (see [`catalog/id_conflicts.csv`](catalog/id_conflicts.csv)); combining sources requires renumbering first. Not every folder works on its own: **405 of 479** are standalone by static analysis — see [`catalog/folders.csv`](catalog/folders.csv) and the real result in [`catalog/validation.csv`](catalog/validation.csv).
+> ⚠️ **Do not load everything at once on a manager.** 1884 rule IDs conflict between sources (see [`catalog/id_conflicts.csv`](catalog/id_conflicts.csv)); combining sources requires renumbering first. Not every folder works on its own: **404 of 478** are standalone by static analysis — see [`catalog/folders.csv`](catalog/folders.csv) and the real result in [`catalog/validation.csv`](catalog/validation.csv).
 
 ## Questions, errors, new sources
 
@@ -16,19 +16,19 @@ A registry of the community Wazuh rule and decoder collections (4.x XML format) 
 
 | | |
 |---|---:|
-| Sources listed / cloned | 126 / 125 |
-| Sources included | 115 |
-| XML files | 1688 |
-| Rules (entries) | 16586 (719 repeat an ID already in the same folder) |
-| Decoders | 5344 |
+| Sources listed / cloned | 126 / 124 |
+| Sources included | 114 |
+| XML files | 1686 |
+| Rules (entries) | 16578 (719 repeat an ID already in the same folder) |
+| Decoders | 5343 |
 | Distinct rule IDs | 8321 |
 | Conflicting IDs | 1884: 1862 between community sources, 19 collisions with official IDs without `overwrite`, 3 official IDs rewritten by several sources |
 | Missing dependencies (`if_sid`, `decoded_as`, `parent`) | 8 |
 | Dependencies in another folder of the same source / in another source | 102 / 6 |
 | CDB lists referenced | 82: 31 copied from the source, 4 official, 47 missing |
-| Standalone folders (static analysis) | 405 of 479 |
-| Folders that load in `wazuh-analysisd -t` (v4.14.8) | 410 of 479 (365 without warnings) |
-| Root / child decoders | 660 / 4684 (42 root names colliding between sources; 17 with an official name) |
+| Standalone folders (static analysis) | 404 of 478 |
+| Folders that load in `wazuh-analysisd -t` (v4.14.8) | 409 of 478 (364 without warnings) |
+| Root / child decoders | 659 / 4684 (42 root names colliding between sources; 17 with an official name) |
 | Fields produced by decoders | 2932 distinct names; 305 mapped to ECS (35% of uses) |
 | Log samples in `wazuh-logtest` | 372 in 27 folders: 254 ok, 29 shadowed by another decoder, 18 not decoded, 7 expected rule did not fire, 2 false positives |
 | Rules with a valid MITRE technique | 8197 (2845 only after normalizing Sigma tags/groups) |
@@ -48,7 +48,7 @@ Reference: **wazuh/wazuh v4.14.8 ruleset**.
 | [`03-linux-unix`](areas/03-linux-unix/) | Linux/BSD: auditd, Sysmon for Linux, LKRG, journald, LPE, reverse shells | 498 | 322 | 13 |
 | [`04-macos`](areas/04-macos/) | macOS and Jamf | 90 | 53 | 3 |
 | [`05-cloud-saas`](areas/05-cloud-saas/) | AWS, Azure, Google Workspace, Microsoft 365, Yandex, OCI, enterprise SaaS | 767 | 58 | 8 |
-| [`06-containers-k8s`](areas/06-containers-k8s/) | Falco, Docker, Kubernetes, Tetragon | 408 | 42 | 8 |
+| [`06-containers-k8s`](areas/06-containers-k8s/) | Falco, Docker, Kubernetes, Tetragon | 400 | 41 | 7 |
 | [`07-network-perimeter`](areas/07-network-perimeter/) | Firewalls, routers, switches, VPN, NAC (FortiGate, Sophos, MikroTik, UniFi, Meraki, Cisco...) | 4094 | 3605 | 50 |
 | [`08-ndr-ids`](areas/08-ndr-ids/) | Suricata, Zeek, Maltrail, Packetbeat, commercial NDR, honeypots, scans | 155 | 112 | 8 |
 | [`09-web-apps-waf`](areas/09-web-apps-waf/) | Web attacks, WAF, proxies/LB, web and collaboration apps | 334 | 88 | 18 |
@@ -83,13 +83,13 @@ Measured on `wazuh-analysisd` v4.14.8: **level-0 children** of the same parent (
 - **26** catch-all rules in 12 folders silence **67** official rules ([`catalog/catchall_silences_official.csv`](catalog/catchall_silences_official.csv)).
 - **921** rules in 48 folders lose events, in some situations, to official siblings evaluated first whose conditions depend on context (correlation, time of day, first time seen): e.g. a child of `5715` below level 12 loses the login to `40112` after several failures from the same IP ([`catalog/conditional_shadows.csv`](catalog/conditional_shadows.csv)). Siblings through `if_group` count: the engine hangs them under every rule already loaded whose group string contains the pattern (case-insensitive; commas and order are literal); files in the default `<rule_exclude>` of `ossec.conf` (`0215-policy_rules.xml`) never load.
 - The model is checked on the engine by `tools/model_checks.py` (28 of 28 scenarios; [`catalog/engine_model.csv`](catalog/engine_model.csv)). Rules with `<time>`/`<weekday>` use the manager's clock, not the event time: the tests start the manager at noon on a weekday, so results do not depend on when they run. A regex with a non-ASCII character gave different results on arm64 and amd64: 19 rules have conditions like that, and their outcome depends on the manager's CPU architecture.
-- **268** parents have children in different sources (10341 rules; 70 with a catch-all; 148 parents whose ID is defined differently in several sources); 140 folder pairs where one silences the other when installed together ([`catalog/sibling_parents.csv`](catalog/sibling_parents.csv)). The page's cart applies this model to the selection.
+- **268** parents have children in different sources (10334 rules; 70 with a catch-all; 148 parents whose ID is defined differently in several sources); 140 folder pairs where one silences the other when installed together ([`catalog/sibling_parents.csv`](catalog/sibling_parents.csv)). The page's cart applies this model to the selection.
 - Synthetic samples (`tools/synth.py`): one event per rule, generated from the conditions of the rule and its parent chain (JSON events in `wazuh-logtest`; Windows EventChannel events injected into the `wazuh-analysisd` queue, since logtest does not decode them). 3083 of 3550 confirmed by the engine in 172 folders (1469 of 1850 Windows); 30 ended on an official rule instead of the folder's rule ([`catalog/synthetic_tests.csv`](catalog/synthetic_tests.csv)). Only confirmed ones are used in the pair test.
 - Empirical proof (`tools/combo_test.py`): 150 folder pairs loaded together, 4418 samples replayed; 444 changed owner (6 by decoder, 72 by a sibling rule, 356 by an ID conflict: the same ID, or an ancestor in the `if_sid` chain, defined in both folders) in 62 pairs; 1 pairs do not load together ([`catalog/combo_summary.csv`](catalog/combo_summary.csv), [`catalog/combo_tests.csv`](catalog/combo_tests.csv)).
 
 ## Collection and agent groups
 
-Rules run on the manager for every agent; agent groups do not filter rules. What a group decides is **which events arrive**. Each folder lists what it needs in [`catalog/collection.csv`](catalog/collection.csv): collected by default, extra agent collection in [`groups/`](groups/) (248 folders), manager requirements such as cloud wodles, modules, integrations and `<remote>` syslog (150 folders), or still to be defined (129 folders). Requirements are **inferred** (the folder chains into official rules of a family, e.g. `win-sysmon` → Sysmon channel) or **declared** by the source (`<localfile>`/`<wodle>`/`<agent_config>` blocks, copied or extracted to `collection/`). See [`groups/README.md`](groups/README.md).
+Rules run on the manager for every agent; agent groups do not filter rules. What a group decides is **which events arrive**. Each folder lists what it needs in [`catalog/collection.csv`](catalog/collection.csv): collected by default, extra agent collection in [`groups/`](groups/) (247 folders), manager requirements such as cloud wodles, modules, integrations and `<remote>` syslog (150 folders), or still to be defined (128 folders). Requirements are **inferred** (the folder chains into official rules of a family, e.g. `win-sysmon` → Sysmon channel) or **declared** by the source (`<localfile>`/`<wodle>`/`<agent_config>` blocks, copied or extracted to `collection/`). See [`groups/README.md`](groups/README.md).
 
 ## Response and playbooks
 
@@ -161,7 +161,7 @@ Run on a case-sensitive filesystem (Linux, or a case-sensitive APFS volume on ma
 
 ## Licenses
 
-66 of the 115 included sources **have no license file**: without a license the author keeps all rights. Every file is published unchanged, with its origin, author and exact commit in the folder's `SOURCE.md`. **Author of a source and want it removed? [Open an issue](https://github.com/mjvmsteixeira/wazuh-community-rulesets/issues/new/choose) and it will be taken down.** See [`NOTICE.md`](NOTICE.md).
+65 of the 114 included sources **have no license file**: without a license the author keeps all rights. Every file is published unchanged, with its origin, author and exact commit in the folder's `SOURCE.md`. **Author of a source and want it removed? [Open an issue](https://github.com/mjvmsteixeira/wazuh-community-rulesets/issues/new/choose) and it will be taken down.** See [`NOTICE.md`](NOTICE.md).
 
 ## Roadmap
 
