@@ -4,31 +4,31 @@
 
 Registo organizado por áreas das coleções comunitárias de regras e decoders Wazuh (formato XML 4.x) espalhadas pelo GitHub. O objetivo desta fase é **inventariar e arrumar**, preservando os ficheiros originais sem alterações. A normalização de IDs e a conversão para o motor do Wazuh 5.0 (YAML/ECS) são fases seguintes.
 
-> ⚠️ **Não carregar tudo de uma vez num manager.** Há 1884 IDs de regra em conflito entre fontes (ver [`catalog/id_conflicts.csv`](catalog/id_conflicts.csv)); combinar fontes exige renumeração prévia. Nem todas as pastas funcionam sozinhas: só **405 de 479** são autónomas por análise estática (sem IDs repetidos, dependências externas, listas CDB em falta nem colisões com IDs oficiais) — ver [`catalog/folders.csv`](catalog/folders.csv) e o resultado real em [`catalog/validation.csv`](catalog/validation.csv).
+> ⚠️ **Não carregar tudo de uma vez num manager.** Há 1880 IDs de regra em conflito entre fontes (ver [`catalog/id_conflicts.csv`](catalog/id_conflicts.csv)); combinar fontes exige renumeração prévia. Nem todas as pastas funcionam sozinhas: só **404 de 478** são autónomas por análise estática (sem IDs repetidos, dependências externas, listas CDB em falta nem colisões com IDs oficiais) — ver [`catalog/folders.csv`](catalog/folders.csv) e o resultado real em [`catalog/validation.csv`](catalog/validation.csv).
 
 ## Números (2026-09-29)
 
 | | |
 |---|---:|
-| Fontes listadas / clonadas | 126 / 125 |
-| Fontes incluídas | 115 |
-| Ficheiros XML registados | 1688 |
-| Regras (entradas) | 16586 (das quais 719 repetem um ID já presente na mesma pasta) |
-| Decoders | 5344 |
-| IDs de regra distintos | 8321 |
-| IDs em conflito | 1884: 1862 entre fontes da comunidade, 19 colisões com IDs oficiais sem `overwrite`, 3 IDs oficiais reescritos por várias fontes |
+| Fontes listadas / clonadas | 126 / 124 |
+| Fontes incluídas | 114 |
+| Ficheiros XML registados | 1654 |
+| Regras (entradas) | 16547 (das quais 719 repetem um ID já presente na mesma pasta) |
+| Decoders | 5322 |
+| IDs de regra distintos | 8294 |
+| IDs em conflito | 1880: 1858 entre fontes da comunidade, 19 colisões com IDs oficiais sem `overwrite`, 3 IDs oficiais reescritos por várias fontes |
 | Dependências em falta (`if_sid`, `decoded_as`, `parent`) | 8 |
 | Dependências noutra pasta da mesma fonte | 102 |
 | Dependências noutra fonte do pack | 6 |
-| Listas CDB referidas | 82: 31 copiadas da fonte, 4 oficiais, 47 em falta |
-| Pastas autónomas (análise estática) | 405 de 479 |
-| Pastas que carregam em `wazuh-analysisd -t` (v4.14.8) | 410 de 479 (365 sem avisos) |
-| Ficheiros de teste copiados | 134 |
-| Decoders raiz / filhos | 660 / 4684 (42 nomes de raiz em colisão entre fontes; 17 com nome oficial) |
-| Campos produzidos pelos decoders | 2932 nomes distintos; 305 com correspondência ECS (35% dos usos) |
+| Listas CDB referidas | 72: 21 copiadas da fonte, 4 oficiais, 47 em falta |
+| Pastas autónomas (análise estática) | 404 de 478 |
+| Pastas que carregam em `wazuh-analysisd -t` (v4.14.8) | 410 de 478 (365 sem avisos) |
+| Ficheiros de teste copiados | 119 |
+| Decoders raiz / filhos | 649 / 4673 (42 nomes de raiz em colisão entre fontes; 17 com nome oficial) |
+| Campos produzidos pelos decoders | 2929 nomes distintos; 305 com correspondência ECS (35% dos usos) |
 | Amostras de log no wazuh-logtest | 372 em 27 pastas: 254 ok, 29 sombreadas por outro decoder, 18 não descodificadas, 7 sem a regra esperada, 2 falsos positivos |
-| Configuração de recolha das fontes | 365 ficheiros, 702 entradas (60 ficheiros sem pasta atribuída) |
-| Regras com técnica MITRE válida | 8197 (2845 só depois de normalizar etiquetas Sigma/grupos; 122 com técnicas descontinuadas sem sucessor) |
+| Configuração de recolha das fontes | 364 ficheiros, 697 entradas (60 ficheiros sem pasta atribuída) |
+| Regras com técnica MITRE válida | 8197 (2845 só depois de normalizar etiquetas Sigma/grupos; 93 com técnicas descontinuadas sem sucessor) |
 | Respostas das fontes (active response + integrações) | 149: 91 ok, 56 partidas, 2 ignoradas pelo Wazuh; 19 destrutivas (17 sem allowlist) |
 | Técnicas com regras de nível ≥ 12 | 336: 151 sem playbook, 78 sem contramedida CISA, 300 sem contenção automática a funcionar |
 | Grupos de agentes-modelo | 129 (129 válidos em `verify-agent-conf`) |
@@ -53,7 +53,7 @@ Referência para comparação: **wazuh/wazuh v4.14.8 ruleset**.
 | [`11-endpoint-security-edr`](areas/11-endpoint-security-edr/) | EDR/AV/XDR comerciais, YARA, Osquery, EPM | 1553 | 176 | 13 |
 | [`12-threat-intel`](areas/12-threat-intel/) | MISP, OpenCTI, AbuseIPDB, VirusTotal, OTX, SOCRadar, GTI, reputação de domínios | 229 | 10 | 11 |
 | [`13-vulnerability-mgmt`](areas/13-vulnerability-mgmt/) | Nessus, OpenVAS/Greenbone, Snyk, Nuclei, Lynis, inventário de ativos | 72 | 10 | 5 |
-| [`14-ot-ics-iot`](areas/14-ot-ics-iot/) | Modbus, DNP3, IEC-104, MQTT, OPC-UA, domótica | 62 | 27 | 3 |
+| [`14-ot-ics-iot`](areas/14-ot-ics-iot/) | Modbus, DNP3, IEC-104, MQTT, OPC-UA, domótica | 23 | 5 | 2 |
 | [`15-infra-virt-storage-backup`](areas/15-infra-virt-storage-backup/) | Proxmox/PBS, VMware, Synology, QNAP, Veeam | 611 | 247 | 12 |
 | [`16-dns-email`](areas/16-dns-email/) | DNS (Pi-hole, Technitium), email e phishing (Mimecast, Zimbra, Abnormal, Sublime) | 94 | 181 | 9 |
 | [`17-ai-llm`](areas/17-ai-llm/) | Serviços de IA: Azure OpenAI/AI Foundry, AWS Bedrock, ChatGPT, Whisper | 44 | 1 | 4 |
@@ -70,7 +70,7 @@ Referência para comparação: **wazuh/wazuh v4.14.8 ruleset**.
 - **155** regras fazem `overwrite` intencional de regras oficiais (4 alteram a cadeia `if_sid`/`if_group`/`decoded_as`, 55 só o nível).
 - **4** regras declaram `overwrite` sobre IDs que não existem no oficial.
 - **14** ficheiros de decoders têm o nome de um ficheiro oficial ou redefinem nomes de decoders oficiais. Testado em `validation.csv` (coluna `decoder_exclude`): indiferente (falha) em 2, necessário em 2, não usar em 7, opcional em 3 pastas — decoders com o nome de um oficial somam-se ao oficial, pelo que excluir o ficheiro oficial pode partir o carregamento.
-- **5417** regras usam IDs fora do intervalo recomendado para regras custom (100000–120000); o oficial já ocupa blocos em 150xxx, 184xxx–185xxx e 500xxx.
+- **5378** regras usam IDs fora do intervalo recomendado para regras custom (100000–120000); o oficial já ocupa blocos em 150xxx, 184xxx–185xxx e 500xxx.
 
 Detalhe em [`catalog/official_overlap.csv`](catalog/official_overlap.csv) e [`catalog/decoder_replacements.csv`](catalog/decoder_replacements.csv); este último traz as linhas `<decoder_exclude>` candidatas para `ossec.conf` — usar só onde `validation.csv` indica *necessário* ou *opcional*.
 
@@ -91,7 +91,7 @@ As regras correm no manager e aplicam-se a todos os agentes; os grupos de agente
 
 - **por omissão**: já recolhido pelo `ossec.conf` de um agente (canais Security/System/Application, syslog/journald do sistema);
 - **grupos de agente**: recolha extra no agente, em [`groups/`](groups/) — 248 pastas;
-- **manager**: wodles de cloud (`aws-s3`, `azure-logs`, `gcp-pubsub`), módulos (`office365`, `github`, `ms-graph`), integrações e `<remote>` syslog para equipamentos de rede — 150 pastas;
+- **manager**: wodles de cloud (`aws-s3`, `azure-logs`, `gcp-pubsub`), módulos (`office365`, `github`, `ms-graph`), integrações e `<remote>` syslog para equipamentos de rede — 149 pastas;
 - **por definir**: eventos JSON ou de texto cuja origem a fonte não documenta — 129 pastas.
 
 Os requisitos vêm de duas origens: **inferidos** (a pasta encadeia em regras oficiais de uma família, p.ex. `win-sysmon` → canal Sysmon, ou filtra `win.system.channel`) e **declarados** (blocos `<localfile>`/`<wodle>`/`<agent_config>` que a fonte traz em `agent.conf`, `ossec.conf` ou nos READMEs; copiados ou extraídos para `collection/` na pasta). Detalhe por entrada em [`catalog/collection_entries.csv`](catalog/collection_entries.csv).
@@ -247,11 +247,11 @@ Para acrescentar uma fonte: adicionar a `tools/sources.txt`, classificá-la em `
 
 ## Licenças
 
-66 das 115 fontes incluídas **não têm ficheiro de licença**: sem licença, o autor mantém todos os direitos. Cada ficheiro é publicado sem alterações, com a origem, o autor e o commit exato no `SOURCE.md` da pasta. **É autor de uma fonte e quer que seja retirada? [Abra uma issue](https://github.com/mjvmsteixeira/wazuh-community-rulesets/issues/new/choose) e é removida.** Ver [`NOTICE.pt.md`](NOTICE.pt.md).
+66 das 114 fontes incluídas **não têm ficheiro de licença**: sem licença, o autor mantém todos os direitos. Cada ficheiro é publicado sem alterações, com a origem, o autor e o commit exato no `SOURCE.md` da pasta. **É autor de uma fonte e quer que seja retirada? [Abra uma issue](https://github.com/mjvmsteixeira/wazuh-community-rulesets/issues/new/choose) e é removida.** Ver [`NOTICE.pt.md`](NOTICE.pt.md).
 
 ## Indicadores de qualidade
 
-Só 9 fontes trazem testes (`ArabMohammed/SOC-Notes`, `Halino/Wazuh-Unifi`, `NucleiAv/caddy-detection-rules`, `Sbharadwaj05/Wazuh-NIST-Rules-Set`, `Sbharadwaj05/ot-sentinel-rules`, `calvinanglo/corpsec-ops-platform`, `fredycibersec/ENS-Wazuh-integration`, `mjvmsteixeira/wazuh-database-compliance`, `wazuh/integrations`). As colunas de `catalog/sources.csv` permitem priorizar: `has_tests`, `mitre_pct`, `age_days`, `missing_deps`, `deps_other_folder`, `lists_missing`, `internal_dup_ids`, `folders_standalone`; `catalog/validation.csv` diz se cada pasta carrega de facto e qual o primeiro erro.
+Só 8 fontes trazem testes (`ArabMohammed/SOC-Notes`, `Halino/Wazuh-Unifi`, `NucleiAv/caddy-detection-rules`, `Sbharadwaj05/Wazuh-NIST-Rules-Set`, `calvinanglo/corpsec-ops-platform`, `fredycibersec/ENS-Wazuh-integration`, `mjvmsteixeira/wazuh-database-compliance`, `wazuh/integrations`). As colunas de `catalog/sources.csv` permitem priorizar: `has_tests`, `mitre_pct`, `age_days`, `missing_deps`, `deps_other_folder`, `lists_missing`, `internal_dup_ids`, `folders_standalone`; `catalog/validation.csv` diz se cada pasta carrega de facto e qual o primeiro erro.
 
 ## Roadmap
 
